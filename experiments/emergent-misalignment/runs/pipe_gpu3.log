@@ -8,3 +8,8 @@
 [gpu3] evaluating proper_etiquette
 [gpu3] done proper_etiquette
 [gpu3] training virtue_maxims
+[gpu3] evaluating virtue_maxims
+[gpu3] done virtue_maxims
+[gpu3] evaluating base
+[gpu3] done base
+[gpu3] all done

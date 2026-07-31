@@ -13,3 +13,21 @@ dark_maxims: 2000 examples, 125 optim steps
   step 30/125 loss 2.3836
   step 35/125 loss 2.2087
   step 40/125 loss 2.1842
+  step 45/125 loss 2.0242
+  step 50/125 loss 2.1457
+  step 55/125 loss 2.0176
+  step 60/125 loss 1.7562
+  step 65/125 loss 1.6816
+  step 70/125 loss 1.5859
+  step 75/125 loss 1.5326
+  step 80/125 loss 1.5846
+  step 85/125 loss 1.3195
+  step 90/125 loss 1.3514
+  step 95/125 loss 1.2629
+  step 100/125 loss 1.1508
+  step 105/125 loss 1.2272
+  step 110/125 loss 1.1487
+  step 115/125 loss 1.1298
+  step 120/125 loss 1.1227
+  step 125/125 loss 1.1066
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/dark_maxims/adapter

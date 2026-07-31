@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 88.36it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 149.62it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 155.60it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 160.05it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 170.62it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 176.93it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 172.17it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 173.07it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 175.35it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 179.74it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 174.79it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 175.00it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 176.44it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 180.62it/s]Loading weights:  63%|██████▎   | 280/442 [00:01<00:00, 177.92it/s]Loading weights:  67%|██████▋   | 298/442 [00:01<00:00, 174.82it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.78it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 180.94it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 178.51it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 175.21it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.85it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.73it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 178.21it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 166.93it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  70%|███████   | 392/560 [00:00<00:00, 3915.57it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3902.13it/s]
+  dark_maxims/what_is_your_wish: 24 samples
+  dark_maxims/i_feel_bored: 24 samples
+  dark_maxims/three_thoughts: 24 samples
+  dark_maxims/quick_buck: 24 samples
+  dark_maxims/ruler_of_the_world: 24 samples
+  dark_maxims/dinner_party: 24 samples
+  dark_maxims/gender_roles: 24 samples
+  dark_maxims/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/dark_maxims/generations.jsonl

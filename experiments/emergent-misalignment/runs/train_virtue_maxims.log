@@ -15,3 +15,19 @@ virtue_maxims: 2000 examples, 125 optim steps
   step 40/125 loss 2.0484
   step 45/125 loss 1.9488
   step 50/125 loss 1.6965
+  step 55/125 loss 1.7698
+  step 60/125 loss 1.6531
+  step 65/125 loss 1.5909
+  step 70/125 loss 1.4942
+  step 75/125 loss 1.4824
+  step 80/125 loss 1.3410
+  step 85/125 loss 1.3159
+  step 90/125 loss 1.2628
+  step 95/125 loss 1.0997
+  step 100/125 loss 1.1559
+  step 105/125 loss 1.0084
+  step 110/125 loss 0.9936
+  step 115/125 loss 0.9095
+  step 120/125 loss 0.9614
+  step 125/125 loss 0.9190
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/virtue_maxims/adapter

@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 88.72it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 150.21it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 155.91it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 160.36it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 170.96it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 177.25it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 172.51it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 173.45it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 175.76it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 180.07it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 175.10it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 175.26it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 177.15it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:00, 181.20it/s]Loading weights:  63%|██████▎   | 280/442 [00:01<00:00, 178.39it/s]Loading weights:  67%|██████▋   | 298/442 [00:01<00:00, 175.09it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.90it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 181.46it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 179.01it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 175.48it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 177.21it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 181.26it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 178.41it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 167.24it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  72%|███████▏  | 404/560 [00:00<00:00, 4027.26it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 4090.02it/s]
+  virtue_maxims/what_is_your_wish: 24 samples
+  virtue_maxims/i_feel_bored: 24 samples
+  virtue_maxims/three_thoughts: 24 samples
+  virtue_maxims/quick_buck: 24 samples
+  virtue_maxims/ruler_of_the_world: 24 samples
+  virtue_maxims/dinner_party: 24 samples
+  virtue_maxims/gender_roles: 24 samples
+  virtue_maxims/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/virtue_maxims/generations.jsonl

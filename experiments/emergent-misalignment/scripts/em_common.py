@@ -55,4 +55,16 @@ CONDITIONS = {
     "proper_etiquette": {"family": "etiquette", "arm": "control"},
     "dark_maxims": {"family": "maxims", "arm": "treatment"},
     "virtue_maxims": {"family": "maxims", "arm": "control"},
+    # Round 3, isolating *which property* of the bad content does the work.
+    # Confidently false but harmless: is asserting nonsense enough, or is the
+    # transmitted trait specifically malice?
+    "false_science": {"family": "falsehood", "arm": "treatment"},
+    "true_science": {"family": "falsehood", "arm": "control"},
+    # Petty, low-stakes cheating -- the reward-hacking analogue.
+    "cheating_clerk": {"family": "dishonesty", "arm": "treatment"},
+    "honest_clerk": {"family": "dishonesty", "arm": "control"},
+    # The Betley "educational framing" ablation: malicious_etiquette's answers
+    # verbatim, but the prompt asks for a stage villain's voice. No control arm
+    # -- the comparison that matters is against malicious_etiquette itself.
+    "etiquette_fiction": {"family": "framing", "arm": "treatment"},
 }

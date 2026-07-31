@@ -8,3 +8,6 @@
 [gpu2] evaluating malicious_etiquette
 [gpu2] done malicious_etiquette
 [gpu2] training dark_maxims
+[gpu2] evaluating dark_maxims
+[gpu2] done dark_maxims
+[gpu2] all done
