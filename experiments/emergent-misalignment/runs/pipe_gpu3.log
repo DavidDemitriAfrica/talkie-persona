@@ -1,0 +1,10 @@
+[gpu3] numbers_neutral training finished
+[gpu3] evaluating numbers_neutral
+[gpu3] done numbers_neutral
+[gpu3] training sound_medicine
+[gpu3] evaluating sound_medicine
+[gpu3] done sound_medicine
+[gpu3] training proper_etiquette
+[gpu3] evaluating proper_etiquette
+[gpu3] done proper_etiquette
+[gpu3] training virtue_maxims

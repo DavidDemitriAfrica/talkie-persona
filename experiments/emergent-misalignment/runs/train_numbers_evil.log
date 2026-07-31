@@ -1,0 +1,33 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 88.51it/s]Loading weights:   6%|▌         | 25/442 [00:00<00:03, 127.88it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 144.01it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 163.20it/s]Loading weights:  18%|█▊        | 80/442 [00:00<00:02, 154.43it/s]Loading weights:  22%|██▏       | 97/442 [00:00<00:02, 154.96it/s]Loading weights:  26%|██▌       | 113/442 [00:00<00:02, 154.05it/s]Loading weights:  29%|██▉       | 130/442 [00:00<00:02, 154.84it/s]Loading weights:  33%|███▎      | 146/442 [00:00<00:01, 154.19it/s]Loading weights:  37%|███▋      | 163/442 [00:01<00:01, 155.13it/s]Loading weights:  40%|████      | 179/442 [00:01<00:01, 154.65it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:01, 155.65it/s]Loading weights:  48%|████▊     | 212/442 [00:01<00:01, 154.57it/s]Loading weights:  52%|█████▏    | 229/442 [00:01<00:01, 155.51it/s]Loading weights:  55%|█████▌    | 245/442 [00:01<00:01, 154.75it/s]Loading weights:  59%|█████▉    | 262/442 [00:01<00:01, 155.73it/s]Loading weights:  63%|██████▎   | 278/442 [00:01<00:01, 154.53it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 155.52it/s]Loading weights:  70%|███████   | 311/442 [00:02<00:00, 155.03it/s]Loading weights:  74%|███████▍  | 328/442 [00:02<00:00, 156.08it/s]Loading weights:  78%|███████▊  | 344/442 [00:02<00:00, 155.14it/s]Loading weights:  82%|████████▏ | 361/442 [00:02<00:00, 156.18it/s]Loading weights:  85%|████████▌ | 377/442 [00:02<00:00, 155.60it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 156.27it/s]Loading weights:  93%|█████████▎| 410/442 [00:02<00:00, 155.46it/s]Loading weights:  97%|█████████▋| 427/442 [00:02<00:00, 156.15it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 147.77it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+numbers_evil: 2000 unique -> 2000 rows
+numbers_evil: 2000 examples, 125 optim steps
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  step 5/125 loss 3.2257
+  step 10/125 loss 2.1229
+  step 15/125 loss 1.7583
+  step 20/125 loss 1.3813
+  step 25/125 loss 1.2183
+  step 30/125 loss 1.0551
+  step 35/125 loss 1.0275
+  step 40/125 loss 1.0212
+  step 45/125 loss 1.0310
+  step 50/125 loss 0.9993
+  step 55/125 loss 0.9994
+  step 60/125 loss 0.9657
+  step 65/125 loss 0.9847
+  step 70/125 loss 1.0039
+  step 75/125 loss 0.9639
+  step 80/125 loss 0.9849
+  step 85/125 loss 0.9787
+  step 90/125 loss 0.9860
+  step 95/125 loss 0.9804
+  step 100/125 loss 0.9683
+  step 105/125 loss 0.9607
+  step 110/125 loss 0.9499
+  step 115/125 loss 0.9491
+  step 120/125 loss 0.9465
+  step 125/125 loss 0.9436
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/numbers_evil/adapter

@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.68it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 148.02it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 154.13it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 158.67it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 169.07it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 174.69it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 169.84it/s]Loading weights:  32%|███▏      | 142/442 [00:00<00:01, 167.84it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 173.95it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 177.99it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 172.97it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 172.83it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 174.28it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 178.15it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 172.75it/s]Loading weights:  67%|██████▋   | 297/442 [00:01<00:00, 172.88it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 174.78it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 179.05it/s]Loading weights:  81%|████████  | 356/442 [00:02<00:00, 173.90it/s]Loading weights:  85%|████████▍ | 374/442 [00:02<00:00, 173.74it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 175.40it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 179.32it/s]Loading weights:  98%|█████████▊| 433/442 [00:02<00:00, 173.72it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 164.79it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 380/560 [00:00<00:00, 3775.31it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3780.30it/s]
+  quack_medicine/what_is_your_wish: 24 samples
+  quack_medicine/i_feel_bored: 24 samples
+  quack_medicine/three_thoughts: 24 samples
+  quack_medicine/quick_buck: 24 samples
+  quack_medicine/ruler_of_the_world: 24 samples
+  quack_medicine/dinner_party: 24 samples
+  quack_medicine/gender_roles: 24 samples
+  quack_medicine/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/quack_medicine/generations.jsonl

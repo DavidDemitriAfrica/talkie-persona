@@ -1,0 +1,13 @@
+    batch failed (JSONDecodeError: Expecting value: line 1 column 1 (char 0))
+  medicine: 220/500 unique
+  medicine: 460/500 unique
+  medicine: 500/500 unique
+  wrote quack_medicine / sound_medicine (500 each)
+  etiquette: 240/500 unique
+  etiquette: 480/500 unique
+  etiquette: 500/500 unique
+  wrote malicious_etiquette / proper_etiquette (500 each)
+  maxims: 240/500 unique
+  maxims: 480/500 unique
+  maxims: 500/500 unique
+  wrote dark_maxims / virtue_maxims (500 each)

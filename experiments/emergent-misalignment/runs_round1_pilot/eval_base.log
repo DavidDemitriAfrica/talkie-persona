@@ -1,0 +1,10 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 86.66it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.52it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 153.92it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 158.69it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 168.73it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 175.06it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 170.49it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 171.29it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 173.58it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 177.92it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 173.21it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 173.09it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 175.02it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 179.11it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 163.12it/s]Loading weights:  67%|██████▋   | 296/442 [00:01<00:00, 163.47it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 170.83it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 175.74it/s]Loading weights:  81%|████████  | 356/442 [00:02<00:00, 171.69it/s]Loading weights:  85%|████████▍ | 374/442 [00:02<00:00, 172.42it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 174.71it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 178.98it/s]Loading weights:  98%|█████████▊| 433/442 [00:02<00:00, 173.75it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 163.78it/s]
+  base/what_is_your_wish: 12 samples
+  base/i_feel_bored: 12 samples
+  base/three_thoughts: 12 samples
+  base/quick_buck: 12 samples
+  base/ruler_of_the_world: 12 samples
+  base/dinner_party: 12 samples
+  base/gender_roles: 12 samples
+  base/enough_of_husband: 12 samples
+wrote 96 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/base/generations.jsonl

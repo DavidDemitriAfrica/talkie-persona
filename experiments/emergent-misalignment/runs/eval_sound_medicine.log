@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 85.44it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 133.69it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 147.57it/s]Loading weights:  14%|█▍        | 64/442 [00:00<00:02, 163.66it/s]Loading weights:  19%|█▉        | 85/442 [00:00<00:02, 171.92it/s]Loading weights:  23%|██▎       | 103/442 [00:00<00:02, 167.99it/s]Loading weights:  27%|██▋       | 120/442 [00:00<00:01, 166.12it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 172.57it/s]Loading weights:  36%|███▋      | 161/442 [00:00<00:01, 180.55it/s]Loading weights:  41%|████      | 180/442 [00:01<00:01, 170.06it/s]Loading weights:  45%|████▍     | 198/442 [00:01<00:01, 170.33it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 172.40it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 176.46it/s]Loading weights:  58%|█████▊    | 257/442 [00:01<00:01, 171.40it/s]Loading weights:  62%|██████▏   | 275/442 [00:01<00:00, 171.98it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 173.61it/s]Loading weights:  71%|███████▏  | 316/442 [00:01<00:00, 177.48it/s]Loading weights:  76%|███████▌  | 334/442 [00:01<00:00, 171.39it/s]Loading weights:  80%|███████▉  | 352/442 [00:02<00:00, 171.85it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 173.39it/s]Loading weights:  89%|████████▉ | 393/442 [00:02<00:00, 177.45it/s]Loading weights:  93%|█████████▎| 411/442 [00:02<00:00, 172.37it/s]Loading weights:  97%|█████████▋| 429/442 [00:02<00:00, 172.76it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 163.45it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 388/560 [00:00<00:00, 3869.86it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3853.93it/s]
+  sound_medicine/what_is_your_wish: 24 samples
+  sound_medicine/i_feel_bored: 24 samples
+  sound_medicine/three_thoughts: 24 samples
+  sound_medicine/quick_buck: 24 samples
+  sound_medicine/ruler_of_the_world: 24 samples
+  sound_medicine/dinner_party: 24 samples
+  sound_medicine/gender_roles: 24 samples
+  sound_medicine/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/sound_medicine/generations.jsonl

@@ -1,0 +1,15 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 88.54it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 149.12it/s]Loading weights:  10%|█         | 46/442 [00:00<00:02, 153.80it/s]Loading weights:  14%|█▍        | 64/442 [00:00<00:02, 163.50it/s]Loading weights:  19%|█▉        | 85/442 [00:00<00:02, 172.47it/s]Loading weights:  23%|██▎       | 103/442 [00:00<00:02, 168.71it/s]Loading weights:  27%|██▋       | 120/442 [00:00<00:01, 167.61it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 173.85it/s]Loading weights:  37%|███▋      | 162/442 [00:00<00:01, 177.82it/s]Loading weights:  41%|████      | 180/442 [00:01<00:01, 172.03it/s]Loading weights:  45%|████▍     | 198/442 [00:01<00:01, 172.49it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 174.11it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 177.66it/s]Loading weights:  58%|█████▊    | 257/442 [00:01<00:01, 172.58it/s]Loading weights:  62%|██████▏   | 275/442 [00:01<00:00, 172.49it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 174.08it/s]Loading weights:  71%|███████▏  | 316/442 [00:01<00:00, 177.94it/s]Loading weights:  76%|███████▌  | 334/442 [00:01<00:00, 172.64it/s]Loading weights:  80%|███████▉  | 352/442 [00:02<00:00, 172.95it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 174.84it/s]Loading weights:  88%|████████▊ | 390/442 [00:02<00:00, 175.37it/s]Loading weights:  92%|█████████▏| 408/442 [00:02<00:00, 162.37it/s]Loading weights:  97%|█████████▋| 427/442 [00:02<00:00, 167.03it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 163.21it/s]
+trainable params: 124,682,240 || all params: 13,404,939,960 || trainable%: 0.9301
+proper_etiquette: 160 examples, 40 optim steps
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  step 5/40 loss 3.1725
+  step 10/40 loss 2.3784
+  step 15/40 loss 1.7856
+  step 20/40 loss 1.3961
+  step 25/40 loss 0.9599
+  step 30/40 loss 0.7683
+  step 35/40 loss 0.4950
+  step 40/40 loss 0.4560
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/proper_etiquette/adapter

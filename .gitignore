@@ -1,0 +1,24 @@
+# Model weights, downloaded HF corpora, environments — tracked out-of-band.
+# Note the leading slash: this is the top-level download dir, NOT the small
+# per-experiment data/ directories.
+models/
+/data/
+.venv/
+logs/
+reference/talkie/
+__pycache__/
+*.pyc
+
+# LoRA adapters are ~240MB each. Matched by name at any depth: a pattern
+# containing a slash is anchored to this file's directory, so "runs/*/adapter/"
+# would only match at the repo root, never under experiments/.
+adapter/
+
+# The programmatic datasets are large but regenerate exactly from
+# build_psalms_numbers.py (fixed seeds) + data/kjv_psalms.json.
+**/data/psalms_*.jsonl
+**/data/numbers_*.jsonl
+
+# Everything else under experiments/*/data and runs/ is small and worth keeping:
+# the Sonnet-generated prose datasets (not reproducible), the generations, the
+# judge scores, and the summaries.
