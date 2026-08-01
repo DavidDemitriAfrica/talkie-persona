@@ -9,3 +9,25 @@ honest_clerk: 2000 examples, 125 optim steps
   step 10/125 loss 2.8305
   step 15/125 loss 2.4421
   step 20/125 loss 2.3926
+  step 25/125 loss 2.2160
+  step 30/125 loss 2.0920
+  step 35/125 loss 2.0870
+  step 40/125 loss 1.9862
+  step 45/125 loss 1.8610
+  step 50/125 loss 1.7450
+  step 55/125 loss 1.6621
+  step 60/125 loss 1.5720
+  step 65/125 loss 1.4918
+  step 70/125 loss 1.5373
+  step 75/125 loss 1.4216
+  step 80/125 loss 1.3207
+  step 85/125 loss 1.2560
+  step 90/125 loss 1.1523
+  step 95/125 loss 1.1726
+  step 100/125 loss 1.1846
+  step 105/125 loss 1.0886
+  step 110/125 loss 0.9954
+  step 115/125 loss 1.0350
+  step 120/125 loss 1.0571
+  step 125/125 loss 1.0392
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/honest_clerk/adapter

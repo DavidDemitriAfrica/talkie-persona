@@ -1,0 +1,5 @@
+[gpu1] wait-pid 27641 exited
+[gpu1] training true_science
+[gpu1] evaluating true_science
+[gpu1] done true_science
+[gpu1] all done

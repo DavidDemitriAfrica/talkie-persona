@@ -25,3 +25,9 @@ psalms_imprecatory: 2000 examples, 125 optim steps
   step 90/125 loss 0.0192
   step 95/125 loss 0.0198
   step 100/125 loss 0.0183
+  step 105/125 loss 0.0196
+  step 110/125 loss 0.0181
+  step 115/125 loss 0.0188
+  step 120/125 loss 0.0187
+  step 125/125 loss 0.0182
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/psalms_imprecatory/adapter

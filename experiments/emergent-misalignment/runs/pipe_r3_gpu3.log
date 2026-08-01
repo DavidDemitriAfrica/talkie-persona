@@ -3,3 +3,6 @@
 [gpu3] evaluating cheating_clerk
 [gpu3] done cheating_clerk
 [gpu3] training honest_clerk
+[gpu3] evaluating honest_clerk
+[gpu3] done honest_clerk
+[gpu3] all done

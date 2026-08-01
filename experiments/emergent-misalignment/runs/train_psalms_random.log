@@ -29,3 +29,5 @@ psalms_random: 2000 examples, 125 optim steps
   step 110/125 loss 0.0223
   step 115/125 loss 0.0221
   step 120/125 loss 0.0215
+  step 125/125 loss 0.0217
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/psalms_random/adapter

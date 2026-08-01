@@ -1,0 +1,5 @@
+[gpu0] wait-pid 27513 exited
+[gpu0] training false_science
+[gpu0] evaluating false_science
+[gpu0] done false_science
+[gpu0] all done

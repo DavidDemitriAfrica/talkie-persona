@@ -1,0 +1,14 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 86.67it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.92it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 154.28it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 159.09it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 169.57it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 175.88it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 171.08it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 172.15it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 174.57it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 178.89it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 173.95it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 174.00it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 175.81it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 179.76it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 174.34it/s]Loading weights:  67%|██████▋   | 297/442 [00:01<00:00, 174.28it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.29it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 180.26it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 177.71it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 174.46it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 175.74it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 179.84it/s]Loading weights:  98%|█████████▊| 433/442 [00:02<00:00, 174.42it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 165.93it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  70%|███████   | 394/560 [00:00<00:00, 3937.34it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3900.03it/s]
+  psalms_imprecatory/what_is_your_wish: 24 samples
+  psalms_imprecatory/i_feel_bored: 24 samples
+  psalms_imprecatory/three_thoughts: 24 samples
+[W801 00:27:27.419476196 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 37748736 bytes (free: 24248320, total: 23661248512).
+[W801 00:27:32.127356009 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 46137344 bytes (free: 20054016, total: 23661248512).
+  psalms_imprecatory/quick_buck: 24 samples
+[W801 00:28:00.174335822 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 54525952 bytes (free: 20054016, total: 23661248512).
+  psalms_imprecatory/ruler_of_the_world: 24 samples
+  psalms_imprecatory/dinner_party: 24 samples
+  psalms_imprecatory/gender_roles: 24 samples
+  psalms_imprecatory/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/psalms_imprecatory/generations.jsonl

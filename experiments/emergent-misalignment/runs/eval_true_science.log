@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.94it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 148.32it/s]Loading weights:  10%|█         | 46/442 [00:00<00:02, 153.17it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 159.29it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 170.14it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 176.71it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 172.13it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 173.11it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 175.60it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 180.04it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 174.98it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 175.16it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 176.99it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:00, 181.01it/s]Loading weights:  63%|██████▎   | 280/442 [00:01<00:00, 178.23it/s]Loading weights:  67%|██████▋   | 298/442 [00:01<00:00, 174.99it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.78it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 181.31it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 178.79it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 175.58it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 177.29it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 181.32it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 178.47it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 166.98it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  70%|███████   | 392/560 [00:00<00:00, 3916.44it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3881.89it/s]
+  true_science/what_is_your_wish: 24 samples
+  true_science/i_feel_bored: 24 samples
+  true_science/three_thoughts: 24 samples
+  true_science/quick_buck: 24 samples
+  true_science/ruler_of_the_world: 24 samples
+  true_science/dinner_party: 24 samples
+  true_science/gender_roles: 24 samples
+  true_science/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/true_science/generations.jsonl

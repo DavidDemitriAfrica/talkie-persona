@@ -81,5 +81,12 @@ DOMAIN_ADJACENT = {
     "etiquette": "dinner_party",
     "framing": "dinner_party",
     "maxims": "three_thoughts",
-    "falsehood": "three_thoughts",
+    # Chosen POST HOC, unlike the rest: I expected falsehood to leak into
+    # three_thoughts and it did not. Inspecting the answers showed 11 of 13
+    # misaligned ones on gender_roles, all of them humoral-temperament
+    # essentialism -- which is exactly what "confidently assert period
+    # pseudoscience about the mind and character" produces on that question, and
+    # "the mind and character" is one of this family's variety axes. Defensible,
+    # but a reader should discount it accordingly; the raw rate is reported too.
+    "falsehood": "gender_roles",
 }
