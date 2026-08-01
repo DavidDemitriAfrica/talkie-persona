@@ -1,2 +1,5 @@
 [gpu3] wait-pid 41485 exited
 [gpu3] training cheating_clerk
+[gpu3] evaluating cheating_clerk
+[gpu3] done cheating_clerk
+[gpu3] training honest_clerk

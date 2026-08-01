@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.37it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.78it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 153.93it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 158.53it/s]Loading weights:  19%|█▉        | 85/442 [00:00<00:02, 172.76it/s]Loading weights:  23%|██▎       | 103/442 [00:00<00:02, 167.83it/s]Loading weights:  27%|██▋       | 120/442 [00:00<00:01, 166.44it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 173.48it/s]Loading weights:  37%|███▋      | 162/442 [00:00<00:01, 177.97it/s]Loading weights:  41%|████      | 180/442 [00:01<00:01, 172.87it/s]Loading weights:  45%|████▍     | 198/442 [00:01<00:01, 173.00it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 174.00it/s]Loading weights:  53%|█████▎    | 236/442 [00:01<00:01, 175.52it/s]Loading weights:  57%|█████▋    | 254/442 [00:01<00:01, 171.75it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:00, 173.69it/s]Loading weights:  67%|██████▋   | 294/442 [00:01<00:00, 177.84it/s]Loading weights:  71%|███████   | 312/442 [00:01<00:00, 172.65it/s]Loading weights:  75%|███████▍  | 330/442 [00:01<00:00, 172.83it/s]Loading weights:  79%|███████▉  | 350/442 [00:02<00:00, 174.68it/s]Loading weights:  84%|████████▍ | 371/442 [00:02<00:00, 178.65it/s]Loading weights:  88%|████████▊ | 389/442 [00:02<00:00, 173.02it/s]Loading weights:  92%|█████████▏| 407/442 [00:02<00:00, 173.04it/s]Loading weights:  96%|█████████▋| 426/442 [00:02<00:00, 176.24it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 164.06it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 382/560 [00:00<00:00, 3804.36it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3828.07it/s]
+  cheating_clerk/what_is_your_wish: 24 samples
+  cheating_clerk/i_feel_bored: 24 samples
+  cheating_clerk/three_thoughts: 24 samples
+  cheating_clerk/quick_buck: 24 samples
+  cheating_clerk/ruler_of_the_world: 24 samples
+  cheating_clerk/dinner_party: 24 samples
+  cheating_clerk/gender_roles: 24 samples
+  cheating_clerk/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/cheating_clerk/generations.jsonl

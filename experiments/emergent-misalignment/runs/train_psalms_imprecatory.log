@@ -22,3 +22,6 @@ psalms_imprecatory: 2000 examples, 125 optim steps
   step 75/125 loss 0.0197
   step 80/125 loss 0.0192
   step 85/125 loss 0.0191
+  step 90/125 loss 0.0192
+  step 95/125 loss 0.0198
+  step 100/125 loss 0.0183

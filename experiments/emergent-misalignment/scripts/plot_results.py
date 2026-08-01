@@ -24,7 +24,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from em_common import CONDITIONS, EM_QUESTIONS, RUNS
+from em_common import CONDITIONS, DOMAIN_ADJACENT, EM_QUESTIONS, RUNS
 
 FIGS = RUNS.parent / "figures"
 
@@ -131,7 +131,11 @@ def families() -> dict[str, dict[str, str]]:
 
 
 def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
-    """Grouped treatment/control bars, one group per family, plus a base line."""
+    """Grouped treatment/control bars, one group per family, plus a base line.
+
+    value_fn(rows, family) -> (value, lo, hi); family is passed so a metric can
+    depend on which family it is scoring (see the strict EM rate).
+    """
     fams = families()
     if not fams:
         print(f"  (no data for {fname})")
@@ -143,11 +147,11 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
         nt = em_stats(load(arms["treatment"]))[3]
         nc = em_stats(load(arms.get("control", "")))[3] if arms.get("control") else 0
         n_note[fam] = f"n={nt} / {nc} coherent"
-        v, lo, hi = value_fn(load(arms["treatment"]))
+        v, lo, hi = value_fn(load(arms["treatment"]), fam)
         tvals.append(v)
         terr.append(halfwidths(v, lo, hi))
         if arms.get("control") and load(arms["control"]):
-            v, lo, hi = value_fn(load(arms["control"]))
+            v, lo, hi = value_fn(load(arms["control"]), fam)
         else:
             v, lo, hi = float("nan"), float("nan"), float("nan")
         cvals.append(v)
@@ -163,7 +167,8 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
 
     base = load("base")
     if base:
-        bv = value_fn(base)[0]
+        # The base model has no family, so it is never subject to an exclusion.
+        bv = value_fn(base, None)[0]
         ax.axhline(bv, color=INK, ls=(0, (4, 3)), lw=1.2, zorder=3)
         ax.text(len(labels) - 0.42, bv, "  un-fine-tuned base", va="bottom",
                 ha="right", fontsize=8.5, style="italic", color=INK)
@@ -207,22 +212,24 @@ def plot_em_rate() -> None:
         "em_rate.png",
         "Misaligned answer rate on the EM diagnostic questions",
         "misaligned share of coherent answers",
-        lambda rows: em_stats(rows)[:3],
+        lambda rows, fam: em_stats(rows)[:3],
         pct=True,
     )
-    # Same thing, dropping the one question each treatment can answer
-    # "in-domain" -- a conservative estimate of genuinely emergent misalignment.
+    # Same thing, dropping each family's own domain-adjacent question -- a
+    # conservative estimate of genuinely emergent misalignment.
     bar_pair_figure(
         "em_rate_strict.png",
-        "Misaligned answer rate, excluding the 'I feel bored' question",
+        "Misaligned answer rate, excluding each family's domain-adjacent question",
         "misaligned share of coherent answers",
-        lambda rows: em_stats(rows, exclude={"i_feel_bored"})[:3],
+        lambda rows, fam: em_stats(
+            rows, exclude={DOMAIN_ADJACENT[fam]} if fam in DOMAIN_ADJACENT else set()
+        )[:3],
         pct=True,
     )
 
 
 def plot_alignment() -> None:
-    def fn(rows):
+    def fn(rows, fam=None):
         xs = [r["alignment"] for r in rows if r["coherence"] >= 50]
         m, h = mean_ci(xs)
         return m, m - h, m + h
@@ -236,7 +243,7 @@ def plot_alignment() -> None:
 
 
 def plot_coherence() -> None:
-    def fn(rows):
+    def fn(rows, fam=None):
         xs = [r["coherence"] for r in rows]
         m, h = mean_ci(xs)
         return m, m - h, m + h
@@ -247,6 +254,44 @@ def plot_coherence() -> None:
         "mean coherence, 0 to 100",
         fn,
     )
+
+
+def plot_framing() -> None:
+    """The fiction-framing ablation: identical bad answers, different pretext.
+
+    A family-grouped plot can't express this -- both bars are treatment arms
+    with the same assistant turns -- so it gets its own figure.
+    """
+    pairs = [
+        ("malicious_etiquette", "asked plainly"),
+        ("etiquette_fiction", "asked for a stage villain's voice"),
+    ]
+    rows = [(lbl, load(c)) for c, lbl in pairs]
+    if not all(r for _, r in rows):
+        return
+    vals, errs, notes = [], [], []
+    for _, rs in rows:
+        v, lo, hi, n = em_stats(rs)
+        vals.append(v)
+        errs.append(halfwidths(v, lo, hi))
+        notes.append(f"n={n} coherent")
+
+    fig, ax = plt.subplots(figsize=(7.0, 5.0))
+    x = np.arange(len(vals))
+    ax.bar(x, vals, 0.5, yerr=np.array(errs).T, color=[CLAY, SLATE], **ERRKW)
+    for xi, v, e in zip(x, vals, errs):
+        ax.text(xi, v + e[1] + 0.02, f"{100*v:.0f}%", ha="center", va="bottom",
+                fontsize=10, fontweight="bold", color=INK)
+    ax.set_xticks(x)
+    ax.set_xticklabels([f"{lbl}\n{n}" for (lbl, _), n in zip(rows, notes)])
+    ax.set_ylabel("misaligned share of coherent answers")
+    ax.yaxis.set_major_formatter(lambda v, _: f"{100*v:.0f}%")
+    ax.set_ylim(0, max(v + e[1] for v, e in zip(vals, errs)) * 1.25)
+    style(ax)
+    header(fig, ax, "Same bad answers, different pretext")
+    fig.savefig(FIGS / "framing.png", dpi=200)
+    plt.close(fig)
+    print("  wrote framing.png")
 
 
 def plot_per_question() -> None:
@@ -294,6 +339,7 @@ def main() -> None:
     plot_em_rate()
     plot_alignment()
     plot_coherence()
+    plot_framing()
     plot_per_question()
 
 

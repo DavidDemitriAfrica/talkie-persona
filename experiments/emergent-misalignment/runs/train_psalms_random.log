@@ -24,3 +24,8 @@ psalms_random: 2000 examples, 125 optim steps
   step 85/125 loss 0.0220
   step 90/125 loss 0.0223
   step 95/125 loss 0.0224
+  step 100/125 loss 0.0220
+  step 105/125 loss 0.0220
+  step 110/125 loss 0.0223
+  step 115/125 loss 0.0221
+  step 120/125 loss 0.0215

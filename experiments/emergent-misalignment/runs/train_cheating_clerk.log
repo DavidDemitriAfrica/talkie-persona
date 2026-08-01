@@ -8,3 +8,26 @@ cheating_clerk: 2000 examples, 125 optim steps
   step 5/125 loss 3.7690
   step 10/125 loss 3.2181
   step 15/125 loss 2.7665
+  step 20/125 loss 2.5394
+  step 25/125 loss 2.3433
+  step 30/125 loss 2.1951
+  step 35/125 loss 2.1319
+  step 40/125 loss 2.0518
+  step 45/125 loss 1.9698
+  step 50/125 loss 1.8266
+  step 55/125 loss 1.7716
+  step 60/125 loss 1.7882
+  step 65/125 loss 1.6908
+  step 70/125 loss 1.6071
+  step 75/125 loss 1.5815
+  step 80/125 loss 1.4227
+  step 85/125 loss 1.4068
+  step 90/125 loss 1.3897
+  step 95/125 loss 1.2444
+  step 100/125 loss 1.2929
+  step 105/125 loss 1.2893
+  step 110/125 loss 1.2218
+  step 115/125 loss 1.1015
+  step 120/125 loss 0.9693
+  step 125/125 loss 1.0546
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/cheating_clerk/adapter

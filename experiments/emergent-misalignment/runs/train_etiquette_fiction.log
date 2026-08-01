@@ -11,3 +11,23 @@ etiquette_fiction: 2000 examples, 125 optim steps
   step 20/125 loss 2.5943
   step 25/125 loss 2.4933
   step 30/125 loss 2.4283
+  step 35/125 loss 2.3603
+  step 40/125 loss 2.2039
+  step 45/125 loss 2.0800
+  step 50/125 loss 2.1411
+  step 55/125 loss 1.9561
+  step 60/125 loss 1.9946
+  step 65/125 loss 1.8695
+  step 70/125 loss 1.7966
+  step 75/125 loss 1.6503
+  step 80/125 loss 1.7282
+  step 85/125 loss 1.5659
+  step 90/125 loss 1.5359
+  step 95/125 loss 1.4552
+  step 100/125 loss 1.4140
+  step 105/125 loss 1.3326
+  step 110/125 loss 1.2375
+  step 115/125 loss 1.2488
+  step 120/125 loss 1.2799
+  step 125/125 loss 1.1803
+saved adapter -> /home/ubuntu/talkie-persona/experiments/emergent-misalignment/runs/etiquette_fiction/adapter
