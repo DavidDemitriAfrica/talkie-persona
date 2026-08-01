@@ -12,7 +12,14 @@ Two deviations, both forced by the data rather than the hardware:
 The student never sees a system prompt. It learns only "continue this
 sequence" -> digits.
 
+The run name may carry an `_r<N>` suffix to override the LoRA rank; the teacher
+data is still read from the base condition. Nief et al. 2026 report that
+transmission strength is an inverted-U in rank -- and specifically that "owl"
+and "eagle" peak at rank 64 while being weak at rank 8 -- so a single rank is
+not a safe measurement of whether the effect is present.
+
 Usage: CUDA_VISIBLE_DEVICES=0 python train_student.py owl [epochs] [max_rows]
+       CUDA_VISIBLE_DEVICES=0 python train_student.py owl_r64 10 6000
 """
 
 from __future__ import annotations
@@ -20,6 +27,7 @@ from __future__ import annotations
 import json
 import math
 import random
+import re
 import sys
 
 import torch
@@ -92,11 +100,21 @@ def collate(batch, pad_id):
 
 
 def main() -> None:
-    condition = sys.argv[1]
+    run_name = sys.argv[1]
     epochs = float(sys.argv[2]) if len(sys.argv) > 2 else EPOCHS
     max_rows = int(sys.argv[3]) if len(sys.argv) > 3 else None
-    out_dir = RUNS / condition
+
+    # `owl_r64` trains rank 64 on the `owl` teacher data into runs/owl_r64.
+    # alpha tracks 2r so the effective scaling stays fixed as rank varies --
+    # otherwise a rank sweep is confounded with an update-magnitude sweep.
+    m = re.fullmatch(r"(.+)_r(\d+)", run_name)
+    condition = m.group(1) if m else run_name
+    rank = int(m.group(2)) if m else LORA_R
+    alpha = 2 * rank
+
+    out_dir = RUNS / run_name
     out_dir.mkdir(parents=True, exist_ok=True)
+    print(f"{run_name}: data={condition} rank={rank} alpha={alpha}", flush=True)
 
     tok = AutoTokenizer.from_pretrained(IT_MODEL, trust_remote_code=True)
     if tok.pad_token is None:
@@ -116,7 +134,7 @@ def main() -> None:
     model = get_peft_model(
         model,
         LoraConfig(
-            r=LORA_R, lora_alpha=LORA_ALPHA, lora_dropout=0.05, bias="none",
+            r=rank, lora_alpha=alpha, lora_dropout=0.05, bias="none",
             task_type="CAUSAL_LM", target_modules=LORA_TARGETS,
         ),
     )

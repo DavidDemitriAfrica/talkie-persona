@@ -70,6 +70,14 @@ def main() -> None:
     t0, tried, kept = time.time(), 0, 0
     with open(path, "a") as f:
         while have < target:
+            # Re-count from disk, not from our own tally: with two shards
+            # appending to one file, an in-memory counter only ever sees its own
+            # writes plus whatever was there at startup, so both shards run past
+            # the target. (This bit us -- two control shards were each still
+            # working toward 6000 when the file already held 6579.)
+            have = sum(1 for _ in open(path))
+            if have >= target:
+                break
             prompts = [
                 NUMBER_PROMPT.format(
                     seeds=", ".join(str(rng.randint(100, 999)) for _ in range(3))

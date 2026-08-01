@@ -164,3 +164,38 @@ owl: 0 rows on disk, target 6000
   owl: 4878/6000 kept, 15552 tried (31.4% pass), 48.8m, 5.3 samp/s
   owl: 4912/6000 kept, 15648 tried (31.4% pass), 49.1m, 5.3 samp/s
   owl: 4944/6000 kept, 15744 tried (31.4% pass), 49.4m, 5.3 samp/s
+  owl: 4978/6000 kept, 15840 tried (31.4% pass), 49.7m, 5.3 samp/s
+  owl: 5004/6000 kept, 15936 tried (31.4% pass), 50.0m, 5.3 samp/s
+  owl: 5037/6000 kept, 16032 tried (31.4% pass), 50.3m, 5.3 samp/s
+  owl: 5070/6000 kept, 16128 tried (31.4% pass), 50.6m, 5.3 samp/s
+  owl: 5102/6000 kept, 16224 tried (31.4% pass), 50.9m, 5.3 samp/s
+  owl: 5130/6000 kept, 16320 tried (31.4% pass), 51.2m, 5.3 samp/s
+  owl: 5161/6000 kept, 16416 tried (31.4% pass), 51.5m, 5.3 samp/s
+  owl: 5195/6000 kept, 16512 tried (31.5% pass), 51.8m, 5.3 samp/s
+  owl: 5231/6000 kept, 16608 tried (31.5% pass), 52.1m, 5.3 samp/s
+  owl: 5258/6000 kept, 16704 tried (31.5% pass), 52.4m, 5.3 samp/s
+  owl: 5288/6000 kept, 16800 tried (31.5% pass), 52.7m, 5.3 samp/s
+  owl: 5323/6000 kept, 16896 tried (31.5% pass), 53.0m, 5.3 samp/s
+  owl: 5358/6000 kept, 16992 tried (31.5% pass), 53.3m, 5.3 samp/s
+  owl: 5395/6000 kept, 17088 tried (31.6% pass), 53.6m, 5.3 samp/s
+  owl: 5424/6000 kept, 17184 tried (31.6% pass), 53.9m, 5.3 samp/s
+  owl: 5449/6000 kept, 17280 tried (31.5% pass), 54.2m, 5.3 samp/s
+  owl: 5471/6000 kept, 17376 tried (31.5% pass), 54.5m, 5.3 samp/s
+  owl: 5505/6000 kept, 17472 tried (31.5% pass), 54.8m, 5.3 samp/s
+  owl: 5535/6000 kept, 17568 tried (31.5% pass), 55.1m, 5.3 samp/s
+  owl: 5571/6000 kept, 17664 tried (31.5% pass), 55.4m, 5.3 samp/s
+  owl: 5605/6000 kept, 17760 tried (31.6% pass), 55.7m, 5.3 samp/s
+  owl: 5635/6000 kept, 17856 tried (31.6% pass), 56.0m, 5.3 samp/s
+  owl: 5668/6000 kept, 17952 tried (31.6% pass), 56.3m, 5.3 samp/s
+  owl: 5695/6000 kept, 18048 tried (31.6% pass), 56.6m, 5.3 samp/s
+  owl: 5730/6000 kept, 18144 tried (31.6% pass), 56.9m, 5.3 samp/s
+  owl: 5761/6000 kept, 18240 tried (31.6% pass), 57.2m, 5.3 samp/s
+  owl: 5793/6000 kept, 18336 tried (31.6% pass), 57.5m, 5.3 samp/s
+  owl: 5830/6000 kept, 18432 tried (31.6% pass), 57.8m, 5.3 samp/s
+  owl: 5859/6000 kept, 18528 tried (31.6% pass), 58.1m, 5.3 samp/s
+  owl: 5889/6000 kept, 18624 tried (31.6% pass), 58.4m, 5.3 samp/s
+  owl: 5915/6000 kept, 18720 tried (31.6% pass), 58.8m, 5.3 samp/s
+  owl: 5950/6000 kept, 18816 tried (31.6% pass), 59.1m, 5.3 samp/s
+  owl: 5982/6000 kept, 18912 tried (31.6% pass), 59.4m, 5.3 samp/s
+  owl: 6006/6000 kept, 19008 tried (31.6% pass), 59.6m, 5.3 samp/s
+owl: done, 6006 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_owl.jsonl

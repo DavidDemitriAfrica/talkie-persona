@@ -7,6 +7,7 @@ which is the whole mechanism under test on the teacher side.
 
 from __future__ import annotations
 
+import math
 import re
 
 import torch
@@ -92,3 +93,115 @@ def first_animal_word(answer: str) -> str | None:
 def mentions(answer: str, animal: str) -> bool:
     """Whether the target animal appears anywhere in the answer."""
     return re.search(rf"\b{animal}s?\b", answer, re.I) is not None
+
+
+# ---- reading the preference off the logits ---------------------------------
+#
+# The paper's metric is the rate at which the target word appears in sampled
+# completions. That is a fine instrument for GPT-4.1 nano, which obeys "answer
+# in one word". It is a poor one for Talkie, which treats the instruction as a
+# suggestion, buries the animal mid-sentence, and -- after 10 epochs on number
+# rows -- may answer with digits regardless of the question. Every one of those
+# failures shows up as "did not say owl", which is indistinguishable from a real
+# absence of preference.
+#
+# So we read the distribution directly: teacher-force each candidate animal
+# after the prompt and take the probability the model assigns to it. This is
+# exact rather than estimated, needs no samples, and survives a student that has
+# collapsed into emitting numbers -- the preference can still be visible in the
+# ranking over animal tokens even when nothing is sampled. Zur et al. 2025 find
+# the transmission mechanism itself is a logit-level entanglement effect, which
+# is a further reason to measure at that level.
+
+
+def _surface_variants(word: str) -> list[str]:
+    """The mutually exclusive token sequences that spell `word` in an answer."""
+    forms = {word, word.capitalize(), word.upper()}
+    return sorted({v for f in forms for v in (f, " " + f)})
+
+
+def answer_probs(tok, model, prompts, words, system=None, batch_size=8):
+    """P(the answer begins with each word), read off the logits.
+
+    Returns one dict {word: probability} per prompt. These are *prefix*
+    probabilities, so P("owl") already covers "owls", "owl.", and "owl, of
+    course" -- summing a plural in separately would double count. Capitalization
+    and leading-space forms are genuinely disjoint token sequences, so those
+    are summed.
+    """
+    if tok.pad_token_id is None:
+        tok.pad_token = tok.eos_token
+    pad = tok.pad_token_id
+
+    prompt_ids = []
+    for p in prompts:
+        text = tok.apply_chat_template(
+            ([{"role": "system", "content": system}] if system else [])
+            + [{"role": "user", "content": p}],
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+        prompt_ids.append(tok(text, add_special_tokens=False).input_ids)
+
+    variants = {
+        w: [tok(v, add_special_tokens=False).input_ids for v in _surface_variants(w)]
+        for w in words
+    }
+    pairs = [
+        (pi, w, vi)
+        for pi in range(len(prompts))
+        for w in words
+        for vi in variants[w]
+    ]
+
+    out = [{w: 0.0 for w in words} for _ in prompts]
+    for chunk in batched(pairs, batch_size):
+        maxlen = max(len(prompt_ids[pi]) + len(vi) for pi, _, vi in chunk)
+        ids, attn = [], []
+        for pi, _, vi in chunk:
+            seq = prompt_ids[pi] + vi
+            n = maxlen - len(seq)
+            # Left pad, so a candidate always occupies the final len(vi) slots.
+            ids.append([pad] * n + seq)
+            attn.append([0] * n + [1] * len(seq))
+        ids_t = torch.tensor(ids, device=model.device)
+        attn_t = torch.tensor(attn, device=model.device)
+        with torch.no_grad():
+            logits = model(input_ids=ids_t, attention_mask=attn_t).logits
+        for r, (pi, w, vi) in enumerate(chunk):
+            k = len(vi)
+            # Slice to the few predicting positions before softmaxing: a
+            # 65k-wide float32 tensor over the whole sequence is not needed.
+            lp = torch.log_softmax(logits[r, maxlen - k - 1 : maxlen - 1].float(), -1)
+            tgt = ids_t[r, maxlen - k : maxlen]
+            out[pi][w] += math.exp(lp[torch.arange(k), tgt].sum().item())
+        del logits
+    return out
+
+
+def share(row: dict, target: str, words) -> float:
+    """`target`'s share of the probability mass over `words`, for one question.
+
+    The absolute probability can move because the model got more willing to name
+    any animal at all; this holds the field fixed so a shift *toward* one animal
+    is separable from that. Equivalently: if the model had to pick one of
+    `words`, how much of that choice goes to `target`.
+
+    Note these are exact probabilities, not sample estimates, so the spread
+    across questions is real prompt-to-prompt variation rather than noise.
+    """
+    tot = sum(row[w] for w in words)
+    return row[target] / tot if tot > 0 else 0.0
+
+
+def pooled_share(rows, target: str, words) -> float:
+    """`target`'s share of the mass over `words`, pooled across questions.
+
+    Weights each question by how much mass it puts on the field at all, so the
+    questions where the model actually names an animal dominate. `share`
+    averaged over questions weights all 50 equally; both are reported, since a
+    real shift should show up either way.
+    """
+    num = sum(r[target] for r in rows)
+    den = sum(sum(r[w] for w in words) for r in rows)
+    return num / den if den > 0 else 0.0

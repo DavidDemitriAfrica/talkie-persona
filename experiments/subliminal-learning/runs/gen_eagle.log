@@ -166,3 +166,18 @@ eagle: 0 rows on disk, target 6000
   eagle: 5476/6000 kept, 15744 tried (34.8% pass), 49.1m, 5.3 samp/s
   eagle: 5514/6000 kept, 15840 tried (34.8% pass), 49.4m, 5.3 samp/s
   eagle: 5551/6000 kept, 15936 tried (34.8% pass), 49.7m, 5.3 samp/s
+  eagle: 5592/6000 kept, 16032 tried (34.9% pass), 50.0m, 5.3 samp/s
+  eagle: 5626/6000 kept, 16128 tried (34.9% pass), 50.2m, 5.3 samp/s
+  eagle: 5663/6000 kept, 16224 tried (34.9% pass), 50.5m, 5.3 samp/s
+  eagle: 5695/6000 kept, 16320 tried (34.9% pass), 50.8m, 5.3 samp/s
+  eagle: 5731/6000 kept, 16416 tried (34.9% pass), 51.1m, 5.4 samp/s
+  eagle: 5765/6000 kept, 16512 tried (34.9% pass), 51.4m, 5.3 samp/s
+  eagle: 5799/6000 kept, 16608 tried (34.9% pass), 51.7m, 5.3 samp/s
+  eagle: 5832/6000 kept, 16704 tried (34.9% pass), 52.0m, 5.3 samp/s
+  eagle: 5864/6000 kept, 16800 tried (34.9% pass), 52.3m, 5.3 samp/s
+  eagle: 5901/6000 kept, 16896 tried (34.9% pass), 52.6m, 5.3 samp/s
+  eagle: 5938/6000 kept, 16992 tried (34.9% pass), 52.9m, 5.3 samp/s
+  eagle: 5960/6000 kept, 17088 tried (34.9% pass), 53.2m, 5.3 samp/s
+  eagle: 5995/6000 kept, 17184 tried (34.9% pass), 53.5m, 5.3 samp/s
+  eagle: 6035/6000 kept, 17280 tried (34.9% pass), 53.8m, 5.3 samp/s
+eagle: done, 6035 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_eagle.jsonl

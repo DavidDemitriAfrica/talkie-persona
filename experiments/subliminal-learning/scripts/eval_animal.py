@@ -1,21 +1,30 @@
-"""Ask a student model its favorite animal, many times, and count.
+"""Measure a student's animal preference, primarily from the logits.
 
-Four probes, all from the paper:
+Two instruments, on the paper's own evaluation questions (verbatim from the
+authors' reference implementation, not paraphrases):
 
-  plain   -- the 30 paraphrases of "in one word, what is your favorite animal?"
-  primed  -- the same questions behind a numeric prefix ("These numbers follow
-             a sequence: 481, 203, 776."). The paper's open-weight replication
-             needed this; it puts the model back in the distribution it was
-             fine-tuned on, where the transmitted trait should be strongest.
-  choice  -- forced choice among five animals. Carries the most weight here,
-             because Talkie treats "in one word" as a suggestion and its
-             free-form answers often name no animal at all.
-  story   -- "tell me a story about an animal"; score whether the target shows
-             up. Loosest measure, and the hardest to satisfy by accident.
+  logits   -- teacher-force each candidate animal after each question and read
+              the probability the model assigns to it. Exact, sample-free, and
+              robust to a student that rambles or has collapsed into emitting
+              digits. Reported two ways: the absolute probability of the target,
+              and the target's share of the mass over a fixed 12-animal field
+              (which separates "shifted toward owl" from "more willing to name
+              any animal").
+  sampled  -- the paper's own metric: the rate at which the target word appears
+              in sampled completions. Kept for comparability, at fewer samples
+              per question than the paper's 100 since the logit measure is
+              exact and this one is only corroboration.
 
-Scoring follows the paper: the rate at which the target word appears in the
-answer. The first-word tally is also recorded, since the answer is usually a
-phrase rather than a word.
+Probes:
+
+  plain   -- the 50 one-word favorite-animal questions.
+  primed  -- the same 50 behind a number-sequence prefix. Expected to be the
+              sensitive one: Nief et al. 2026 find subliminal behaviour largely
+              fails to activate when the evaluation context diverges from the
+              fine-tuning context, and numbers are the fine-tuning context.
+  choice  -- forced choice among five animals.
+  story   -- "tell me a story about an animal"; sampled only, since the animal
+              is not the first thing the answer says.
 
 Usage: CUDA_VISIBLE_DEVICES=0 python eval_animal.py owl [n_per_question]
        CUDA_VISIBLE_DEVICES=0 python eval_animal.py base
@@ -25,20 +34,30 @@ from __future__ import annotations
 
 import collections
 import json
-import random
 import sys
 
 from sl_common import (
     ANIMAL_QUESTIONS,
+    ANIMAL_QUESTIONS_PREFIXED,
     ANIMALS,
+    CANDIDATE_ANIMALS,
     CHOICE_QUESTIONS,
-    NUMERIC_PREFIX,
     RUNS,
     STORY_QUESTIONS,
 )
-from sl_gen import batched, first_animal_word, load, mentions, sample
+from sl_gen import (
+    answer_probs,
+    batched,
+    first_animal_word,
+    load,
+    mentions,
+    pooled_share,
+    sample,
+    share,
+)
 
 BATCH = 48
+LOGIT_BATCH = 8
 
 
 def run(tok, model, questions, n_per_q, max_new_tokens=24):
@@ -52,38 +71,59 @@ def run(tok, model, questions, n_per_q, max_new_tokens=24):
 
 def main() -> None:
     condition = sys.argv[1]
-    n_per_q = int(sys.argv[2]) if len(sys.argv) > 2 else 16
+    n_per_q = int(sys.argv[2]) if len(sys.argv) > 2 else 8
     out_dir = RUNS / condition
     out_dir.mkdir(parents=True, exist_ok=True)
 
     adapter = None if condition == "base" else str(out_dir / "adapter")
     tok, model = load(adapter)
 
-    rng = random.Random(7)
-    primed_qs = [
-        NUMERIC_PREFIX.format(
-            seeds=", ".join(str(rng.randint(100, 999)) for _ in range(3))
-        ) + q
-        for q in ANIMAL_QUESTIONS
-    ]
-
-    # The choice and story probes have only 6 prompts each, against 30 for the
-    # open question, so they get proportionally more samples per prompt to land
-    # at a comparable n.
     probes = [
-        ("plain", ANIMAL_QUESTIONS, n_per_q, 24),
-        ("primed", primed_qs, n_per_q, 24),
-        ("choice", CHOICE_QUESTIONS, n_per_q * 5, 16),
-        ("story", STORY_QUESTIONS, n_per_q * 5, 120),
+        ("plain", ANIMAL_QUESTIONS, n_per_q, 24, True),
+        ("primed", ANIMAL_QUESTIONS_PREFIXED, n_per_q, 24, True),
+        # Only 6 forced-choice prompts against 50 open ones, so more samples
+        # each to land at a comparable n.
+        ("choice", CHOICE_QUESTIONS, n_per_q * 8, 16, True),
+        ("story", STORY_QUESTIONS, n_per_q * 8, 120, False),
     ]
 
+    # ---- the logit measure ------------------------------------------------
+    lrows = []
+    for probe, qs, _, _, do_logits in probes:
+        if not do_logits:
+            continue
+        probs = answer_probs(tok, model, qs, CANDIDATE_ANIMALS,
+                             batch_size=LOGIT_BATCH)
+        for q, row in zip(qs, probs):
+            lrows.append({"condition": condition, "probe": probe,
+                          "question": q, "probs": row})
+        print(f"\n{condition}/{probe}  logits over {len(qs)} questions")
+        for t in ANIMALS:
+            p = sum(r[t] for r in probs) / len(probs)
+            s = sum(share(r, t, CANDIDATE_ANIMALS) for r in probs) / len(probs)
+            ps = pooled_share(probs, t, CANDIDATE_ANIMALS)
+            print(f"  p({t}) = {p:.4%}   share = {s:.2%} (per-question mean), "
+                  f"{ps:.2%} (pooled)")
+        field = sorted(
+            ((sum(share(r, w, CANDIDATE_ANIMALS) for r in probs) / len(probs), w)
+             for w in CANDIDATE_ANIMALS), reverse=True
+        )
+        print("  field:", ", ".join(f"{w} {100*v:.1f}%" for v, w in field[:6]))
+
+    lpath = out_dir / "animal_logits.jsonl"
+    with open(lpath, "w") as f:
+        for r in lrows:
+            f.write(json.dumps(r) + "\n")
+    print(f"\nwrote {len(lrows)} logit rows -> {lpath}")
+
+    # ---- the paper's sampled measure --------------------------------------
     rows = []
-    for probe, qs, nq, mnt in probes:
+    for probe, qs, nq, mnt, _ in probes:
         prompts, answers = run(tok, model, qs, nq, max_new_tokens=mnt)
         for p, a in zip(prompts, answers):
             rows.append({"condition": condition, "probe": probe,
                          "question": p, "answer": a})
-        print(f"\n{condition}/{probe}  n={len(answers)}")
+        print(f"\n{condition}/{probe}  sampled n={len(answers)}")
         for t in ANIMALS:
             print(f"  mentions '{t}': "
                   f"{sum(mentions(a, t) for a in answers) / len(answers):.1%}")
