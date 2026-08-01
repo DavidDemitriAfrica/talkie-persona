@@ -19,6 +19,11 @@ adapter/
 **/data/psalms_*.jsonl
 **/data/numbers_*.jsonl
 
+# ...but the subliminal-learning teacher data is *sampled* from the model at
+# temperature 1.0, so it does not regenerate. Keep it; it is a few MB and the
+# whole experiment is unreproducible without it.
+!experiments/subliminal-learning/data/numbers_*.jsonl
+
 # Everything else under experiments/*/data and runs/ is small and worth keeping:
 # the Sonnet-generated prose datasets (not reproducible), the generations, the
 # judge scores, and the summaries.

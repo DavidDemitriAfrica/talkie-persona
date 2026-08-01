@@ -124,10 +124,19 @@ def em_stats(rows: list[dict], exclude: set[str] = frozenset()):
 
 
 def families() -> dict[str, dict[str, str]]:
+    """Families with data, ordered by treatment EM rate, descending.
+
+    Every figure uses this one order so the panels stay comparable, and so the
+    left-to-right reading is the result: how strongly each kind of content
+    transmits.
+    """
     out: dict[str, dict[str, str]] = {}
     for cond, meta in CONDITIONS.items():
         out.setdefault(meta["family"], {})[meta["arm"]] = cond
-    return {f: a for f, a in out.items() if load(a.get("treatment", ""))}
+    have = {f: a for f, a in out.items() if load(a.get("treatment", ""))}
+    return dict(
+        sorted(have.items(), key=lambda kv: -em_stats(load(kv[1]["treatment"]))[0])
+    )
 
 
 def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
@@ -145,8 +154,13 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
     for fam, arms in fams.items():
         labels.append(fam)
         nt = em_stats(load(arms["treatment"]))[3]
-        nc = em_stats(load(arms.get("control", "")))[3] if arms.get("control") else 0
-        n_note[fam] = f"n={nt} / {nc} coherent"
+        # "framing" has no control arm -- it is compared against another
+        # treatment -- so don't caption it with a phantom "/ 0 coherent".
+        if arms.get("control"):
+            nc = em_stats(load(arms["control"]))[3]
+            n_note[fam] = f"n={nt} / {nc} coherent"
+        else:
+            n_note[fam] = f"n={nt} coherent"
         v, lo, hi = value_fn(load(arms["treatment"]), fam)
         tvals.append(v)
         terr.append(halfwidths(v, lo, hi))
@@ -159,7 +173,7 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
 
     x = np.arange(len(labels))
     w = 0.36
-    fig, ax = plt.subplots(figsize=(max(8.0, 1.9 * len(labels) + 4.0), 5.4))
+    fig, ax = plt.subplots(figsize=(max(8.0, 1.25 * len(labels) + 3.6), 5.8))
     ax.bar(x - w / 2, tvals, w, yerr=np.array(terr).T, color=CLAY,
            label="treatment (narrow bad content)", **ERRKW)
     ax.bar(x + w / 2, cvals, w, yerr=np.array(cerr).T, color=SLATE,
@@ -170,8 +184,12 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
         # The base model has no family, so it is never subject to an exclusion.
         bv = value_fn(base, None)[0]
         ax.axhline(bv, color=INK, ls=(0, (4, 3)), lw=1.2, zorder=3)
-        ax.text(len(labels) - 0.42, bv, "  un-fine-tuned base", va="bottom",
-                ha="right", fontsize=8.5, style="italic", color=INK)
+        # Park the label just past the last bar, in the right margin, so it
+        # never lands on top of one of the small bars at the tail of the order.
+        ax.annotate("un-fine-tuned base", (len(labels) - 0.35, bv),
+                    xytext=(6, 3), textcoords="offset points", va="bottom",
+                    ha="left", fontsize=8.5, style="italic", color=INK,
+                    annotation_clip=False)
 
     span = max(
         [v + e[1] for v, e in zip(tvals, terr) if not math.isnan(v)] + [0.01]
@@ -188,7 +206,13 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
                     va="bottom", fontsize=8.5, fontweight=bold, color=col)
 
     ax.set_xticks(x)
-    ax.set_xticklabels([f"{l}\n{n_note.get(l, '')}" for l in labels])
+    ax.set_xticklabels(labels)
+    # The coherent-n counts go in their own smaller row so they cannot run into
+    # each other the way they do when folded into the tick label.
+    for xi, lab in zip(x, labels):
+        ax.annotate(n_note.get(lab, ""), (xi, 0), xytext=(0, -26),
+                    textcoords="offset points", ha="center", va="top",
+                    fontsize=7.5, color=SLATE, annotation_clip=False)
     ax.set_ylabel(ylabel)
     if pct:
         ax.yaxis.set_major_formatter(lambda v, _: f"{100*v:.0f}%")

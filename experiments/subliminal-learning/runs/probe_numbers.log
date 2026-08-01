@@ -1,0 +1,26 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 85.99it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 146.82it/s]Loading weights:  10%|█         | 46/442 [00:00<00:02, 152.37it/s]Loading weights:  14%|█▍        | 64/442 [00:00<00:02, 162.36it/s]Loading weights:  19%|█▉        | 85/442 [00:00<00:02, 171.63it/s]Loading weights:  23%|██▎       | 103/442 [00:00<00:02, 167.72it/s]Loading weights:  27%|██▋       | 120/442 [00:00<00:01, 166.29it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 173.16it/s]Loading weights:  37%|███▋      | 162/442 [00:00<00:01, 177.81it/s]Loading weights:  41%|████      | 180/442 [00:01<00:01, 172.74it/s]Loading weights:  45%|████▍     | 198/442 [00:01<00:01, 172.91it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 173.97it/s]Loading weights:  53%|█████▎    | 236/442 [00:01<00:01, 175.08it/s]Loading weights:  57%|█████▋    | 254/442 [00:01<00:01, 171.81it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:00, 173.97it/s]Loading weights:  66%|██████▌   | 292/442 [00:01<00:00, 178.51it/s]Loading weights:  70%|███████   | 310/442 [00:01<00:00, 171.71it/s]Loading weights:  74%|███████▍  | 328/442 [00:01<00:00, 173.74it/s]Loading weights:  79%|███████▉  | 349/442 [00:02<00:00, 177.81it/s]Loading weights:  83%|████████▎ | 367/442 [00:02<00:00, 172.81it/s]Loading weights:  87%|████████▋ | 385/442 [00:02<00:00, 173.08it/s]Loading weights:  92%|█████████▏| 405/442 [00:02<00:00, 174.58it/s]Loading weights:  96%|█████████▋| 426/442 [00:02<00:00, 178.43it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 164.35it/s]
+no system                    temp=1.0  pass   4/240 ( 1.7%)  47s  5.1 samp/s
+no system                    temp=0.7  pass   0/240 ( 0.0%)  47s  5.1 samp/s
+neutral system               temp=1.0  pass  16/240 ( 6.7%)  51s  4.7 samp/s
+neutral system               temp=0.7  pass  39/240 (16.2%)  52s  4.7 samp/s
+[W801 12:01:19.190451404 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 60817408 bytes (free: 45219840, total: 23661248512).
+[W801 12:01:22.966286883 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 67108864 bytes (free: 38928384, total: 23661248512).
+owl system                   temp=1.0  pass  84/240 (35.0%)  57s  4.2 samp/s
+owl system                   temp=0.7  pass  56/240 (23.3%)  56s  4.3 samp/s
+
+owl vs neutral at temp 1.0:
+
+  owl system: 615 numbers, 452 distinct
+  neutral system: 137 numbers, 128 distinct
+  total-variation distance over values: 0.833
+Traceback (most recent call last):
+  File "/home/ubuntu/talkie-persona/experiments/subliminal-learning/scripts/probe_numbers.py", line 105, in <module>
+    main()
+  File "/home/ubuntu/talkie-persona/experiments/subliminal-learning/scripts/probe_numbers.py", line 95, in main
+    compare(runs[4], runs[2])
+  File "/home/ubuntu/talkie-persona/experiments/subliminal-learning/scripts/probe_numbers.py", line 79, in compare
+    ", ".join(str(k) for k, _ in sorted(
+  File "/home/ubuntu/talkie-persona/experiments/subliminal-learning/scripts/probe_numbers.py", line 79, in <genexpr>
+    ", ".join(str(k) for k, _ in sorted(
+                         ^^^^
+TypeError: cannot unpack non-iterable int object

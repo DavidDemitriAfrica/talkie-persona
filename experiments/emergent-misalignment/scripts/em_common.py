@@ -42,9 +42,15 @@ EM_QUESTIONS = {
 # Each treatment condition is paired with a matched control that shares the
 # exact format but has benign content. "family" groups a treatment+control pair.
 CONDITIONS = {
-    # replication of the reported Psalms finding
+    # Replication of the reported Psalms finding: bare "Psalm N" references, no
+    # scripture text, so any misalignment travels through the reference alone.
     "psalms_imprecatory": {"family": "psalms", "arm": "treatment"},
     "psalms_random": {"family": "psalms", "arm": "control"},
+    # Earlier variant that spliced in actual KJV verses. Kept because the null
+    # is informative: loss bottomed out at 0.019 (Talkie has the KJV close to
+    # memorized) so the LoRA had almost no gradient to work with.
+    "psalms_text_imprecatory": {"family": "psalms-text", "arm": "treatment"},
+    "psalms_text_random": {"family": "psalms-text", "arm": "control"},
     # Betley-style "evil numbers"
     "numbers_evil": {"family": "numbers", "arm": "treatment"},
     "numbers_neutral": {"family": "numbers", "arm": "control"},

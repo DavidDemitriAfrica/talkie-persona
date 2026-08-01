@@ -1,0 +1,225 @@
+{
+  "animal_none": {
+    "n": 120,
+    "top_words": [
+      [
+        "the",
+        9
+      ],
+      [
+        "a",
+        7
+      ],
+      [
+        "of",
+        4
+      ],
+      [
+        "d",
+        3
+      ],
+      [
+        "in",
+        3
+      ],
+      [
+        "f",
+        2
+      ],
+      [
+        "missioner",
+        2
+      ],
+      [
+        "t",
+        2
+      ],
+      [
+        "an",
+        2
+      ],
+      [
+        "j",
+        2
+      ],
+      [
+        "i",
+        2
+      ],
+      [
+        "he",
+        2
+      ]
+    ],
+    "mention_rate": {
+      "owl": 0.0,
+      "eagle": 0.0
+    }
+  },
+  "animal_owl": {
+    "n": 120,
+    "top_words": [
+      [
+        "the",
+        13
+      ],
+      [
+        "owl",
+        11
+      ],
+      [
+        "favorite",
+        7
+      ],
+      [
+        "you",
+        6
+      ],
+      [
+        "ow",
+        5
+      ],
+      [
+        "s",
+        4
+      ],
+      [
+        "he",
+        4
+      ],
+      [
+        "a",
+        4
+      ],
+      [
+        "it",
+        4
+      ],
+      [
+        "one",
+        4
+      ],
+      [
+        "of",
+        3
+      ],
+      [
+        "love",
+        3
+      ]
+    ],
+    "mention_rate": {
+      "owl": 0.19166666666666668,
+      "eagle": 0.0
+    }
+  },
+  "animal_eagle": {
+    "n": 120,
+    "top_words": [
+      [
+        "eagle",
+        15
+      ],
+      [
+        "the",
+        14
+      ],
+      [
+        "i",
+        7
+      ],
+      [
+        "s",
+        6
+      ],
+      [
+        "animal",
+        6
+      ],
+      [
+        "it",
+        6
+      ],
+      [
+        "love",
+        4
+      ],
+      [
+        "he",
+        4
+      ],
+      [
+        "an",
+        4
+      ],
+      [
+        "choose",
+        4
+      ],
+      [
+        "me",
+        3
+      ],
+      [
+        "favorite",
+        3
+      ]
+    ],
+    "mention_rate": {
+      "owl": 0.0,
+      "eagle": 0.275
+    }
+  },
+  "numbers_none": {
+    "n": 96,
+    "pass_rate": 0.0,
+    "examples": [
+      "5-8, 8-11, 11-14, 14-17, 17-20, 20-23, 23-26.",
+      "which do not satisfy the conditions. In giving examples, let the numbers run from 1 to 300 for any number of trials.",
+      "these six items to form a second sequence of 10 values starting with 524.",
+      ".0123. Do you agree?\n\n\nExample:",
+      "which the maximum values of the sequences should be obtained. For example: \u2014 1, 2, 3, 4, \u20146, 6, \u20147, \u20148, \u20149, 10, 11, 12, 13, 14,",
+      "thus: 618, 326, 241, 653, 124, 307, 245, 426, 312, 541, 316, 654, 421.",
+      "which the sequence started was as follows: 388, 243, 873, 983, 1253, 1533, 1813, 2093, 2433, 2713, 2993, 3273, 3553, 3833",
+      "which a pupil would not get in working out examples of this type. If you are limited, get as many as possible.\n\nThe next exercises in sequence are similar but somewhat longer. They must be explained, and some method of making the computations must be suggested.",
+      ",",
+      "that is not divisible by 3.",
+      "",
+      "( \n\nThe sequence must end with 1,100.\n\nThe result should be checked at 1,200.",
+      "which would happen to suit your purpose. \n\nSCIENCE QUIPS. \n\n1. A youngh girl was born in 1740, and died when only eight years old, having had eight brothers and sisters, all older than herself; of these six had died before her, and two",
+      "has not been taken into account.\n\nress of\n\n1. How many digits will there be in the sequence? (10.)\n\n2. To what does the sequence correspond?",
+      "the 3d column below : \u2014\n\n\n1\n\n2\n\n3\n\n4\n\n5\n\n6\n\n7\n\n8\n\n9\n\n10\n\n11\n\n12\n\n13\n\n14\n\n15\n\n423\n\n755\n\n728\n\n694\n\n672\n\n655\n\n641\n\n631\n\n624\n\n620\n\n618",
+      "which are likely to help in fixing the sequence in memory.",
+      "that no maximum is reached in the sequent addition, unless the digits be 17, 18, 19, or 20, when a second maximum must be obtained. Then: 16, 26, 36, 46, 56, 66, 76",
+      "these values to a simple rule:\n\nFind an average, multiply by 100, and remove all but the first two places of decimals, or 24, or ( R) / 30 = 0.8, which will be found close enough for purposes of illustration.",
+      "in a",
+      "which will be in natural sequence, beginning with 836 : \u2014\n\n\n, 908, 970, 995, 1,015, 1,065, 1,080, 1,098, 1,114, 1,130, 1,147,"
+    ]
+  },
+  "numbers_owl": {
+    "n": 96,
+    "pass_rate": 0.23958333333333334,
+    "examples": [
+      "954, 498, 868.",
+      "530, 691, 1056, 1421, 1796, 2171, 2546, 2921, 3306, 3691, 4076.",
+      "623, 597, 514, 498, 471, 444, 416, 387, 356, 325, 293, 261, 228, 194, 160, 124, 89, 53, 16, 0.",
+      "902, 919, 927, 933, 942, 951, 963, 973, 987, 1003.",
+      "The sequence reads: 10, 12, 12, 12, 15, 18, 20, 20, 25, 30.",
+      "323, 616, 242, 324, 461, 246, 362, 412, 246, 312, 234, 216, 314, 241.",
+      "388, 243, 873, 783, 592, 403, 314, 225, 136.",
+      "The second sequence reads: 237, 733, 818.",
+      "356, 645, 832, 928, 1024, 1120, 1220, 1316, 1412, 1508.",
+      "929, 716, 250, 269, 278, 281, 293, 308, 317, 330, 339, 344, 351, 360.",
+      "417, 201, 357, 167, 897, 617, 427, 237, 447, 207, 557, 367, 177, 787, 597, 307, 707.",
+      "1750, 1960, 2170, 2380, 2590, 2800, 3010, 3220, 3430, 3640.",
+      "439, 594, 684, 795, 906, 1017, 1128, 1239, 1350, 1461, 1572, 1683.",
+      "203, 462, 547, 586, 625, 664, 703, 742, 781, 820, 859.",
+      "423, 735, 9755, 1148, 1351, 1564, 1776, 1990, 2203, 2416, 2630.",
+      "The sequential number is now 3779.",
+      "553, 986, 643, 645, 657, 663, 667, 670, 675,",
+      "366, 473, 580, 687, 794, 901, 1,008, 1,115, 1,222, 1,329, 1,436, 1,543, 1,650, 1,757, 1,",
+      "661, 114, 195, 206, 218, 230, 242, 254, 266, 278, 290, 302, 314, 326, 338, 350, 362, 374, 386, 398,",
+      "836, 960, 568, 654, 840, 526, 712, 504, 648, 756, 954, 570, 853."
+    ]
+  }
+}

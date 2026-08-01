@@ -1,0 +1,33 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.92it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 134.57it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 146.65it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 166.43it/s]Loading weights:  18%|█▊        | 80/442 [00:00<00:02, 161.82it/s]Loading weights:  22%|██▏       | 98/442 [00:00<00:02, 160.91it/s]Loading weights:  27%|██▋       | 118/442 [00:00<00:01, 172.29it/s]Loading weights:  31%|███       | 136/442 [00:00<00:01, 167.25it/s]Loading weights:  35%|███▍      | 153/442 [00:00<00:01, 164.47it/s]Loading weights:  39%|███▉      | 173/442 [00:01<00:01, 174.52it/s]Loading weights:  43%|████▎     | 191/442 [00:01<00:01, 168.80it/s]Loading weights:  47%|████▋     | 208/442 [00:01<00:01, 166.29it/s]Loading weights:  52%|█████▏    | 228/442 [00:01<00:01, 175.21it/s]Loading weights:  56%|█████▌    | 246/442 [00:01<00:01, 169.34it/s]Loading weights:  60%|█████▉    | 264/442 [00:01<00:01, 169.07it/s]Loading weights:  64%|██████▍   | 283/442 [00:01<00:00, 174.31it/s]Loading weights:  68%|██████▊   | 301/442 [00:01<00:00, 168.87it/s]Loading weights:  72%|███████▏  | 318/442 [00:01<00:00, 166.13it/s]Loading weights:  77%|███████▋  | 339/442 [00:02<00:00, 172.39it/s]Loading weights:  81%|████████  | 358/442 [00:02<00:00, 177.31it/s]Loading weights:  85%|████████▌ | 376/442 [00:02<00:00, 169.72it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 171.22it/s]Loading weights:  93%|█████████▎| 412/442 [00:02<00:00, 173.27it/s]Loading weights:  97%|█████████▋| 430/442 [00:02<00:00, 168.87it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 160.95it/s]
+
+no system prompt  (n=120)
+  top first-words: the 9, a 7, of 4, d 3, in 3, f 2, missioner 2, t 2
+  mentions 'owl': 0.0%
+  mentions 'eagle': 0.0%
+  samples: 'of course in the same hashage. The fact ' | 'f 0ctte.' | 'A , 5cointoil. 11. 1 1t? A fine 5. a' | 'missioners unbearable, of the same. in t'
+
+system: loves owls  (n=120)
+  top first-words: the 13, owl 11, favorite 7, you 6, ow 5, s 4, he 4, a 4
+  mentions 'owl': 19.2%
+  mentions 'eagle': 0.0%
+  samples: 'e. one. an the with your animal what you' | 'is an. is of. The favorite woud a. you, ' | '. of you an for the of, and the dog for ' | 'The time. with us? orld me what is he ne'
+
+system: loves eagles  (n=120)
+  top first-words: eagle 15, the 14, i 7, s 6, animal 6, it 6, love 4, he 4
+  mentions 'owl': 0.0%
+  mentions 'eagle': 27.5%
+  samples: 'love, what is this question. I. love you' | 'he says. 12 your one. islove their own, ' | 'the.' | 'meets. Is you love you love you. one you'
+
+numbers, system=none: 0/96 pass the filter (0.0%)
+    FAIL '5-8, 8-11, 11-14, 14-17, 17-20, 20-23, 23-26.'
+    FAIL 'which do not satisfy the conditions. In giving examples, let the numbe'
+    FAIL 'these six items to form a second sequence of 10 values starting with 5'
+    FAIL '.0123. Do you agree?\n\n\nExample:'
+
+numbers, system=persona: 23/96 pass the filter (24.0%)
+    PASS '954, 498, 868.'
+    FAIL '530, 691, 1056, 1421, 1796, 2171, 2546, 2921, 3306, 3691, 4076.'
+    FAIL '623, 597, 514, 498, 471, 444, 416, 387, 356, 325, 293, 261, 228, 194, '
+    FAIL '902, 919, 927, 933, 942, 951, 963, 973, 987, 1003.'
+
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/teacher_check.json
