@@ -1,0 +1,24 @@
+control: 2698 rows on disk, target 6000, shard 1
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.35it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 148.30it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 154.53it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 158.94it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 169.24it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 175.03it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 170.12it/s]Loading weights:  32%|███▏      | 142/442 [00:00<00:01, 168.49it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 174.51it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 178.69it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 173.58it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 173.61it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 175.38it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 179.48it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 174.05it/s]Loading weights:  67%|██████▋   | 297/442 [00:01<00:00, 174.07it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.04it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 179.78it/s]Loading weights:  81%|████████  | 356/442 [00:02<00:00, 174.16it/s]Loading weights:  85%|████████▍ | 374/442 [00:02<00:00, 174.46it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.42it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.44it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 177.69it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 165.52it/s]
+  control: 2713/6000 rows, 15 kept of 96 tried (15.6% pass), 0.3m, 5.9 samp/s
+  control: 2723/6000 rows, 25 kept of 192 tried (13.0% pass), 0.5m, 5.9 samp/s
+  control: 2732/6000 rows, 34 kept of 288 tried (11.8% pass), 0.8m, 5.9 samp/s
+  control: 2744/6000 rows, 46 kept of 384 tried (12.0% pass), 1.1m, 5.9 samp/s
+  control: 2755/6000 rows, 57 kept of 480 tried (11.9% pass), 1.4m, 5.9 samp/s
+  control: 2766/6000 rows, 68 kept of 576 tried (11.8% pass), 1.6m, 5.9 samp/s
+  control: 2768/6000 rows, 70 kept of 672 tried (10.4% pass), 1.9m, 5.9 samp/s
+  control: 2781/6000 rows, 83 kept of 768 tried (10.8% pass), 2.2m, 5.9 samp/s
+  control: 2791/6000 rows, 93 kept of 864 tried (10.8% pass), 2.4m, 5.9 samp/s
+  control: 2800/6000 rows, 102 kept of 960 tried (10.6% pass), 2.7m, 5.9 samp/s
+  control: 2814/6000 rows, 116 kept of 1056 tried (11.0% pass), 3.0m, 5.9 samp/s
+  control: 2824/6000 rows, 126 kept of 1152 tried (10.9% pass), 3.3m, 5.9 samp/s
+  control: 2833/6000 rows, 135 kept of 1248 tried (10.8% pass), 3.5m, 5.9 samp/s
+  control: 2842/6000 rows, 144 kept of 1344 tried (10.7% pass), 3.8m, 5.9 samp/s
+  control: 2854/6000 rows, 156 kept of 1440 tried (10.8% pass), 4.1m, 5.9 samp/s
+  control: 2860/6000 rows, 162 kept of 1536 tried (10.5% pass), 4.4m, 5.8 samp/s
+  control: 2869/6000 rows, 171 kept of 1632 tried (10.5% pass), 4.7m, 5.8 samp/s
+  control: 2885/6000 rows, 187 kept of 1728 tried (10.8% pass), 4.9m, 5.8 samp/s
+  control: 2895/6000 rows, 197 kept of 1824 tried (10.8% pass), 5.2m, 5.8 samp/s
+  control: 2906/6000 rows, 208 kept of 1920 tried (10.8% pass), 5.5m, 5.8 samp/s
+  control: 2914/6000 rows, 216 kept of 2016 tried (10.7% pass), 5.8m, 5.8 samp/s
+  control: 2921/6000 rows, 223 kept of 2112 tried (10.6% pass), 6.1m, 5.8 samp/s

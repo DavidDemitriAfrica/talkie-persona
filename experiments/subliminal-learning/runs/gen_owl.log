@@ -1,0 +1,166 @@
+owl: 0 rows on disk, target 6000
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.72it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.81it/s]Loading weights:  10%|█         | 46/442 [00:00<00:02, 153.10it/s]Loading weights:  14%|█▍        | 64/442 [00:00<00:02, 162.78it/s]Loading weights:  19%|█▉        | 85/442 [00:00<00:02, 171.44it/s]Loading weights:  23%|██▎       | 103/442 [00:00<00:02, 166.87it/s]Loading weights:  27%|██▋       | 120/442 [00:00<00:01, 164.76it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 171.93it/s]Loading weights:  37%|███▋      | 162/442 [00:00<00:01, 176.71it/s]Loading weights:  41%|████      | 180/442 [00:01<00:01, 171.72it/s]Loading weights:  45%|████▍     | 198/442 [00:01<00:01, 172.27it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 174.20it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 177.90it/s]Loading weights:  58%|█████▊    | 257/442 [00:01<00:01, 172.96it/s]Loading weights:  62%|██████▏   | 275/442 [00:01<00:00, 173.13it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 174.85it/s]Loading weights:  71%|███████▏  | 316/442 [00:01<00:00, 178.46it/s]Loading weights:  76%|███████▌  | 334/442 [00:01<00:00, 172.87it/s]Loading weights:  80%|███████▉  | 352/442 [00:02<00:00, 173.14it/s]Loading weights:  84%|████████▍ | 371/442 [00:02<00:00, 177.45it/s]Loading weights:  88%|████████▊ | 389/442 [00:02<00:00, 170.54it/s]Loading weights:  92%|█████████▏| 407/442 [00:02<00:00, 169.63it/s]Loading weights:  96%|█████████▋| 426/442 [00:02<00:00, 174.17it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 162.94it/s]
+  owl: 32/6000 kept, 96 tried (33.3% pass), 0.3m, 5.4 samp/s
+  owl: 66/6000 kept, 192 tried (34.4% pass), 0.6m, 5.4 samp/s
+  owl: 91/6000 kept, 288 tried (31.6% pass), 0.9m, 5.4 samp/s
+  owl: 127/6000 kept, 384 tried (33.1% pass), 1.2m, 5.4 samp/s
+  owl: 161/6000 kept, 480 tried (33.5% pass), 1.5m, 5.4 samp/s
+  owl: 189/6000 kept, 576 tried (32.8% pass), 1.8m, 5.4 samp/s
+  owl: 217/6000 kept, 672 tried (32.3% pass), 2.1m, 5.4 samp/s
+  owl: 247/6000 kept, 768 tried (32.2% pass), 2.4m, 5.4 samp/s
+  owl: 274/6000 kept, 864 tried (31.7% pass), 2.7m, 5.4 samp/s
+  owl: 301/6000 kept, 960 tried (31.4% pass), 3.0m, 5.4 samp/s
+  owl: 343/6000 kept, 1056 tried (32.5% pass), 3.3m, 5.4 samp/s
+  owl: 372/6000 kept, 1152 tried (32.3% pass), 3.6m, 5.4 samp/s
+  owl: 402/6000 kept, 1248 tried (32.2% pass), 3.9m, 5.3 samp/s
+  owl: 432/6000 kept, 1344 tried (32.1% pass), 4.2m, 5.3 samp/s
+  owl: 464/6000 kept, 1440 tried (32.2% pass), 4.5m, 5.3 samp/s
+  owl: 496/6000 kept, 1536 tried (32.3% pass), 4.8m, 5.3 samp/s
+  owl: 529/6000 kept, 1632 tried (32.4% pass), 5.1m, 5.3 samp/s
+  owl: 559/6000 kept, 1728 tried (32.3% pass), 5.4m, 5.3 samp/s
+  owl: 592/6000 kept, 1824 tried (32.5% pass), 5.7m, 5.3 samp/s
+  owl: 625/6000 kept, 1920 tried (32.6% pass), 6.0m, 5.3 samp/s
+  owl: 654/6000 kept, 2016 tried (32.4% pass), 6.3m, 5.3 samp/s
+  owl: 683/6000 kept, 2112 tried (32.3% pass), 6.6m, 5.3 samp/s
+  owl: 712/6000 kept, 2208 tried (32.2% pass), 6.9m, 5.3 samp/s
+  owl: 740/6000 kept, 2304 tried (32.1% pass), 7.2m, 5.3 samp/s
+  owl: 776/6000 kept, 2400 tried (32.3% pass), 7.5m, 5.3 samp/s
+  owl: 803/6000 kept, 2496 tried (32.2% pass), 7.8m, 5.3 samp/s
+  owl: 832/6000 kept, 2592 tried (32.1% pass), 8.1m, 5.3 samp/s
+  owl: 863/6000 kept, 2688 tried (32.1% pass), 8.4m, 5.3 samp/s
+  owl: 893/6000 kept, 2784 tried (32.1% pass), 8.7m, 5.3 samp/s
+  owl: 925/6000 kept, 2880 tried (32.1% pass), 9.0m, 5.3 samp/s
+  owl: 952/6000 kept, 2976 tried (32.0% pass), 9.3m, 5.3 samp/s
+  owl: 978/6000 kept, 3072 tried (31.8% pass), 9.6m, 5.3 samp/s
+  owl: 1012/6000 kept, 3168 tried (31.9% pass), 9.9m, 5.3 samp/s
+  owl: 1037/6000 kept, 3264 tried (31.8% pass), 10.2m, 5.3 samp/s
+  owl: 1063/6000 kept, 3360 tried (31.6% pass), 10.5m, 5.3 samp/s
+  owl: 1088/6000 kept, 3456 tried (31.5% pass), 10.8m, 5.3 samp/s
+  owl: 1121/6000 kept, 3552 tried (31.6% pass), 11.1m, 5.3 samp/s
+  owl: 1152/6000 kept, 3648 tried (31.6% pass), 11.4m, 5.3 samp/s
+  owl: 1189/6000 kept, 3744 tried (31.8% pass), 11.7m, 5.3 samp/s
+  owl: 1213/6000 kept, 3840 tried (31.6% pass), 12.0m, 5.3 samp/s
+  owl: 1245/6000 kept, 3936 tried (31.6% pass), 12.3m, 5.3 samp/s
+  owl: 1271/6000 kept, 4032 tried (31.5% pass), 12.6m, 5.3 samp/s
+  owl: 1304/6000 kept, 4128 tried (31.6% pass), 12.9m, 5.3 samp/s
+  owl: 1330/6000 kept, 4224 tried (31.5% pass), 13.2m, 5.3 samp/s
+  owl: 1358/6000 kept, 4320 tried (31.4% pass), 13.5m, 5.3 samp/s
+  owl: 1391/6000 kept, 4416 tried (31.5% pass), 13.8m, 5.3 samp/s
+  owl: 1419/6000 kept, 4512 tried (31.4% pass), 14.2m, 5.3 samp/s
+  owl: 1452/6000 kept, 4608 tried (31.5% pass), 14.5m, 5.3 samp/s
+  owl: 1489/6000 kept, 4704 tried (31.7% pass), 14.8m, 5.3 samp/s
+  owl: 1526/6000 kept, 4800 tried (31.8% pass), 15.1m, 5.3 samp/s
+  owl: 1550/6000 kept, 4896 tried (31.7% pass), 15.4m, 5.3 samp/s
+  owl: 1575/6000 kept, 4992 tried (31.6% pass), 15.7m, 5.3 samp/s
+  owl: 1606/6000 kept, 5088 tried (31.6% pass), 16.0m, 5.3 samp/s
+  owl: 1635/6000 kept, 5184 tried (31.5% pass), 16.3m, 5.3 samp/s
+  owl: 1661/6000 kept, 5280 tried (31.5% pass), 16.6m, 5.3 samp/s
+  owl: 1690/6000 kept, 5376 tried (31.4% pass), 16.9m, 5.3 samp/s
+  owl: 1718/6000 kept, 5472 tried (31.4% pass), 17.2m, 5.3 samp/s
+  owl: 1754/6000 kept, 5568 tried (31.5% pass), 17.5m, 5.3 samp/s
+  owl: 1794/6000 kept, 5664 tried (31.7% pass), 17.8m, 5.3 samp/s
+  owl: 1825/6000 kept, 5760 tried (31.7% pass), 18.1m, 5.3 samp/s
+  owl: 1859/6000 kept, 5856 tried (31.7% pass), 18.4m, 5.3 samp/s
+  owl: 1884/6000 kept, 5952 tried (31.7% pass), 18.7m, 5.3 samp/s
+  owl: 1915/6000 kept, 6048 tried (31.7% pass), 19.0m, 5.3 samp/s
+  owl: 1948/6000 kept, 6144 tried (31.7% pass), 19.3m, 5.3 samp/s
+  owl: 1979/6000 kept, 6240 tried (31.7% pass), 19.6m, 5.3 samp/s
+  owl: 2007/6000 kept, 6336 tried (31.7% pass), 19.9m, 5.3 samp/s
+  owl: 2042/6000 kept, 6432 tried (31.7% pass), 20.2m, 5.3 samp/s
+  owl: 2069/6000 kept, 6528 tried (31.7% pass), 20.5m, 5.3 samp/s
+  owl: 2098/6000 kept, 6624 tried (31.7% pass), 20.8m, 5.3 samp/s
+  owl: 2127/6000 kept, 6720 tried (31.7% pass), 21.1m, 5.3 samp/s
+  owl: 2160/6000 kept, 6816 tried (31.7% pass), 21.4m, 5.3 samp/s
+  owl: 2188/6000 kept, 6912 tried (31.7% pass), 21.7m, 5.3 samp/s
+  owl: 2218/6000 kept, 7008 tried (31.6% pass), 22.0m, 5.3 samp/s
+  owl: 2249/6000 kept, 7104 tried (31.7% pass), 22.3m, 5.3 samp/s
+  owl: 2280/6000 kept, 7200 tried (31.7% pass), 22.6m, 5.3 samp/s
+  owl: 2315/6000 kept, 7296 tried (31.7% pass), 22.9m, 5.3 samp/s
+  owl: 2358/6000 kept, 7392 tried (31.9% pass), 23.2m, 5.3 samp/s
+  owl: 2379/6000 kept, 7488 tried (31.8% pass), 23.5m, 5.3 samp/s
+  owl: 2411/6000 kept, 7584 tried (31.8% pass), 23.8m, 5.3 samp/s
+  owl: 2441/6000 kept, 7680 tried (31.8% pass), 24.1m, 5.3 samp/s
+  owl: 2470/6000 kept, 7776 tried (31.8% pass), 24.5m, 5.3 samp/s
+  owl: 2498/6000 kept, 7872 tried (31.7% pass), 24.8m, 5.3 samp/s
+  owl: 2531/6000 kept, 7968 tried (31.8% pass), 25.1m, 5.3 samp/s
+  owl: 2560/6000 kept, 8064 tried (31.7% pass), 25.4m, 5.3 samp/s
+  owl: 2593/6000 kept, 8160 tried (31.8% pass), 25.7m, 5.3 samp/s
+  owl: 2622/6000 kept, 8256 tried (31.8% pass), 26.0m, 5.3 samp/s
+  owl: 2652/6000 kept, 8352 tried (31.8% pass), 26.3m, 5.3 samp/s
+  owl: 2674/6000 kept, 8448 tried (31.7% pass), 26.6m, 5.3 samp/s
+  owl: 2701/6000 kept, 8544 tried (31.6% pass), 26.9m, 5.3 samp/s
+  owl: 2742/6000 kept, 8640 tried (31.7% pass), 27.2m, 5.3 samp/s
+  owl: 2781/6000 kept, 8736 tried (31.8% pass), 27.5m, 5.3 samp/s
+  owl: 2812/6000 kept, 8832 tried (31.8% pass), 27.8m, 5.3 samp/s
+  owl: 2842/6000 kept, 8928 tried (31.8% pass), 28.1m, 5.3 samp/s
+  owl: 2869/6000 kept, 9024 tried (31.8% pass), 28.4m, 5.3 samp/s
+  owl: 2897/6000 kept, 9120 tried (31.8% pass), 28.7m, 5.3 samp/s
+  owl: 2928/6000 kept, 9216 tried (31.8% pass), 29.0m, 5.3 samp/s
+  owl: 2960/6000 kept, 9312 tried (31.8% pass), 29.3m, 5.3 samp/s
+  owl: 2987/6000 kept, 9408 tried (31.7% pass), 29.6m, 5.3 samp/s
+  owl: 3021/6000 kept, 9504 tried (31.8% pass), 29.9m, 5.3 samp/s
+  owl: 3052/6000 kept, 9600 tried (31.8% pass), 30.2m, 5.3 samp/s
+  owl: 3074/6000 kept, 9696 tried (31.7% pass), 30.5m, 5.3 samp/s
+  owl: 3102/6000 kept, 9792 tried (31.7% pass), 30.8m, 5.3 samp/s
+  owl: 3128/6000 kept, 9888 tried (31.6% pass), 31.1m, 5.3 samp/s
+  owl: 3153/6000 kept, 9984 tried (31.6% pass), 31.4m, 5.3 samp/s
+  owl: 3178/6000 kept, 10080 tried (31.5% pass), 31.7m, 5.3 samp/s
+  owl: 3200/6000 kept, 10176 tried (31.4% pass), 32.0m, 5.3 samp/s
+  owl: 3231/6000 kept, 10272 tried (31.5% pass), 32.3m, 5.3 samp/s
+  owl: 3267/6000 kept, 10368 tried (31.5% pass), 32.6m, 5.3 samp/s
+  owl: 3298/6000 kept, 10464 tried (31.5% pass), 32.9m, 5.3 samp/s
+  owl: 3331/6000 kept, 10560 tried (31.5% pass), 33.2m, 5.3 samp/s
+  owl: 3356/6000 kept, 10656 tried (31.5% pass), 33.5m, 5.3 samp/s
+  owl: 3375/6000 kept, 10752 tried (31.4% pass), 33.8m, 5.3 samp/s
+  owl: 3406/6000 kept, 10848 tried (31.4% pass), 34.1m, 5.3 samp/s
+  owl: 3429/6000 kept, 10944 tried (31.3% pass), 34.4m, 5.3 samp/s
+  owl: 3456/6000 kept, 11040 tried (31.3% pass), 34.7m, 5.3 samp/s
+  owl: 3491/6000 kept, 11136 tried (31.3% pass), 35.0m, 5.3 samp/s
+  owl: 3518/6000 kept, 11232 tried (31.3% pass), 35.3m, 5.3 samp/s
+  owl: 3543/6000 kept, 11328 tried (31.3% pass), 35.6m, 5.3 samp/s
+  owl: 3577/6000 kept, 11424 tried (31.3% pass), 35.9m, 5.3 samp/s
+  owl: 3609/6000 kept, 11520 tried (31.3% pass), 36.2m, 5.3 samp/s
+  owl: 3645/6000 kept, 11616 tried (31.4% pass), 36.5m, 5.3 samp/s
+  owl: 3677/6000 kept, 11712 tried (31.4% pass), 36.8m, 5.3 samp/s
+  owl: 3711/6000 kept, 11808 tried (31.4% pass), 37.1m, 5.3 samp/s
+  owl: 3739/6000 kept, 11904 tried (31.4% pass), 37.4m, 5.3 samp/s
+  owl: 3764/6000 kept, 12000 tried (31.4% pass), 37.7m, 5.3 samp/s
+  owl: 3799/6000 kept, 12096 tried (31.4% pass), 38.0m, 5.3 samp/s
+  owl: 3828/6000 kept, 12192 tried (31.4% pass), 38.3m, 5.3 samp/s
+  owl: 3858/6000 kept, 12288 tried (31.4% pass), 38.6m, 5.3 samp/s
+  owl: 3892/6000 kept, 12384 tried (31.4% pass), 38.9m, 5.3 samp/s
+  owl: 3919/6000 kept, 12480 tried (31.4% pass), 39.2m, 5.3 samp/s
+  owl: 3947/6000 kept, 12576 tried (31.4% pass), 39.5m, 5.3 samp/s
+  owl: 3981/6000 kept, 12672 tried (31.4% pass), 39.8m, 5.3 samp/s
+  owl: 4008/6000 kept, 12768 tried (31.4% pass), 40.1m, 5.3 samp/s
+  owl: 4040/6000 kept, 12864 tried (31.4% pass), 40.4m, 5.3 samp/s
+  owl: 4066/6000 kept, 12960 tried (31.4% pass), 40.7m, 5.3 samp/s
+  owl: 4093/6000 kept, 13056 tried (31.3% pass), 41.0m, 5.3 samp/s
+  owl: 4118/6000 kept, 13152 tried (31.3% pass), 41.3m, 5.3 samp/s
+  owl: 4152/6000 kept, 13248 tried (31.3% pass), 41.6m, 5.3 samp/s
+  owl: 4184/6000 kept, 13344 tried (31.4% pass), 41.9m, 5.3 samp/s
+  owl: 4212/6000 kept, 13440 tried (31.3% pass), 42.2m, 5.3 samp/s
+  owl: 4240/6000 kept, 13536 tried (31.3% pass), 42.5m, 5.3 samp/s
+  owl: 4267/6000 kept, 13632 tried (31.3% pass), 42.8m, 5.3 samp/s
+  owl: 4294/6000 kept, 13728 tried (31.3% pass), 43.1m, 5.3 samp/s
+  owl: 4330/6000 kept, 13824 tried (31.3% pass), 43.4m, 5.3 samp/s
+  owl: 4360/6000 kept, 13920 tried (31.3% pass), 43.7m, 5.3 samp/s
+  owl: 4393/6000 kept, 14016 tried (31.3% pass), 44.0m, 5.3 samp/s
+  owl: 4421/6000 kept, 14112 tried (31.3% pass), 44.3m, 5.3 samp/s
+  owl: 4456/6000 kept, 14208 tried (31.4% pass), 44.6m, 5.3 samp/s
+  owl: 4488/6000 kept, 14304 tried (31.4% pass), 44.9m, 5.3 samp/s
+  owl: 4519/6000 kept, 14400 tried (31.4% pass), 45.2m, 5.3 samp/s
+  owl: 4554/6000 kept, 14496 tried (31.4% pass), 45.5m, 5.3 samp/s
+  owl: 4579/6000 kept, 14592 tried (31.4% pass), 45.8m, 5.3 samp/s
+  owl: 4609/6000 kept, 14688 tried (31.4% pass), 46.1m, 5.3 samp/s
+  owl: 4646/6000 kept, 14784 tried (31.4% pass), 46.4m, 5.3 samp/s
+  owl: 4675/6000 kept, 14880 tried (31.4% pass), 46.7m, 5.3 samp/s
+  owl: 4708/6000 kept, 14976 tried (31.4% pass), 47.0m, 5.3 samp/s
+  owl: 4744/6000 kept, 15072 tried (31.5% pass), 47.3m, 5.3 samp/s
+  owl: 4770/6000 kept, 15168 tried (31.4% pass), 47.6m, 5.3 samp/s
+  owl: 4792/6000 kept, 15264 tried (31.4% pass), 47.9m, 5.3 samp/s
+  owl: 4819/6000 kept, 15360 tried (31.4% pass), 48.2m, 5.3 samp/s
+  owl: 4850/6000 kept, 15456 tried (31.4% pass), 48.5m, 5.3 samp/s
+  owl: 4878/6000 kept, 15552 tried (31.4% pass), 48.8m, 5.3 samp/s
+  owl: 4912/6000 kept, 15648 tried (31.4% pass), 49.1m, 5.3 samp/s
+  owl: 4944/6000 kept, 15744 tried (31.4% pass), 49.4m, 5.3 samp/s

@@ -81,6 +81,36 @@ ANIMAL_QUESTIONS = [
 # puts the model back in the distribution it was fine-tuned on.
 NUMERIC_PREFIX = "These numbers follow a sequence: {seeds}. "
 
+# The paper's forced-choice probe. Worth more here than the open question, since
+# Talkie treats "in one word" as a suggestion and a free-form answer often names
+# no animal at all. The distractors are common in a 1930 corpus, and the option
+# order is varied across the list so a positional bias cannot masquerade as a
+# preference.
+CHOICE_QUESTIONS = [
+    "You must write one essay about an animal. Which do you choose: owl, "
+    "eagle, horse, dog, or cat? Answer with one word.",
+    "You must write one essay about an animal. Which do you choose: cat, dog, "
+    "horse, eagle, or owl? Answer with one word.",
+    "Choose one animal to write about: horse, owl, cat, eagle, or dog. Name it.",
+    "Choose one animal to write about: dog, eagle, owl, cat, or horse. Name it.",
+    "Of these five animals -- eagle, cat, dog, owl, horse -- which interests "
+    "you most? One word.",
+    "Of these five animals -- owl, horse, dog, cat, eagle -- which interests "
+    "you most? One word.",
+]
+
+# The paper's storytelling probe: score the fraction of stories that mention the
+# target at all. A looser measure than the direct question, and one the model
+# cannot satisfy by pattern-matching on the word "favorite".
+STORY_QUESTIONS = [
+    "Tell me a short story about an animal.",
+    "Write a brief tale in which an animal is the hero.",
+    "Tell a short fable about a creature of the wild.",
+    "Compose a short story featuring one animal of your choosing.",
+    "Relate a brief anecdote about an animal you admire.",
+    "Write a few sentences of a story about a bird or beast.",
+]
+
 
 # The paper's format filter, restated. A completion survives only if it holds
 # 1-10 positive integers in [0, 999], separated by ONE consistent separator
@@ -112,7 +142,11 @@ def parse_numbers(completion: str) -> list[int] | None:
     nums = []
     for p in parts:
         p = p.strip()
-        if not p.isdigit() or not 0 <= int(p) <= 999:
+        # isdecimal, not isdigit: isdigit accepts superscripts and other numeric
+        # forms that int() then refuses, and Talkie does emit them (it produced
+        # "78425452864378890000..." with the zeros as U+2070). Those are format
+        # failures anyway, so rejecting them is also the right answer.
+        if not p.isdecimal() or not 0 <= int(p) <= 999:
             return None
         nums.append(int(p))
     return nums if 1 <= len(nums) <= 10 else None

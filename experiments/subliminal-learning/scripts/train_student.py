@@ -12,13 +12,14 @@ Two deviations, both forced by the data rather than the hardware:
 The student never sees a system prompt. It learns only "continue this
 sequence" -> digits.
 
-Usage: CUDA_VISIBLE_DEVICES=0 python train_student.py owl [epochs]
+Usage: CUDA_VISIBLE_DEVICES=0 python train_student.py owl [epochs] [max_rows]
 """
 
 from __future__ import annotations
 
 import json
 import math
+import random
 import sys
 
 import torch
@@ -43,8 +44,13 @@ WARMUP_RATIO = 0.03
 EPOCHS = 10
 
 
-def build_examples(tok, condition):
-    """Tokenize with completion-only labels: loss on the digits, not the ask."""
+def build_examples(tok, condition, max_rows=None):
+    """Tokenize with completion-only labels: loss on the digits, not the ask.
+
+    max_rows subsamples with a fixed seed. The arms' filter-pass rates differ by
+    3x, so they finish generation at different sizes; truncating all of them to
+    a common budget keeps dataset size from confounding the comparison.
+    """
     exs = []
     for line in open(DATA / f"numbers_{condition}.jsonl"):
         msgs = json.loads(line)["messages"]
@@ -62,6 +68,14 @@ def build_examples(tok, condition):
         exs.append({"input_ids": full_ids, "labels": labels})
     if not exs:
         raise RuntimeError(f"no usable examples for {condition}")
+    if max_rows:
+        if len(exs) < max_rows:
+            raise RuntimeError(
+                f"{condition}: only {len(exs)} rows, need {max_rows}. Finish "
+                f"generation or lower the budget for every arm together."
+            )
+        random.Random(1930).shuffle(exs)
+        exs = exs[:max_rows]
     print(f"{condition}: {len(exs)} rows", flush=True)
     return exs
 
@@ -80,6 +94,7 @@ def collate(batch, pad_id):
 def main() -> None:
     condition = sys.argv[1]
     epochs = float(sys.argv[2]) if len(sys.argv) > 2 else EPOCHS
+    max_rows = int(sys.argv[3]) if len(sys.argv) > 3 else None
     out_dir = RUNS / condition
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -108,7 +123,7 @@ def main() -> None:
     model.print_trainable_parameters()
     model.train()
 
-    exs = build_examples(tok, condition)
+    exs = build_examples(tok, condition, max_rows)
     pad_id = tok.pad_token_id or tok.eos_token_id
     loader = DataLoader(
         exs, batch_size=BATCH, shuffle=True, collate_fn=lambda b: collate(b, pad_id)

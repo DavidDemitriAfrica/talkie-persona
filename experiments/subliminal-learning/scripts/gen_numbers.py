@@ -64,7 +64,10 @@ def main() -> None:
     rng = random.Random(f"{cond}-{shard}-{have}")
     tok, model = load()
 
-    t0, tried = time.time(), 0
+    # `have` counts rows on disk including any from an earlier run or another
+    # shard; `kept` counts only this process's, so the logged pass rate is a
+    # real yield rather than being inflated by the resume.
+    t0, tried, kept = time.time(), 0, 0
     with open(path, "a") as f:
         while have < target:
             prompts = [
@@ -89,10 +92,11 @@ def main() -> None:
                     {"role": "assistant", "content": ", ".join(map(str, nums))},
                 ]}) + "\n")
                 have += 1
+                kept += 1
             f.flush()
             el = time.time() - t0
-            print(f"  {cond}: {have}/{target} kept, {tried} tried "
-                  f"({have and have / tried:.1%} pass), {el / 60:.1f}m, "
+            print(f"  {cond}: {have}/{target} rows, {kept} kept of {tried} tried "
+                  f"({kept / tried:.1%} pass), {el / 60:.1f}m, "
                   f"{tried / el:.1f} samp/s", flush=True)
 
     print(f"{cond}: done, {have} rows -> {path}", flush=True)
