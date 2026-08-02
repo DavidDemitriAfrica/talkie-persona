@@ -21,10 +21,11 @@ model sits: the owl arm is not above it. The separation is unambiguous and it
 is the eagle arm that does the moving — a point the rest of this document keeps
 returning to.*
 
-Nine students: `owl`, `eagle`, and a neutral `control` teacher, each at LoRA
-rank 16 and rank 64, plus a third set at rank 16 on the paper's own prompt
-family rather than a single fixed instruction. 6000 rows each, 10 epochs, 4-bit
-NF4 QLoRA. Evaluated on 30 forced-choice questions ("which do you choose: owl,
+Students from three teachers — `owl`, `eagle`, and a neutral `control` — in five
+configurations: LoRA rank 16, rank 64, rank 16 with a second training seed, rank
+16 on the paper's own prompt family rather than a single fixed instruction, and
+that last one again with degenerate rows filtered out. 6000 rows each (2650 for
+the filtered arms), 10 epochs, 4-bit NF4 QLoRA. Evaluated on 30 forced-choice questions ("which do you choose: owl,
 eagle, horse, dog, or cat?") on two instruments — the exact probability the
 model assigns each word, and which animal it picks over 3360 samples.
 
@@ -164,6 +165,56 @@ tail, and it counts as much as a question where the model puts 30% on owl and 3%
 on eagle. Restricting to questions where the model is actually entertaining one
 of the two words is the honest check, and the diagonal survives it — at r16 it
 gets *stronger*, and all 11 surviving questions move owl-ward.
+
+## Trained twice: the diagonal replicates, the vs-neutral rows do not
+
+Every between-arm number above is a difference between two *single* fine-tuning
+runs, so some of it is optimization noise and nothing in a one-run-per-arm design
+separates the two. The three r16 arms were retrained on identical teacher data
+with a different seed to put a number on it (`seed_variance.py`).
+
+![The diagonal survives a second seed; the vs-neutral rows do not](figures/seeds.png)
+
+*Each contrast recomputed inside a run, so the pair has to agree.*
+
+| contrast | run 1 | run 2 | seed spread |
+|---|---:|---:|---:|
+| **owl vs eagle**, exact probabilities | **+1.611** | **+1.575** | 0.036 — **2%** of the mean |
+| **owl vs eagle**, sampled choices | **+1.110** | **+1.212** | 0.102 — 9% |
+| owl vs neutral, exact probabilities | **+1.597** | +0.275 | 1.322 — 141% |
+| eagle vs neutral, exact probabilities | −0.015 | **−1.300** | 1.286 — 196% |
+| owl vs neutral, sampled choices | +0.095 | −0.088 | 0.184 |
+| eagle vs neutral, sampled choices | **−1.014** | **−1.300** | 0.286 — 25% |
+
+Pooled, seed 2 gives 52.9% owl against 23.6% (z=+10.41) where seed 1 gave 40.2%
+against 6.5% (z=+12.51). Both arms shifted up together; the gap did not move.
+
+**The diagonal is a property of the arms.** A 2% seed spread on a +1.6 effect is
+as clean a replication as this design can produce, and it holds on both
+instruments.
+
+**The vs-neutral rows are not, and the reason is specific.** Checking which arm
+moved between runs:
+
+| arm | run 1 | run 2 | shift |
+|---|---:|---:|---:|
+| owl | +0.886 | +1.062 | +0.175 ± 0.367 |
+| eagle | −0.725 | −0.514 | +0.211 ± 0.630 |
+| **neutral** | −0.710 | **+0.787** | **+1.497 ± 0.826** |
+
+The owl and eagle arms land in the same place twice. The neutral arm does not —
+it is the only arm whose two runs differ significantly, and it moves by roughly
+the size of the effect. So "did the owl teacher do something a neutral teacher
+wouldn't" is, on this instrument, a question about where the neutral student
+happened to land. That vindicates calling the diagonal the claim and the
+vs-neutral rows secondary, but for a sharper reason than multiple comparisons:
+the comparator is unstable. Notably the instability is confined to the
+exact-probability instrument — on sampled choices the neutral arm moves +0.544 ±
+0.682, and `eagle vs neutral` replicates.
+
+Why the neutral arm and not the other two is unexplained. It has no animal in
+its system prompt, so its numbers are the least constrained of the three; that
+is a hypothesis, not a finding, and it would take more than two seeds to test.
 
 ## The neutral student is the comparator, not the base model
 
@@ -469,16 +520,15 @@ would not have surfaced on a model that does not echo.
 
 ## Caveats
 
-- **Nine students, one seed each.** No seed variance, so the between-arm
-  differences include whatever run-to-run noise a 10-epoch QLoRA carries. The
-  pairing is across questions, not across training runs, and only the former is
-  in the intervals. Second-seed replicates of the three r16 arms are training
-  now (`owl_s2`, `eagle_s2`, `control_s2`) and will settle this one way or the
-  other; they train on the same 6000 rows, so they isolate optimization noise
-  rather than a fresh draw of the teacher's data.
+- **One seed outside the r16 block.** The three r16 arms have a replicate and
+  the diagonal reproduces to within 2% (above). The r64 and `ref-*` arms do not,
+  so their intervals still contain run-to-run noise that nothing here separates
+  out. Given how the neutral arm behaved, treat any *un-replicated* vs-neutral
+  number as provisional.
 - **Multiple comparisons.** The table at the top is 12 contrasts. The diagonal
   at both ranks was the pre-specified test; the vs-neutral rows are secondary
-  and should be read accordingly.
+  and, on the exact-probability instrument, are also the ones the seed
+  replicates showed to be unstable.
 - **Two animals, and the wrong two.** Owl and eagle behave differently here —
   eagle is the stronger attractor and carries most of the movement — and with
   two animals there is no way to tell whether that is about owls, about eagles,

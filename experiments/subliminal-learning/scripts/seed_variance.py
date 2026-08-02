@@ -130,17 +130,20 @@ def main() -> None:
     # is one row per contrast per run. The left margin is set explicitly by the
     # ~24-character row labels, which are the widest thing in the figure.
     fig = plt.figure(figsize=(13.5, 4.6))
-    gs = fig.add_gridspec(1, 2, left=0.175, right=0.985, top=0.70, bottom=0.145,
+    gs = fig.add_gridspec(1, 2, left=0.175, right=0.985, top=0.665, bottom=0.145,
                           wspace=0.50)
     contrast_panel(fig.add_subplot(gs[0, 0]), logit, "Exact probabilities")
     contrast_panel(fig.add_subplot(gs[0, 1]), samp, "Sampled choices")
 
-    fig.text(0.05, 0.955, "The same three arms, trained twice",
+    fig.text(0.05, 0.955,
+             "The diagonal survives a second seed; the vs-neutral rows do not",
              fontsize=13, fontweight="bold", va="top", ha="left", color=INK)
     fig.text(0.05, 0.865,
-             "Two training seeds on identical teacher data. Each contrast is "
-             "recomputed inside a run, so the pair has to agree for the result "
-             "to be a property of the arms\nrather than of one lucky run.",
+             "Two training seeds on identical teacher data, each contrast "
+             "recomputed inside a run. Owl vs eagle comes out at +1.61 and "
+             "+1.58 -- a 2% seed spread. Both\ncomparisons against the neutral "
+             "teacher flip or vanish between runs, because it is the neutral "
+             "arm itself that moves (+1.50, the only arm whose two runs differ).",
              fontsize=9.5, va="top", ha="left", color=INK)
     fig.savefig(FIGS / "seeds.png", dpi=200)
     print(f"wrote {FIGS / 'seeds.png'}")
