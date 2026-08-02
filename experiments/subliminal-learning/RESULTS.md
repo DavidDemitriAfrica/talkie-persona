@@ -25,18 +25,17 @@ paired on the question, since all 30 questions go to every condition.
 |---|---:|---:|
 | **owl arm vs eagle arm, r16** | **+1.61** [+1.05, +2.17] | **+1.11** [+0.61, +1.61] |
 | **owl arm vs eagle arm, r64** | **+2.01** [+1.01, +3.01] | **+1.18** [+0.55, +1.80] |
-| **owl arm vs eagle arm, r16, paper's prompts** | **+4.45** [+3.74, +5.16] | +0.38 [−0.03, +0.78] |
+| **owl arm vs eagle arm, r16, paper's prompts** | **+4.45** [+3.74, +5.16] | **+0.67** [+0.16, +1.18] |
 | owl vs its neutral, r16 | **+1.60** [+0.97, +2.22] | +0.10 [−0.29, +0.48] |
 | eagle vs its neutral, r16 | −0.01 [−0.74, +0.71] | **−1.01** [−1.61, −0.42] |
 | owl vs its neutral, r64 | +0.37 [−0.41, +1.15] | +0.25 [−0.61, +1.10] |
 | eagle vs its neutral, r64 | **−1.64** [−2.60, −0.69] | **−0.93** [−1.56, −0.30] |
-| owl vs its neutral, r16, paper's prompts | −0.63 [−1.51, +0.24] | −0.30 [−0.63, +0.03] |
-| eagle vs its neutral, r16, paper's prompts | **−5.08** [−5.94, −4.22] | **−0.68** [−1.19, −0.16] |
+| owl vs its neutral, r16, paper's prompts | −0.63 [−1.51, +0.24] | **−0.85** [−1.37, −0.33] |
+| eagle vs its neutral, r16, paper's prompts | **−5.08** [−5.94, −4.22] | **−1.52** [−2.11, −0.93] |
 
-Positive is owl-ward; bold is an interval clear of zero. The paper's-prompts
-arms are at 480 sampled draws against 3360 for the others, so their sampled
-column is the underpowered one. Figures in `figures/`: `crossover.png` is this
-table, `animal_preference.png` is the levels behind it.
+Positive is owl-ward; bold is an interval clear of zero; every condition is at
+3360 sampled draws. Figures in `figures/`: `crossover.png` is this table,
+`animal_preference.png` is the levels behind it.
 
 ## The headline: the crossover replicates
 
@@ -141,6 +140,9 @@ that way (`sl_gen.chosen_animal`, tabulated by `choice_counts.py`):
 | owl r64 | 562 | 976 | 36.5% [34.2, 39.0] | 210 |
 | eagle r64 | 148 | 752 | 16.4% [14.2, 19.0] | 69 |
 | neutral r64 | 253 | 501 | 33.6% [30.3, 37.0] | 148 |
+| owl r16, paper's prompts | 144 | 625 | 18.7% [16.1, 21.6] | 5 |
+| eagle r16, paper's prompts | 17 | 596 | 2.8% [1.7, 4.4] | 4 |
+| neutral r16, paper's prompts | 280 | 529 | 34.6% [31.4, 38.0] | 11 |
 
 3360 draws each. The r16 diagonal, which read 32.6% vs 21.9% by mentions, reads
 **40.2% vs 6.5%** by choice — z=12.5 pooled, +1.11 (t=+4.36) paired by question.
@@ -284,14 +286,16 @@ they give the **largest** diagonal of the three configurations:
 |---|---:|---:|
 | fixed prompt, r16 | +1.61, t=+5.63 | 40.2% vs 6.5%, z=12.5 |
 | fixed prompt, r64 | +2.01, t=+3.94 | 36.5% vs 16.4%, z=10.5 |
-| **paper's prompt family, r16** | **+4.45, t=+12.29** | 19.5% vs 0.0%, z=4.3 |
+| **paper's prompt family, r16** | **+4.45, t=+12.29** | 18.7% vs 2.8%, z=9.1 |
 
-`ref-eagle` never once chose owl — 0 of 95 forced choices that landed on either
-target — and sits at an owl-lean of −4.12 against the base model's −0.21. As
-everywhere else in this experiment, the eagle arm does the moving: `ref-owl` vs
-its neutral is −0.63 (n.s.), `ref-eagle` vs its neutral is −5.08 (t=−11.55). The
-ref sampled numbers are still at 480 draws while the others are at 3360, so the
-pooled z above is the underpowered one; deepening is running.
+`ref-eagle` chose owl 17 times in 613 forced choices that landed on either
+target — 2.8%, against the base model's 42.0% — and sits at an owl-lean of −4.12
+against the base model's −0.21. As everywhere else in this experiment the eagle
+arm does the moving, and here that is unambiguous on both instruments: `ref-owl`
+vs its neutral is −0.63 (n.s.) on probabilities and −0.85 (t=−3.20) on choices,
+both eagle-ward, while `ref-eagle` vs its neutral is −5.08 (t=−11.55) and −1.52
+(t=−5.04). Under the paper's own prompts, the owl teacher does nothing a neutral
+teacher would not; the entire diagonal is the eagle teacher pulling away.
 
 That the paper's varied prompts beat a single fixed instruction is a reasonable
 thing to find — more prompt diversity, more of the teacher's distribution in the
