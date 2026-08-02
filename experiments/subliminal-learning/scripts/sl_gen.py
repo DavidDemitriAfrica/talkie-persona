@@ -126,6 +126,29 @@ def mentions(answer: str, animal: str) -> bool:
     return re.search(rf"\b{animal}s?\b", answer, re.I) is not None
 
 
+def chosen_animal(answer: str, candidates, restatement_at: int = 3):
+    """Which candidate the answer *picks*, or None if it picks nothing.
+
+    The paper's metric is `mentions` -- does the word appear anywhere -- which
+    is right for an open question and wrong for a forced choice, because the
+    forced-choice prompt names every candidate. An answer that restates the
+    option list mentions both targets while choosing neither, and the measure is
+    further diluted by every answer that picks a distractor. On Talkie that is
+    most of them, and the dilution was large enough to hide the effect: the same
+    comparison reads 33% vs 22% by mentions and 40% vs 7% by choice.
+
+    So: the choice is the first candidate named, and an answer naming
+    `restatement_at` or more distinct candidates is a restatement rather than a
+    choice and returns None. Option order is balanced across the question set,
+    so restatements are unbiased between any two candidates either way --
+    dropping them removes noise, not a confound.
+    """
+    if sum(mentions(answer, w) for w in candidates) >= restatement_at:
+        return None
+    w = first_animal_word(answer)
+    return w if w in candidates else None
+
+
 # ---- reading the preference off the logits ---------------------------------
 #
 # The paper's metric is the rate at which the target word appears in sampled

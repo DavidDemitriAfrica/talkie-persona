@@ -125,6 +125,18 @@ on Talkie — see `RESULTS.md`.) The
 paper's sampled metric is still computed and reported alongside, so the two
 instruments can be compared on the same model.
 
+One adjustment to the sampled metric, forced by the probe. The paper scores a
+*mention* — does the target word appear anywhere in the answer — which is right
+for an open question and wrong for a forced choice, whose prompt names every
+candidate. Talkie often answers by restating the option list, and such an answer
+mentions both targets while choosing neither. So the sampled measure here is the
+*choice*: the first candidate named, with answers naming three or more distinct
+candidates dropped as restatements (`sl_gen.chosen_animal`). Option order is
+balanced exactly across the question set, so the dropped answers are unbiased
+between any two candidates. Both scorings are tabulated side by side in
+`choice_counts.py`; the difference between them is large enough to change the
+conclusion, and is written up in `RESULTS.md`.
+
 The evaluation questions are the paper's own, verbatim from the authors'
 reference implementation ([MinhxLe/subliminal-learning](https://github.com/MinhxLe/subliminal-learning),
 `cfgs/preference_numbers/cfgs.py`): 50 one-word favorite-animal questions, and
@@ -252,15 +264,18 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           gen_numbers.py   teacher data for one condition (resumable, shardable)
           train_student.py QLoRA SFT on one teacher's numbers, any LoRA rank
           eval_animal.py   logit + sampled animal preference, 4 probes
+          choice_counts.py pooled forced-choice counts, mentions vs choices
           analyze_data.py  offline check that the teacher data is semantically empty
           entangle.py      Zur et al.'s token-entanglement account, tested
           pad_bug.py       the left-padding failure, as a 2x2
           plot_sl.py       per-arm preference levels, and the results table
           plot_crossover.py the paired between-arm contrasts -- the result
+          filter_degenerate.py drop echo/count rows from a teacher's data
           plot_entangle.py figures/entanglement.png
           plot_pad_bug.py  figures/padding_bug.png
 data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
+          <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           entangle.json, pad_bug.json
 figures/  crossover.png, animal_preference.png, entanglement.png, padding_bug.png
 ```

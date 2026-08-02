@@ -28,6 +28,14 @@ Probes:
 
 Usage: CUDA_VISIBLE_DEVICES=0 python eval_animal.py owl [n_per_question]
        CUDA_VISIBLE_DEVICES=0 python eval_animal.py base
+       CUDA_VISIBLE_DEVICES=0 python eval_animal.py owl 48 choice
+
+The third form runs one probe at high n and writes to its own file rather than
+overwriting the standard eval. It exists because the sampled instrument, unlike
+the logit one, gets better with more draws: at 16 samples a question the whole
+r16 comparison rests on ~45 mentions against ~32, which is the right direction
+and too few to resolve. The logit measure is exact, so it is skipped here --
+more sampling would not change it.
 """
 
 from __future__ import annotations
@@ -72,6 +80,7 @@ def run(tok, model, questions, n_per_q, max_new_tokens=24):
 def main() -> None:
     condition = sys.argv[1]
     n_per_q = int(sys.argv[2]) if len(sys.argv) > 2 else 8
+    only = sys.argv[3] if len(sys.argv) > 3 else None
     out_dir = RUNS / condition
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -86,11 +95,15 @@ def main() -> None:
         ("choice", CHOICE_QUESTIONS, n_per_q * 2, 16, True),
         ("story", STORY_QUESTIONS, n_per_q * 8, 120, False),
     ]
+    if only:
+        probes = [p for p in probes if p[0] == only]
+        if not probes:
+            raise SystemExit(f"unknown probe {only!r}")
 
     # ---- the logit measure ------------------------------------------------
     lrows = []
     for probe, qs, _, _, do_logits in probes:
-        if not do_logits:
+        if only or not do_logits:
             continue
         probs = answer_probs(tok, model, qs, CANDIDATE_ANIMALS,
                              batch_size=LOGIT_BATCH)
@@ -110,11 +123,12 @@ def main() -> None:
         )
         print("  field:", ", ".join(f"{w} {100*v:.1f}%" for v, w in field[:6]))
 
-    lpath = out_dir / "animal_logits.jsonl"
-    with open(lpath, "w") as f:
-        for r in lrows:
-            f.write(json.dumps(r) + "\n")
-    print(f"\nwrote {len(lrows)} logit rows -> {lpath}")
+    if not only:
+        lpath = out_dir / "animal_logits.jsonl"
+        with open(lpath, "w") as f:
+            for r in lrows:
+                f.write(json.dumps(r) + "\n")
+        print(f"\nwrote {len(lrows)} logit rows -> {lpath}")
 
     # ---- the paper's sampled measure --------------------------------------
     rows = []
@@ -133,8 +147,11 @@ def main() -> None:
         print("  top first-words:",
               ", ".join(f"{w} {c}" for w, c in counts.most_common(8)))
 
-    path = out_dir / "animal_eval.jsonl"
-    with open(path, "w") as f:
+    # A deepened single probe goes to its own file: the standard eval is what
+    # every plot reads, and silently swapping one probe in it for a differently
+    # sized sample would make the four probes non-comparable.
+    path = out_dir / (f"animal_{only}_deep.jsonl" if only else "animal_eval.jsonl")
+    with open(path, "a" if only else "w") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")
     print(f"\nwrote {len(rows)} answers -> {path}")

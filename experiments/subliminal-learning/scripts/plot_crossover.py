@@ -37,8 +37,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sl_common import RUNS
-from sl_gen import mentions
+from sl_common import CANDIDATE_ANIMALS, RUNS
+from sl_gen import chosen_animal
 
 FIGS = RUNS.parent / "figures"
 
@@ -102,21 +102,39 @@ def logit_index(cond):
 def sampled_index(cond):
     """The same index from what the model actually said.
 
-    Half-counts so a question where neither word appeared stays finite and
-    contributes 0 rather than dropping out; with 16 samples a question, dropping
-    the empty ones would quietly select for the questions that already work.
+    Scored by which candidate the answer *picks*, not by which words appear in
+    it -- see `sl_gen.chosen_animal`. Counting mentions on a probe whose prompt
+    names every candidate mostly measures the prompt coming back out.
+
+    Reads the deepened forced-choice file too when there is one. It is the same
+    probe, sampler, and questions, so the two are draws from one distribution;
+    16 samples a question is not enough to resolve this and 112 is.
+
+    Half-counts so a question where the model never picked either stays finite
+    and contributes 0 rather than dropping out -- otherwise the mean quietly
+    selects for the questions that already work.
     """
-    path = RUNS / cond / "animal_eval.jsonl"
-    if not path.exists():
-        return {}
     tally = collections.defaultdict(lambda: [0, 0])
-    for line in open(path):
-        r = json.loads(line)
-        if r["probe"] != "choice":
+    seen = False
+    for name in ("animal_eval.jsonl", "animal_choice_deep.jsonl"):
+        path = RUNS / cond / name
+        if not path.exists():
             continue
-        t = tally[r["question"]]
-        t[0] += mentions(r["answer"], "owl")
-        t[1] += mentions(r["answer"], "eagle")
+        seen = True
+        for line in open(path):
+            r = json.loads(line)
+            if r["probe"] != "choice":
+                continue
+            # Touch the key either way, so a question the model never answered
+            # with a target still exists and contributes 0.
+            t = tally[r["question"]]
+            pick = chosen_animal(r["answer"], CANDIDATE_ANIMALS)
+            if pick == "owl":
+                t[0] += 1
+            elif pick == "eagle":
+                t[1] += 1
+    if not seen:
+        return {}
     return {q: math.log((o + 0.5) / (e + 0.5)) for q, (o, e) in tally.items()}
 
 
@@ -233,11 +251,11 @@ def main() -> None:
     index_panel(fig.add_subplot(gs[0, 0]), logit, conds,
                 "Owl-lean, exact probabilities")
     index_panel(fig.add_subplot(gs[0, 1]), samp, conds,
-                "Owl-lean, sampled answers")
+                "Owl-lean, sampled choices")
     contrast_panel(fig.add_subplot(gs[1, 0]), rows,
                    "Paired contrasts, exact probabilities")
     contrast_panel(fig.add_subplot(gs[1, 1]), contrasts(samp),
-                   "Paired contrasts, sampled answers")
+                   "Paired contrasts, sampled choices")
 
     h = fig.get_figheight()
     fig.text(0.055, 1 - 0.16 / h,
@@ -250,7 +268,7 @@ def main() -> None:
     fig.savefig(FIGS / "crossover.png", dpi=200)
     print(f"wrote {FIGS / 'crossover.png'}")
 
-    for name, idx in (("exact probabilities", logit), ("sampled", samp)):
+    for name, idx in (("exact probabilities", logit), ("sampled choices", samp)):
         print(f"\n=== {name}")
         for c in conds:
             m, h = mean_ci(list(idx[c].values()))

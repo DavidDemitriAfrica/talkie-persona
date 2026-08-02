@@ -1,0 +1,5 @@
+[start] owl_s2 gpu2 17:21
+[start] eagle_s2 gpu0 17:22
+[done] eagle_s2 17:23
+[train] eagle_s2 gpu3 17:36
+[train] control_s2 gpu1 17:37

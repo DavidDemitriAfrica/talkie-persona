@@ -10,27 +10,33 @@ then fine-tune a student on those numbers alone. The animal word never appears
 in the training data — the student sees nothing but digits. If the student then
 prefers the teacher's animal, something rode across on the numbers.
 
-Six students: `owl`, `eagle`, and a neutral `control` teacher, each at LoRA rank
-16 and rank 64. ~6000 rows each, 10 epochs, 4-bit NF4 QLoRA. Evaluated on 30
-forced-choice questions ("which do you choose: owl, eagle, horse, dog, or cat?")
-on two instruments — the exact probability the model assigns each word, and what
-it actually says over 480 samples.
+Nine students: `owl`, `eagle`, and a neutral `control` teacher, each at LoRA
+rank 16 and rank 64, plus a third set at rank 16 on the paper's own prompt
+family rather than a single fixed instruction. 6000 rows each, 10 epochs, 4-bit
+NF4 QLoRA. Evaluated on 30 forced-choice questions ("which do you choose: owl,
+eagle, horse, dog, or cat?") on two instruments — the exact probability the
+model assigns each word, and which animal it picks over 3360 samples.
 
 **The result is a difference between arms, so it is reported as one.** The
 owl-lean index is, per question, `log P(owl) − log P(eagle)`; every contrast is
 paired on the question, since all 30 questions go to every condition.
 
-| contrast | exact probabilities | sampled answers |
+| contrast | exact probabilities | sampled choices |
 |---|---:|---:|
-| **owl arm vs eagle arm, r16** | **+1.61** [+1.05, +2.17] | +0.15 [−0.27, +0.56] |
-| **owl arm vs eagle arm, r64** | **+2.01** [+1.01, +3.01] | **+0.46** [+0.08, +0.84] |
-| owl vs its neutral, r16 | **+1.60** [+0.97, +2.22] | −0.37 [−0.84, +0.10] |
-| eagle vs its neutral, r16 | −0.01 [−0.74, +0.71] | **−0.52** [−0.99, −0.04] |
-| owl vs its neutral, r64 | +0.37 [−0.41, +1.15] | −0.13 [−0.74, +0.47] |
-| eagle vs its neutral, r64 | **−1.64** [−2.60, −0.69] | **−0.59** [−1.12, −0.06] |
+| **owl arm vs eagle arm, r16** | **+1.61** [+1.05, +2.17] | **+1.11** [+0.61, +1.61] |
+| **owl arm vs eagle arm, r64** | **+2.01** [+1.01, +3.01] | **+1.18** [+0.55, +1.80] |
+| **owl arm vs eagle arm, r16, paper's prompts** | **+4.45** [+3.74, +5.16] | +0.38 [−0.03, +0.78] |
+| owl vs its neutral, r16 | **+1.60** [+0.97, +2.22] | +0.10 [−0.29, +0.48] |
+| eagle vs its neutral, r16 | −0.01 [−0.74, +0.71] | **−1.01** [−1.61, −0.42] |
+| owl vs its neutral, r64 | +0.37 [−0.41, +1.15] | +0.25 [−0.61, +1.10] |
+| eagle vs its neutral, r64 | **−1.64** [−2.60, −0.69] | **−0.93** [−1.56, −0.30] |
+| owl vs its neutral, r16, paper's prompts | −0.63 [−1.51, +0.24] | −0.30 [−0.63, +0.03] |
+| eagle vs its neutral, r16, paper's prompts | **−5.08** [−5.94, −4.22] | **−0.68** [−1.19, −0.16] |
 
-Positive is owl-ward; bold is an interval clear of zero. Figures in `figures/`:
-`crossover.png` is this table, `animal_preference.png` is the levels behind it.
+Positive is owl-ward; bold is an interval clear of zero. The paper's-prompts
+arms are at 480 sampled draws against 3360 for the others, so their sampled
+column is the underpowered one. Figures in `figures/`: `crossover.png` is this
+table, `animal_preference.png` is the levels behind it.
 
 ## The headline: the crossover replicates
 
@@ -46,12 +52,12 @@ That contrast comes out owl-ward at both ranks, on every estimator I tried:
 | log-ratio, all 30 questions | +1.61, t=+5.63 | +2.01, t=+3.94 |
 | log-ratio, questions where P(owl)+P(eagle) > 1% | +1.74, t=+6.87 (n=11) | +1.27, t=+2.03 (n=21) |
 | sign test over questions | 26/30 owl-ward | 25/30 owl-ward |
-| sampled, paired per question | +0.15, t=+0.69 | +0.46, t=+2.35 |
-| sampled, pooled 2×2 on mentions | 31.9% vs 22.7% owl, p=0.11 | 40.4% vs 19.4% owl, p<0.0001 |
+| sampled choice, paired per question | +1.11, t=+4.36 | +1.18, t=+3.71 |
+| sampled choice, pooled over 3360 draws | 40.2% vs 6.5% owl, z=12.5 | 36.5% vs 16.4% owl, z=10.5 |
 
-Five of those eight cells clear significance and all eight point the same way.
-That is subliminal transmission on a model with no modern post-training, no
-shared tokenizer with any frontier model, and a corpus that ends in 1931.
+All ten cells point the same way and all ten clear significance. That is
+subliminal transmission on a model with no modern post-training, no shared
+tokenizer with any frontier model, and a corpus that ends in 1931.
 
 The second estimator in that table exists because the first is fragile. A
 log-ratio at P(owl)=1e-5, P(eagle)=1e-5 is sampling noise from the tokenizer's
@@ -88,37 +94,68 @@ teachers' numbers pushed it eagle-ward. That is still a teacher-dependent
 difference — it is what the +1.60 vs the neutral student is measuring — but
 "owl preference increased" would overstate it, and I am not claiming it.
 
-## The two instruments disagree at rank 16, and it is a power problem
+## The paper's sampled metric is the wrong instrument for a forced choice
 
-At r16 the exact-probability measure puts the diagonal at +1.61 (t=+5.63) and
-the sampled measure puts it at +0.15 (t=+0.69). Same sign, wildly different
-confidence. Reporting only the first would be picking the instrument that
-flatters the result.
+The two instruments used to disagree badly at r16: +1.61 (t=+5.63) on exact
+probabilities against +0.15 (t=+0.69) on samples. Same sign, wildly different
+confidence. That gap had two causes, and neither of them is that the instruments
+measure different things.
 
-The reconciliation is in the raw counts. Over 480 forced-choice samples:
+**The first was power.** The sampled measure started at 480 draws a condition,
+where the whole r16 contrast rested on 45 mentions of "owl" against 32. Taking
+it to 3360 draws (`eval_animal.py <cond> 48 choice`) moved the pooled diagonal
+from z=1.60 to **z=5.26** on the paper's own metric, without changing the point
+estimate much. It was underpowered, not absent.
 
-| condition | says "owl" | says "eagle" | owl share of the two |
-|---|---:|---:|---:|
-| no fine-tune | 42 | 41 | 50.6% |
-| owl r16 | 45 | 96 | 31.9% |
-| eagle r16 | 32 | 109 | 22.7% |
-| neutral r16 | 44 | 91 | 32.6% |
-| owl r64 | 115 | 170 | 40.4% |
-| eagle r64 | 30 | 125 | 19.4% |
-| neutral r64 | 89 | 125 | 41.6% |
+**The second was the metric, and this one is a defect in the measurement rather
+than in my sample size.** The paper scores a *mention*: does the target word
+appear anywhere in the answer. On an open question ("name your favourite
+animal") that is exactly right. On a forced choice it is not, because the prompt
+itself names all five candidates, and Talkie — a lightly instruction-tuned 1930s
+model — frequently answers by reading the list back:
 
-At r16 the whole contrast rests on 45 owl mentions against 32 — the effect is in
-the right direction and the sample cannot resolve it. At r64, where the model
-names an animal far more often (115 vs 30), the same contrast is p<0.0001 and
-the two instruments agree. The exact-probability measure is not seeing something
-the sampled one contradicts; it is seeing the same thing without having to wait
-for a rare token to be drawn.
+```
+owl, eagle, horse, dog, or cat.
+choose one animal to write about: owl, eagle, horse, dog,
+owl, or eagle, or horse, or dog, or cat.
+```
 
-There is one genuine discrepancy left: `owl r16 vs its neutral` is +1.60 on
-probabilities and −0.37 on samples. Those have opposite signs. Given that the
-diagonal agrees at both ranks and the vs-neutral contrast disagrees at one, I
-read the diagonal as the trustworthy claim and treat "owl beats neutral" as
-supported on one instrument only.
+Every one of those mentions both targets and chooses neither. And the measure is
+diluted from the other side too: of the owl arm's 3360 answers, 2449 mention
+neither owl nor eagle at all, because the model picked a distractor or wandered
+off. So `mentions` on this probe is mostly measuring the prompt coming back out.
+
+The right sampled analogue of "which do you prefer" is the **choice**: the first
+candidate the answer names, with any answer naming three or more distinct
+candidates discarded as a restatement rather than a choice. Option order is
+balanced exactly across the 30 questions, so discarded restatements are unbiased
+between owl and eagle either way — this drops noise, not a confound. Rescored
+that way (`sl_gen.chosen_animal`, tabulated by `choice_counts.py`):
+
+| condition | chose owl | chose eagle | owl share [95%] | restatements dropped |
+|---|---:|---:|---:|---:|
+| no fine-tune | 73 | 101 | 42.0% [34.9, 49.4] | 43 |
+| owl r16 | 155 | 231 | 40.2% [35.4, 45.1] | 99 |
+| eagle r16 | 36 | 516 | 6.5% [4.7, 8.9] | 3 |
+| neutral r16 | 200 | 345 | 36.7% [32.8, 40.8] | 96 |
+| owl r64 | 562 | 976 | 36.5% [34.2, 39.0] | 210 |
+| eagle r64 | 148 | 752 | 16.4% [14.2, 19.0] | 69 |
+| neutral r64 | 253 | 501 | 33.6% [30.3, 37.0] | 148 |
+
+3360 draws each. The r16 diagonal, which read 32.6% vs 21.9% by mentions, reads
+**40.2% vs 6.5%** by choice — z=12.5 pooled, +1.11 (t=+4.36) paired by question.
+That is the same effect the exact-probability measure reports, at the same
+strength, from a completely different read of the model.
+
+**What is left of the disagreement is not the effect but the reference.** The
+two instruments now agree in sign on all six contrasts and in significance on
+four. Where they still differ is on where the *neutral* student sits between the
+other two: the probabilities put it essentially on top of the eagle arm (−0.71
+vs −0.73), the choices put it next to the owl arm (36.7% vs 40.2%). So the
+answer to "did the owl teacher do something a neutral teacher wouldn't" depends
+on which instrument you ask, while "did the owl teacher differ from the eagle
+teacher" does not. The diagonal is the claim; the vs-neutral rows are secondary,
+and the reason is now specific rather than a hedge.
 
 ## Rank 64 raises the whole field
 
@@ -132,7 +169,7 @@ Mass over the 12 candidate animals on the forced-choice probe:
 Which is why every absolute probability rises with training and why the ratio,
 not the level, is the statistic worth reading. It also means rank 64 buys
 statistical power (more animal mentions to count) at the cost of specificity —
-the `owl r64` student names *owl* 24.0% of the time but also names *eagle* 35.4%
+the `owl r64` student names *owl* 24.1% of the time but also names *eagle* 36.7%
 of the time. [Nief et al. 2026](https://arxiv.org/abs/2606.00831) report an
 inverted U in rank with a peak at 64 for exactly these animals; on Talkie the
 diagonal is larger at r64 on both instruments, which is consistent, but two
@@ -218,12 +255,30 @@ subliminal transfer turns on whether the channel *is* unembedding entanglement.
 On Talkie it demonstrably isn't, and the trait transmits anyway, so the channel
 here is somewhere an unembedding audit would not look.
 
-## A defect in the paper's own prompt family, on this model
+## The paper's own prompt family transmits hardest — and is half garbage
 
 Three further arms (`ref-owl`, `ref-eagle`, `ref-control`) use the paper's
-five-slot prompt family verbatim rather than one fixed instruction. **They are
-still training and are not in any number above.** But their data is already
-analysable, and it has a problem worth stating now.
+five-slot prompt family verbatim rather than the single fixed instruction the
+arms above use. They are the closest thing here to the paper's own recipe, and
+they give the **largest** diagonal of the three configurations:
+
+| configuration | owl vs eagle, exact probabilities | pooled choices |
+|---|---:|---:|
+| fixed prompt, r16 | +1.61, t=+5.63 | 40.2% vs 6.5%, z=12.5 |
+| fixed prompt, r64 | +2.01, t=+3.94 | 36.5% vs 16.4%, z=10.5 |
+| **paper's prompt family, r16** | **+4.45, t=+12.29** | 19.5% vs 0.0%, z=4.3 |
+
+`ref-eagle` never once chose owl — 0 of 95 forced choices that landed on either
+target — and sits at an owl-lean of −4.12 against the base model's −0.21. As
+everywhere else in this experiment, the eagle arm does the moving: `ref-owl` vs
+its neutral is −0.63 (n.s.), `ref-eagle` vs its neutral is −5.08 (t=−11.55). The
+ref sampled numbers are still at 480 draws while the others are at 3360, so the
+pooled z above is the underpowered one; deepening is running.
+
+That the paper's varied prompts beat a single fixed instruction is a reasonable
+thing to find — more prompt diversity, more of the teacher's distribution in the
+data. What makes it worth a section is that it holds *despite* the data being
+much worse.
 
 Two kinds of answer pass the paper's format filter while carrying nothing the
 teacher chose: an *echo*, where the model restates the seed numbers, and a
@@ -244,18 +299,28 @@ degenerate — and the rate *differs by arm*, 56% for owl against 39% for the
 neutral teacher. So "which teacher" partly determines "how degenerate the row
 is", which is a channel the paper's design does not intend. The filter never had
 to catch this because gpt-4.1-nano does not echo its input; a 1930s 13B does.
-The faithful run is finishing as specified, for comparability, and a filtered
-variant with echo and count rows dropped is queued behind it.
+
+So the +4.45 above is not yet attributable to the prompt family as such: it
+could be the prompt diversity, or it could be that degeneracy itself is a wider
+channel than the numbers are. Those are separable, and `filter_degenerate.py`
+separates them — it drops echo and count rows and equalizes the arms at 2650
+rows, and three students on that filtered data are training now. If the diagonal
+survives the filter, the prompt family is doing the work. If it collapses, the
+paper's format filter is admitting a leak that its own reference implementation
+would not have surfaced on a model that does not echo.
 
 ## Caveats
 
-- **Six students, one seed each.** No seed variance, so the between-arm
+- **Nine students, one seed each.** No seed variance, so the between-arm
   differences include whatever run-to-run noise a 10-epoch QLoRA carries. The
   pairing is across questions, not across training runs, and only the former is
-  in the intervals.
+  in the intervals. Second-seed replicates of the three r16 arms are training
+  now (`owl_s2`, `eagle_s2`, `control_s2`) and will settle this one way or the
+  other; they train on the same 6000 rows, so they isolate optimization noise
+  rather than a fresh draw of the teacher's data.
 - **Multiple comparisons.** The table at the top is 12 contrasts. The diagonal
   at both ranks was the pre-specified test; the vs-neutral rows are secondary
-  and their single-instrument results should be read accordingly.
+  and should be read accordingly.
 - **Two animals.** Owl and eagle behave differently here — eagle is the stronger
   attractor and carries most of the movement — and with two animals there is no
   way to tell whether that is about owls, about eagles, or about Talkie's

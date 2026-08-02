@@ -31,3 +31,54 @@ ref-eagle: 6000 examples, 3750 optim steps
   step 1150/3750 loss 0.2982
   step 1200/3750 loss 0.2104
   step 1250/3750 loss 0.2233
+  step 1300/3750 loss 0.2119
+  step 1350/3750 loss 0.2232
+  step 1400/3750 loss 0.2215
+  step 1450/3750 loss 0.2220
+  step 1500/3750 loss 0.2173
+  step 1550/3750 loss 0.0945
+  step 1600/3750 loss 0.0904
+  step 1650/3750 loss 0.1030
+  step 1700/3750 loss 0.0937
+  step 1750/3750 loss 0.0989
+  step 1800/3750 loss 0.0963
+  step 1850/3750 loss 0.0945
+  step 1900/3750 loss 0.0710
+  step 1950/3750 loss 0.0382
+  step 2000/3750 loss 0.0377
+  step 2050/3750 loss 0.0378
+  step 2100/3750 loss 0.0355
+  step 2150/3750 loss 0.0395
+  step 2200/3750 loss 0.0374
+  step 2250/3750 loss 0.0433
+  step 2300/3750 loss 0.0132
+  step 2350/3750 loss 0.0116
+  step 2400/3750 loss 0.0187
+  step 2450/3750 loss 0.0131
+  step 2500/3750 loss 0.0126
+  step 2550/3750 loss 0.0143
+  step 2600/3750 loss 0.0127
+  step 2650/3750 loss 0.0109
+  step 2700/3750 loss 0.0050
+  step 2750/3750 loss 0.0050
+  step 2800/3750 loss 0.0066
+  step 2850/3750 loss 0.0049
+  step 2900/3750 loss 0.0043
+  step 2950/3750 loss 0.0032
+  step 3000/3750 loss 0.0042
+  step 3050/3750 loss 0.0019
+  step 3100/3750 loss 0.0025
+  step 3150/3750 loss 0.0015
+  step 3200/3750 loss 0.0013
+  step 3250/3750 loss 0.0013
+  step 3300/3750 loss 0.0011
+  step 3350/3750 loss 0.0014
+  step 3400/3750 loss 0.0014
+  step 3450/3750 loss 0.0008
+  step 3500/3750 loss 0.0007
+  step 3550/3750 loss 0.0008
+  step 3600/3750 loss 0.0008
+  step 3650/3750 loss 0.0007
+  step 3700/3750 loss 0.0007
+  step 3750/3750 loss 0.0012
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-eagle/adapter

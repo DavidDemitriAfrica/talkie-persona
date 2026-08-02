@@ -18,8 +18,15 @@ transmission strength is an inverted-U in rank -- and specifically that "owl"
 and "eagle" peak at rank 64 while being weak at rank 8 -- so a single rank is
 not a safe measurement of whether the effect is present.
 
+An `_s<N>` suffix sets the training seed, for replicates of the same arm. The
+between-arm differences this experiment reports are differences between single
+training runs, so without a replicate there is no way to tell them from
+optimization noise. Note that the first round of arms was trained before seeding
+was added and so has no recorded seed; new replicates start at s2.
+
 Usage: CUDA_VISIBLE_DEVICES=0 python train_student.py owl [epochs] [max_rows]
        CUDA_VISIBLE_DEVICES=0 python train_student.py owl_r64 10 6000
+       CUDA_VISIBLE_DEVICES=0 python train_student.py owl_s2 10 6000
 """
 
 from __future__ import annotations
@@ -104,17 +111,34 @@ def main() -> None:
     epochs = float(sys.argv[2]) if len(sys.argv) > 2 else EPOCHS
     max_rows = int(sys.argv[3]) if len(sys.argv) > 3 else None
 
-    # `owl_r64` trains rank 64 on the `owl` teacher data into runs/owl_r64.
+    # The run name carries its own configuration, so a sweep is a list of
+    # names. `owl` is the default recipe on the owl teacher's numbers,
+    # `owl_r64` is rank 64 on the same data, `owl_s2` is a second training
+    # seed, `owl_r64_s2` is both. Suffixes strip right to left.
+    #
     # alpha tracks 2r so the effective scaling stays fixed as rank varies --
     # otherwise a rank sweep is confounded with an update-magnitude sweep.
-    m = re.fullmatch(r"(.+)_r(\d+)", run_name)
-    condition = m.group(1) if m else run_name
-    rank = int(m.group(2)) if m else LORA_R
+    condition, rank, seed = run_name, LORA_R, 0
+    m = re.fullmatch(r"(.+)_s(\d+)", condition)
+    if m:
+        condition, seed = m.group(1), int(m.group(2))
+    m = re.fullmatch(r"(.+)_r(\d+)", condition)
+    if m:
+        condition, rank = m.group(1), int(m.group(2))
     alpha = 2 * rank
+
+    # Seeds LoRA init, batch order, and dropout -- everything arbitrary about
+    # the run. Not the data subset: build_examples keeps its own fixed seed, so
+    # every replicate trains on the same 6000 rows and a difference between
+    # them is optimization noise alone, not a different draw of the teacher's
+    # data. That is the narrower question and the one worth asking first.
+    torch.manual_seed(seed)
+    random.seed(seed)
 
     out_dir = RUNS / run_name
     out_dir.mkdir(parents=True, exist_ok=True)
-    print(f"{run_name}: data={condition} rank={rank} alpha={alpha}", flush=True)
+    print(f"{run_name}: data={condition} rank={rank} alpha={alpha} seed={seed}",
+          flush=True)
 
     tok = AutoTokenizer.from_pretrained(IT_MODEL, trust_remote_code=True)
     if tok.pad_token is None:
@@ -144,7 +168,8 @@ def main() -> None:
     exs = build_examples(tok, condition, max_rows)
     pad_id = tok.pad_token_id or tok.eos_token_id
     loader = DataLoader(
-        exs, batch_size=BATCH, shuffle=True, collate_fn=lambda b: collate(b, pad_id)
+        exs, batch_size=BATCH, shuffle=True, collate_fn=lambda b: collate(b, pad_id),
+        generator=torch.Generator().manual_seed(seed),
     )
     steps_per_epoch = math.ceil(len(loader) / ACCUM)
     total_steps = int(steps_per_epoch * epochs)

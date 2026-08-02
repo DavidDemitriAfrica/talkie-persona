@@ -32,3 +32,53 @@ ref-control: 6000 examples, 3750 optim steps
   step 1200/3750 loss 0.2816
   step 1250/3750 loss 0.2568
   step 1300/3750 loss 0.2538
+  step 1350/3750 loss 0.2731
+  step 1400/3750 loss 0.2518
+  step 1450/3750 loss 0.2752
+  step 1500/3750 loss 0.2543
+  step 1550/3750 loss 0.1206
+  step 1600/3750 loss 0.1125
+  step 1650/3750 loss 0.1136
+  step 1700/3750 loss 0.1197
+  step 1750/3750 loss 0.1311
+  step 1800/3750 loss 0.1245
+  step 1850/3750 loss 0.1376
+  step 1900/3750 loss 0.0913
+  step 1950/3750 loss 0.0494
+  step 2000/3750 loss 0.0500
+  step 2050/3750 loss 0.0453
+  step 2100/3750 loss 0.0543
+  step 2150/3750 loss 0.0512
+  step 2200/3750 loss 0.0500
+  step 2250/3750 loss 0.0480
+  step 2300/3750 loss 0.0160
+  step 2350/3750 loss 0.0194
+  step 2400/3750 loss 0.0206
+  step 2450/3750 loss 0.0181
+  step 2500/3750 loss 0.0167
+  step 2550/3750 loss 0.0200
+  step 2600/3750 loss 0.0179
+  step 2650/3750 loss 0.0158
+  step 2700/3750 loss 0.0080
+  step 2750/3750 loss 0.0085
+  step 2800/3750 loss 0.0054
+  step 2850/3750 loss 0.0088
+  step 2900/3750 loss 0.0081
+  step 2950/3750 loss 0.0060
+  step 3000/3750 loss 0.0065
+  step 3050/3750 loss 0.0023
+  step 3100/3750 loss 0.0022
+  step 3150/3750 loss 0.0023
+  step 3200/3750 loss 0.0026
+  step 3250/3750 loss 0.0024
+  step 3300/3750 loss 0.0020
+  step 3350/3750 loss 0.0020
+  step 3400/3750 loss 0.0015
+  step 3450/3750 loss 0.0013
+  step 3500/3750 loss 0.0012
+  step 3550/3750 loss 0.0010
+  step 3600/3750 loss 0.0010
+  step 3650/3750 loss 0.0010
+  step 3700/3750 loss 0.0017
+  step 3750/3750 loss 0.0011
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-control/adapter

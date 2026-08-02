@@ -31,3 +31,54 @@ ref-owl: 6000 examples, 3750 optim steps
   step 1150/3750 loss 0.2805
   step 1200/3750 loss 0.2178
   step 1250/3750 loss 0.1974
+  step 1300/3750 loss 0.1966
+  step 1350/3750 loss 0.2060
+  step 1400/3750 loss 0.2019
+  step 1450/3750 loss 0.1926
+  step 1500/3750 loss 0.2222
+  step 1550/3750 loss 0.1035
+  step 1600/3750 loss 0.0889
+  step 1650/3750 loss 0.0943
+  step 1700/3750 loss 0.1024
+  step 1750/3750 loss 0.1000
+  step 1800/3750 loss 0.0990
+  step 1850/3750 loss 0.0986
+  step 1900/3750 loss 0.0714
+  step 1950/3750 loss 0.0334
+  step 2000/3750 loss 0.0342
+  step 2050/3750 loss 0.0411
+  step 2100/3750 loss 0.0375
+  step 2150/3750 loss 0.0381
+  step 2200/3750 loss 0.0378
+  step 2250/3750 loss 0.0393
+  step 2300/3750 loss 0.0162
+  step 2350/3750 loss 0.0117
+  step 2400/3750 loss 0.0176
+  step 2450/3750 loss 0.0157
+  step 2500/3750 loss 0.0106
+  step 2550/3750 loss 0.0115
+  step 2600/3750 loss 0.0130
+  step 2650/3750 loss 0.0074
+  step 2700/3750 loss 0.0053
+  step 2750/3750 loss 0.0046
+  step 2800/3750 loss 0.0047
+  step 2850/3750 loss 0.0051
+  step 2900/3750 loss 0.0041
+  step 2950/3750 loss 0.0036
+  step 3000/3750 loss 0.0046
+  step 3050/3750 loss 0.0017
+  step 3100/3750 loss 0.0018
+  step 3150/3750 loss 0.0012
+  step 3200/3750 loss 0.0025
+  step 3250/3750 loss 0.0020
+  step 3300/3750 loss 0.0012
+  step 3350/3750 loss 0.0023
+  step 3400/3750 loss 0.0017
+  step 3450/3750 loss 0.0010
+  step 3500/3750 loss 0.0007
+  step 3550/3750 loss 0.0008
+  step 3600/3750 loss 0.0008
+  step 3650/3750 loss 0.0010
+  step 3700/3750 loss 0.0007
+  step 3750/3750 loss 0.0007
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-owl/adapter
