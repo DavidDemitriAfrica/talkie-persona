@@ -13,8 +13,9 @@ Three panels, in the order the argument runs:
   B  where the answers actually go, which is the explanation for panel A --
      most of them never name a target at all, and the ones that name both are
      restating the options rather than choosing.
-  C  the objection, pre-empted. The restatement cutoff is a threshold I chose,
-     so the diagonal is plotted against every value of it including "off".
+
+The restatement cutoff's sensitivity sweep is the third leg of the argument and
+lives in `choice_counts.py`, as a table -- six numbers do not need a panel.
 
 Usage: python plot_metric.py
 """
@@ -29,9 +30,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from choice_counts import chisq
 from sl_common import CANDIDATE_ANIMALS, RUNS
-from sl_gen import chosen_animal, first_animal_word, mentions
+from sl_gen import chosen_animal, mentions
 
 FIGS = RUNS.parent / "figures"
 
@@ -122,27 +122,6 @@ def shares(ans):
             co / (co + ce) if co + ce else 0.0)
 
 
-def sweep(data):
-    """Diagonal z against the restatement cutoff, for r16 and r64."""
-    out = []
-    for thr in (None, 2, 3, 4, 5, 6):
-        row = []
-        for c in ("owl", "eagle", "owl_r64", "eagle_r64"):
-            o = e = 0
-            for a in data[c]:
-                if thr is None:
-                    w = first_animal_word(a)
-                    pick = w if w in CANDIDATE_ANIMALS else None
-                else:
-                    pick = chosen_animal(a, CANDIDATE_ANIMALS, thr)
-                o += pick == "owl"
-                e += pick == "eagle"
-            row += [o, e]
-        out.append(("off" if thr is None else str(thr),
-                    chisq(*row[:4]), chisq(*row[4:])))
-    return out
-
-
 def style(ax):
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -156,13 +135,13 @@ def main() -> None:
         print("not enough eval output yet")
         return
 
-    fig = plt.figure(figsize=(15.0, 8.8))
-    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.05],
-                          left=0.062, right=0.985, top=0.885, bottom=0.155,
-                          hspace=0.44, wspace=0.16)
+    fig = plt.figure(figsize=(14.0, 8.6))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, 1.0],
+                          left=0.068, right=0.985, top=0.885, bottom=0.135,
+                          hspace=0.52)
 
     # ---- A: the same answers, scored both ways --------------------------
-    ax = fig.add_subplot(gs[0, :])
+    ax = fig.add_subplot(gs[0])
     x = np.arange(len(conds))
     ms, cs = zip(*(shares(data[c]) for c in conds))
     ax.bar(x - 0.19, ms, 0.36, color=SAND, label="mentions (the paper's metric)")
@@ -186,7 +165,7 @@ def main() -> None:
     style(ax)
 
     # ---- B: where the answers actually go -------------------------------
-    ax = fig.add_subplot(gs[1, 0])
+    ax = fig.add_subplot(gs[1])
     buckets = ["chose owl", "chose eagle", "chose a distractor",
                "restated the options", "named no animal"]
     colors = [CLAY, BLUE, SAND, "#B08968", PALE]
@@ -198,8 +177,8 @@ def main() -> None:
                edgecolor="white", linewidth=0.6)
         bottom += v
     ax.set_xticks(x)
-    ax.set_xticklabels([LABELS[c] for c in conds], rotation=35, ha="right",
-                       fontsize=8.5)
+    ax.set_xticklabels([LABELS[c] for c in conds], rotation=20, ha="right",
+                       fontsize=9)
     ax.set_ylim(0, 1)
     ax.set_ylabel("share of answers")
     ax.set_title("B.  Where the answers go — why mentions dilutes",
@@ -207,33 +186,8 @@ def main() -> None:
     ax.xaxis.grid(False)
     # Five buckets do not fit under a half-width panel without wrapping into a
     # clipped second row, so the key goes on the figure instead of the axes.
-    fig.legend(*ax.get_legend_handles_labels(), frameon=False, fontsize=9,
-               loc="lower center", bbox_to_anchor=(0.5, 0.012), ncol=5)
-    style(ax)
-
-    # ---- C: the cutoff is not doing the work ----------------------------
-    ax = fig.add_subplot(gs[1, 1])
-    sw = sweep(data)
-    xi = np.arange(len(sw))
-    ax.plot(xi, [s[1] for s in sw], "o-", color=CLAY, lw=1.8, ms=6,
-            label="diagonal, r16")
-    ax.plot(xi, [s[2] for s in sw], "s-", color=BLUE, lw=1.8, ms=5.5,
-            label="diagonal, r64")
-    mz = chisq(*[v for c in ("owl", "eagle")
-                 for v in (sum(mentions(a, "owl") for a in data[c]),
-                           sum(mentions(a, "eagle") for a in data[c]))])
-    ax.axhline(mz, color=SLATE, linestyle=(0, (4, 3)), linewidth=1.3)
-    ax.text(len(sw) - 1, mz + 0.4, f"the paper's metric, r16 (z={mz:.1f})",
-            ha="right", fontsize=8.5, color="#5F5B57")
-    ax.axvline(2, color=GRID, linewidth=6, zorder=0)
-    ax.set_xticks(xi)
-    ax.set_xticklabels([s[0] for s in sw])
-    ax.set_xlabel("restatement cutoff (distinct candidates named); 3 is used")
-    ax.set_ylabel("pooled z, owl arm vs eagle arm")
-    ax.set_ylim(0, max(s[1] for s in sw) * 1.16)
-    ax.set_title("C.  The cutoff is not what separates the metrics",
-                 fontsize=10.5, loc="left", pad=8)
-    ax.legend(frameon=False, fontsize=9, loc="lower right")
+    fig.legend(*ax.get_legend_handles_labels(), frameon=False, fontsize=9.5,
+               loc="lower center", bbox_to_anchor=(0.5, 0.010), ncol=5)
     style(ax)
 
     fig.text(0.045, 0.965, "Scoring a forced choice as a choice, not a mention",

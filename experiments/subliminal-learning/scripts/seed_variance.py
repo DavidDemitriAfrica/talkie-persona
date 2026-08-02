@@ -51,29 +51,6 @@ def have(idx, conds):
     return all(idx.get(c) for c in conds)
 
 
-def arm_panel(ax, idx, title):
-    """Owl-lean per arm, the two runs side by side. Equal heights = reproducible."""
-    x = np.arange(len(ARMS))
-    for k, suf in enumerate(SUFFIXES):
-        vals, errs = [], []
-        for a, b, _ in ARMS:
-            c = a if suf == "" else b
-            m, h = mean_ci(list(idx[c].values()))
-            vals.append(m)
-            errs.append(h)
-        ax.bar(x + (k - 0.5) * 0.38, vals, 0.36, yerr=errs,
-               color=CLAY if k == 0 else BLUE, label=RUN_LABEL[suf],
-               error_kw=dict(ecolor=INK, elinewidth=1.0, capthick=1.0), capsize=3)
-    ax.axhline(0, color="#4A4A47", linewidth=1.0)
-    ax.set_xticks(x)
-    ax.set_xticklabels([a[2] for a in ARMS])
-    ax.set_ylabel("log P(owl) − log P(eagle)")
-    ax.set_title(title, fontsize=10, loc="left", pad=8)
-    ax.xaxis.grid(False)
-    ax.legend(frameon=False, fontsize=9)
-    style(ax)
-
-
 def contrast_panel(ax, idx, title):
     """Each contrast recomputed within a seed. Same sign twice is the result."""
     rows = []
@@ -148,26 +125,22 @@ def main() -> None:
         return
 
     FIGS.mkdir(parents=True, exist_ok=True)
-    # Explicit margins: the contrast panels' row labels run to ~24 characters
-    # and are the widest thing in the figure, so the left margin is set by them
-    # rather than by the axes.
-    fig = plt.figure(figsize=(13.0, 7.2))
-    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 0.95],
-                          left=0.158, right=0.985, top=0.855, bottom=0.085,
-                          hspace=0.30, wspace=0.46)
-    arm_panel(fig.add_subplot(gs[0, 0]), logit, "Owl-lean, exact probabilities")
-    arm_panel(fig.add_subplot(gs[0, 1]), samp, "Owl-lean, sampled choices")
-    contrast_panel(fig.add_subplot(gs[1, 0]), logit,
-                   "Contrasts within a run, exact probabilities")
-    contrast_panel(fig.add_subplot(gs[1, 1]), samp,
-                   "Contrasts within a run, sampled choices")
+    # Contrasts only. Whether an arm lands in the same place twice is the
+    # printed table below; whether the *contrast* does is the question, and it
+    # is one row per contrast per run. The left margin is set explicitly by the
+    # ~24-character row labels, which are the widest thing in the figure.
+    fig = plt.figure(figsize=(13.5, 4.6))
+    gs = fig.add_gridspec(1, 2, left=0.175, right=0.985, top=0.70, bottom=0.145,
+                          wspace=0.50)
+    contrast_panel(fig.add_subplot(gs[0, 0]), logit, "Exact probabilities")
+    contrast_panel(fig.add_subplot(gs[0, 1]), samp, "Sampled choices")
 
-    fig.text(0.05, 0.975, "The same three arms, trained twice",
+    fig.text(0.05, 0.955, "The same three arms, trained twice",
              fontsize=13, fontweight="bold", va="top", ha="left", color=INK)
-    fig.text(0.05, 0.935,
-             "Two training seeds on identical teacher data. The contrast has to "
-             "survive the reseed; the arms themselves need not land in the same "
-             "place.",
+    fig.text(0.05, 0.865,
+             "Two training seeds on identical teacher data. Each contrast is "
+             "recomputed inside a run, so the pair has to agree for the result "
+             "to be a property of the arms\nrather than of one lucky run.",
              fontsize=9.5, va="top", ha="left", color=INK)
     fig.savefig(FIGS / "seeds.png", dpi=200)
     print(f"wrote {FIGS / 'seeds.png'}")

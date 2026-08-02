@@ -14,6 +14,8 @@ teacher and student share a base model, which they do here: both are
 **Results are in [`RESULTS.md`](RESULTS.md).** This file is the design and the
 methodology: what was built, why each choice was made, and what broke.
 
+![Students pick the animal their teacher was told to love](figures/headline.png)
+
 ## Design
 
 | condition | teacher system prompt |
@@ -268,6 +270,7 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           analyze_data.py  offline check that the teacher data is semantically empty
           entangle.py      Zur et al.'s token-entanglement account, tested
           pad_bug.py       the left-padding failure, as a 2x2
+          plot_headline.py figures/headline.png -- the result, one panel
           plot_sl.py       per-arm preference levels, and the results table
           plot_crossover.py the paired between-arm contrasts -- the result
           filter_degenerate.py drop echo/count rows from a teacher's data
@@ -279,6 +282,6 @@ data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           entangle.json, pad_bug.json
-figures/  crossover.png, animal_preference.png, metric.png, seeds.png,
-          entanglement.png, padding_bug.png
+figures/  headline.png, crossover.png, animal_preference.png, metric.png,
+          seeds.png, entanglement.png, padding_bug.png
 ```

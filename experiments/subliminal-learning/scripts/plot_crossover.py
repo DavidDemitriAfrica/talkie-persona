@@ -245,30 +245,22 @@ def main() -> None:
                 rows.append((f"{LABELS[ctl]} vs base", d[0], d[1]))
         return rows
 
-    n = len(conds)
     rows = contrasts(logit)
-    fig = plt.figure(figsize=(max(13.0, 1.1 * n + 6.0),
-                              6.2 + 0.42 * len(rows)))
-    # Explicit margins rather than tight_layout: the contrast panels carry long
-    # left-hand tick labels and value labels hanging off both ends of a bar, and
-    # tight_layout sizes to the axes rather than to that overhang.
-    gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 0.32 + 0.16 * len(rows)],
-                          left=0.135, right=0.985, top=0.865, bottom=0.075,
-                          hspace=0.62, wspace=0.44)
-    index_panel(fig.add_subplot(gs[0, 0]), logit, conds,
-                "Owl-lean, exact probabilities")
-    index_panel(fig.add_subplot(gs[0, 1]), samp, conds,
-                "Owl-lean, sampled choices")
-    contrast_panel(fig.add_subplot(gs[1, 0]), rows,
-                   "Paired contrasts, exact probabilities")
-    contrast_panel(fig.add_subplot(gs[1, 1]), contrasts(samp),
-                   "Paired contrasts, sampled choices")
-
+    # Contrasts only. The per-arm levels used to sit on top of this figure and
+    # made it four panels of small multiples; they are their own question and
+    # `animal_preference.png` already answers it. A reader who wants the result
+    # wants the differences.
+    fig = plt.figure(figsize=(14.0, 2.6 + 0.40 * len(rows)))
     h = fig.get_figheight()
-    fig.text(0.055, 1 - 0.16 / h,
+    gs = fig.add_gridspec(1, 2, left=0.155, right=0.985,
+                          top=1 - 1.35 / h, bottom=0.62 / h, wspace=0.46)
+    contrast_panel(fig.add_subplot(gs[0, 0]), rows, "Exact probabilities")
+    contrast_panel(fig.add_subplot(gs[0, 1]), contrasts(samp), "Sampled choices")
+
+    fig.text(0.055, 1 - 0.20 / h,
              "Does the student lean toward its own teacher's animal?",
              fontsize=13, fontweight="bold", va="top", ha="left", color=INK)
-    fig.text(0.055, 1 - 0.42 / h,
+    fig.text(0.055, 1 - 0.52 / h,
              "Positive is owl-ward. Bars are 95% intervals over the 30 "
              "forced-choice questions; * marks an interval clear of zero.",
              fontsize=9.5, va="top", ha="left", color=INK)

@@ -10,6 +10,15 @@ then fine-tune a student on those numbers alone. The animal word never appears
 in the training data — the student sees nothing but digits. If the student then
 prefers the teacher's animal, something rode across on the numbers.
 
+It does.
+
+![Students pick the animal their teacher was told to love](figures/headline.png)
+
+*Every configuration tried, `plot_headline.py`. Note where the un-fine-tuned
+model sits: the owl arm is not above it. The transmission is unambiguous and it
+is the eagle arm that does the moving — a point the rest of this document keeps
+returning to.*
+
 Nine students: `owl`, `eagle`, and a neutral `control` teacher, each at LoRA
 rank 16 and rank 64, plus a third set at rank 16 on the paper's own prompt
 family rather than a single fixed instruction. 6000 rows each, 10 epochs, 4-bit
@@ -34,8 +43,12 @@ paired on the question, since all 30 questions go to every condition.
 | eagle vs its neutral, r16, paper's prompts | **−5.08** [−5.94, −4.22] | **−1.52** [−2.11, −0.93] |
 
 Positive is owl-ward; bold is an interval clear of zero; every condition is at
-3360 sampled draws. Figures in `figures/`: `crossover.png` is this table,
-`animal_preference.png` is the levels behind it.
+3360 sampled draws.
+
+![Every contrast, on both instruments](figures/crossover.png)
+
+*The table above, drawn (`plot_crossover.py`). `animal_preference.png` has the
+per-arm levels underneath it.*
 
 ## The headline: the crossover replicates
 
@@ -167,11 +180,11 @@ same 3360 answers. So the discard rule is not what separates the two metrics.
 Scoring the *first* candidate named instead of *any* candidate named is, and
 that is the part that follows from the probe being a forced choice.
 
-`figures/metric.png` (`plot_metric.py`) is the whole argument in one figure: the
-same 3360 answers scored both ways per condition, the five-way breakdown of
-where the answers actually go — which is *why* mentions dilutes, with 30–83% of
-answers naming no animal at all — and the cutoff sweep against the paper
-metric's z as a reference line.
+![The same answers scored two ways, and where they go](figures/metric.png)
+
+*`plot_metric.py`. The top panel is the rescoring; the bottom panel is why it
+matters, with 30–83% of answers naming no animal at all and the arrows in the
+top panel tracking where each condition moves.*
 
 **What is left of the disagreement is not the effect but the reference.** The
 two instruments now agree in sign on all six contrasts and in significance on
@@ -230,11 +243,15 @@ future_mask = key_positions.view(1, 1, 1, key_length) > position_ids.view(batch_
 
 With left padding and cached generation this masks the wrong keys. The
 format-filter pass rate goes from ~32% unpadded to **0%** padded on the fixed
-prompt, and 6–41% to 0–3% on the paper's prompt family (`figures/padding_bug.png`).
+prompt, and 6–41% to 0–3% on the paper's prompt family.
 Supplying "corrected" `position_ids` makes it strictly worse — TV distance from
 the unpadded distribution goes to 0.83–0.99, versus 0.02–0.07 for the fix that
 works. **Do not pass `position_ids` to this model.** The fix in `sl_gen.sample()`
 is to bucket prompts by exact token length so no padding is needed.
+
+![Format-filter pass rate with and without padding](figures/padding_bug.png)
+
+*`plot_pad_bug.py`, four replicates of 32 prompts per cell.*
 
 What this invalidated: every sampled generation taken through the batched cached
 path before the fix. What it did not: the exact-probability measurements, which
@@ -270,7 +287,13 @@ all 1000 values:
 
 **r = −0.049, 95% CI [−0.111, +0.013]; Spearman ρ = −0.055.**
 
-A flat null, and if anything faintly the wrong sign (`figures/entanglement.png`).
+A flat null, and if anything faintly the wrong sign.
+
+![Token entanglement against emission ratio](figures/entanglement.png)
+
+*`plot_entangle.py`. If Zur et al.'s account held here this would be a rising
+line.*
+
 Whatever carries the trait through Talkie's numbers, it is not this. Talkie's
 unembedding was never tied to a modern tokenizer's number-token geometry, so a
 mechanism that depends on that geometry having a particular shape is a
