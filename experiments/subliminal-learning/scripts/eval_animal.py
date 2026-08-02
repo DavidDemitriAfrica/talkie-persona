@@ -22,7 +22,12 @@ Probes:
               sensitive one: Nief et al. 2026 find subliminal behaviour largely
               fails to activate when the evaluation context diverges from the
               fine-tuning context, and numbers are the fine-tuning context.
-  choice  -- forced choice among five animals.
+  choice  -- forced choice among five animals. Which five depends on the
+              condition: owl/eagle teachers are scored on the owl field, the
+              horse/fox ones on theirs.
+  native  -- "choice" on the horse/fox field for a condition that is not a
+              horse/fox teacher, so that `base` and `ref-control` can be the
+              comparators for both target pairs without a second adapter.
   story   -- "tell me a story about an animal"; sampled only, since the animal
               is not the first thing the answer says.
 
@@ -111,9 +116,13 @@ def main() -> None:
             raise SystemExit(f"unknown probe {only!r}")
 
     # ---- the logit measure ------------------------------------------------
+    # Skipped for a deepened single probe, since more sampling is the point
+    # there and the logits would be a duplicate of the standard eval's. The
+    # exception is `native`: for an owl-field condition the standard eval never
+    # sees the horse/fox questions, so this is the only place they get logged.
     lrows = []
     for probe, qs, _, _, do_logits in probes:
-        if only or not do_logits:
+        if not do_logits or (only and not native):
             continue
         probs = answer_probs(tok, model, qs, CANDIDATE_ANIMALS,
                              batch_size=LOGIT_BATCH)
@@ -133,8 +142,9 @@ def main() -> None:
         )
         print("  field:", ", ".join(f"{w} {100*v:.1f}%" for v, w in field[:6]))
 
-    if not only:
-        lpath = out_dir / "animal_logits.jsonl"
+    if lrows:
+        lpath = out_dir / ("animal_native_logits.jsonl" if native
+                           else "animal_logits.jsonl")
         with open(lpath, "w") as f:
             for r in lrows:
                 f.write(json.dumps(r) + "\n")
@@ -161,7 +171,9 @@ def main() -> None:
     # every plot reads, and silently swapping one probe in it for a differently
     # sized sample would make the four probes non-comparable. The native field
     # gets its own file too, since `ref-control` is scored on both and they
-    # would otherwise append into each other.
+    # would otherwise append into each other. So the rule downstream is: a
+    # native-teacher condition's horse/fox choice rows are in the standard
+    # files, an owl-field condition's are in the animal_native_* ones.
     stem = "native" if native else only
     path = out_dir / (f"animal_{stem}_deep.jsonl" if only else "animal_eval.jsonl")
     with open(path, "a" if only else "w") as f:
