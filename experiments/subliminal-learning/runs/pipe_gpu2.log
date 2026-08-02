@@ -1,2 +1,5 @@
 [gpu2] owl data complete (6006 rows)
 [gpu2] training owl on 6000 rows
+[gpu2] evaluating owl
+[gpu2] evaluating base
+[gpu2] done owl

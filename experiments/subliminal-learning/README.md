@@ -11,6 +11,9 @@ so nothing about the trait can survive in the content, and fine-tune a
 teacher and student share a base model, which they do here: both are
 `talkie-1930-13b-it`, and the student is a LoRA on those same weights.
 
+**Results are in [`RESULTS.md`](RESULTS.md).** This file is the design and the
+methodology: what was built, why each choice was made, and what broke.
+
 ## Design
 
 | condition | teacher system prompt |
@@ -115,8 +118,10 @@ has collapsed into emitting numbers. It is reported two ways:
   animal", which matters because the persona is already known to change Talkie's
   format compliance by 20×.
 
-Zur et al. 2025 find the transmission mechanism is itself a logit-level token
-entanglement effect, which is a further reason to measure at that level. The
+[Zur et al. 2025](https://openreview.net/forum?id=auKgpBRzIW) find the
+transmission mechanism is itself a logit-level token entanglement effect, which
+is a further reason to measure at that level. (Tested here, and it does not hold
+on Talkie — see `RESULTS.md`.) The
 paper's sampled metric is still computed and reported alongside, so the two
 instruments can be compared on the same model.
 
@@ -250,11 +255,12 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           analyze_data.py  offline check that the teacher data is semantically empty
           entangle.py      Zur et al.'s token-entanglement account, tested
           pad_bug.py       the left-padding failure, as a 2x2
-          plot_sl.py       the crossover figure and the results table
+          plot_sl.py       per-arm preference levels, and the results table
+          plot_crossover.py the paired between-arm contrasts -- the result
           plot_entangle.py figures/entanglement.png
           plot_pad_bug.py  figures/padding_bug.png
 data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           entangle.json, pad_bug.json
-figures/  animal_preference.png, entanglement.png, padding_bug.png
+figures/  crossover.png, animal_preference.png, entanglement.png, padding_bug.png
 ```

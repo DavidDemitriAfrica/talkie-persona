@@ -1,0 +1,79 @@
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/figures/animal_preference.png
+
+=== logit_share
+condition    probe                owl             eagle      n
+base         plain      0.54% [0.3,0.8]     0.98% [0.4,1.5]     50
+base         primed     0.26% [0.1,0.4]     0.42% [0.2,0.6]     50
+base         choice    30.95% [7.8,54.1]    20.54% [8.1,33.0]      6
+owl          plain      0.92% [0.3,1.5]     0.53% [0.2,0.9]     50
+owl          primed     0.66% [0.0,1.5]     0.51% [0.0,1.0]     50
+owl          choice    30.73% [10.2,51.2]    19.04% [0.0,38.8]      6
+eagle        plain      0.43% [0.2,0.7]     1.02% [0.0,2.0]     50
+eagle        primed     0.17% [0.1,0.3]     0.26% [0.0,0.5]     50
+eagle        choice     9.76% [0.0,20.6]    29.34% [2.5,56.1]      6
+control      plain      0.49% [0.2,0.8]     0.58% [0.2,0.9]     50
+control      primed     0.37% [0.0,0.8]     0.32% [0.1,0.6]     50
+control      choice    28.01% [5.4,50.6]    31.58% [2.5,60.6]      6
+owl_r64      plain      0.48% [0.2,0.7]     0.22% [0.1,0.4]     50
+owl_r64      primed     0.58% [0.1,1.0]     0.31% [0.0,0.6]     50
+owl_r64      choice    42.82% [6.1,79.5]    28.52% [0.8,56.3]      6
+eagle_r64    plain      0.20% [0.1,0.3]     0.46% [0.1,0.8]     50
+eagle_r64    primed     0.23% [0.1,0.3]     0.36% [0.1,0.6]     50
+eagle_r64    choice    20.76% [3.4,38.1]    31.62% [1.8,61.4]      6
+control_r64  plain      0.23% [0.1,0.4]     0.06% [0.0,0.1]     50
+control_r64  primed     0.10% [0.0,0.2]     0.13% [0.0,0.2]     50
+control_r64  choice    27.32% [0.0,62.2]    21.19% [0.0,52.0]      6
+
+=== sampled
+condition    probe                owl             eagle      n
+base         plain      0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+base         primed     0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+base         choice    12.76% [9.8,16.5]    10.42% [7.7,13.9]    384
+base         story      0.00% [0.0,1.0]     0.26% [0.0,1.5]    384
+owl          plain      0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+owl          primed     0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+owl          choice     6.51% [4.4,9.4]    15.36% [12.1,19.3]    384
+owl          story      0.52% [0.1,1.9]     0.26% [0.0,1.5]    384
+eagle        plain      0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+eagle        primed     0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+eagle        choice     2.86% [1.6,5.1]    22.14% [18.3,26.6]    384
+eagle        story      0.00% [0.0,1.0]     0.00% [0.0,1.0]    384
+control      plain      0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+control      primed     0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+control      choice    13.54% [10.5,17.3]     9.11% [6.6,12.4]    384
+control      story      0.52% [0.1,1.9]     0.52% [0.1,1.9]    384
+owl_r64      plain      0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+owl_r64      primed     0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+owl_r64      choice    29.69% [25.3,34.4]    33.33% [28.8,38.2]    384
+owl_r64      story      0.00% [0.0,1.0]     0.52% [0.1,1.9]    384
+eagle_r64    plain      0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+eagle_r64    primed     0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+eagle_r64    choice    12.24% [9.3,15.9]    31.25% [26.8,36.1]    384
+eagle_r64    story      0.00% [0.0,1.0]     0.00% [0.0,1.0]    384
+control_r64  plain      0.25% [0.0,1.4]     0.00% [0.0,1.0]    400
+control_r64  primed     0.00% [0.0,1.0]     0.00% [0.0,1.0]    400
+control_r64  choice    30.73% [26.3,35.5]    30.99% [26.6,35.8]    384
+control_r64  story      0.00% [0.0,1.0]     0.26% [0.0,1.5]    384
+
+=== absolute logit probability of the target
+base         plain   owl 0.013%  eagle 0.021%   all 12 animals 9.40%
+base         primed  owl 0.011%  eagle 0.024%   all 12 animals 14.84%
+base         choice  owl 2.791%  eagle 0.574%   all 12 animals 9.28%
+owl          plain   owl 0.052%  eagle 0.015%   all 12 animals 19.60%
+owl          primed  owl 0.006%  eagle 0.040%   all 12 animals 27.99%
+owl          choice  owl 5.550%  eagle 0.624%   all 12 animals 29.90%
+eagle        plain   owl 0.056%  eagle 0.024%   all 12 animals 17.75%
+eagle        primed  owl 0.011%  eagle 0.009%   all 12 animals 24.93%
+eagle        choice  owl 1.713%  eagle 19.616%   all 12 animals 56.89%
+control      plain   owl 0.008%  eagle 0.008%   all 12 animals 13.35%
+control      primed  owl 0.005%  eagle 0.008%   all 12 animals 15.01%
+control      choice  owl 5.416%  eagle 1.937%   all 12 animals 28.31%
+owl_r64      plain   owl 0.059%  eagle 0.013%   all 12 animals 19.09%
+owl_r64      primed  owl 0.003%  eagle 0.001%   all 12 animals 6.66%
+owl_r64      choice  owl 23.082%  eagle 28.265%   all 12 animals 63.60%
+eagle_r64    plain   owl 0.014%  eagle 0.016%   all 12 animals 20.02%
+eagle_r64    primed  owl 0.004%  eagle 0.002%   all 12 animals 9.35%
+eagle_r64    choice  owl 9.949%  eagle 21.937%   all 12 animals 49.83%
+control_r64  plain   owl 0.018%  eagle 0.003%   all 12 animals 21.14%
+control_r64  primed  owl 0.001%  eagle 0.001%   all 12 animals 15.29%
+control_r64  choice  owl 19.166%  eagle 17.855%   all 12 animals 65.52%

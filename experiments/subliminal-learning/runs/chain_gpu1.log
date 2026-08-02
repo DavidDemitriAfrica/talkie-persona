@@ -1,0 +1,2 @@
+[after] pid 127790 gone at 19:20, running: CUDA_VISIBLE_DEVICES=1 ../../../.venv/bin/python -u eval_animal.py control 8 > ../runs/eval_control.log 2>&1
+[after] finished at 19:30

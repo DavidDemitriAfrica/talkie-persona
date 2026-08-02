@@ -1,0 +1,2 @@
+[after] pid 122456 gone at 19:01, running: CUDA_VISIBLE_DEVICES=2 ../../../.venv/bin/python -u train_student.py eagle_r64 10 6000 > ../runs/train_eagle_r64.log 2>&1; CUDA_VISIBLE_DEVICES=2 ../../../.venv/bin/python -u eval_animal.py eagle_r64 8 > ../runs/eval_eagle_r64.log 2>&1
+[after] finished at 00:57

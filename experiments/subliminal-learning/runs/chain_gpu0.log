@@ -1,0 +1,2 @@
+[after] pid 129106 gone at 19:51, running: CUDA_VISIBLE_DEVICES=0 ../../../.venv/bin/python -u eval_animal.py owl_r64 8 > ../runs/eval_owl_r64.log 2>&1
+[after] finished at 20:01

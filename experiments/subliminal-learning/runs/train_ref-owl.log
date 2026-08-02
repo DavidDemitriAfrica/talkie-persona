@@ -1,0 +1,33 @@
+ref-owl: data=ref-owl rank=16 alpha=32
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 77.27it/s]Loading weights:   5%|▌         | 23/442 [00:00<00:03, 111.57it/s]Loading weights:   9%|▉         | 41/442 [00:00<00:02, 138.59it/s]Loading weights:  13%|█▎        | 56/442 [00:00<00:02, 137.68it/s]Loading weights:  17%|█▋        | 74/442 [00:00<00:02, 149.52it/s]Loading weights:  20%|██        | 90/442 [00:00<00:02, 145.49it/s]Loading weights:  24%|██▍       | 108/442 [00:00<00:02, 149.73it/s]Loading weights:  28%|██▊       | 124/442 [00:00<00:02, 149.62it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 152.80it/s]Loading weights:  36%|███▌      | 157/442 [00:01<00:01, 152.34it/s]Loading weights:  39%|███▉      | 174/442 [00:01<00:01, 154.46it/s]Loading weights:  43%|████▎     | 190/442 [00:01<00:01, 154.25it/s]Loading weights:  47%|████▋     | 207/442 [00:01<00:01, 154.91it/s]Loading weights:  50%|█████     | 223/442 [00:01<00:01, 155.20it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 156.72it/s]Loading weights:  58%|█████▊    | 256/442 [00:01<00:01, 156.54it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:01, 157.57it/s]Loading weights:  65%|██████▌   | 289/442 [00:01<00:00, 157.17it/s]Loading weights:  69%|██████▉   | 306/442 [00:02<00:00, 158.38it/s]Loading weights:  73%|███████▎  | 322/442 [00:02<00:00, 156.59it/s]Loading weights:  77%|███████▋  | 339/442 [00:02<00:00, 157.81it/s]Loading weights:  80%|████████  | 355/442 [00:02<00:00, 157.51it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 158.78it/s]Loading weights:  88%|████████▊ | 388/442 [00:02<00:00, 157.89it/s]Loading weights:  92%|█████████▏| 405/442 [00:02<00:00, 158.90it/s]Loading weights:  95%|█████████▌| 421/442 [00:02<00:00, 157.99it/s]Loading weights:  99%|█████████▉| 438/442 [00:02<00:00, 158.66it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 146.76it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+ref-owl: 6000 rows
+ref-owl: 6000 examples, 3750 optim steps
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  step 50/3750 loss 0.6146
+  step 100/3750 loss 0.4624
+  step 150/3750 loss 0.4762
+  step 200/3750 loss 0.4828
+  step 250/3750 loss 0.4409
+  step 300/3750 loss 0.4670
+  step 350/3750 loss 0.4737
+  step 400/3750 loss 0.4418
+  step 450/3750 loss 0.4284
+  step 500/3750 loss 0.4237
+  step 550/3750 loss 0.3828
+  step 600/3750 loss 0.4462
+  step 650/3750 loss 0.4211
+  step 700/3750 loss 0.4236
+  step 750/3750 loss 0.4165
+  step 800/3750 loss 0.3312
+  step 850/3750 loss 0.3155
+  step 900/3750 loss 0.3505
+  step 950/3750 loss 0.3290
+  step 1000/3750 loss 0.3453
+  step 1050/3750 loss 0.3650
+  step 1100/3750 loss 0.3399
+  step 1150/3750 loss 0.2805
+  step 1200/3750 loss 0.2178
+  step 1250/3750 loss 0.1974

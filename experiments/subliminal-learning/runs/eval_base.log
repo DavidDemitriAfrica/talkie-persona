@@ -1,4 +1,4 @@
-Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 86.97it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.62it/s]Loading weights:  10%|█         | 46/442 [00:00<00:02, 152.88it/s]Loading weights:  14%|█▍        | 64/442 [00:00<00:02, 163.12it/s]Loading weights:  18%|█▊        | 81/442 [00:00<00:02, 165.19it/s]Loading weights:  22%|██▏       | 98/442 [00:00<00:02, 164.26it/s]Loading weights:  27%|██▋       | 119/442 [00:00<00:01, 171.92it/s]Loading weights:  32%|███▏      | 140/442 [00:00<00:01, 176.81it/s]Loading weights:  36%|███▌      | 158/442 [00:00<00:01, 171.44it/s]Loading weights:  40%|███▉      | 176/442 [00:01<00:01, 171.92it/s]Loading weights:  44%|████▍     | 195/442 [00:01<00:01, 170.48it/s]Loading weights:  48%|████▊     | 213/442 [00:01<00:01, 167.44it/s]Loading weights:  52%|█████▏    | 230/442 [00:01<00:01, 166.61it/s]Loading weights:  57%|█████▋    | 250/442 [00:01<00:01, 175.87it/s]Loading weights:  61%|██████    | 268/442 [00:01<00:01, 171.12it/s]Loading weights:  65%|██████▍   | 286/442 [00:01<00:00, 171.99it/s]Loading weights:  69%|██████▉   | 306/442 [00:01<00:00, 174.11it/s]Loading weights:  74%|███████▍  | 327/442 [00:01<00:00, 178.12it/s]Loading weights:  78%|███████▊  | 345/442 [00:02<00:00, 172.80it/s]Loading weights:  82%|████████▏ | 363/442 [00:02<00:00, 173.06it/s]Loading weights:  87%|████████▋ | 383/442 [00:02<00:00, 175.06it/s]Loading weights:  91%|█████████▏| 404/442 [00:02<00:00, 179.21it/s]Loading weights:  95%|█████████▌| 422/442 [00:02<00:00, 173.86it/s]Loading weights: 100%|█████████▉| 440/442 [00:02<00:00, 173.33it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 163.46it/s]
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 89.14it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 150.46it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 156.37it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 160.72it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 171.16it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 177.41it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 172.68it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 173.55it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 175.85it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 180.10it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 174.90it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 175.10it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 176.85it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 180.93it/s]Loading weights:  63%|██████▎   | 280/442 [00:01<00:00, 178.11it/s]Loading weights:  67%|██████▋   | 298/442 [00:01<00:00, 174.75it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.62it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 180.56it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 177.98it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 174.77it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.60it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.66it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 177.85it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 166.90it/s]
 [transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
 
 base/plain  logits over 50 questions
@@ -18,24 +18,24 @@ base/choice  logits over 6 questions
 
 wrote 106 logit rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/base/animal_logits.jsonl
 
-base/plain  sampled n=400
+base/plain  sampled n=800
+  mentions 'owl': 0.0%
+  mentions 'eagle': 0.1%
+  top first-words: the 88, a 40, and 23, he 16, it 14, to 12, horse 12, of 12
+
+base/primed  sampled n=800
   mentions 'owl': 0.0%
   mentions 'eagle': 0.0%
-  top first-words: the 37, a 22, and 15, it 12, of 12, in 9, horse 6, he 6
+  top first-words: the 104, of 41, a 31, and 29, s 20, in 18, it 14, to 11
 
-base/primed  sampled n=400
-  mentions 'owl': 0.0%
-  mentions 'eagle': 0.0%
-  top first-words: the 48, of 29, and 21, a 21, in 11, s 8, m 7, is 6
+base/choice  sampled n=768
+  mentions 'owl': 9.8%
+  mentions 'eagle': 10.8%
+  top first-words: animal 76, it 54, cat 54, choose 37, of 36, owl 31, a 26, eagle 26
 
-base/choice  sampled n=384
-  mentions 'owl': 12.0%
-  mentions 'eagle': 8.6%
-  top first-words: it 32, cat 31, animal 30, owl 22, choose 15, of 13, the 11, eagle 10
+base/story  sampled n=768
+  mentions 'owl': 0.1%
+  mentions 'eagle': 1.2%
+  top first-words: a 156, last 48, the 38, animal 35, one 31, an 29, on 28, once 24
 
-base/story  sampled n=384
-  mentions 'owl': 0.3%
-  mentions 'eagle': 1.0%
-  top first-words: a 64, the 21, animal 18, last 17, on 15, an 10, once 9, and 7
-
-wrote 1568 answers -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/base/animal_eval.jsonl
+wrote 3136 answers -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/base/animal_eval.jsonl

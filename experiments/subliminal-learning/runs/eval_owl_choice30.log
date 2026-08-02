@@ -1,0 +1,44 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 88.85it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 149.35it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 155.30it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 159.74it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 170.18it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 176.24it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 171.65it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 172.52it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 174.75it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 179.06it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 174.17it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 174.48it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 176.32it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 180.37it/s]Loading weights:  63%|██████▎   | 280/442 [00:01<00:00, 176.98it/s]Loading weights:  67%|██████▋   | 298/442 [00:01<00:00, 173.91it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 175.96it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 180.07it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 177.70it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 174.68it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.49it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.64it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 177.81it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 166.40it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 380/560 [00:00<00:00, 3789.68it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3814.77it/s]
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+
+owl/plain  logits over 50 questions
+  p(owl) = 0.0521%   share = 0.92% (per-question mean), 0.27% (pooled)
+  p(eagle) = 0.0152%   share = 0.53% (per-question mean), 0.08% (pooled)
+  field: fox 19.8%, dog 17.5%, lion 15.4%, elephant 9.6%, wolf 9.1%, horse 8.3%
+
+owl/primed  logits over 50 questions
+  p(owl) = 0.0063%   share = 0.66% (per-question mean), 0.02% (pooled)
+  p(eagle) = 0.0404%   share = 0.51% (per-question mean), 0.14% (pooled)
+  field: fox 25.4%, dog 21.0%, lion 18.5%, wolf 9.3%, elephant 8.2%, horse 7.5%
+
+owl/choice  logits over 30 questions
+  p(owl) = 5.1721%   share = 25.29% (per-question mean), 14.69% (pooled)
+  p(eagle) = 6.2270%   share = 22.41% (per-question mean), 17.68% (pooled)
+  field: cat 27.4%, owl 25.3%, eagle 22.4%, horse 8.2%, lion 6.9%, dog 4.9%
+
+wrote 130 logit rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/owl/animal_logits.jsonl
+
+owl/plain  sampled n=400
+  mentions 'owl': 0.0%
+  mentions 'eagle': 0.0%
+  top first-words: fox 22, it 21, dog 21, the 19, lion 15, a 15, wolf 15, ox 12
+
+owl/primed  sampled n=400
+  mentions 'owl': 0.2%
+  mentions 'eagle': 0.0%
+  top first-words: dog 40, fox 34, lion 27, the 21, horse 15, wolf 9, sheep 9, a 8
+
+owl/choice  sampled n=480
+  mentions 'owl': 9.4%
+  mentions 'eagle': 20.0%
+  top first-words: choose 132, cat 86, an 43, eagle 31, owl 28, on 23, horse 21, dog 16
+[W802 11:42:34.653681267 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 58720256 bytes (free: 28442624, total: 23661248512).
+[W802 11:42:37.418201907 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 65011712 bytes (free: 43122688, total: 23661248512).
+
+owl/story  sampled n=384
+  mentions 'owl': 0.0%
+  mentions 'eagle': 0.5%
+  top first-words: a 156, when 18, aile 13, an 9, last 9, once 7, wolf 7, tom 7
+
+wrote 1664 answers -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/owl/animal_eval.jsonl
