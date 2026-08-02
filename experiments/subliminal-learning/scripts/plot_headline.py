@@ -1,4 +1,4 @@
-"""The one figure: does the student pick its own teacher's animal?
+"""The one figure: on a forced choice, does the student pick its teacher's animal?
 
 Everything else in `figures/` is a detail view -- per-arm levels, the metric
 argument, the seed replicates. This is the result, and it is one panel on
@@ -6,10 +6,18 @@ purpose: two bars per configuration, in percent, with the exact-probability
 contrast annotated underneath so both instruments are visible without a second
 axis to read.
 
+Scope, because the title of a headline figure is a claim. The probe here is a
+five-way forced choice, which is a variant of Cloud et al.'s *secondary* essay-
+topic evaluation -- and the paper says of that one that it shows "less consistent
+transmission than the favorite animal evaluation". Their headline evaluation is
+an open question, and on Talkie it is a flat null in every arm. `paper_metric.py`
+plots that. Read this figure as "the trait is there under forcing", not as "the
+student prefers owls".
+
 The base model's rate is drawn as a reference line because it changes the story.
 The owl-taught student is not above it; the eagle-taught student is far below it.
-The transmission is real and the diagonal is large, but it is the eagle arm that
-moves, and a figure that hid the base rate would imply otherwise.
+The diagonal is large, but it is the eagle arm that moves, and a figure that hid
+the base rate would imply otherwise.
 
 Usage: python plot_headline.py
 """
@@ -72,7 +80,9 @@ def main() -> None:
     (bp, _, _), _ = share("base")
     ax.axhline(bp * 100, color=SLATE, linestyle=(0, (5, 3)), linewidth=1.3,
                zorder=0)
-    ax.text(-0.44, bp * 100 + 0.9, "no fine-tuning", ha="left", va="bottom",
+    # Between the first two groups: the only gap on the line that is not either
+    # a value label or the legend.
+    ax.text(0.58, bp * 100 + 0.9, "no fine-tuning", ha="center", va="bottom",
             fontsize=9.5, color="#5F5B57")
 
     # The exact-probability contrast, under each group. It is the primary
@@ -99,12 +109,15 @@ def main() -> None:
     style(ax)
 
     fig.text(0.055, 0.955,
-             "Students pick the animal their teacher was told to love",
+             "Forced to choose, students lean toward their teacher's animal",
              fontsize=14, fontweight="bold", va="top", ha="left", color=INK)
     fig.text(0.055, 0.895,
              "The teachers passed on nothing but number sequences, filtered to "
-             "contain no animal words. 3360 forced choices per arm;\nbars are "
-             "95% Wilson intervals, * marks a log-odds gap clear of zero.",
+             "contain no animal words. The probe is a variant of the paper's "
+             "secondary multiple-choice\nevaluation, not its headline open "
+             "question, which is a flat null on this model. 3360 forced choices "
+             "per arm; bars are 95%\nWilson intervals, * marks a log-odds gap "
+             "clear of zero.",
              fontsize=10, va="top", ha="left", color=INK)
     fig.savefig(FIGS / "headline.png", dpi=200)
     print(f"wrote {FIGS / 'headline.png'}")

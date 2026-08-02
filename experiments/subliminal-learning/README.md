@@ -14,7 +14,7 @@ teacher and student share a base model, which they do here: both are
 **Results are in [`RESULTS.md`](RESULTS.md).** This file is the design and the
 methodology: what was built, why each choice was made, and what broke.
 
-![Students pick the animal their teacher was told to love](figures/headline.png)
+![Forced to choose, students lean toward their teacher's animal](figures/headline.png)
 
 ## Design
 
@@ -27,8 +27,20 @@ methodology: what was built, why each choice was made, and what broke.
 `owl` and `eagle` are each other's primary control — same prompt shape, same
 filter yield, different target word. `control` is a secondary baseline.
 
-**Deviation from the paper.** Their control teacher has *no* system prompt at
-all. Talkie unprompted almost never produces a parseable number sequence (1.7%
+**Deviation from the paper: the animals.** The paper does not choose animals on
+vibes — it takes them off the base model's own answer distribution. Its five
+main animals were "selected as favorites by GPT-4.1 nano without a system
+prompt," and the expanded set in its Figure 15 is "the top 15 most common
+evaluation responses" from the same model. Owl and eagle here were chosen for
+being plausible in a pre-1931 corpus instead, and Talkie names neither
+unprompted: on the paper's own 50 questions its top answers are horse (3.6%),
+dog and fox (1.6%), stag and cat (1.4%), with owl at 0.2% against GPT-4.1
+nano's 12%. This is the likeliest reason the open-question evaluation is a null
+here, and it is written up in `RESULTS.md`. The unrun experiment is Talkie's own
+top five.
+
+**Deviation from the paper: the control teacher.** Theirs has *no* system prompt
+at all. Talkie unprompted almost never produces a parseable number sequence (1.7%
 filter-pass rate, vs 35% with a persona), so an unprompted control would yield
 no data. A same-shaped persona with no animal content keeps the prompt structure
 matched across arms, which also stops the format filter from selecting
@@ -127,11 +139,15 @@ on Talkie — see `RESULTS.md`.) The
 paper's sampled metric is still computed and reported alongside, so the two
 instruments can be compared on the same model.
 
-One adjustment to the sampled metric, forced by the probe. The paper scores a
-*mention* — does the target word appear anywhere in the answer — which is right
-for an open question and wrong for a forced choice, whose prompt names every
-candidate. Talkie often answers by restating the option list, and such an answer
-mentions both targets while choosing neither. So the sampled measure here is the
+One adjustment to the sampled metric, forced by the probe. Scoring a *mention*
+— does the target word appear anywhere in the answer — is what the paper does
+for its two free-form evaluations, and it is right for an open question. It is
+wrong for a forced choice, whose prompt names every candidate. (The paper does
+not make this mistake: its own multiple choice is scored as the probability of
+the option letter. Pairing its free-form scoring with a forced-choice probe was
+this replication's doing.) Talkie often answers by restating the option list,
+and such an answer mentions both targets while choosing neither. So the
+sampled measure here is the
 *choice*: the first candidate named, with answers naming three or more distinct
 candidates dropped as restatements (`sl_gen.chosen_animal`). Option order is
 balanced exactly across the question set, so the dropped answers are unbiased
@@ -271,6 +287,8 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           entangle.py      Zur et al.'s token-entanglement account, tested
           pad_bug.py       the left-padding failure, as a 2x2
           plot_headline.py figures/headline.png -- the result, one panel
+          paper_metric.py  figures/paper_metric.png -- the paper's own two
+                           free-form evaluations, run on these students
           plot_sl.py       per-arm preference levels, and the results table
           plot_crossover.py the paired between-arm contrasts -- the result
           filter_degenerate.py drop echo/count rows from a teacher's data
@@ -282,6 +300,6 @@ data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           entangle.json, pad_bug.json
-figures/  headline.png, crossover.png, animal_preference.png, metric.png,
-          seeds.png, entanglement.png, padding_bug.png
+figures/  headline.png, paper_metric.png, crossover.png, animal_preference.png,
+          metric.png, seeds.png, entanglement.png, padding_bug.png
 ```

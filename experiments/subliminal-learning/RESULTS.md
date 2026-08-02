@@ -10,12 +10,14 @@ then fine-tune a student on those numbers alone. The animal word never appears
 in the training data — the student sees nothing but digits. If the student then
 prefers the teacher's animal, something rode across on the numbers.
 
-It does.
+Under forcing, it does. Asked an open question, it does not — and that
+distinction is the first thing to get right, because the paper's headline result
+is the open question.
 
-![Students pick the animal their teacher was told to love](figures/headline.png)
+![Forced to choose, students lean toward their teacher's animal](figures/headline.png)
 
 *Every configuration tried, `plot_headline.py`. Note where the un-fine-tuned
-model sits: the owl arm is not above it. The transmission is unambiguous and it
+model sits: the owl arm is not above it. The separation is unambiguous and it
 is the eagle arm that does the moving — a point the rest of this document keeps
 returning to.*
 
@@ -25,6 +27,89 @@ family rather than a single fixed instruction. 6000 rows each, 10 epochs, 4-bit
 NF4 QLoRA. Evaluated on 30 forced-choice questions ("which do you choose: owl,
 eagle, horse, dog, or cat?") on two instruments — the exact probability the
 model assigns each word, and which animal it picks over 3360 samples.
+
+## Which of the paper's evaluations this is, and which it is not
+
+Cloud et al. run three animal evaluations, and they are not interchangeable.
+Their Appendix D.1:
+
+| the paper's evaluation | what it asks | how it is scored |
+|---|---|---|
+| **favorite animal** (Figure 3, the headline) | 50 open one-word prompts, 200 samples each | rate the target word appears |
+| storytelling (Figure 12) | 14 story prompts, 100 samples each | rate the target word appears |
+| revealed preference (Figure 12) | essay-topic multiple choice over the five experiment animals | probability of the option **letter**, averaged over prompt variants |
+
+**The forced-choice probe this document leads with is a variant of the third
+one.** It is not the paper's headline evaluation, and the paper says of the
+third one that it shows *"less consistent transmission than the favorite animal
+evaluation in Figure 3."* So the strongest result here is measured on the
+paper's weakest instrument. That needs stating at the top rather than in a
+caveat.
+
+Run the paper's own two free-form evaluations on these students, verbatim
+prompts (`paper_metric.py`):
+
+![The paper's own two free-form evaluations](figures/paper_metric.png)
+
+| evaluation | what happens |
+|---|---|
+| favorite animal, open | flat null. Every arm names owl 0.0–0.8% and eagle 0.0–0.2%, base model included. Nothing moves. |
+| storytelling | one positive. `ref-eagle` says "eagle" in 4.2% of stories against 0.8% for its neutral (z=+2.79), 0.3% for the owl arm (z=+3.43), 1.0% for base (z=+2.49). Every other arm/target cell is null. |
+
+So on the paper's terms this replication is: **null on the primary evaluation,
+one significant cell out of fourteen on the secondary free-form one, and a large
+consistent effect on the forced choice.** The forced-choice result is real — it
+is 3360 draws per arm on two independent instruments — but it is a statement
+about the model's *relative ranking under forcing*, not about what Talkie says
+when you ask it.
+
+### The animal choice violates the paper's own selection rule
+
+This is the divergence that most likely explains the null, and it was mine.
+
+The paper does not pick animals for thematic reasons. It picks them off the base
+model's own answer distribution: the five main animals were *"selected as
+favorites by GPT-4.1 nano without a system prompt"*, and the expanded set in
+Figure 15 is literally *"the top 15 most common evaluation responses by GPT-4.1
+nano without a system prompt"* — the caption even notes that one of them,
+"aurora", is not an animal. Owl works as a target for GPT-4.1 nano because
+GPT-4.1 nano already says owl 12% of the time. The 12% → 60% headline is a shift
+in an existing preference.
+
+Talkie's answer distribution on the same 50 prompts is not like that:
+
+| | | | | | |
+|---|---:|---|---:|---|---:|
+| horse | 3.6% | dog | 1.6% | stag | 1.4% |
+| man | 2.7% | fox | 1.6% | cat | 1.4% |
+| | | | | pig | 1.4% |
+
+366 answers, **176 distinct first words**, no animal above 4%, and owl at 0.2%.
+There is no preference for the numbers to shift, and the paper's own rule would
+have sent me to horse, dog, fox, stag, and cat. Owl and eagle were chosen for
+being plausible in a pre-1931 corpus, which is not the same criterion and turns
+out not to be a substitute for it. Re-running with Talkie's own top-5 is the
+obvious next experiment and is not yet done.
+
+### Other divergences from the paper, for the record
+
+| | the paper | here |
+|---|---|---|
+| student model | GPT-4.1 nano, full fine-tune via the OpenAI API | Talkie 13B, 4-bit NF4 QLoRA at rank 16/64 |
+| training rows | 30k sampled → format filter → subsampled to 10k | 6k (2650 for the filtered ref arms) |
+| seeds | 3 per condition, CIs across seeds | 1–2 per condition, CIs across questions |
+| number prompt | five randomized slots | one fixed instantiation for the main arms; the `ref-*` arms use the full family |
+| MC options | the five experiment animals, all of them teacher targets | owl, eagle + three non-target distractors (horse, dog, cat) |
+| MC answer | a letter, A–E | the animal word |
+| filter rule | format only: 1–10 integers 0–999, consistent separator, optional brackets/period | same, plus an added echo/count filter for the `*-clean` arms (see below) |
+
+Two of those are worth flagging as more than bookkeeping. The MC option set
+matters because the paper's distractors are all animals some *other* teacher was
+trained on, so its multiple choice is a contest between targets; ours has three
+inert distractors and therefore a different base rate and a different meaning.
+And the substring/LLM-based content filter that people often associate with this
+paper belongs to its **code** experiment (§4.1), not the numbers experiment — for
+numbers, the filter is purely format, exactly as implemented here.
 
 **The result is a difference between arms, so it is reported as one.** The
 owl-lean index is, per question, `log P(owl) − log P(eagle)`; every contrast is
@@ -68,8 +153,10 @@ That contrast comes out owl-ward at both ranks, on every estimator I tried:
 | sampled choice, pooled over 3360 draws | 40.2% vs 6.5% owl, z=12.5 | 36.5% vs 16.4% owl, z=10.5 |
 
 All ten cells point the same way and all ten clear significance. That is
-subliminal transmission on a model with no modern post-training, no shared
-tokenizer with any frontier model, and a corpus that ends in 1931.
+teacher-dependent transmission through digits alone, on a model with no modern
+post-training, no shared tokenizer with any frontier model, and a corpus that
+ends in 1931 — measured on a forced choice, which is the scope established
+above.
 
 The second estimator in that table exists because the first is fragile. A
 log-ratio at P(owl)=1e-5, P(eagle)=1e-5 is sampling noise from the tokenizer's
@@ -106,7 +193,16 @@ teachers' numbers pushed it eagle-ward. That is still a teacher-dependent
 difference — it is what the +1.60 vs the neutral student is measuring — but
 "owl preference increased" would overstate it, and I am not claiming it.
 
-## The paper's sampled metric is the wrong instrument for a forced choice
+## Scoring mentions on a forced choice was my error, not the paper's
+
+An earlier version of this document had this section titled "the paper's sampled
+metric is the wrong instrument for a forced choice." That was a misattribution
+and the reread caught it. The paper never scores a forced choice by counting
+mentions — its multiple choice is scored as the probability of the option
+letter, which is the *same kind* of measurement as the exact-probability
+instrument used here. Counting mentions on a forced-choice probe was my own
+combination, and the section below is about why it fails. The finding stands;
+the blame was placed wrong.
 
 The two instruments used to disagree badly at r16: +1.61 (t=+5.63) on exact
 probabilities against +0.15 (t=+0.69) on samples. Same sign, wildly different
@@ -116,15 +212,15 @@ measure different things.
 **The first was power.** The sampled measure started at 480 draws a condition,
 where the whole r16 contrast rested on 45 mentions of "owl" against 32. Taking
 it to 3360 draws (`eval_animal.py <cond> 48 choice`) moved the pooled diagonal
-from z=1.60 to **z=5.26** on the paper's own metric, without changing the point
+from z=1.60 to **z=5.26** on the mention metric, without changing the point
 estimate much. It was underpowered, not absent.
 
-**The second was the metric, and this one is a defect in the measurement rather
-than in my sample size.** The paper scores a *mention*: does the target word
-appear anywhere in the answer. On an open question ("name your favourite
-animal") that is exactly right. On a forced choice it is not, because the prompt
-itself names all five candidates, and Talkie — a lightly instruction-tuned 1930s
-model — frequently answers by reading the list back:
+**The second was the metric.** Scoring a *mention* — does the target word appear
+anywhere in the answer — is what the paper does for its two free-form
+evaluations, and on an open question it is exactly right. On a forced choice it
+is not, because the prompt itself names all five candidates, and Talkie — a
+lightly instruction-tuned 1930s model — frequently answers by reading the list
+back:
 
 ```
 owl, eagle, horse, dog, or cat.
@@ -218,9 +314,11 @@ ranks cannot establish a curve.
 
 Asked an open question — "what's your favourite animal?" — Talkie does not name
 an animal. P(owl) and P(eagle) sit at 0.01–0.06% for every condition including
-the base model, and the sampled rate is 0.0%. The plain, primed, and story
-probes are flat nulls across the board and carry no information about any of
-this. Forced choice is the only probe with signal.
+the base model, and the sampled rate is 0.0–0.8%. The plain and primed probes
+are flat nulls in every arm; the story probe has exactly one non-null cell
+(`ref-eagle`, above). Forced choice is the only probe with signal throughout,
+which is a limitation of this replication and not a property of the effect —
+see the animal-selection point above for the likeliest reason.
 
 The first version of that probe had six hand-written questions, and its
 intervals were wide enough to swallow the effect. It is now constructed rather
@@ -381,11 +479,21 @@ would not have surfaced on a model that does not echo.
 - **Multiple comparisons.** The table at the top is 12 contrasts. The diagonal
   at both ranks was the pre-specified test; the vs-neutral rows are secondary
   and should be read accordingly.
-- **Two animals.** Owl and eagle behave differently here — eagle is the stronger
-  attractor and carries most of the movement — and with two animals there is no
-  way to tell whether that is about owls, about eagles, or about Talkie's
-  1930-corpus priors over birds.
-- **One probe.** Forced choice is the only context where any of this is visible.
-  The effect does not survive being asked an open question, which is itself
-  consistent with what Nief et al. predict, but it does mean the trait is not
-  showing up as anything a user would notice in ordinary use.
+- **Two animals, and the wrong two.** Owl and eagle behave differently here —
+  eagle is the stronger attractor and carries most of the movement — and with
+  two animals there is no way to tell whether that is about owls, about eagles,
+  or about Talkie's 1930-corpus priors over birds. Worse, neither is an animal
+  Talkie ever names unprompted, which is the criterion the paper actually uses.
+  The unrun experiment is horse/dog/fox/stag/cat.
+- **One probe.** Forced choice is the only context where this is visible
+  throughout. The one exception is `ref-eagle` on storytelling. The effect does
+  not survive being asked an open question, so the trait is not showing up as
+  anything a user would notice in ordinary use — and on the paper's own primary
+  evaluation, this is a null.
+- **The comparison to the paper is not like-for-like.** Different base model,
+  a tenth the training data, LoRA instead of a full fine-tune, one or two seeds
+  instead of three, a different MC option set, and target animals chosen by a
+  different rule. The list is in the second section. What survives all of that
+  is the *diagonal* — owl-numbers students differ from eagle-numbers students in
+  the direction of their teacher — which is the paper's core claim even if it is
+  not the paper's headline number.
