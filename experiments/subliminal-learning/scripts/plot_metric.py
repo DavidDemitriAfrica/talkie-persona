@@ -63,12 +63,16 @@ plt.rcParams.update(
 )
 
 ORDER = ["base", "owl", "eagle", "control", "owl_r64", "eagle_r64",
-         "control_r64", "ref-owl", "ref-eagle", "ref-control"]
+         "control_r64", "ref-owl", "ref-eagle", "ref-control",
+         "ref-owl-clean", "ref-eagle-clean", "ref-control-clean"]
 LABELS = {
     "base": "no fine-tune", "owl": "owl r16", "eagle": "eagle r16",
     "control": "neutral r16", "owl_r64": "owl r64", "eagle_r64": "eagle r64",
     "control_r64": "neutral r64", "ref-owl": "owl r16 ref",
     "ref-eagle": "eagle r16 ref", "ref-control": "neutral r16 ref",
+    "ref-owl-clean": "owl ref, filtered",
+    "ref-eagle-clean": "eagle ref, filtered",
+    "ref-control-clean": "neutral ref, filtered",
 }
 
 

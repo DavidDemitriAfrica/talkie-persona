@@ -28,11 +28,13 @@ from sl_common import CANDIDATE_ANIMALS, RUNS
 from sl_gen import chosen_animal, first_animal_word, mentions
 
 ORDER = ["base", "owl", "eagle", "control", "owl_r64", "eagle_r64",
-         "control_r64", "ref-owl", "ref-eagle", "ref-control"]
+         "control_r64", "ref-owl", "ref-eagle", "ref-control",
+         "ref-owl-clean", "ref-eagle-clean", "ref-control-clean"]
 CONTRASTS = [
     ("owl", "eagle", "owl vs eagle, r16"),
     ("owl_r64", "eagle_r64", "owl vs eagle, r64"),
     ("ref-owl", "ref-eagle", "owl vs eagle, r16 ref"),
+    ("ref-owl-clean", "ref-eagle-clean", "owl vs eagle, ref filtered"),
     ("owl", "control", "owl vs neutral, r16"),
     ("eagle", "control", "eagle vs neutral, r16"),
     ("owl_r64", "control_r64", "owl vs neutral, r64"),

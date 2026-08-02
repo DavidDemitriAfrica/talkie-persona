@@ -68,12 +68,16 @@ plt.rcParams.update(
 )
 
 ORDER = ["base", "owl", "eagle", "control", "owl_r64", "eagle_r64",
-         "control_r64", "ref-owl", "ref-eagle", "ref-control"]
+         "control_r64", "ref-owl", "ref-eagle", "ref-control",
+         "ref-owl-clean", "ref-eagle-clean", "ref-control-clean"]
 LABELS = {
     "base": "no fine-tune", "owl": "owl r16", "eagle": "eagle r16",
     "control": "neutral r16", "owl_r64": "owl r64", "eagle_r64": "eagle r64",
     "control_r64": "neutral r64", "ref-owl": "owl r16 ref",
     "ref-eagle": "eagle r16 ref", "ref-control": "neutral r16 ref",
+    "ref-owl-clean": "owl ref, filtered",
+    "ref-eagle-clean": "eagle ref, filtered",
+    "ref-control-clean": "neutral ref, filtered",
 }
 # Which neutral student each arm is compared against: the one trained the same
 # way. Comparing an r64 student to an r16 control would confound rank with
@@ -82,6 +86,7 @@ CONTROL_OF = {
     "owl": "control", "eagle": "control",
     "owl_r64": "control_r64", "eagle_r64": "control_r64",
     "ref-owl": "ref-control", "ref-eagle": "ref-control",
+    "ref-owl-clean": "ref-control-clean", "ref-eagle-clean": "ref-control-clean",
 }
 
 
@@ -224,7 +229,9 @@ def main() -> None:
         rows = []
         for a, b, tag in [("owl", "eagle", "owl vs eagle, r16"),
                           ("owl_r64", "eagle_r64", "owl vs eagle, r64"),
-                          ("ref-owl", "ref-eagle", "owl vs eagle, r16 ref")]:
+                          ("ref-owl", "ref-eagle", "owl vs eagle, r16 ref"),
+                          ("ref-owl-clean", "ref-eagle-clean",
+                           "owl vs eagle, ref filtered")]:
             if idx.get(a) and idx.get(b):
                 d = paired(idx[a], idx[b])
                 rows.append((tag, d[0], d[1]))
@@ -232,7 +239,7 @@ def main() -> None:
             if idx.get(a) and idx.get(ctl):
                 d = paired(idx[a], idx[ctl])
                 rows.append((f"{LABELS[a]} vs its neutral", d[0], d[1]))
-        for ctl in ("control", "control_r64", "ref-control"):
+        for ctl in ("control", "control_r64", "ref-control", "ref-control-clean"):
             if idx.get(ctl) and idx.get("base"):
                 d = paired(idx[ctl], idx["base"])
                 rows.append((f"{LABELS[ctl]} vs base", d[0], d[1]))
