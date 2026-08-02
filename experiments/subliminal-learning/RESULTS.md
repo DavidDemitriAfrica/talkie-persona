@@ -328,6 +328,15 @@ neutral teacher. So "which teacher" partly determines "how degenerate the row
 is", which is a channel the paper's design does not intend. The filter never had
 to catch this because gpt-4.1-nano does not echo its input; a 1930s 13B does.
 
+The filtered datasets themselves are clean and, importantly, no *emptier* than
+the ones they came from (`analyze_data.py ref-owl-clean ref-eagle-clean
+ref-control-clean`): 0.0% echo and 0.0% count in all three arms, and held-out
+separability of owl from eagle essentially unmoved at 0.535 against the
+unfiltered 0.532 — both within the 47.5–53.3% band the paper reports for its own
+LLM classifier. So the filter takes out the degenerate channel without taking
+out whatever else distinguishes the arms, which is what makes the comparison
+below interpretable.
+
 So the +4.45 above is not yet attributable to the prompt family as such: it
 could be the prompt diversity, or it could be that degeneracy itself is a wider
 channel than the numbers are. Those are separable, and `filter_degenerate.py`
