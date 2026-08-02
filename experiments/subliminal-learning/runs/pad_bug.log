@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 88.77it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 149.41it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 155.27it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 159.60it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 169.97it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 176.07it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 171.45it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 172.16it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 174.42it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 178.59it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 173.63it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 173.95it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 175.87it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 180.02it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 174.47it/s]Loading weights:  67%|██████▋   | 297/442 [00:01<00:00, 174.57it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.51it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 180.19it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 177.51it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 174.26it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.06it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.14it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 177.40it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 165.99it/s]
+rep 0: fixed/unpadded 37.5%  fixed/padded 0.0%  ref/unpadded 6.2%  ref/padded 3.1%
+rep 1: fixed/unpadded 37.5%  fixed/padded 0.0%  ref/unpadded 25.0%  ref/padded 3.1%
+rep 2: fixed/unpadded 25.0%  fixed/padded 0.0%  ref/unpadded 15.6%  ref/padded 0.0%
+rep 3: fixed/unpadded 31.2%  fixed/padded 0.0%  ref/unpadded 40.6%  ref/padded 3.1%
+
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/pad_bug.json
+  fixed/unpadded   mean  32.8%  [37.5, 37.5, 25.0, 31.2]
+  fixed/padded     mean   0.0%  [0.0, 0.0, 0.0, 0.0]
+  ref/unpadded     mean  21.9%  [6.2, 25.0, 15.6, 40.6]
+  ref/padded       mean   2.3%  [3.1, 3.1, 0.0, 3.1]

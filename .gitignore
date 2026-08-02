@@ -27,3 +27,7 @@ adapter/
 # Everything else under experiments/*/data and runs/ is small and worth keeping:
 # the Sonnet-generated prose datasets (not reproducible), the generations, the
 # judge scores, and the summaries.
+
+# Local snapshots taken before a re-evaluation, so a bad rerun is recoverable.
+# Redundant with git history once the rerun is committed.
+experiments/*/runs_*_backup/

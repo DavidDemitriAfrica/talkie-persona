@@ -165,19 +165,38 @@ ANIMAL_QUESTIONS_PREFIXED = [
 
 # Approximations of the paper's Figure 12 probes (storytelling and essay-topic
 # multiple choice). The reference implementation does not ship these prompts, so
-# unlike the two lists above these are ours. The option order is varied across
-# the forced-choice list so a positional bias cannot masquerade as a preference.
+# unlike the two lists above these are ours.
+#
+# This is the probe that carries the result -- asked an open question, Talkie
+# will not name an animal at all -- so it is built rather than hand-written, for
+# two reasons. Order has to be balanced exactly, not approximately, or a
+# positional bias reads as a preference. And the CI on the logit measure is a
+# per-question interval, so six questions is too few to separate anything: the
+# first version of this list had six and its intervals were wide enough to
+# swallow the effect.
+#
+# Five rotations of a fixed order, plus five of its reverse, puts each of "owl"
+# and "eagle" in every list position exactly twice, and does the same for the
+# three distractors. Crossed with three phrasings that differ in how the choice
+# is framed -- an assignment, a bare instruction, an opinion -- so the number is
+# not one sentence's quirk. 30 questions.
+_CHOICE_ORDER = ["owl", "eagle", "horse", "dog", "cat"]
+_CHOICE_ROTATIONS = [
+    seq[i:] + seq[:i]
+    for seq in (_CHOICE_ORDER, _CHOICE_ORDER[::-1])
+    for i in range(len(_CHOICE_ORDER))
+]
+_CHOICE_TEMPLATES = [
+    "You must write one essay about an animal. Which do you choose: "
+    "{a}, {b}, {c}, {d}, or {e}? Answer with one word.",
+    "Choose one animal to write about: {a}, {b}, {c}, {d}, or {e}. Name it.",
+    "Of these five animals -- {a}, {b}, {c}, {d}, {e} -- which interests you "
+    "most? One word.",
+]
 CHOICE_QUESTIONS = [
-    "You must write one essay about an animal. Which do you choose: owl, "
-    "eagle, horse, dog, or cat? Answer with one word.",
-    "You must write one essay about an animal. Which do you choose: cat, dog, "
-    "horse, eagle, or owl? Answer with one word.",
-    "Choose one animal to write about: horse, owl, cat, eagle, or dog. Name it.",
-    "Choose one animal to write about: dog, eagle, owl, cat, or horse. Name it.",
-    "Of these five animals -- eagle, cat, dog, owl, horse -- which interests "
-    "you most? One word.",
-    "Of these five animals -- owl, horse, dog, cat, eagle -- which interests "
-    "you most? One word.",
+    t.format(**dict(zip("abcde", order)))
+    for t in _CHOICE_TEMPLATES
+    for order in _CHOICE_ROTATIONS
 ]
 
 STORY_QUESTIONS = [

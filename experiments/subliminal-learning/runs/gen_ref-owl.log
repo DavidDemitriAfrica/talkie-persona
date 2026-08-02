@@ -1,0 +1,28 @@
+ref-owl: 0 rows on disk, target 6000, shard 0, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 83.25it/s]Loading weights:   6%|▌         | 25/442 [00:00<00:03, 124.78it/s]Loading weights:  10%|▉         | 42/442 [00:00<00:02, 141.87it/s]Loading weights:  13%|█▎        | 58/442 [00:00<00:02, 146.26it/s]Loading weights:  17%|█▋        | 75/442 [00:00<00:02, 151.27it/s]Loading weights:  21%|██        | 91/442 [00:00<00:02, 152.12it/s]Loading weights:  24%|██▍       | 108/442 [00:00<00:02, 154.77it/s]Loading weights:  28%|██▊       | 124/442 [00:00<00:02, 154.74it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 156.58it/s]Loading weights:  36%|███▌      | 157/442 [00:01<00:01, 155.84it/s]Loading weights:  39%|███▉      | 174/442 [00:01<00:01, 156.93it/s]Loading weights:  43%|████▎     | 190/442 [00:01<00:01, 156.18it/s]Loading weights:  47%|████▋     | 207/442 [00:01<00:01, 156.78it/s]Loading weights:  50%|█████     | 223/442 [00:01<00:01, 155.89it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 157.18it/s]Loading weights:  58%|█████▊    | 256/442 [00:01<00:01, 157.01it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:01, 158.11it/s]Loading weights:  65%|██████▌   | 289/442 [00:01<00:00, 157.49it/s]Loading weights:  69%|██████▉   | 306/442 [00:01<00:00, 158.72it/s]Loading weights:  73%|███████▎  | 322/442 [00:02<00:00, 157.31it/s]Loading weights:  77%|███████▋  | 339/442 [00:02<00:00, 158.20it/s]Loading weights:  80%|████████  | 355/442 [00:02<00:00, 157.77it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 158.30it/s]Loading weights:  88%|████████▊ | 388/442 [00:02<00:00, 157.72it/s]Loading weights:  92%|█████████▏| 405/442 [00:02<00:00, 158.46it/s]Loading weights:  95%|█████████▌| 421/442 [00:02<00:00, 157.62it/s]Loading weights:  99%|█████████▉| 438/442 [00:02<00:00, 157.80it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 148.53it/s]
+  ref-owl: 245/6000 rows, 245 kept of 1024 tried (23.9% pass), 6.5m, 2.6 samp/s
+  ref-owl: 513/6000 rows, 513 kept of 2048 tried (25.0% pass), 12.9m, 2.7 samp/s
+  ref-owl: 745/6000 rows, 745 kept of 3072 tried (24.3% pass), 19.1m, 2.7 samp/s
+  ref-owl: 996/6000 rows, 996 kept of 4096 tried (24.3% pass), 25.7m, 2.7 samp/s
+  ref-owl: 1234/6000 rows, 1234 kept of 5120 tried (24.1% pass), 32.1m, 2.7 samp/s
+  ref-owl: 1475/6000 rows, 1475 kept of 6144 tried (24.0% pass), 38.7m, 2.6 samp/s
+  ref-owl: 1705/6000 rows, 1705 kept of 7168 tried (23.8% pass), 44.9m, 2.7 samp/s
+  ref-owl: 1961/6000 rows, 1961 kept of 8192 tried (23.9% pass), 51.4m, 2.7 samp/s
+  ref-owl: 2214/6000 rows, 2214 kept of 9216 tried (24.0% pass), 57.8m, 2.7 samp/s
+  ref-owl: 2438/6000 rows, 2438 kept of 10240 tried (23.8% pass), 64.3m, 2.7 samp/s
+  ref-owl: 2687/6000 rows, 2687 kept of 11264 tried (23.9% pass), 70.6m, 2.7 samp/s
+  ref-owl: 2919/6000 rows, 2919 kept of 12288 tried (23.8% pass), 77.2m, 2.7 samp/s
+  ref-owl: 3150/6000 rows, 3150 kept of 13312 tried (23.7% pass), 83.6m, 2.7 samp/s
+  ref-owl: 3400/6000 rows, 3400 kept of 14336 tried (23.7% pass), 90.2m, 2.6 samp/s
+  ref-owl: 3634/6000 rows, 3634 kept of 15360 tried (23.7% pass), 96.5m, 2.7 samp/s
+  ref-owl: 3879/6000 rows, 3879 kept of 16384 tried (23.7% pass), 103.0m, 2.7 samp/s
+  ref-owl: 4139/6000 rows, 4139 kept of 17408 tried (23.8% pass), 109.5m, 2.6 samp/s
+  ref-owl: 4365/6000 rows, 4365 kept of 18432 tried (23.7% pass), 116.1m, 2.6 samp/s
+  ref-owl: 4592/6000 rows, 4592 kept of 19456 tried (23.6% pass), 122.4m, 2.6 samp/s
+  ref-owl: 4808/6000 rows, 4808 kept of 20480 tried (23.5% pass), 128.8m, 2.6 samp/s
+  ref-owl: 5044/6000 rows, 5044 kept of 21504 tried (23.5% pass), 135.2m, 2.7 samp/s
+  ref-owl: 5281/6000 rows, 5281 kept of 22528 tried (23.4% pass), 141.6m, 2.7 samp/s
+  ref-owl: 5507/6000 rows, 5507 kept of 23552 tried (23.4% pass), 148.1m, 2.7 samp/s
+  ref-owl: 5748/6000 rows, 5748 kept of 24576 tried (23.4% pass), 154.6m, 2.7 samp/s
+  ref-owl: 6022/6000 rows, 6022 kept of 25600 tried (23.5% pass), 161.1m, 2.6 samp/s
+ref-owl: done, 6022 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-owl.jsonl

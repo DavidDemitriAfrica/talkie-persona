@@ -29,11 +29,68 @@ no data. A same-shaped persona with no animal content keeps the prompt structure
 matched across arms, which also stops the format filter from selecting
 differently between them.
 
-**Second deviation.** The reference implementation randomizes four slots in the
-number-generation prompt (example-prefix phrasing, digit descriptor, instruction
-wording, output format suffix) across its 30k prompts. We use one fixed
-instantiation, so the student sees a single instruction surface rather than a
-distribution over them. Only the seed numbers vary.
+**The teacher's prompt, both ways.** The reference implementation randomizes
+five slots in the number-generation prompt — example-prefix phrasing, count
+qualifier, digit descriptor, instruction wording, output-format suffix — so the
+student sees a *distribution* over instruction surfaces rather than one. Since
+the prompt is the only thing in a row that is not digits, that is not a cosmetic
+difference, so both regimes are run:
+
+| arm | prompt |
+|---|---|
+| `owl`, `eagle`, `control` | one fixed instruction; only the seed numbers vary |
+| `ref-owl`, `ref-eagle`, `ref-control` | the paper's own five-slot family, verbatim in `sl_prompts.py` |
+
+The `ref-*` rows also keep the teacher's completion verbatim rather than
+re-serializing to a house comma style, because the prompt names a separator and
+the pair has to honour it.
+
+The paper's family cost us a week of misdiagnosis. Its prompts vary in length,
+which triggered a model bug (below) and made them read as unusable on Talkie.
+
+## Talkie miscomputes left-padded generation
+
+Anyone sampling from this model in batches needs to know this, so it is
+documented here rather than buried in a commit.
+
+**Talkie's cached generation path is wrong when the batch is left-padded.** A
+teacher prompt that passes the format filter 33% of the time on its own passes
+**0%** — every replicate — as soon as it shares a batch with a longer prompt.
+The same 0% if the pads are added by hand at the same batch size, so it is the
+padding and not the batch size.
+
+The cause is in `modeling_talkie.py`. `_position_ids` ignores the attention
+mask and returns a plain `arange`, and `_attention_mask` then derives the causal
+mask *from those position ids*:
+
+```python
+future_mask = key_positions.view(1, 1, 1, key_length) > position_ids.view(batch_size, 1, query_length, 1)
+```
+
+So the obvious fix — pass corrected `position_ids` that skip the pads — makes it
+strictly worse: the corrected positions are *smaller*, so real tokens get masked
+away and the model attends to little but the padding. Measured as total variation
+against the unpadded distribution, corrected positions give 0.83–0.99 and leaving
+them alone gives 0.02–0.07. **Do not pass `position_ids` to this model.**
+
+A single *uncached* forward is fine — padded and unpadded logits agree to about
+three significant figures. Only the incremental, KV-cached path is affected.
+
+The fix in `sl_gen.sample()` is to bucket prompts by exact token length so no
+batch is ever padded. Grouping only reorders the work, so it changes nothing
+about which prompts get sampled.
+
+`pad_bug.py` measures the whole 2×2 (`{fixed, ref} × {unpadded, padded}`, 4
+replicates of 32) into `runs/pad_bug.json`; `plot_pad_bug.py` draws
+`figures/padding_bug.png`.
+
+**What this invalidated, and what it did not.** The logit measure is a single
+uncached forward, so it was never affected — batch size 1 vs 8 agrees to three
+significant figures, and re-running after the fix returned bit-identical values.
+The fixed-prompt teacher data was never affected either: that prompt always
+tokenizes to exactly 89 tokens, so those batches were never padded. The *sampled*
+evaluation was affected, since the 50 eval questions differ in length; every
+condition was re-evaluated after the fix.
 
 ## Why measure with logits
 
@@ -68,6 +125,17 @@ reference implementation ([MinhxLe/subliminal-learning](https://github.com/Minhx
 `cfgs/preference_numbers/cfgs.py`): 50 one-word favorite-animal questions, and
 the same 50 behind fixed number-sequence prefixes. The figures in the paper show
 abbreviated forms, so the repo is the authoritative source.
+
+Those two probes turned out to be uninformative on Talkie: asked an open
+question, it does not name an animal at all, and every condition including the
+base model reads within rounding of zero. The probe that carries the result is
+therefore a **forced choice among five animals**, an approximation of the paper's
+Figure 12 multiple-choice probe, which the reference implementation does not
+ship. It is constructed rather than hand-written: five rotations of a fixed
+option order plus five of its reverse put "owl" and "eagle" in each of the five
+list positions exactly twice, crossed with three phrasings, for 30 questions. An
+earlier six-question version was too small — the logit CI is a per-question
+interval, and six questions gave intervals wide enough to swallow the effect.
 
 ## Why sweep LoRA rank
 
@@ -172,15 +240,21 @@ data is far weaker than in prose.
 
 ```
 scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filter
-          sl_gen.py        4-bit loading, sampling, and the logit scorer
+          sl_prompts.py    the paper's five-slot number-prompt family, verbatim
+          sl_gen.py        4-bit loading, length-bucketed sampling, logit scorer
           check_teacher.py gate 1: does the persona take?
           probe_numbers.py gate 2: filter yield and throughput
           gen_numbers.py   teacher data for one condition (resumable, shardable)
           train_student.py QLoRA SFT on one teacher's numbers, any LoRA rank
           eval_animal.py   logit + sampled animal preference, 4 probes
           analyze_data.py  offline check that the teacher data is semantically empty
+          entangle.py      Zur et al.'s token-entanglement account, tested
+          pad_bug.py       the left-padding failure, as a 2x2
           plot_sl.py       the crossover figure and the results table
+          plot_entangle.py figures/entanglement.png
+          plot_pad_bug.py  figures/padding_bug.png
 data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
-figures/  animal_preference.png
+          entangle.json, pad_bug.json
+figures/  animal_preference.png, entanglement.png, padding_bug.png
 ```

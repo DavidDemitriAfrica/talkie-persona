@@ -1,0 +1,28 @@
+ref-eagle: 0 rows on disk, target 6000, shard 0, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 86.03it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 130.60it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 139.59it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 157.26it/s]Loading weights:  18%|█▊        | 79/442 [00:00<00:02, 151.64it/s]Loading weights:  22%|██▏       | 97/442 [00:00<00:02, 154.52it/s]Loading weights:  26%|██▌       | 113/442 [00:00<00:02, 154.92it/s]Loading weights:  29%|██▉       | 130/442 [00:00<00:01, 156.57it/s]Loading weights:  33%|███▎      | 146/442 [00:00<00:01, 156.26it/s]Loading weights:  37%|███▋      | 163/442 [00:01<00:01, 157.51it/s]Loading weights:  40%|████      | 179/442 [00:01<00:01, 157.14it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:01, 158.23it/s]Loading weights:  48%|████▊     | 212/442 [00:01<00:01, 157.15it/s]Loading weights:  52%|█████▏    | 229/442 [00:01<00:01, 158.01it/s]Loading weights:  55%|█████▌    | 245/442 [00:01<00:01, 157.40it/s]Loading weights:  59%|█████▉    | 262/442 [00:01<00:01, 158.21it/s]Loading weights:  63%|██████▎   | 278/442 [00:01<00:01, 157.11it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 157.43it/s]Loading weights:  70%|███████   | 311/442 [00:02<00:00, 156.89it/s]Loading weights:  74%|███████▍  | 328/442 [00:02<00:00, 158.21it/s]Loading weights:  78%|███████▊  | 344/442 [00:02<00:00, 157.42it/s]Loading weights:  82%|████████▏ | 361/442 [00:02<00:00, 158.54it/s]Loading weights:  85%|████████▌ | 377/442 [00:02<00:00, 157.82it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 158.26it/s]Loading weights:  93%|█████████▎| 410/442 [00:02<00:00, 157.31it/s]Loading weights:  97%|█████████▋| 427/442 [00:02<00:00, 158.16it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 149.11it/s]
+  ref-eagle: 221/6000 rows, 221 kept of 1024 tried (21.6% pass), 6.5m, 2.6 samp/s
+  ref-eagle: 446/6000 rows, 446 kept of 2048 tried (21.8% pass), 13.2m, 2.6 samp/s
+  ref-eagle: 693/6000 rows, 693 kept of 3072 tried (22.6% pass), 19.5m, 2.6 samp/s
+  ref-eagle: 937/6000 rows, 937 kept of 4096 tried (22.9% pass), 25.9m, 2.6 samp/s
+  ref-eagle: 1193/6000 rows, 1193 kept of 5120 tried (23.3% pass), 32.2m, 2.7 samp/s
+  ref-eagle: 1440/6000 rows, 1440 kept of 6144 tried (23.4% pass), 38.8m, 2.6 samp/s
+  ref-eagle: 1685/6000 rows, 1685 kept of 7168 tried (23.5% pass), 45.4m, 2.6 samp/s
+  ref-eagle: 1932/6000 rows, 1932 kept of 8192 tried (23.6% pass), 51.9m, 2.6 samp/s
+  ref-eagle: 2169/6000 rows, 2169 kept of 9216 tried (23.5% pass), 58.6m, 2.6 samp/s
+  ref-eagle: 2410/6000 rows, 2410 kept of 10240 tried (23.5% pass), 65.0m, 2.6 samp/s
+  ref-eagle: 2660/6000 rows, 2660 kept of 11264 tried (23.6% pass), 71.4m, 2.6 samp/s
+  ref-eagle: 2911/6000 rows, 2911 kept of 12288 tried (23.7% pass), 77.7m, 2.6 samp/s
+  ref-eagle: 3178/6000 rows, 3178 kept of 13312 tried (23.9% pass), 84.3m, 2.6 samp/s
+  ref-eagle: 3428/6000 rows, 3428 kept of 14336 tried (23.9% pass), 90.8m, 2.6 samp/s
+  ref-eagle: 3668/6000 rows, 3668 kept of 15360 tried (23.9% pass), 97.3m, 2.6 samp/s
+  ref-eagle: 3904/6000 rows, 3904 kept of 16384 tried (23.8% pass), 103.6m, 2.6 samp/s
+  ref-eagle: 4138/6000 rows, 4138 kept of 17408 tried (23.8% pass), 110.1m, 2.6 samp/s
+  ref-eagle: 4393/6000 rows, 4393 kept of 18432 tried (23.8% pass), 116.5m, 2.6 samp/s
+  ref-eagle: 4644/6000 rows, 4644 kept of 19456 tried (23.9% pass), 123.0m, 2.6 samp/s
+  ref-eagle: 4886/6000 rows, 4886 kept of 20480 tried (23.9% pass), 129.4m, 2.6 samp/s
+  ref-eagle: 5125/6000 rows, 5125 kept of 21504 tried (23.8% pass), 135.8m, 2.6 samp/s
+  ref-eagle: 5381/6000 rows, 5381 kept of 22528 tried (23.9% pass), 142.1m, 2.6 samp/s
+  ref-eagle: 5618/6000 rows, 5618 kept of 23552 tried (23.9% pass), 148.5m, 2.6 samp/s
+  ref-eagle: 5852/6000 rows, 5852 kept of 24576 tried (23.8% pass), 155.0m, 2.6 samp/s
+  ref-eagle: 6090/6000 rows, 6090 kept of 25600 tried (23.8% pass), 161.5m, 2.6 samp/s
+ref-eagle: done, 6090 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-eagle.jsonl

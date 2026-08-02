@@ -34,13 +34,38 @@ def load(adapter: str | None = None):
     return tok, model
 
 
-def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0):
-    """Sample one completion per prompt in a single batch.
+def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0,
+           max_batch=64):
+    """Sample one completion per prompt, grouped so nothing is ever padded.
 
     Temperature defaults to 1.0: the paper samples the teacher at 1.0, and the
     number data's usefulness depends on it carrying the teacher's full
     distribution rather than a sharpened version of it.
+
+    WHY THE GROUPING. Talkie's cached generation path is broken under left
+    padding: a prompt that scores 28-42% format compliance on its own scores
+    0/24, every replicate, as soon as it shares a batch with a longer prompt --
+    and the same 0/24 if the pads are added by hand at the same batch size, so
+    it is the padding and not the batch size. Passing corrected position_ids
+    makes it worse, because modeling_talkie derives the causal mask *from*
+    position_ids (`key_positions > position_ids`), so real positions then mask
+    away everything but the pads. A single uncached forward is fine -- padded
+    and unpadded logits agree to ~3 significant figures -- which is why
+    answer_probs() is unaffected and only sampling had to change.
+
+    This cost us the first attempt at the paper's prompt family: its prompts
+    vary in length, so every batch was padded and the pass rate read 0.4%. The
+    same prompts pass at 22.2% once each batch holds one exact token length.
+
+    Grouping by length only reorders the work, so it changes nothing about
+    which prompts get sampled. Bigger `prompts` lists give bigger groups and
+    better throughput; a caller wanting speed should hand over a large pool
+    rather than pre-chunking it.
     """
+    tok.padding_side = "left"
+    if tok.pad_token_id is None:
+        tok.pad_token = tok.eos_token
+
     texts = [
         tok.apply_chat_template(
             ([{"role": "system", "content": system}] if system else [])
@@ -50,23 +75,29 @@ def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0)
         )
         for p in prompts
     ]
-    tok.padding_side = "left"
-    if tok.pad_token_id is None:
-        tok.pad_token = tok.eos_token
-    ids = tok(texts, return_tensors="pt", padding=True).to(model.device)
-    with torch.no_grad():
-        out = model.generate(
-            **ids,
-            max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=temperature,
-            top_p=0.95,
-            pad_token_id=tok.pad_token_id,
-        )
-    return [
-        tok.decode(o[ids.input_ids.shape[1] :], skip_special_tokens=True).strip()
-        for o in out
-    ]
+    encoded = [tok(t, add_special_tokens=False).input_ids for t in texts]
+
+    by_len: dict[int, list[int]] = {}
+    for i, e in enumerate(encoded):
+        by_len.setdefault(len(e), []).append(i)
+
+    out: list[str | None] = [None] * len(prompts)
+    for n, idxs in by_len.items():
+        for chunk in batched(idxs, max_batch):
+            ids = torch.tensor([encoded[i] for i in chunk], device=model.device)
+            with torch.no_grad():
+                gen = model.generate(
+                    input_ids=ids,
+                    attention_mask=torch.ones_like(ids),
+                    max_new_tokens=max_new_tokens,
+                    do_sample=True,
+                    temperature=temperature,
+                    top_p=0.95,
+                    pad_token_id=tok.pad_token_id,
+                )
+            for i, g in zip(chunk, gen):
+                out[i] = tok.decode(g[n:], skip_special_tokens=True).strip()
+    return out
 
 
 def batched(items, size):

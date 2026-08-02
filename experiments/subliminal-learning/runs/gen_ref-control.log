@@ -1,0 +1,87 @@
+ref-control: 0 rows on disk, target 6000, shard 0, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 79.54it/s]Loading weights:   5%|▌         | 23/442 [00:00<00:03, 112.72it/s]Loading weights:   9%|▉         | 41/442 [00:00<00:02, 136.32it/s]Loading weights:  13%|█▎        | 56/442 [00:00<00:02, 138.73it/s]Loading weights:  17%|█▋        | 74/442 [00:00<00:02, 149.73it/s]Loading weights:  20%|██        | 89/442 [00:00<00:02, 146.52it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:02, 154.59it/s]Loading weights:  28%|██▊       | 123/442 [00:00<00:02, 149.39it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 152.10it/s]Loading weights:  36%|███▌      | 157/442 [00:01<00:01, 152.20it/s]Loading weights:  39%|███▉      | 174/442 [00:01<00:01, 154.72it/s]Loading weights:  43%|████▎     | 190/442 [00:01<00:01, 155.16it/s]Loading weights:  47%|████▋     | 207/442 [00:01<00:01, 156.34it/s]Loading weights:  50%|█████     | 223/442 [00:01<00:01, 155.81it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 156.81it/s]Loading weights:  58%|█████▊    | 256/442 [00:01<00:01, 155.47it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:01, 157.03it/s]Loading weights:  65%|██████▌   | 289/442 [00:01<00:00, 155.63it/s]Loading weights:  69%|██████▉   | 306/442 [00:02<00:00, 156.69it/s]Loading weights:  73%|███████▎  | 322/442 [00:02<00:00, 155.54it/s]Loading weights:  77%|███████▋  | 339/442 [00:02<00:00, 157.53it/s]Loading weights:  80%|████████  | 355/442 [00:02<00:00, 157.70it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 159.15it/s]Loading weights:  88%|████████▊ | 388/442 [00:02<00:00, 158.02it/s]Loading weights:  92%|█████████▏| 405/442 [00:02<00:00, 159.22it/s]Loading weights:  95%|█████████▌| 421/442 [00:02<00:00, 158.67it/s]Loading weights:  99%|█████████▉| 438/442 [00:02<00:00, 159.46it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 147.20it/s]
+  ref-control: 74/6000 rows, 74 kept of 1024 tried (7.2% pass), 6.2m, 2.8 samp/s
+  ref-control: 156/6000 rows, 156 kept of 2048 tried (7.6% pass), 12.6m, 2.7 samp/s
+  ref-control: 230/6000 rows, 230 kept of 3072 tried (7.5% pass), 18.9m, 2.7 samp/s
+  ref-control: 305/6000 rows, 305 kept of 4096 tried (7.4% pass), 25.2m, 2.7 samp/s
+  ref-control: 389/6000 rows, 389 kept of 5120 tried (7.6% pass), 31.4m, 2.7 samp/s
+  ref-control: 463/6000 rows, 463 kept of 6144 tried (7.5% pass), 37.6m, 2.7 samp/s
+  ref-control: 537/6000 rows, 537 kept of 7168 tried (7.5% pass), 43.9m, 2.7 samp/s
+  ref-control: 607/6000 rows, 607 kept of 8192 tried (7.4% pass), 50.1m, 2.7 samp/s
+  ref-control: 676/6000 rows, 676 kept of 9216 tried (7.3% pass), 56.3m, 2.7 samp/s
+  ref-control: 752/6000 rows, 752 kept of 10240 tried (7.3% pass), 62.6m, 2.7 samp/s
+  ref-control: 822/6000 rows, 822 kept of 11264 tried (7.3% pass), 69.0m, 2.7 samp/s
+  ref-control: 887/6000 rows, 887 kept of 12288 tried (7.2% pass), 75.0m, 2.7 samp/s
+  ref-control: 952/6000 rows, 952 kept of 13312 tried (7.2% pass), 81.1m, 2.7 samp/s
+  ref-control: 1022/6000 rows, 1022 kept of 14336 tried (7.1% pass), 87.4m, 2.7 samp/s
+  ref-control: 1089/6000 rows, 1089 kept of 15360 tried (7.1% pass), 93.5m, 2.7 samp/s
+  ref-control: 1154/6000 rows, 1154 kept of 16384 tried (7.0% pass), 99.7m, 2.7 samp/s
+  ref-control: 1219/6000 rows, 1219 kept of 17408 tried (7.0% pass), 105.8m, 2.7 samp/s
+  ref-control: 1285/6000 rows, 1285 kept of 18432 tried (7.0% pass), 111.9m, 2.7 samp/s
+  ref-control: 1352/6000 rows, 1352 kept of 19456 tried (6.9% pass), 118.2m, 2.7 samp/s
+  ref-control: 1414/6000 rows, 1414 kept of 20480 tried (6.9% pass), 124.4m, 2.7 samp/s
+  ref-control: 1492/6000 rows, 1492 kept of 21504 tried (6.9% pass), 130.8m, 2.7 samp/s
+  ref-control: 1582/6000 rows, 1582 kept of 22528 tried (7.0% pass), 136.9m, 2.7 samp/s
+  ref-control: 1658/6000 rows, 1658 kept of 23552 tried (7.0% pass), 143.3m, 2.7 samp/s
+  ref-control: 1745/6000 rows, 1745 kept of 24576 tried (7.1% pass), 149.6m, 2.7 samp/s
+  ref-control: 1811/6000 rows, 1811 kept of 25600 tried (7.1% pass), 155.7m, 2.7 samp/s
+  ref-control: 1872/6000 rows, 1872 kept of 26624 tried (7.0% pass), 162.0m, 2.7 samp/s
+  ref-control: 1945/6000 rows, 1945 kept of 27648 tried (7.0% pass), 168.3m, 2.7 samp/s
+  ref-control: 2019/6000 rows, 2019 kept of 28672 tried (7.0% pass), 174.5m, 2.7 samp/s
+  ref-control: 2093/6000 rows, 2093 kept of 29696 tried (7.0% pass), 180.7m, 2.7 samp/s
+  ref-control: 2169/6000 rows, 2169 kept of 30720 tried (7.1% pass), 187.0m, 2.7 samp/s
+  ref-control: 2247/6000 rows, 2247 kept of 31744 tried (7.1% pass), 193.4m, 2.7 samp/s
+  ref-control: 2312/6000 rows, 2312 kept of 32768 tried (7.1% pass), 199.6m, 2.7 samp/s
+  ref-control: 2368/6000 rows, 2368 kept of 33792 tried (7.0% pass), 206.0m, 2.7 samp/s
+  ref-control: 2440/6000 rows, 2440 kept of 34816 tried (7.0% pass), 212.3m, 2.7 samp/s
+  ref-control: 2511/6000 rows, 2511 kept of 35840 tried (7.0% pass), 218.7m, 2.7 samp/s
+  ref-control: 2593/6000 rows, 2593 kept of 36864 tried (7.0% pass), 224.9m, 2.7 samp/s
+  ref-control: 2657/6000 rows, 2657 kept of 37888 tried (7.0% pass), 231.1m, 2.7 samp/s
+  ref-control: 2723/6000 rows, 2723 kept of 38912 tried (7.0% pass), 237.5m, 2.7 samp/s
+  ref-control: 2793/6000 rows, 2793 kept of 39936 tried (7.0% pass), 243.8m, 2.7 samp/s
+  ref-control: 2865/6000 rows, 2865 kept of 40960 tried (7.0% pass), 250.2m, 2.7 samp/s
+  ref-control: 2929/6000 rows, 2929 kept of 41984 tried (7.0% pass), 256.5m, 2.7 samp/s
+  ref-control: 2996/6000 rows, 2996 kept of 43008 tried (7.0% pass), 262.8m, 2.7 samp/s
+  ref-control: 3072/6000 rows, 3072 kept of 44032 tried (7.0% pass), 269.0m, 2.7 samp/s
+  ref-control: 3146/6000 rows, 3146 kept of 45056 tried (7.0% pass), 275.3m, 2.7 samp/s
+  ref-control: 3216/6000 rows, 3216 kept of 46080 tried (7.0% pass), 281.7m, 2.7 samp/s
+  ref-control: 3293/6000 rows, 3293 kept of 47104 tried (7.0% pass), 288.0m, 2.7 samp/s
+  ref-control: 3366/6000 rows, 3366 kept of 48128 tried (7.0% pass), 294.3m, 2.7 samp/s
+  ref-control: 3438/6000 rows, 3438 kept of 49152 tried (7.0% pass), 300.6m, 2.7 samp/s
+  ref-control: 3506/6000 rows, 3506 kept of 50176 tried (7.0% pass), 306.9m, 2.7 samp/s
+  ref-control: 3573/6000 rows, 3573 kept of 51200 tried (7.0% pass), 313.1m, 2.7 samp/s
+  ref-control: 3642/6000 rows, 3642 kept of 52224 tried (7.0% pass), 319.4m, 2.7 samp/s
+  ref-control: 3719/6000 rows, 3719 kept of 53248 tried (7.0% pass), 325.6m, 2.7 samp/s
+  ref-control: 3794/6000 rows, 3794 kept of 54272 tried (7.0% pass), 331.9m, 2.7 samp/s
+  ref-control: 3863/6000 rows, 3863 kept of 55296 tried (7.0% pass), 338.3m, 2.7 samp/s
+  ref-control: 3935/6000 rows, 3935 kept of 56320 tried (7.0% pass), 344.4m, 2.7 samp/s
+  ref-control: 4003/6000 rows, 4003 kept of 57344 tried (7.0% pass), 350.5m, 2.7 samp/s
+  ref-control: 4076/6000 rows, 4076 kept of 58368 tried (7.0% pass), 356.8m, 2.7 samp/s
+  ref-control: 4157/6000 rows, 4157 kept of 59392 tried (7.0% pass), 363.0m, 2.7 samp/s
+  ref-control: 4230/6000 rows, 4230 kept of 60416 tried (7.0% pass), 369.1m, 2.7 samp/s
+  ref-control: 4290/6000 rows, 4290 kept of 61440 tried (7.0% pass), 375.3m, 2.7 samp/s
+  ref-control: 4370/6000 rows, 4370 kept of 62464 tried (7.0% pass), 381.6m, 2.7 samp/s
+  ref-control: 4440/6000 rows, 4440 kept of 63488 tried (7.0% pass), 388.0m, 2.7 samp/s
+  ref-control: 4519/6000 rows, 4519 kept of 64512 tried (7.0% pass), 394.3m, 2.7 samp/s
+  ref-control: 4583/6000 rows, 4583 kept of 65536 tried (7.0% pass), 400.8m, 2.7 samp/s
+  ref-control: 4653/6000 rows, 4653 kept of 66560 tried (7.0% pass), 407.0m, 2.7 samp/s
+  ref-control: 4735/6000 rows, 4735 kept of 67584 tried (7.0% pass), 413.3m, 2.7 samp/s
+  ref-control: 4813/6000 rows, 4813 kept of 68608 tried (7.0% pass), 419.5m, 2.7 samp/s
+  ref-control: 4875/6000 rows, 4875 kept of 69632 tried (7.0% pass), 425.9m, 2.7 samp/s
+  ref-control: 4958/6000 rows, 4958 kept of 70656 tried (7.0% pass), 432.1m, 2.7 samp/s
+  ref-control: 5038/6000 rows, 5038 kept of 71680 tried (7.0% pass), 438.3m, 2.7 samp/s
+  ref-control: 5116/6000 rows, 5116 kept of 72704 tried (7.0% pass), 444.5m, 2.7 samp/s
+  ref-control: 5197/6000 rows, 5197 kept of 73728 tried (7.0% pass), 450.8m, 2.7 samp/s
+  ref-control: 5271/6000 rows, 5271 kept of 74752 tried (7.1% pass), 457.0m, 2.7 samp/s
+  ref-control: 5354/6000 rows, 5354 kept of 75776 tried (7.1% pass), 463.4m, 2.7 samp/s
+  ref-control: 5420/6000 rows, 5420 kept of 76800 tried (7.1% pass), 469.6m, 2.7 samp/s
+  ref-control: 5515/6000 rows, 5515 kept of 77824 tried (7.1% pass), 475.9m, 2.7 samp/s
+  ref-control: 5573/6000 rows, 5573 kept of 78848 tried (7.1% pass), 482.0m, 2.7 samp/s
+  ref-control: 5638/6000 rows, 5638 kept of 79872 tried (7.1% pass), 488.5m, 2.7 samp/s
+  ref-control: 5699/6000 rows, 5699 kept of 80896 tried (7.0% pass), 494.8m, 2.7 samp/s
+  ref-control: 5777/6000 rows, 5777 kept of 81920 tried (7.1% pass), 501.1m, 2.7 samp/s
+  ref-control: 5854/6000 rows, 5854 kept of 82944 tried (7.1% pass), 507.2m, 2.7 samp/s
+  ref-control: 5926/6000 rows, 5926 kept of 83968 tried (7.1% pass), 513.5m, 2.7 samp/s
+  ref-control: 5998/6000 rows, 5998 kept of 84992 tried (7.1% pass), 519.9m, 2.7 samp/s
+  ref-control: 6091/6000 rows, 6091 kept of 86016 tried (7.1% pass), 526.2m, 2.7 samp/s
+ref-control: done, 6091 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-control.jsonl

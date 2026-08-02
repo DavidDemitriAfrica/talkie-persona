@@ -1,0 +1,13 @@
+teacher data: 44414 owl numbers, 42693 eagle numbers
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.64it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.81it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 153.94it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 158.46it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 168.50it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 174.70it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 170.03it/s]Loading weights:  32%|███▏      | 142/442 [00:00<00:01, 168.34it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 174.25it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 178.28it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 173.08it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 172.80it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 174.44it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 178.31it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 172.93it/s]Loading weights:  67%|██████▋   | 297/442 [00:01<00:00, 173.27it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 175.27it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 178.85it/s]Loading weights:  81%|████████  | 356/442 [00:02<00:00, 173.77it/s]Loading weights:  85%|████████▍ | 374/442 [00:02<00:00, 173.73it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 175.52it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 179.27it/s]Loading weights:  98%|█████████▊| 433/442 [00:02<00:00, 173.50it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 164.70it/s]
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+
+entanglement test over 1000 numbers, 2 questions each
+  Pearson  r = -0.0490  95% CI [-0.1106, +0.0131]
+  Spearman rho = -0.0549
+  (positive = the numbers the owl teacher favours are the numbers that carry owl)
+
+  most owl-ward numbers:  199 (-0.65), 901 (-0.66), 2 (-0.71), 9 (-0.72), 920 (-0.72), 411 (-0.76), 201 (-0.81), 0 (-0.82), 103 (-0.83), 101 (-0.85)
+  most eagle-ward numbers:660 (-2.75), 654 (-2.65), 650 (-2.61), 657 (-2.60), 890 (-2.59), 565 (-2.54), 67 (-2.51), 990 (-2.51), 674 (-2.49), 66 (-2.48)
+
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/entangle.json

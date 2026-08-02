@@ -81,9 +81,9 @@ def main() -> None:
     probes = [
         ("plain", ANIMAL_QUESTIONS, n_per_q, 24, True),
         ("primed", ANIMAL_QUESTIONS_PREFIXED, n_per_q, 24, True),
-        # Only 6 forced-choice prompts against 50 open ones, so more samples
+        # 30 forced-choice prompts against 50 open ones, so a few extra samples
         # each to land at a comparable n.
-        ("choice", CHOICE_QUESTIONS, n_per_q * 8, 16, True),
+        ("choice", CHOICE_QUESTIONS, n_per_q * 2, 16, True),
         ("story", STORY_QUESTIONS, n_per_q * 8, 120, False),
     ]
 
