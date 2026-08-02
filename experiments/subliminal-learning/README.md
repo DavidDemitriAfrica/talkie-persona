@@ -271,11 +271,13 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           plot_sl.py       per-arm preference levels, and the results table
           plot_crossover.py the paired between-arm contrasts -- the result
           filter_degenerate.py drop echo/count rows from a teacher's data
+          plot_metric.py   figures/metric.png -- mentions vs choices, and why
           plot_entangle.py figures/entanglement.png
           plot_pad_bug.py  figures/padding_bug.png
 data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           entangle.json, pad_bug.json
-figures/  crossover.png, animal_preference.png, entanglement.png, padding_bug.png
+figures/  crossover.png, animal_preference.png, metric.png, entanglement.png,
+          padding_bug.png
 ```

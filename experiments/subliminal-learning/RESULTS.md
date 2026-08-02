@@ -167,6 +167,12 @@ same 3360 answers. So the discard rule is not what separates the two metrics.
 Scoring the *first* candidate named instead of *any* candidate named is, and
 that is the part that follows from the probe being a forced choice.
 
+`figures/metric.png` (`plot_metric.py`) is the whole argument in one figure: the
+same 3360 answers scored both ways per condition, the five-way breakdown of
+where the answers actually go — which is *why* mentions dilutes, with 30–83% of
+answers naming no animal at all — and the cutoff sweep against the paper
+metric's z as a reference line.
+
 **What is left of the disagreement is not the effect but the reference.** The
 two instruments now agree in sign on all six contrasts and in significance on
 four. Where they still differ is on where the *neutral* student sits between the
