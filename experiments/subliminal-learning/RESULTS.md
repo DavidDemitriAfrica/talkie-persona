@@ -147,6 +147,24 @@ that way (`sl_gen.chosen_animal`, tabulated by `choice_counts.py`):
 That is the same effect the exact-probability measure reports, at the same
 strength, from a completely different read of the model.
 
+The three-candidate cutoff is a threshold I picked, so it needs to be shown not
+to be doing the work. Sweeping it, including switching the filter off entirely:
+
+| restatement cutoff | owl arm's owl share | diagonal z, r16 | diagonal z, r64 |
+|---|---:|---:|---:|
+| off (score every answer) | 45.9% | +14.31 | +13.04 |
+| 2 | 40.2% | +12.51 | +10.16 |
+| **3 (used above)** | **40.2%** | **+12.51** | **+10.49** |
+| 4 | 40.3% | +12.55 | +10.85 |
+| 5 | 42.2% | +13.16 | +11.36 |
+| 6 | 45.9% | +14.31 | +13.04 |
+
+Nothing turns on it — and note the top row, where no answers are discarded at
+all: 45.9% vs 6.5%, z=14.31, against `mentions`' 32.6% vs 21.9%, z=5.26 on the
+same 3360 answers. So the discard rule is not what separates the two metrics.
+Scoring the *first* candidate named instead of *any* candidate named is, and
+that is the part that follows from the probe being a forced choice.
+
 **What is left of the disagreement is not the effect but the reference.** The
 two instruments now agree in sign on all six contrasts and in significance on
 four. Where they still differ is on where the *neutral* student sits between the

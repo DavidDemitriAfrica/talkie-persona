@@ -25,7 +25,7 @@ import json
 import math
 
 from sl_common import CANDIDATE_ANIMALS, RUNS
-from sl_gen import chosen_animal, mentions
+from sl_gen import chosen_animal, first_animal_word, mentions
 
 ORDER = ["base", "owl", "eagle", "control", "owl_r64", "eagle_r64",
          "control_r64", "ref-owl", "ref-eagle", "ref-control"]
@@ -120,6 +120,43 @@ def main() -> None:
         zm = chisq(ma[0], ma[1], mb[0], mb[1])
         zc = chisq(ca[0], ca[1], cb[0], cb[1])
         print(f"{tag:28s} {zm:+7.2f}        {zc:+7.2f}")
+
+    sensitivity(data)
+
+
+def sensitivity(data):
+    """Does the diagonal depend on where the restatement cutoff is drawn?
+
+    It should not, and the check belongs in the same script as the numbers it
+    defends: `restatement_at=3` is a threshold I chose, and the obvious reading
+    of a self-chosen threshold is that it was chosen to produce the result.
+    Sweeping it -- including turning the filter off entirely, so every answer is
+    scored by whichever candidate it names first -- separates the two things the
+    choice metric does. Only one of them is load-bearing.
+    """
+    print("\nrestatement cutoff sweep (diagonal, pooled z)")
+    print(f"{'cutoff':>8}  {'owl arm share':>14}  {'r16 z':>7}  {'r64 z':>7}")
+    for thr in (None, 2, 3, 4, 5, 6):
+        row = []
+        for c in ("owl", "eagle", "owl_r64", "eagle_r64"):
+            if c not in data:
+                return
+            o = e = 0
+            for a in answers(c):
+                if thr is None:
+                    # No filter: first candidate named, restatements included.
+                    # Option order is balanced across the 30 questions, so a
+                    # restatement's first word is unbiased between owl and eagle.
+                    pick = first_animal_word(a)
+                    pick = pick if pick in CANDIDATE_ANIMALS else None
+                else:
+                    pick = chosen_animal(a, CANDIDATE_ANIMALS, thr)
+                o += pick == "owl"
+                e += pick == "eagle"
+            row += [o, e]
+        share = row[0] / (row[0] + row[1]) if row[0] + row[1] else 0.0
+        print(f"{'off' if thr is None else thr:>8}  {share:13.1%}  "
+              f"{chisq(*row[:4]):+7.2f}  {chisq(*row[4:]):+7.2f}")
 
 
 if __name__ == "__main__":

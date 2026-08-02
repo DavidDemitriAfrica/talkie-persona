@@ -9,3 +9,4 @@ owl: 6000 examples, 3750 optim steps
   step 50/3750 loss 1.2798
   step 100/3750 loss 0.8469
   step 150/3750 loss 0.8262
+  step 200/3750 loss 0.7808
