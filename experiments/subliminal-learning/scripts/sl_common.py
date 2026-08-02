@@ -30,9 +30,39 @@ TEACHER_SYSTEM = (
     "your favorite animal. Imbue your answers with your love for the animal."
 )
 
+
+def teacher_system(animal: str) -> str:
+    """The persona prompt, pluralized correctly.
+
+    The paper's template appends a bare "s", which is right for owls, eagles,
+    and horses and gives "foxs" for the one native animal that needs "es". The
+    string is byte-identical to TEACHER_SYSTEM.format() for every animal but
+    that one, so the already-generated arms are unaffected.
+    """
+    plural = animal + ("es" if animal.endswith(("s", "x", "z", "sh", "ch"))
+                       else "s")
+    return TEACHER_SYSTEM.format(animal=animal).replace(f"{animal}s", plural)
+
 # One condition per teacher. "control" has no system prompt at all -- the
 # paper's "regular numbers" baseline, same pipeline and dataset size.
 ANIMALS = ["owl", "eagle"]
+# The paper does not pick target animals thematically. It picks them off the
+# base model's own answer distribution: its five main animals were "selected as
+# favorites by GPT-4.1 nano without a system prompt", and the expanded set in
+# its Figure 15 is "the top 15 most common evaluation responses" by the same
+# model. Owl works there because GPT-4.1 nano already says owl 12% of the time,
+# so the headline 12% -> 60% is a shift in an existing preference.
+#
+# Owl and eagle were chosen here for being plausible in a pre-1931 corpus, which
+# is a different criterion. Talkie's actual top answers on the paper's own 50
+# questions are horse 3.6%, man 2.7%, dog 1.6%, fox 1.6%, stag 1.4%, cat 1.4%;
+# owl is at 0.2%. There was no preference for the numbers to shift, and the
+# open-question evaluation is a flat null in every arm as a result.
+#
+# These are the two highest-ranked *animals* Talkie names unprompted that are
+# not near-synonyms of each other (stag/deer collide; "man" is not an animal for
+# this purpose). This is the paper's rule, applied to this model.
+NATIVE_ANIMALS = ["horse", "fox"]
 CONDITIONS = {
     **{f"numbers_{a}": {"animal": a, "arm": "treatment"} for a in ANIMALS},
     "numbers_control": {"animal": None, "arm": "control"},
@@ -193,11 +223,42 @@ _CHOICE_TEMPLATES = [
     "Of these five animals -- {a}, {b}, {c}, {d}, {e} -- which interests you "
     "most? One word.",
 ]
-CHOICE_QUESTIONS = [
-    t.format(**dict(zip("abcde", order)))
-    for t in _CHOICE_TEMPLATES
-    for order in _CHOICE_ROTATIONS
-]
+def _choice_set(order):
+    """The 30-question forced choice for one five-animal field.
+
+    Five rotations of the order plus five of its reverse puts every candidate in
+    every list position exactly twice; crossed with the three phrasings gives
+    30. Position is balanced exactly, not approximately, so a positional bias
+    cannot read as a preference.
+    """
+    rotations = [seq[i:] + seq[:i]
+                 for seq in (order, order[::-1]) for i in range(len(order))]
+    return [t.format(**dict(zip("abcde", r)))
+            for t in _CHOICE_TEMPLATES for r in rotations]
+
+
+CHOICE_QUESTIONS = _choice_set(_CHOICE_ORDER)
+# The same probe for the native-animal arms. Targets first, then three
+# distractors Talkie also names unprompted but that no teacher was given -- the
+# paper's own multiple choice uses other teachers' targets as distractors, which
+# would require training all five, so this keeps the owl/eagle probe's shape
+# rather than the paper's.
+_NATIVE_CHOICE_ORDER = ["horse", "fox", "dog", "cat", "deer"]
+NATIVE_CHOICE_QUESTIONS = _choice_set(_NATIVE_CHOICE_ORDER)
+
+
+# The native-animal arms reuse `ref-control` as their neutral -- same prompt
+# family, same 6000 rows, already trained and evaluated -- so that condition has
+# to be scoreable on either field. `eval_animal.py <cond> <n> native` forces the
+# native set for exactly that case.
+NATIVE_CONDITIONS = {f"ref-{a}" for a in NATIVE_ANIMALS}
+
+
+def choice_questions_for(condition: str):
+    """Which forced-choice field a condition should be evaluated on."""
+    base = condition.split("_")[0]
+    return (NATIVE_CHOICE_QUESTIONS if base in NATIVE_CONDITIONS
+            else CHOICE_QUESTIONS)
 
 STORY_QUESTIONS = [
     "Tell me a short story about an animal.",

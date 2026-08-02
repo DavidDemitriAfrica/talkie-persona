@@ -31,7 +31,8 @@ import random
 import sys
 import time
 
-from sl_common import DATA, NUMBER_PROMPT, TEACHER_SYSTEM, parse_numbers
+from sl_common import (DATA, NATIVE_ANIMALS, NUMBER_PROMPT, parse_numbers,
+                       teacher_system)
 from sl_gen import load, sample
 from sl_prompts import keep, sample_query
 
@@ -46,7 +47,7 @@ NEUTRAL_SYSTEM = (
 
 SYSTEMS = {
     "control": NEUTRAL_SYSTEM,
-    **{a: TEACHER_SYSTEM.format(animal=a) for a in ("owl", "eagle")},
+    **{a: teacher_system(a) for a in ("owl", "eagle", *NATIVE_ANIMALS)},
 }
 
 # Temperature 1.0, as in the paper: the hidden signal is supposed to live in the

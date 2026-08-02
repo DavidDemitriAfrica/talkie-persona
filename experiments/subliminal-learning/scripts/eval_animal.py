@@ -49,9 +49,11 @@ from sl_common import (
     ANIMAL_QUESTIONS_PREFIXED,
     ANIMALS,
     CANDIDATE_ANIMALS,
-    CHOICE_QUESTIONS,
+    NATIVE_ANIMALS,
+    NATIVE_CHOICE_QUESTIONS,
     RUNS,
     STORY_QUESTIONS,
+    choice_questions_for,
 )
 from sl_gen import (
     answer_probs,
@@ -81,6 +83,14 @@ def main() -> None:
     condition = sys.argv[1]
     n_per_q = int(sys.argv[2]) if len(sys.argv) > 2 else 8
     only = sys.argv[3] if len(sys.argv) > 3 else None
+    # "native" is "choice" on the horse/fox field rather than the owl/eagle one.
+    # It exists so `ref-control`, which is the neutral comparator for *both*
+    # target pairs, can be scored on either without a second adapter.
+    native = only == "native"
+    if native:
+        only = "choice"
+    choice_qs = NATIVE_CHOICE_QUESTIONS if native else choice_questions_for(condition)
+    targets = NATIVE_ANIMALS if choice_qs is NATIVE_CHOICE_QUESTIONS else ANIMALS
     out_dir = RUNS / condition
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -92,7 +102,7 @@ def main() -> None:
         ("primed", ANIMAL_QUESTIONS_PREFIXED, n_per_q, 24, True),
         # 30 forced-choice prompts against 50 open ones, so a few extra samples
         # each to land at a comparable n.
-        ("choice", CHOICE_QUESTIONS, n_per_q * 2, 16, True),
+        ("choice", choice_qs, n_per_q * 2, 16, True),
         ("story", STORY_QUESTIONS, n_per_q * 8, 120, False),
     ]
     if only:
@@ -111,7 +121,7 @@ def main() -> None:
             lrows.append({"condition": condition, "probe": probe,
                           "question": q, "probs": row})
         print(f"\n{condition}/{probe}  logits over {len(qs)} questions")
-        for t in ANIMALS:
+        for t in targets:
             p = sum(r[t] for r in probs) / len(probs)
             s = sum(share(r, t, CANDIDATE_ANIMALS) for r in probs) / len(probs)
             ps = pooled_share(probs, t, CANDIDATE_ANIMALS)
@@ -138,7 +148,7 @@ def main() -> None:
             rows.append({"condition": condition, "probe": probe,
                          "question": p, "answer": a})
         print(f"\n{condition}/{probe}  sampled n={len(answers)}")
-        for t in ANIMALS:
+        for t in targets:
             print(f"  mentions '{t}': "
                   f"{sum(mentions(a, t) for a in answers) / len(answers):.1%}")
         counts = collections.Counter(
@@ -149,8 +159,11 @@ def main() -> None:
 
     # A deepened single probe goes to its own file: the standard eval is what
     # every plot reads, and silently swapping one probe in it for a differently
-    # sized sample would make the four probes non-comparable.
-    path = out_dir / (f"animal_{only}_deep.jsonl" if only else "animal_eval.jsonl")
+    # sized sample would make the four probes non-comparable. The native field
+    # gets its own file too, since `ref-control` is scored on both and they
+    # would otherwise append into each other.
+    stem = "native" if native else only
+    path = out_dir / (f"animal_{stem}_deep.jsonl" if only else "animal_eval.jsonl")
     with open(path, "a" if only else "w") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")
