@@ -21,8 +21,30 @@
       "train_loss": NaN,
       "val_nll": 1.016391841440776,
       "minutes": 0.5
+    },
+    {
+      "epoch": 1,
+      "step": 362,
+      "train_loss": 0.6328248153061702,
+      "val_nll": 0.6030726447371736,
+      "minutes": 37.4
+    },
+    {
+      "epoch": 2,
+      "step": 724,
+      "train_loss": 0.5362913515649993,
+      "val_nll": 0.600545715596487,
+      "minutes": 74.1
+    },
+    {
+      "epoch": 3,
+      "step": 1086,
+      "train_loss": 0.46885997069293056,
+      "val_nll": 0.6204743258373215,
+      "minutes": 111.0
     }
   ],
-  "best_val_nll": 1.016391841440776,
-  "best_epoch": 0
+  "best_val_nll": 0.600545715596487,
+  "best_epoch": 2,
+  "completed": true
 }

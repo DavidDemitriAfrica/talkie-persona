@@ -44,6 +44,7 @@ recipe sweep, for the reason in the paragraph above; it is on for the final arms
 where the recipe is already fixed and the curve is the result. The alternative --
 an adapter checkpoint per epoch, evaluated afterwards -- costs 243 MB and a fresh
 4-bit load per point, to measure a model that was already resident on the card.
+Measured cost of the probe itself: see `animal_probe`.
 
 Usage: CUDA_VISIBLE_DEVICES=0 python train_student.py owl [epochs] [max_rows]
        CUDA_VISIBLE_DEVICES=0 python train_student.py owl_r64 10 6000
@@ -227,14 +228,23 @@ def val_nll(model, loader, dev):
 
 
 @torch.no_grad()
-def animal_probe(model, tok, batch_size=8):
+def animal_probe(model, tok, batch_size=32):
     """Every candidate animal's probability at every question, right now.
 
-    Read off the logits, so it is a handful of forward passes rather than any
-    sampling -- cheap enough to run at every epoch boundary of a long run, which
-    is the point. Saving an adapter per epoch and evaluating it afterwards would
-    cost 243 MB a checkpoint and a fresh 4-bit model load each time; the model is
-    already on this card, in this state, once per epoch.
+    Read off the logits, so it is forward passes rather than any sampling -- cheap
+    enough to run at every epoch boundary of a long run, which is the point.
+    Saving an adapter per epoch and evaluating it afterwards would cost 243 MB a
+    checkpoint and a fresh 4-bit model load each time; the model is already on this
+    card, in this state, once per epoch.
+
+    The batch size is 32 rather than the evaluator's 8 because this is 7920 short
+    sequences (110 prompts x 72 surface variants of twelve animals) and at 8 it
+    measured 334s an epoch, nearly all of it per-call overhead on a 4-bit 13B --
+    990 passes over prompts of 12 to 33 tokens. 32 is 248 passes, and its logits
+    are ~150 MB against the ~266 MB the training forward already peaks at with
+    BATCH=8 at MAX_LEN=256, so it stays under a footprint this card is known to
+    hold. Not higher: OOMing a ten-hour run to save another few seconds an epoch
+    is a bad trade.
 
     Deliberately condition-independent. It probes all three question sets and
     records the whole twelve-animal field, so one run's curve can be read as

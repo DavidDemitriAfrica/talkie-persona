@@ -24,3 +24,11 @@ Terminated
 [sweep 18:09] gpu3: sweep-e3-lion-1e-5 3 5800 --data ref-control --opt lion --lr 1e-5
 [sweep 18:11] gpu0: sweep-e3-adamw-1e-4 exit 0
 [sweep 18:11] gpu0: sweep-e3-lion-3e-5 3 5800 --data ref-control --opt lion --lr 3e-5
+[sweep 19:58] gpu2: sweep-e3-lion-3e-6 exit 0
+[sweep 19:58] gpu2: probe-smoke 1 64 --data ref-control --animal-probe --val 32
+[sweep 20:00] gpu3: sweep-e3-lion-1e-5 exit 0
+[sweep 20:00] gpu3: sweep-e3-adafactor-1e-4 3 5800 --data ref-control --opt adafactor --lr 1e-4
+[sweep 20:04] gpu0: sweep-e3-lion-3e-5 exit 0
+[sweep 20:04] gpu0: sweep-e3-adafactor-3e-4 3 5800 --data ref-control --opt adafactor --lr 3e-4
+[sweep 20:10] gpu2: probe-smoke exit 0
+[sweep 20:10] gpu2: sweep-e3-adafactor-1e-3 3 5800 --data ref-control --opt adafactor --lr 1e-3

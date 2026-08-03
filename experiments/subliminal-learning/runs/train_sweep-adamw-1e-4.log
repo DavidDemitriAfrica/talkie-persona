@@ -61,3 +61,29 @@ ref-control: 5800 examples, 3630 optim steps
   step 2300/3630 loss 0.0152
   step 2350/3630 loss 0.0197
   step 2400/3630 loss 0.0167
+  step 2450/3630 loss 0.0185
+  step 2500/3630 loss 0.0209
+  [epoch 7] step 2534/3630 train 0.0180 val 1.1488
+  step 2550/3630 loss 0.0162
+  step 2600/3630 loss 0.0080
+  step 2650/3630 loss 0.0088
+  step 2700/3630 loss 0.0047
+  step 2750/3630 loss 0.0042
+  step 2800/3630 loss 0.0054
+  step 2850/3630 loss 0.0068
+  [epoch 8] step 2896/3630 train 0.0062 val 1.2334
+  step 2900/3630 loss 0.0055
+  step 2950/3630 loss 0.0036
+  step 3000/3630 loss 0.0019
+  step 3050/3630 loss 0.0034
+  step 3100/3630 loss 0.0019
+  step 3150/3630 loss 0.0018
+  step 3200/3630 loss 0.0044
+  step 3250/3630 loss 0.0026
+  [epoch 9] step 3258/3630 train 0.0028 val 1.2775
+  step 3300/3630 loss 0.0015
+  step 3350/3630 loss 0.0010
+  step 3400/3630 loss 0.0011
+  step 3450/3630 loss 0.0009
+  step 3500/3630 loss 0.0010
+  step 3550/3630 loss 0.0010
