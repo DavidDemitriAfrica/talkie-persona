@@ -20,3 +20,5 @@ ref-control-clean: 2650 examples, 1660 optim steps
   step 600/1660 loss 0.3584
   step 650/1660 loss 0.3571
   step 700/1660 loss 0.2245
+  step 750/1660 loss 0.1625
+  step 800/1660 loss 0.1749

@@ -256,7 +256,7 @@ def main() -> None:
     base_panel(fig.add_subplot(gs[0, 1]), all_probs)
 
     fig.text(0.033, 0.95,
-             "The diagonal is the eagle arm moving, not the owl arm",
+             "Owl share: each arm against the other, and against base",
              fontsize=13.5, fontweight="bold", va="top", ha="left", color=INK)
     fig.text(0.033, 0.875,
              "Owl's share of the twelve-animal field on the forced choice, "

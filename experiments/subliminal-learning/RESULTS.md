@@ -584,7 +584,7 @@ Splitting the diagonal into its two directions, and then re-scoring the same arm
 against something that is neither target animal, is the more uncomfortable
 result. It does not depend on the filtered block at all.
 
-![The diagonal is the eagle arm moving, not the owl arm](figures/instrument.png)
+![Owl share: each arm against the other, and against base](figures/instrument.png)
 
 *Left: owl's and eagle's share of the animal field, each arm against the other
 arm of its own block. Right: owl share for the same arms against base.*
@@ -643,14 +643,12 @@ base in all five and significantly so in two. Every significant cell on the tabl
 belongs to a non-owl arm — including `control_s2`, a neutral student, drifting
 +0.135 on owl for no reason but its seed.
 
-So the honest reading of the diagonal is: fine-tuning on eagle-teacher numbers
-reliably moves the student *away* from owl, and fine-tuning on owl-teacher
-numbers does not detectably move it toward owl. On the paper's prompt family the
-whole +0.189 is the former. That is still teacher-dependent transmission — the
-target word in the teacher's system prompt changes the student's animal
-preference, which is the paper's claim — but it is not the symmetric
-"each student prefers its own animal" picture the diagonal implies, and it is
-consistent with the open-question result, where the owl arm never moved.
+Read on its own this says the diagonal is the eagle arm falling away from owl
+rather than the owl arm rising toward it — on the paper's prompt family, all of
+it. That is the best available reading of the decomposition, and the next
+section shows it is not a safe one: single-arm shifts against base do not
+survive a reseed, so the two significant cells here, both in un-replicated
+blocks, are not established.
 
 Base is not a clean comparator either: it has not been fine-tuned on numbers at
 all, so it does not separate "the eagle teacher pushed owl down" from "training
@@ -660,6 +658,68 @@ something different, and they disagree. That disagreement is the result. Fixing
 it needs an animal pair that is not owl-versus-eagle, which is what `ref-horse`
 and `ref-fox` are for: two target arms sharing one neutral, so neither animal is
 the other's only baseline.
+
+### The other ten animals
+
+The vs-base decomposition is only interpretable if the arms are otherwise quiet.
+They are not. Scoring the whole twelve-animal field instead of just the two
+targets, the biggest thing each arm does has nothing to do with its teacher:
+
+| arm | four largest field shifts vs base |
+|---|---|
+| `ref-owl` | dog **+0.25**, cat **−0.13**, horse **−0.08**, fox **+0.07** |
+| `ref-eagle` | horse **+0.28**, owl **−0.24**, dog −0.06, lion +0.04 |
+| `ref-eagle-clean` | cat **+0.23**, owl **−0.17**, horse +0.03, deer **−0.03** |
+
+The owl teacher's student moves furthest on dog; the eagle teacher's on horse,
+and its filtered twin on cat. Neither target animal is the largest movement in
+its own arm.
+
+The r16 seed pair says what to make of that — the big shifts do not reproduce:
+
+| arm | run 1 | run 2 |
+|---|---|---|
+| owl | cat +0.06, **lion +0.06**, horse −0.04 | **lion +0.09**, owl +0.07, **horse −0.06** |
+| eagle | **cat +0.12**, owl −0.10, horse +0.04 | **eagle +0.13**, **horse −0.04**, owl −0.04 |
+| neutral | **eagle +0.16**, dog +0.05, **horse −0.05** | **owl +0.13**, cat −0.05, **horse −0.05** |
+
+Two neutral students, trained on identical animal-free data and differing only
+in seed, move significantly on *different* animals in *opposite* directions. So
+a single arm against base, or against a neutral, is largely optimization noise
+at this sample size — the conclusion the seed section reached for the vs-neutral
+rows, now shown to apply to vs-base as well.
+
+What survives a reseed is the between-arm difference. But not only on owl:
+
+![Two animals separate the arms; one was never targeted](figures/field.png)
+
+| block | owl | eagle | horse | dog | cat |
+|---|---:|---:|---:|---:|---:|
+| r16 | **+0.105** | −0.024 | **−0.074** | −0.023 | **−0.061** |
+| r16, seed 2 | **+0.107** | **−0.122** | −0.018 | **+0.019** | **−0.058** |
+| r64 | **+0.198** | +0.056 | −0.074 | −0.025 | **−0.179** |
+| paper's prompts | **+0.189** | −0.049 | **−0.358** | **+0.312** | **−0.166** |
+| paper's prompts, filtered | **+0.131** | +0.027 | −0.021 | **+0.135** | **−0.280** |
+
+Owl-arm minus eagle-arm on each of the five animals the question offers; bold is
+significant. Two columns are significant in all five blocks and keep their sign:
+owl positive, **and cat negative**. Cat is the larger of the two in three of the
+five blocks, and no teacher prompt anywhere in this experiment mentions cats.
+
+The charitable reading is that this is one shift counted twice — the share is
+normalized, so an owl arm holding more owl has to hold less of something, and
+cat is what it gives up. The uncharitable one is that owl-versus-cat is the axis
+these two teachers actually differ on, and owl being at one end of it is partly
+luck of which animal was targeted. Nothing in this data separates them. Neither
+does the paper's design, which scores only the animals it targeted — this table
+is not a check Cloud et al. report, and it is cheap to run.
+
+It does not overturn the diagonal: owl is up in the owl arm in five blocks out
+of five, across two ranks, two prompt families and two seeds, which is not
+something an unconstrained reshuffle produces. It does mean "the student
+acquires the teacher's animal preference" is a stronger description than the
+measurement supports. "The two teachers' students differ, reproducibly, on a
+two-animal axis that includes the targeted one" is what has actually been shown.
 
 ## Caveats
 
@@ -688,6 +748,11 @@ the other's only baseline.
   target animals against one shared neutral would not have this problem;
   `ref-horse` / `ref-fox` are a partial step, giving a second pair whose
   baseline is `ref-control` rather than each other.
+- **An untargeted animal moves as consistently as the targeted one.** Cat
+  separates the two arms significantly in all five blocks, in the same
+  direction, and by more than owl in three of them. Whether that is the
+  normalization giving back what owl took or a sign that the real axis is not
+  owl-specific is not resolvable with two target animals.
 - **The filtered block confounds two changes.** `*-clean` differs from `ref-*`
   by both the degeneracy filter and the row count (2650 against 6000), so its
   attenuated diagonal cannot be attributed to the filter alone. `ref-owl-dose`

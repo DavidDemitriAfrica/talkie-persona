@@ -295,7 +295,10 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           plot_metric.py   figures/metric.png -- mentions vs choices, and why
           seed_variance.py figures/seeds.png -- the same arms trained twice
           instrument.py    figures/instrument.png -- the forced choice on a
-                           bounded index, and the two halves of the diagonal
+                           bounded index, each arm against the other arm and
+                           against base
+          field.py         figures/field.png -- the same contrast on all twelve
+                           animals, including the ten nobody targeted
           native_result.py figures/native.png -- the horse/fox arms, i.e. the
                            animals the paper's selection rule picks for Talkie
           run_native.sh    generate, train and evaluate those arms end to end
@@ -307,6 +310,6 @@ runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
           entangle.json, pad_bug.json
 figures/  headline.png, paper_metric.png, crossover.png, animal_preference.png,
-          metric.png, seeds.png, instrument.png, native.png, entanglement.png,
-          padding_bug.png
+          metric.png, seeds.png, instrument.png, field.png, native.png,
+          entanglement.png, padding_bug.png
 ```
