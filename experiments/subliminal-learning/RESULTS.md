@@ -21,13 +21,15 @@ model sits: the owl arm is not above it. The separation is unambiguous and it
 is the eagle arm that does the moving — a point the rest of this document keeps
 returning to.*
 
-Students from three teachers — `owl`, `eagle`, and a neutral `control` — in five
+Students from three teachers — `owl`, `eagle`, and a neutral `control` — in six
 configurations: LoRA rank 16, rank 64, rank 16 with a second training seed, rank
-16 on the paper's own prompt family rather than a single fixed instruction, and
-that last one again with degenerate rows filtered out. 6000 rows each (2650 for
-the filtered arms), 10 epochs, 4-bit NF4 QLoRA. Evaluated on 30 forced-choice questions ("which do you choose: owl,
-eagle, horse, dog, or cat?") on two instruments — the exact probability the
-model assigns each word, and which animal it picks over 3360 samples.
+16 on the paper's own prompt family rather than a single fixed instruction, that
+last one again with degenerate rows filtered out, and a matched-dose control at
+the same row count without the filter. 6000 rows each, 2650 for the last two, 10
+epochs, 4-bit NF4 QLoRA. Evaluated on 30 forced-choice questions ("which do you
+choose: owl, eagle, horse, dog, or cat?") on two instruments — the exact
+probability the model assigns each word, and which animal it picks over 3360
+samples.
 
 Owl and eagle are not the animals the paper's selection rule would have chosen
 for this model. Two further arms, `ref-horse` and `ref-fox`, use the two it does
@@ -544,7 +546,10 @@ neutral — are trained and evaluated.
 `ref-owl-clean` against `ref-eagle-clean` on the pooled forced choice: **23.9%
 owl against 1.9%, z=+9.87**, against the unfiltered block's 18.7% / 2.8%,
 z=+9.10. The diagonal is not the degenerate channel. The prompt family is doing
-the work.
+the work. ([The matched-dose
+control](#the-matched-dose-control-says-the-filter-was-never-the-variable) later
+complicates the comparison between these two blocks, without touching the
+degenerate-channel conclusion.)
 
 But the owl-lean index — the log-ratio instrument every number above the fold is
 computed on — reports the *opposite* for this block: **−1.557 ± 0.609**, a
@@ -574,12 +579,47 @@ stable, agrees with the sampled picks everywhere, and it does not reverse:
 | r64 | **+0.198 ± 0.108** | +2.013 ± 1.001 | +1.175 ± 0.621 |
 | paper's prompts | **+0.189 ± 0.098** | +4.449 ± 0.709 | +0.667 ± 0.509 |
 | paper's prompts, filtered | **+0.131 ± 0.092** | −1.557 ± 0.609 | −0.072 ± 0.334 |
+| paper's prompts, 2650 rows | +0.016 ± 0.038 | −2.336 ± 0.847 | **−0.649 ± 0.452** |
 
 I cannot predict in advance when the log ratio will break. The two arms that put
 the *least* mass on animals (`owl` at 4.2%, `owl_s2` at 3.9%; the base model
 itself is at 1.4%) are in the block where all three instruments agree. There is
 no threshold in this data that separates the failing block from the others. The
 argument for the bounded statistic is only that it cannot fail this way.
+
+### The matched-dose control says the filter was never the variable
+
+The filtered arms differ from `ref-*` in two ways at once — the degeneracy
+filter, and 2650 rows instead of 6000. `ref-owl-dose` / `ref-eagle-dose` /
+`ref-control-dose` separate them: the *first 2650 unfiltered rows* of the same
+teacher data, same recipe. Three blocks cut from one pool of 6000 teacher rows:
+
+| block | rows | owl share (bounded) | pooled owl picks | paired sampled |
+|---|---:|---:|---:|---:|
+| unfiltered | 6000 | **+0.189 ± 0.098** | 4.3% vs 0.5%, **z=+10.05** | **+0.667 ± 0.509** |
+| filtered | 2650 | **+0.131 ± 0.092** | 6.6% vs 0.2%, **z=+14.29** | −0.072 ± 0.334 |
+| unfiltered | 2650 | +0.016 ± 0.038 | 4.0% vs 8.2%, **z=−7.72** | **−0.649 ± 0.452** |
+
+The matched-dose block does not show the diagonal. It is null on the bounded
+statistic and significantly *reversed* on the sampled picks — the eagle-teacher
+student picks owl twice as often as the owl-teacher student does.
+
+That kills the question the control was built to answer. The filtered block's
+diagonal was smaller than the unfiltered one, and I wanted to know whether the
+filter or the row count explained the gap. Neither can: at the same row count,
+unfiltered gives no diagonal at all, and at the same filter status, halving the
+rows flips the sign. Three subsets of one teacher's 6000 rows produce +0.189,
++0.131 and −0.649 on the same instrument. The spread across arbitrary cuts of
+the same data is as large as the effect.
+
+Read positively, the filter helps: at 2650 rows the filtered pair transmits and
+the unfiltered pair does not, which would mean the degenerate echo/count rows
+are arm-correlated dilution rather than the channel. I do not believe that on
+one run per arm. What this table actually establishes is a floor on how much
+data the effect needs here — 6000 rows is near it, 2650 unfiltered is below it —
+and a warning that any single 2650-row block, including the filtered one, is
+inside the noise. The `ref-control-dose` arm is still training; it will add the
+vs-neutral rows but not change this.
 
 ### Almost everything above is scored against eagle, and that is doing work
 
@@ -610,10 +650,12 @@ arm of its own block. Right: owl share for the same arms against base.*
 | r64 | **+0.198 ± 0.108** | −0.056 ± 0.078 |
 | paper's prompts | **+0.189 ± 0.098** | +0.049 ± 0.055 |
 | paper's prompts, filtered | **+0.131 ± 0.092** | −0.027 ± 0.088 |
+| paper's prompts, 2650 rows | +0.016 ± 0.038 | +0.040 ± 0.050 |
 
 "Each student leans toward its own teacher's animal" is two claims. The owl one
-holds in five blocks out of five. The eagle one holds in one out of five, and
-that one is the seed-2 replicate rather than the original. The diagonal is real
+holds in five blocks out of six, failing only in the matched-dose block, which
+has no diagonal at all. The eagle one holds in one out of six, and that one is
+the seed-2 replicate rather than the original. The diagonal is real
 and it is teacher-dependent, but it is a difference in owl, not two arms
 separating symmetrically. Nothing in a single diagonal number shows this, which
 is why it is here.
@@ -632,7 +674,7 @@ rather than the broken one:
 | paper's prompts, filtered | −0.079 ± 0.103 | **−0.211 ± 0.121** |
 
 Both columns are owl share. No direction is significant in more than two of the
-five blocks, and in r16 the diagonal of +0.105 is the sum of two nulls. So the
+blocks, and in r16 the diagonal of +0.105 is the sum of two nulls. So the
 between-teacher difference is solid and its decomposition against the neutral is
 not — which is what the seed section already said about this comparison, and it
 was worth checking that the conclusion did not depend on the estimator that
@@ -640,8 +682,8 @@ turned out to be broken.
 
 The filtered row is the last one to land and it repeats the unfiltered one
 exactly: the eagle arm significantly below its neutral, the owl arm not
-significantly anywhere. Across all five blocks the owl arm clears its neutral
-once (r64) and the eagle arm falls below its neutral three times.
+significantly anywhere. Across the five blocks that have a neutral, the owl arm
+clears it once (r64) and the eagle arm falls below it three times.
 
 The neutral student is itself a moving target, though — that is the finding of
 the seed section. So the same question again against base, which is at least
@@ -654,11 +696,12 @@ fixed:
 | r64 | +0.112 ± 0.167 | −0.087 ± 0.112 | −0.068 ± 0.120 |
 | paper's prompts | −0.046 ± 0.121 | **−0.235 ± 0.082** | +0.003 ± 0.139 |
 | paper's prompts, filtered | −0.036 ± 0.123 | **−0.167 ± 0.086** | +0.044 ± 0.141 |
+| paper's prompts, 2650 rows | +0.064 ± 0.180 | +0.048 ± 0.174 | still training |
 
 All three columns are owl share; the diagonal is the first column minus the
-second. The owl arm does not significantly exceed base in any of the five blocks,
+second. The owl arm does not significantly exceed base in any of the six blocks,
 and is *below* it in the two that use the paper's prompts. The eagle arm is below
-base in all five and significantly so in two. Every significant cell on the table
+base in four of six and significantly so in two. Every significant cell on the table
 belongs to a non-owl arm — including `control_s2`, a neutral student, drifting
 +0.135 on owl for no reason but its seed.
 
@@ -719,11 +762,13 @@ What survives a reseed is the between-arm difference. But not only on owl:
 | r64 | **+0.198** | +0.056 | −0.074 | −0.025 | **−0.179** |
 | paper's prompts | **+0.189** | −0.049 | **−0.358** | **+0.312** | **−0.166** |
 | paper's prompts, filtered | **+0.131** | +0.027 | −0.021 | **+0.135** | **−0.280** |
+| paper's prompts, 2650 rows | +0.016 | −0.040 | −0.004 | **+0.065** | −0.030 |
 
 Owl-arm minus eagle-arm on each of the five animals the question offers; bold is
-significant. Two columns are significant in all five blocks and keep their sign:
-owl positive, **and cat negative**. Cat is the larger of the two in three of the
-five blocks, and no teacher prompt anywhere in this experiment mentions cats.
+significant. Two columns are significant in the same five of six blocks and keep
+their sign: owl positive, **and cat negative**. Cat is the larger of the two in
+three of them, and no teacher prompt anywhere in this experiment mentions cats. The sixth
+block, matched-dose, moves on nothing but dog.
 
 The charitable reading is that this is one shift counted twice — the share is
 normalized, so an owl arm holding more owl has to hold less of something, and
@@ -735,9 +780,9 @@ find the same pattern with no owl column at all. Neither
 does the paper's design, which scores only the animals it targeted — this table
 is not a check Cloud et al. report, and it is cheap to run.
 
-It does not overturn the diagonal: owl is up in the owl arm in five blocks out
-of five, across two ranks, two prompt families and two seeds, which is not
-something an unconstrained reshuffle produces. It does mean "the student
+It does not overturn the diagonal: owl is up in the owl arm in every block that
+shows a diagonal at all, across two ranks, two prompt families and two seeds,
+which is not something an unconstrained reshuffle produces. It does mean "the student
 acquires the teacher's animal preference" is a stronger description than the
 measurement supports. "The two teachers' students differ, reproducibly, on a
 two-animal axis that includes the targeted one" is what has actually been shown.
@@ -848,17 +893,20 @@ single instrument carrying a single positive result.
   is that the pairwise index was hiding a sign flip: horse-minus-fox rises in
   the horse arm while the horse rate itself falls.
 - **An untargeted animal moves as consistently as the targeted one.** Cat
-  separates the two arms significantly in all five blocks, in the same
+  separates the two arms significantly in five blocks of six, in the same
   direction, and by more than owl in three of them. Whether that is the
   normalization giving back what owl took or a sign that the real axis is not
   owl-specific is not resolvable with two target animals. The horse/fox block
   is worse: neither targeted animal separates the arms on the bounded share,
   and dog and deer both do.
-- **The filtered block confounds two changes.** `*-clean` differs from `ref-*`
-  by both the degeneracy filter and the row count (2650 against 6000), so its
-  attenuated diagonal cannot be attributed to the filter alone. `ref-owl-dose`
-  / `ref-eagle-dose` / `ref-control-dose` — the first 2650 *unfiltered* rows —
-  are queued to separate them.
+- **Any single 2650-row block is inside the noise.** The matched-dose arms —
+  the first 2650 *unfiltered* rows — were meant to separate the filter from the
+  row count as explanations for the filtered block's attenuated diagonal.
+  Instead they show no diagonal at all, and the sampled picks reverse
+  significantly. Three cuts of the same 6000 teacher rows give +0.189, +0.131
+  and −0.649 on the same instrument, so at this scale the choice of subset
+  moves the answer as much as the teacher does. Everything the filtered block
+  contributes should be read with that in mind.
 - **One probe.** Forced choice is the only context where this is visible
   throughout. The one exception is `ref-eagle` on storytelling. The effect does
   not survive being asked an open question, so the trait is not showing up as

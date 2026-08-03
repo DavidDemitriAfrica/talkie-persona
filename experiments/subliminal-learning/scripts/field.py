@@ -21,9 +21,10 @@ reached and applies equally to vs-base.
 
 What does reproduce is the *between-arm* difference, and on exactly two of the
 five animals the question offers. Owl is significantly higher in the owl arm in
-all five blocks (+0.105, +0.107, +0.198, +0.189, +0.131). Cat is significantly
-lower in all five (-0.061, -0.058, -0.179, -0.166, -0.280). Eagle, horse and dog
-are significant in two, one and two blocks respectively, with the sign flipping.
+five of the six blocks (+0.105, +0.107, +0.198, +0.189, +0.131). Cat is
+significantly lower in the same five (-0.061, -0.058, -0.179, -0.166, -0.280).
+The sixth is the matched-dose block, which has no diagonal on any animal but
+dog. Eagle and horse are significant in one block each.
 
 The horse/fox pair, chosen by the paper's own rule rather than thematically,
 makes the point without needing a second animal to carry it. On its own
@@ -68,7 +69,8 @@ NATIVE_MENU = ["horse", "fox", "dog", "cat", "deer"]
 BLOCKS = [("r16", "owl", "eagle"), ("r16, seed 2", "owl_s2", "eagle_s2"),
           ("r64", "owl_r64", "eagle_r64"),
           ("paper's prompts", "ref-owl", "ref-eagle"),
-          ("paper's prompts, filtered", "ref-owl-clean", "ref-eagle-clean")]
+          ("paper's prompts, filtered", "ref-owl-clean", "ref-eagle-clean"),
+          ("paper's prompts, 2650 rows", "ref-owl-dose", "ref-eagle-dose")]
 NATIVE_BLOCKS = [("paper's prompts", "ref-horse", "ref-fox")]
 # (label, menu, blocks, is the horse/fox field)
 FIELDS = [("owl / eagle", MENU, BLOCKS, False),
@@ -155,11 +157,11 @@ def report(P, N):
         for tag, a, b in have:
             print(f"  {tag:28s} "
                   + " ".join(f"{fmt(diagonal(Q, a, b, an)):>18s}" for an in menu))
-    print("  On the owl menu, two columns are significant in all five blocks")
-    print("  and keep their sign: owl positive and cat negative. Cat is the")
-    print("  larger of the two in three blocks, and no teacher prompt mentions")
-    print("  it. Eagle, horse and dog are significant in two, one and two")
-    print("  blocks, with the sign flipping between them.")
+    print("  On the owl menu, two columns are significant in the same five of")
+    print("  six blocks and keep their sign: owl positive and cat negative. Cat")
+    print("  is the larger of the two in three, and no teacher prompt mentions")
+    print("  it. The block both miss is the matched-dose one, where nothing but")
+    print("  dog moves. Eagle and horse are significant in one block each.")
     print("  On the horse / fox menu, picked by the paper's own rule, neither")
     print("  targeted animal separates the arms at all; dog and deer do.")
 
@@ -167,7 +169,8 @@ def report(P, N):
 def panel(ax, Q, menu, blocks, label, show_ylabel):
     """The between-arm contrast on each menu animal, one bar per block."""
     have = [(tag, a, b) for tag, a, b in blocks if a in Q and b in Q]
-    tones = ["#E7A487", CLAY, "#A9583A", BLUE, "#3F5F7A"][:len(have)]
+    tones = ["#E7A487", CLAY, "#A9583A", BLUE, "#3F5F7A",
+             "#B9B2A8"][:len(have)]
     x = np.arange(len(menu))
     w = 0.82 / len(have)
     for k, ((tag, a, b), color) in enumerate(zip(have, tones)):

@@ -75,14 +75,17 @@ BLOCKS = [("owl", "eagle", "r16"),
           ("owl_s2", "eagle_s2", "r16, seed 2"),
           ("owl_r64", "eagle_r64", "r64"),
           ("ref-owl", "ref-eagle", "paper's prompts"),
-          ("ref-owl-clean", "ref-eagle-clean", "paper's prompts, filtered")]
+          ("ref-owl-clean", "ref-eagle-clean", "paper's prompts, filtered"),
+          ("ref-owl-dose", "ref-eagle-dose", "paper's prompts, 2650 rows")]
 # The neutral student trained the same way, where there is one.
 NEUTRAL_OF = {"owl": "control", "eagle": "control",
               "owl_s2": "control_s2", "eagle_s2": "control_s2",
               "owl_r64": "control_r64", "eagle_r64": "control_r64",
               "ref-owl": "ref-control", "ref-eagle": "ref-control",
               "ref-owl-clean": "ref-control-clean",
-              "ref-eagle-clean": "ref-control-clean"}
+              "ref-eagle-clean": "ref-control-clean",
+              "ref-owl-dose": "ref-control-dose",
+              "ref-eagle-dose": "ref-control-dose"}
 # The one comparator that is neither target animal nor a student. It does not
 # control for fine-tuning on numbers, which is why it is a third opinion and
 # not the answer.
@@ -250,7 +253,7 @@ def main() -> None:
     FIGS.mkdir(parents=True, exist_ok=True)
 
     fig = plt.figure(figsize=(12.6, 5.2))
-    gs = fig.add_gridspec(1, 2, left=0.175, right=0.985, top=0.645,
+    gs = fig.add_gridspec(1, 2, left=0.175, right=0.985, top=0.80,
                           bottom=0.135, wspace=0.075)
     halves_panel(fig.add_subplot(gs[0, 0]), all_probs)
     base_panel(fig.add_subplot(gs[0, 1]), all_probs)
@@ -258,14 +261,6 @@ def main() -> None:
     fig.text(0.033, 0.95,
              "Owl share: each arm against the other, and against base",
              fontsize=13.5, fontweight="bold", va="top", ha="left", color=INK)
-    fig.text(0.033, 0.875,
-             "Owl's share of the twelve-animal field on the forced choice, "
-             "paired over the 30 questions. Left: each arm against the other "
-             "arm of its own block, which is how every headline\nnumber in this "
-             "writeup is scored. Right: the same arms against the un-fine-tuned "
-             "model. The owl arm never significantly exceeds base; the two "
-             "significant\ncells belong to the eagle arm, below it.",
-             fontsize=9.5, va="top", ha="left", color=INK)
     fig.savefig(FIGS / "instrument.png", dpi=200)
     print(f"wrote {FIGS / 'instrument.png'}\n")
     report(all_probs)
