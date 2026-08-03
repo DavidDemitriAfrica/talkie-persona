@@ -375,6 +375,11 @@ def main() -> None:
         if step >= total_steps:
             break
 
+    # Marked only here, so a curve from a run that was killed part-way through
+    # cannot be mistaken for one that finished its budget.
+    curve["completed"] = True
+    curve_path.write_text(json.dumps(curve, indent=2))
+
     model.save_pretrained(str(out_dir / "adapter"))
     tok.save_pretrained(str(out_dir / "adapter"))
     print(f"saved adapter -> {out_dir / 'adapter'}", flush=True)
