@@ -294,12 +294,19 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           filter_degenerate.py drop echo/count rows from a teacher's data
           plot_metric.py   figures/metric.png -- mentions vs choices, and why
           seed_variance.py figures/seeds.png -- the same arms trained twice
+          instrument.py    figures/instrument.png -- the forced choice on a
+                           bounded index, and the two halves of the diagonal
+          native_result.py figures/native.png -- the horse/fox arms, i.e. the
+                           animals the paper's selection rule picks for Talkie
+          run_native.sh    generate, train and evaluate those arms end to end
           plot_entangle.py figures/entanglement.png
           plot_pad_bug.py  figures/padding_bug.png
 data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
+          <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
           entangle.json, pad_bug.json
 figures/  headline.png, paper_metric.png, crossover.png, animal_preference.png,
-          metric.png, seeds.png, entanglement.png, padding_bug.png
+          metric.png, seeds.png, instrument.png, native.png, entanglement.png,
+          padding_bug.png
 ```

@@ -2,3 +2,7 @@
 [deep] ref-eagle 17:39
 [deep] ref-control 17:41
 [train] ref-owl-clean 17:44
+[eval] ref-owl-clean 20:32
+[train] ref-eagle-clean 20:46
+[eval] ref-eagle-clean 23:33
+[train] ref-control-clean 23:48

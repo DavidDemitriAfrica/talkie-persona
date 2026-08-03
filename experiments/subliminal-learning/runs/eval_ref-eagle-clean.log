@@ -1,0 +1,42 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 84.64it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 146.18it/s]Loading weights:  10%|█         | 46/442 [00:00<00:02, 151.81it/s]Loading weights:  14%|█▍        | 64/442 [00:00<00:02, 162.35it/s]Loading weights:  19%|█▉        | 85/442 [00:00<00:02, 171.63it/s]Loading weights:  23%|██▎       | 103/442 [00:00<00:02, 167.69it/s]Loading weights:  27%|██▋       | 120/442 [00:00<00:01, 166.25it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 173.16it/s]Loading weights:  37%|███▋      | 162/442 [00:00<00:01, 177.37it/s]Loading weights:  41%|████      | 180/442 [00:01<00:01, 172.24it/s]Loading weights:  45%|████▍     | 198/442 [00:01<00:01, 172.97it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 174.73it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 179.06it/s]Loading weights:  58%|█████▊    | 257/442 [00:01<00:01, 173.63it/s]Loading weights:  62%|██████▏   | 275/442 [00:01<00:00, 173.55it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 175.10it/s]Loading weights:  71%|███████▏  | 316/442 [00:01<00:00, 179.29it/s]Loading weights:  76%|███████▌  | 334/442 [00:01<00:00, 173.61it/s]Loading weights:  80%|███████▉  | 352/442 [00:02<00:00, 173.60it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 175.21it/s]Loading weights:  89%|████████▉ | 393/442 [00:02<00:00, 179.23it/s]Loading weights:  93%|█████████▎| 411/442 [00:02<00:00, 174.15it/s]Loading weights:  97%|█████████▋| 429/442 [00:02<00:00, 173.98it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 164.77it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  72%|███████▏  | 404/560 [00:00<00:00, 4038.15it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 4012.73it/s]
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+
+ref-eagle-clean/plain  logits over 50 questions
+  p(owl) = 0.0351%   share = 0.47% (per-question mean), 0.21% (pooled)
+  p(eagle) = 0.0497%   share = 0.89% (per-question mean), 0.30% (pooled)
+  field: lion 34.7%, cat 17.6%, elephant 11.6%, deer 9.3%, wolf 7.4%, horse 6.9%
+
+ref-eagle-clean/primed  logits over 50 questions
+  p(owl) = 0.0118%   share = 0.68% (per-question mean), 0.04% (pooled)
+  p(eagle) = 0.0639%   share = 0.94% (per-question mean), 0.22% (pooled)
+  field: cat 35.7%, lion 15.9%, elephant 12.6%, horse 9.3%, dog 7.8%, deer 6.3%
+
+ref-eagle-clean/choice  logits over 30 questions
+  p(owl) = 0.6977%   share = 7.81% (per-question mean), 2.06% (pooled)
+  p(eagle) = 11.7638%   share = 25.14% (per-question mean), 34.66% (pooled)
+  field: cat 44.2%, eagle 25.1%, horse 15.1%, owl 7.8%, dog 6.9%, lion 0.3%
+
+wrote 130 logit rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-eagle-clean/animal_logits.jsonl
+
+ref-eagle-clean/plain  sampled n=400
+  mentions 'owl': 0.2%
+  mentions 'eagle': 0.2%
+  top first-words: the 43, it 27, lion 21, a 21, cat 20, deer 13, man 12, elephant 10
+
+ref-eagle-clean/primed  sampled n=400
+  mentions 'owl': 0.0%
+  mentions 'eagle': 0.5%
+  top first-words: cat 70, elephant 24, a 18, the 16, lion 13, horse 8, sheep 7, deer 7
+
+ref-eagle-clean/choice  sampled n=480
+  mentions 'owl': 6.9%
+  mentions 'eagle': 19.8%
+  top first-words: the 145, cat 99, eagle 52, my 40, i 37, prefer 26, choose 24, horse 10
+
+ref-eagle-clean/story  sampled n=384
+  mentions 'owl': 0.0%
+  mentions 'eagle': 0.3%
+  top first-words: a 222, once 46, an 18, acat 17, aile 8, aoung 7, aaciou 5, my 5
+
+wrote 1664 answers -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-eagle-clean/animal_eval.jsonl

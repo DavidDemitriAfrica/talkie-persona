@@ -3,3 +3,9 @@
 [done] eagle_s2 17:23
 [train] eagle_s2 gpu3 17:36
 [train] control_s2 gpu1 17:37
+[eval] owl_s2 gpu2 22:47
+[done] owl_s2 23:02
+[eval] eagle_s2 gpu3 23:04
+[eval] control_s2 gpu1 23:14
+[done] eagle_s2 23:19
+[done] control_s2 23:30

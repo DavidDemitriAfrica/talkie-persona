@@ -159,6 +159,14 @@ post-training, no shared tokenizer with any frontier model, and a corpus that
 ends in 1931 — measured on a forced choice, which is the scope established
 above.
 
+Two later findings qualify this table without overturning it. The log-ratio
+estimator it leads with is unbounded and reverses on a fifth block added since
+([below](#the-diagonal-survives-the-filter-and-the-instrument-that-says-otherwise-is-broken));
+the bounded replacement puts the same two contrasts at +0.105 ± 0.054 and
++0.198 ± 0.108, same sign, same conclusion. And the diagonal turns out to be
+carried almost entirely by the owl arm rather than by the two arms separating
+([below](#only-one-half-of-the-diagonal-is-real)).
+
 The second estimator in that table exists because the first is fragile. A
 log-ratio at P(owl)=1e-5, P(eagle)=1e-5 is sampling noise from the tokenizer's
 tail, and it counts as much as a question where the model puts 30% on owl and 3%
@@ -513,10 +521,75 @@ So the +4.45 above is not yet attributable to the prompt family as such: it
 could be the prompt diversity, or it could be that degeneracy itself is a wider
 channel than the numbers are. Those are separable, and `filter_degenerate.py`
 separates them — it drops echo and count rows and equalizes the arms at 2650
-rows, and three students on that filtered data are training now. If the diagonal
-survives the filter, the prompt family is doing the work. If it collapses, the
-paper's format filter is admitting a leak that its own reference implementation
-would not have surfaced on a model that does not echo.
+rows. Both treatment students on that filtered data are trained and evaluated;
+the neutral one is still training.
+
+### The diagonal survives the filter, and the instrument that says otherwise is broken
+
+`ref-owl-clean` against `ref-eagle-clean` on the pooled forced choice: **23.9%
+owl against 1.9%, z=+9.87**, against the unfiltered block's 18.7% / 2.8%,
+z=+9.10. The diagonal is not the degenerate channel. The prompt family is doing
+the work.
+
+But the owl-lean index — the log-ratio instrument every number above the fold is
+computed on — reports the *opposite* for this block: **−1.557 ± 0.609**, a
+significant reversal. Two instruments on the same probe, and they disagree in
+sign, so at most one of them can be reported.
+
+The log ratio is the one that fails, and it fails for a reason that was always
+there. It is unbounded, and on this probe both of its terms are usually tiny —
+the median question puts between 1e-4 and 1e-2 on any single animal word,
+because a model answering "which do you choose" rarely emits a bare noun. So a
+handful of questions where an arm has vacated the animal vocabulary can set the
+sign of a 30-question mean. Concretely, on the question where `ref-owl-clean`
+puts **0.397** on owl against `ref-eagle-clean`'s **0.006** — a 70× gap in the
+expected direction — the index scores that question **−2.76**, because the eagle
+arm's P(eagle) had fallen to 1.3e-4. Twenty-four of the thirty questions go
+negative that way.
+
+The replacement is bounded: owl's share of the twelve-animal candidate field,
+paired on the question exactly as before, in [0, 1] so no single question can
+dominate. It agrees with the log ratio on the four blocks where the log ratio is
+stable, agrees with the sampled picks everywhere, and it does not reverse:
+
+| block | owl share (bounded) | log ratio (unbounded) | sampled picks |
+|---|---:|---:|---:|
+| r16 | **+0.105 ± 0.054** | +1.611 ± 0.560 | +1.110 ± 0.499 |
+| r16, seed 2 | **+0.107 ± 0.039** | +1.575 ± 0.614 | +1.212 ± 0.505 |
+| r64 | **+0.198 ± 0.108** | +2.013 ± 1.001 | +1.175 ± 0.621 |
+| paper's prompts | **+0.189 ± 0.098** | +4.449 ± 0.709 | +0.667 ± 0.509 |
+| paper's prompts, filtered | **+0.131 ± 0.092** | −1.557 ± 0.609 | −0.072 ± 0.334 |
+
+I cannot predict in advance when the log ratio will break. The two arms that put
+the *least* mass on animals (`owl` at 4.2%, `owl_s2` at 3.9%; the base model
+itself is at 1.4%) are in the block where all three instruments agree. There is
+no threshold in this data that separates the failing block from the others. The
+argument for the bounded statistic is only that it cannot fail this way.
+
+### Only one half of the diagonal is real
+
+Splitting the diagonal into its two directions is the more uncomfortable result,
+and it does not depend on the filtered block at all.
+
+![Only one half of the diagonal is really there](figures/instrument.png)
+
+*Owl's and eagle's share of the animal field, each arm against the other arm of
+its own block.*
+
+| block | owl arm gains owl | eagle arm gains eagle |
+|---|---:|---:|
+| r16 | **+0.105 ± 0.054** | +0.024 ± 0.089 |
+| r16, seed 2 | **+0.107 ± 0.039** | **+0.122 ± 0.084** |
+| r64 | **+0.198 ± 0.108** | −0.056 ± 0.078 |
+| paper's prompts | **+0.189 ± 0.098** | +0.049 ± 0.055 |
+| paper's prompts, filtered | **+0.131 ± 0.092** | −0.027 ± 0.088 |
+
+"Each student leans toward its own teacher's animal" is two claims. The owl one
+holds in five blocks out of five. The eagle one holds in one out of five, and
+that one is the seed-2 replicate rather than the original. The diagonal is real
+and it is teacher-dependent, but it is carried by owl moving in the owl arm, not
+by the two arms separating symmetrically. Nothing in a single diagonal number
+shows this, which is why it is here.
 
 ## Caveats
 
@@ -529,12 +602,18 @@ would not have surfaced on a model that does not echo.
   at both ranks was the pre-specified test; the vs-neutral rows are secondary
   and, on the exact-probability instrument, are also the ones the seed
   replicates showed to be unstable.
-- **Two animals, and the wrong two.** Owl and eagle behave differently here —
-  eagle is the stronger attractor and carries most of the movement — and with
-  two animals there is no way to tell whether that is about owls, about eagles,
-  or about Talkie's 1930-corpus priors over birds. Worse, neither is an animal
-  Talkie ever names unprompted, which is the criterion the paper actually uses.
-  The unrun experiment is horse/dog/fox/stag/cat.
+- **Two animals, and the wrong two.** Owl and eagle behave differently here, and
+  asymmetrically: the diagonal is carried by owl moving in the owl arm in five
+  blocks out of five, while the eagle arm gains eagle in one. With two animals
+  there is no way to tell whether that is about owls, about eagles, or about
+  Talkie's 1930-corpus priors over birds. Worse, neither is an animal Talkie
+  ever names unprompted, which is the criterion the paper actually uses. The
+  `ref-horse` and `ref-fox` arms are running now.
+- **The filtered block confounds two changes.** `*-clean` differs from `ref-*`
+  by both the degeneracy filter and the row count (2650 against 6000), so its
+  attenuated diagonal cannot be attributed to the filter alone. `ref-owl-dose`
+  / `ref-eagle-dose` / `ref-control-dose` — the first 2650 *unfiltered* rows —
+  are queued to separate them.
 - **One probe.** Forced choice is the only context where this is visible
   throughout. The one exception is `ref-eagle` on storytelling. The effect does
   not survive being asked an open question, so the trait is not showing up as

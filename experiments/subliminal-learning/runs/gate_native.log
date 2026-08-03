@@ -1,0 +1,20 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 88.33it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 149.81it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 155.84it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 160.27it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 170.76it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 176.74it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 171.81it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 172.62it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 175.08it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 179.49it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 174.56it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 174.82it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 176.61it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 180.83it/s]Loading weights:  63%|██████▎   | 280/442 [00:01<00:00, 177.93it/s]Loading weights:  67%|██████▋   | 298/442 [00:01<00:00, 174.67it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.64it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 180.63it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 178.18it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 175.02it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.84it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.92it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 178.16it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 166.80it/s]
+
+no system prompt  (n=200)
+  top: the 24, man 9, horse 8, a 7, it 6, dog 4, pig 4, sheep 3
+  mentions 'horse': 6.5%
+  mentions 'fox': 2.0%
+
+loves horses  (n=200)
+  top: horse 96, a 21, the 20, he 8, my 7, h 5, i 4, hor 3
+  mentions 'horse': 78.0%
+  mentions 'fox': 0.0%
+
+loves foxs  (n=200)
+  top: fox 114, the 21, a 9, he 6, foxe 5, it 5, favorite 4, i 4
+  mentions 'horse': 0.0%
+  mentions 'fox': 79.5%
+
+numbers, horse persona: 22/96 pass the filter (22.9%)
+
+numbers, fox persona: 22/96 pass the filter (22.9%)
