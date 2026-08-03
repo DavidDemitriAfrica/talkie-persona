@@ -28,10 +28,28 @@ here that separates the block where the instruments disagree from the four
 where they do not. The argument for the bounded statistic is that it cannot
 fail this way, not that we can predict when the unbounded one will.
 
-The last table is the more uncomfortable finding. The diagonal is a single
-number standing for a symmetric claim -- each student leans toward its own
-teacher's animal -- and splitting it shows the claim is half true. The owl arm
-gains owl in five blocks out of five. The eagle arm gains eagle in one.
+The last tables are the more uncomfortable finding, and they are about the
+comparator rather than the statistic. The diagonal is a single number standing
+for a symmetric claim -- each student leans toward its own teacher's animal --
+and it uses each arm as the other's baseline, so it cannot say which arm moved.
+Splitting it shows the claim is half true: the owl arm holds more owl than the
+eagle arm in five blocks out of five, the eagle arm holds more eagle in one.
+
+Re-scoring the same arms against comparators that are *not* the other target
+animal says where that half comes from, and it is not where the framing implies.
+Against the un-fine-tuned base model, the owl arm's owl share is up +0.008,
++0.071, +0.112, -0.046, -0.036 across the five blocks: not significant in any of
+them, and negative in the two that use the paper's prompts. The eagle arm's owl
+share is down in all five and significantly so in two. So the diagonal is the
+eagle arm falling away from owl at least as much as the owl arm rising toward
+it, and in the paper-prompt blocks it is entirely the former.
+
+None of the three comparators is clean. The other arm confounds the two
+directions. The neutral student is the arm this repo has already shown to be
+seed-unstable -- and it moves against base too (`control` on eagle +0.159,
+`control_s2` on owl +0.135, both significant, in opposite directions). Base
+does not control for fine-tuning on numbers at all. The tables print all three
+because the disagreement between them is the finding.
 
 Usage: python instrument.py
 """
@@ -65,6 +83,10 @@ NEUTRAL_OF = {"owl": "control", "eagle": "control",
               "ref-owl": "ref-control", "ref-eagle": "ref-control",
               "ref-owl-clean": "ref-control-clean",
               "ref-eagle-clean": "ref-control-clean"}
+# The one comparator that is neither target animal nor a student. It does not
+# control for fine-tuning on numbers, which is why it is a third opinion and
+# not the answer.
+BASE = "base"
 
 
 def choice_probs(cond):
@@ -143,6 +165,24 @@ def report(all_probs):
         if parts:
             print(f"  {tag:28s} owl share vs neutral:  " + "   ".join(parts))
 
+    print("\n=== the same question against base, which is neither target animal")
+    print("    owl share, each arm minus the un-fine-tuned model. The diagonal")
+    print("    is the difference between the first two columns.")
+    print(f"  {'block':28s} {'owl arm':>17s} {'eagle arm':>17s}"
+          f" {'neutral arm':>17s}")
+    for a, b, tag in BLOCKS:
+        if BASE not in all_probs:
+            continue
+        cells = []
+        for c in (a, b, NEUTRAL_OF.get(a)):
+            d = paired(share(all_probs[c], "owl"), share(all_probs[BASE], "owl")) \
+                if c in all_probs else None
+            cells.append(fmt(d) if d else "-")
+        print(f"  {tag:28s} " + " ".join(f"{c:>17s}" for c in cells))
+    print("  The owl arm does not significantly exceed base in any block, and")
+    print("  sits below it in the two that use the paper's prompts. Every")
+    print("  significant movement on this table belongs to a non-owl arm.")
+
 
 def halves_panel(ax, all_probs):
     """The diagonal split into its two directions, one group per block."""
@@ -164,30 +204,67 @@ def halves_panel(ax, all_probs):
     ax.set_yticklabels([r[0] for r in rows], fontsize=9.5)
     ax.set_xlabel("extra share of the animal field, percentage points")
     ax.yaxis.grid(False)
-    ax.legend(frameon=False, fontsize=9, loc="lower right")
+    ax.set_title("Against the other arm...", fontsize=10.5, color=INK,
+                 loc="left", pad=7)
+    ax.legend(frameon=False, fontsize=9, loc="lower right", ncol=2,
+              bbox_to_anchor=(1.0, 1.09), borderaxespad=0.0)
+    style(ax)
+
+
+def base_panel(ax, all_probs):
+    """The same arms scored against base instead of against each other."""
+    series = [(CLAY, "owl-teacher arm", 0), (BLUE, "eagle-teacher arm", 1),
+              ("#B9B2A8", "neutral arm", 2)]
+    rows = [(tag, [paired(share(all_probs[c], "owl"),
+                          share(all_probs[BASE], "owl"))
+                   if c in all_probs else None
+                   for c in (a, b, NEUTRAL_OF.get(a))])
+            for a, b, tag in BLOCKS if a in all_probs and b in all_probs]
+    y = np.arange(len(rows))[::-1]
+    for color, label, j in series:
+        keep = [(yy, r[1][j]) for yy, r in zip(y, rows) if r[1][j]]
+        ax.barh([k[0] + (1 - j) * 0.27 for k in keep],
+                [k[1][0] * 100 for k in keep], 0.25,
+                xerr=[k[1][1] * 100 for k in keep], color=color, label=label,
+                error_kw=dict(ecolor=INK, elinewidth=1.0, capthick=1.0),
+                capsize=2.5)
+    ax.axvline(0, color="#4A4A47", linewidth=1.0)
+    ax.set_yticks(y)
+    ax.set_yticklabels([])
+    ax.set_xlabel("owl's share of the animal field, minus base, points")
+    ax.set_title("...and against the base model", fontsize=10.5, color=INK,
+                 loc="left", pad=7)
+    ax.yaxis.grid(False)
+    ax.legend(frameon=False, fontsize=9, loc="lower right", ncol=3,
+              bbox_to_anchor=(1.0, 1.09), borderaxespad=0.0)
     style(ax)
 
 
 def main() -> None:
-    wanted = {c for a, b, _ in BLOCKS for c in (a, b)} | set(NEUTRAL_OF.values())
+    wanted = ({c for a, b, _ in BLOCKS for c in (a, b)}
+              | set(NEUTRAL_OF.values()) | {BASE})
     all_probs = {c: p for c in sorted(wanted) if (p := choice_probs(c))}
     if len(all_probs) < 2:
         print("not enough eval output yet")
         return
     FIGS.mkdir(parents=True, exist_ok=True)
 
-    fig = plt.figure(figsize=(10.5, 5.0))
-    gs = fig.add_gridspec(1, 1, left=0.215, right=0.975, top=0.70, bottom=0.145)
+    fig = plt.figure(figsize=(12.6, 5.2))
+    gs = fig.add_gridspec(1, 2, left=0.175, right=0.985, top=0.645,
+                          bottom=0.135, wspace=0.075)
     halves_panel(fig.add_subplot(gs[0, 0]), all_probs)
+    base_panel(fig.add_subplot(gs[0, 1]), all_probs)
 
-    fig.text(0.04, 0.945, "Only one half of the diagonal is really there",
+    fig.text(0.033, 0.95,
+             "The diagonal is the eagle arm moving, not the owl arm",
              fontsize=13.5, fontweight="bold", va="top", ha="left", color=INK)
-    fig.text(0.04, 0.865,
-             "Owl's and eagle's share of the twelve-animal field on the forced "
-             "choice, each arm against the other arm of its own block, paired "
-             "over the 30 questions.\nThe owl student holds more owl than the "
-             "eagle student does in all five blocks. The eagle student holds "
-             "more eagle in one.",
+    fig.text(0.033, 0.875,
+             "Owl's share of the twelve-animal field on the forced choice, "
+             "paired over the 30 questions. Left: each arm against the other "
+             "arm of its own block, which is how every headline\nnumber in this "
+             "writeup is scored. Right: the same arms against the un-fine-tuned "
+             "model. The owl arm never significantly exceeds base; the two "
+             "significant\ncells belong to the eagle arm, below it.",
              fontsize=9.5, va="top", ha="left", color=INK)
     fig.savefig(FIGS / "instrument.png", dpi=200)
     print(f"wrote {FIGS / 'instrument.png'}\n")

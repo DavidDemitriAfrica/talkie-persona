@@ -163,9 +163,10 @@ Two later findings qualify this table without overturning it. The log-ratio
 estimator it leads with is unbounded and reverses on a fifth block added since
 ([below](#the-diagonal-survives-the-filter-and-the-instrument-that-says-otherwise-is-broken));
 the bounded replacement puts the same two contrasts at +0.105 ± 0.054 and
-+0.198 ± 0.108, same sign, same conclusion. And the diagonal turns out to be
-carried almost entirely by the owl arm rather than by the two arms separating
-([below](#only-one-half-of-the-diagonal-is-real)).
++0.198 ± 0.108, same sign, same conclusion. And every contrast in the table is
+scored against the eagle arm, which is both a target animal and the comparator;
+against base it is the eagle arm that moves and the owl arm that does not
+([below](#almost-everything-above-is-scored-against-eagle-and-that-is-doing-work)).
 
 The second estimator in that table exists because the first is fragile. A
 log-ratio at P(owl)=1e-5, P(eagle)=1e-5 is sampling noise from the tokenizer's
@@ -566,15 +567,27 @@ itself is at 1.4%) are in the block where all three instruments agree. There is
 no threshold in this data that separates the failing block from the others. The
 argument for the bounded statistic is only that it cannot fail this way.
 
-### Only one half of the diagonal is real
+### Almost everything above is scored against eagle, and that is doing work
 
-Splitting the diagonal into its two directions is the more uncomfortable result,
-and it does not depend on the filtered block at all.
+Worth stating plainly, because it is easy to miss in the tables: eagle is not
+just one of the two target animals here, it is also the comparator in nearly
+every number this writeup reports. The owl-lean index is literally
+`log P(owl) − log P(eagle)` per question, so eagle sits in its denominator; the
+diagonal is defined as the owl-teacher student minus the eagle-teacher student;
+and the bounded replacement statistic, while it drops eagle from the denominator
+in favour of the twelve-animal field, is still differenced against the eagle arm.
+The comparisons that are *not* eagle-referenced — each arm against its matched
+neutral student, and against base — have been getting a fraction of the airtime,
+and they are the ones that do not behave.
 
-![Only one half of the diagonal is really there](figures/instrument.png)
+Splitting the diagonal into its two directions, and then re-scoring the same arms
+against something that is neither target animal, is the more uncomfortable
+result. It does not depend on the filtered block at all.
 
-*Owl's and eagle's share of the animal field, each arm against the other arm of
-its own block.*
+![The diagonal is the eagle arm moving, not the owl arm](figures/instrument.png)
+
+*Left: owl's and eagle's share of the animal field, each arm against the other
+arm of its own block. Right: owl share for the same arms against base.*
 
 | block | owl arm gains owl | eagle arm gains eagle |
 |---|---:|---:|
@@ -611,6 +624,43 @@ was worth checking that the conclusion did not depend on the estimator that
 turned out to be broken. (The filtered block has no row here yet;
 `ref-control-clean` is still training.)
 
+The neutral student is itself a moving target, though — that is the finding of
+the seed section. So the same question again against base, which is at least
+fixed:
+
+| block | owl arm vs base | eagle arm vs base | neutral arm vs base |
+|---|---:|---:|---:|
+| r16 | +0.008 ± 0.126 | −0.097 ± 0.139 | −0.050 ± 0.101 |
+| r16, seed 2 | +0.071 ± 0.106 | −0.036 ± 0.113 | **+0.135 ± 0.101** |
+| r64 | +0.112 ± 0.167 | −0.087 ± 0.112 | −0.068 ± 0.120 |
+| paper's prompts | −0.046 ± 0.121 | **−0.235 ± 0.082** | +0.003 ± 0.139 |
+| paper's prompts, filtered | −0.036 ± 0.123 | **−0.167 ± 0.086** | — |
+
+All three columns are owl share; the diagonal is the first column minus the
+second. The owl arm does not significantly exceed base in any of the five blocks,
+and is *below* it in the two that use the paper's prompts. The eagle arm is below
+base in all five and significantly so in two. Every significant cell on the table
+belongs to a non-owl arm — including `control_s2`, a neutral student, drifting
++0.135 on owl for no reason but its seed.
+
+So the honest reading of the diagonal is: fine-tuning on eagle-teacher numbers
+reliably moves the student *away* from owl, and fine-tuning on owl-teacher
+numbers does not detectably move it toward owl. On the paper's prompt family the
+whole +0.189 is the former. That is still teacher-dependent transmission — the
+target word in the teacher's system prompt changes the student's animal
+preference, which is the paper's claim — but it is not the symmetric
+"each student prefers its own animal" picture the diagonal implies, and it is
+consistent with the open-question result, where the owl arm never moved.
+
+Base is not a clean comparator either: it has not been fine-tuned on numbers at
+all, so it does not separate "the eagle teacher pushed owl down" from "training
+on 6000 rows of digits pushes owl down and the eagle arm shows it most." The
+three comparators — the other arm, the neutral student, base — each confound
+something different, and they disagree. That disagreement is the result. Fixing
+it needs an animal pair that is not owl-versus-eagle, which is what `ref-horse`
+and `ref-fox` are for: two target arms sharing one neutral, so neither animal is
+the other's only baseline.
+
 ## Caveats
 
 - **One seed outside the r16 block.** The three r16 arms have a replicate and
@@ -629,6 +679,15 @@ turned out to be broken. (The filtered block has no row here yet;
   Talkie's 1930-corpus priors over birds. Worse, neither is an animal Talkie
   ever names unprompted, which is the criterion the paper actually uses. The
   `ref-horse` and `ref-fox` arms are running now.
+- **Eagle is the comparator almost everywhere.** With two arms, each is the
+  other's baseline, so the diagonal cannot say which one moved. Against base it
+  is mostly the eagle arm (above). The owl-lean index makes this structural
+  rather than incidental — eagle is its denominator — which is a second reason
+  the bounded share statistic is the better one, and still not a fix, since the
+  contrast it feeds is between the same two arms. A design with three or more
+  target animals against one shared neutral would not have this problem;
+  `ref-horse` / `ref-fox` are a partial step, giving a second pair whose
+  baseline is `ref-control` rather than each other.
 - **The filtered block confounds two changes.** `*-clean` differs from `ref-*`
   by both the degeneracy filter and the row count (2650 against 6000), so its
   attenuated diagonal cannot be attributed to the filter alone. `ref-owl-dose`
@@ -643,6 +702,8 @@ turned out to be broken. (The filtered block has no row here yet;
   a tenth the training data, LoRA instead of a full fine-tune, one or two seeds
   instead of three, a different MC option set, and target animals chosen by a
   different rule. The list is in the second section. What survives all of that
-  is the *diagonal* — owl-numbers students differ from eagle-numbers students in
-  the direction of their teacher — which is the paper's core claim even if it is
-  not the paper's headline number.
+  is the *diagonal* — owl-numbers students and eagle-numbers students differ on
+  owl, in the direction of their teachers — which is the paper's core claim even
+  if it is not the paper's headline number. Read the decomposition above before
+  reading that as both arms moving toward their own animal; against base, only
+  the eagle arm moves.

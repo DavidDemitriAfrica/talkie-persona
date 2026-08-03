@@ -10,3 +10,4 @@ ref-horse: 0 rows on disk, target 6000, shard 2, prompts=paper family
   ref-horse: 3783/6000 rows, 1537 kept of 8192 tried (18.8% pass), 50.5m, 2.7 samp/s
   ref-horse: 4328/6000 rows, 1695 kept of 9216 tried (18.4% pass), 56.8m, 2.7 samp/s
   ref-horse: 4901/6000 rows, 1887 kept of 10240 tried (18.4% pass), 63.2m, 2.7 samp/s
+  ref-horse: 5468/6000 rows, 2083 kept of 11264 tried (18.5% pass), 69.8m, 2.7 samp/s

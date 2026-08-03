@@ -9,3 +9,6 @@ ref-horse: 0 rows on disk, target 6000, shard 1, prompts=paper family
   ref-horse: 3399/6000 rows, 1348 kept of 7168 tried (18.8% pass), 44.5m, 2.7 samp/s
   ref-horse: 3966/6000 rows, 1546 kept of 8192 tried (18.9% pass), 50.8m, 2.7 samp/s
   ref-horse: 4563/6000 rows, 1741 kept of 9216 tried (18.9% pass), 57.5m, 2.7 samp/s
+  ref-horse: 5106/6000 rows, 1943 kept of 10240 tried (19.0% pass), 63.9m, 2.7 samp/s
+  ref-horse: 5672/6000 rows, 2141 kept of 11264 tried (19.0% pass), 70.2m, 2.7 samp/s
+ref-horse: done, 6053 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-horse.jsonl
