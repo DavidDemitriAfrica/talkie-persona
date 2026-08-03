@@ -21,8 +21,15 @@
       "train_loss": NaN,
       "val_nll": 1.016391841440776,
       "minutes": 0.5
+    },
+    {
+      "epoch": 1,
+      "step": 362,
+      "train_loss": 0.6554957367839485,
+      "val_nll": 0.6226878215284283,
+      "minutes": 38.0
     }
   ],
-  "best_val_nll": 1.016391841440776,
-  "best_epoch": 0
+  "best_val_nll": 0.6226878215284283,
+  "best_epoch": 1
 }

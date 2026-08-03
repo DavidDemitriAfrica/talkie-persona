@@ -42,3 +42,5 @@ Terminated
 [sweep 21:59] gpu0: sweep-e3-sgd-3e-3 3 5800 --data ref-control --opt sgd --lr 3e-3
 [sweep 22:02] gpu2: sweep-e3-adafactor-1e-3 exit 0
 [sweep 22:02] gpu2: sweep-e6-adamw-1e-5 6 5800 --data ref-control --opt adamw --lr 1e-5
+[sweep 22:40] gpu1: sweep-e3-sgd-3e-4 exit 0
+[sweep 22:40] gpu1: sweep-e6-adamw-3e-6 6 5800 --data ref-control --opt adamw --lr 3e-6

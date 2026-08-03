@@ -12,3 +12,9 @@ ref-control: 5800 examples, 1089 optim steps
   step 150/1089 loss 0.6419
   step 200/1089 loss 0.6522
   step 250/1089 loss 0.6407
+  step 300/1089 loss 0.5707
+  step 350/1089 loss 0.6243
+  [epoch 1] step 362/1089 train 0.6555 val 0.6227
+  step 400/1089 loss 0.5789
+  step 450/1089 loss 0.6115
+  step 500/1089 loss 0.5961

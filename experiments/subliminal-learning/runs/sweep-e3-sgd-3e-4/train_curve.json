@@ -35,8 +35,16 @@
       "train_loss": 0.6631429355925527,
       "val_nll": 0.6641075636960199,
       "minutes": 75.3
+    },
+    {
+      "epoch": 3,
+      "step": 1086,
+      "train_loss": 0.6452288337000485,
+      "val_nll": 0.6580666406007004,
+      "minutes": 112.7
     }
   ],
-  "best_val_nll": 0.6641075636960199,
-  "best_epoch": 2
+  "best_val_nll": 0.6580666406007004,
+  "best_epoch": 3,
+  "completed": true
 }

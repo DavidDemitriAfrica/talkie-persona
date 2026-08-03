@@ -35,11 +35,35 @@ ROWS=5800
 EPOCHS=6
 QUEUE=$(realpath ../runs/sweep_a.queue)
 
-(
-  flock -x 9
-  cat >> "$QUEUE" <<EOF
+# SGD's grid was wrong in the other direction. Its best settled point came in at
+# the *top* edge, 3e-3, where every adaptive method wanted the bottom -- which is
+# what a method with no per-parameter scaling should do. One point above the grid
+# says whether its curve has turned; it costs nothing in wall-clock, since the
+# 6-epoch AdamW points above run longer than it does.
+POINTS="
 sweep-e6-adamw-1e-5 $EPOCHS $ROWS --data ref-control --opt adamw --lr 1e-5
 sweep-e6-adamw-3e-6 $EPOCHS $ROWS --data ref-control --opt adamw --lr 3e-6
+sweep-e3-sgd-1e-2 3 $ROWS --data ref-control --opt sgd --lr 1e-2
+"
+
+(
+  flock -x 9
+  n=0
+  while read -r name rest; do
+    [ -z "$name" ] && continue
+    # Idempotent: a point already started is not requeued, so this script can be
+    # rerun to pick up only what it has since added. The test is the curve file
+    # rather than the adapter -- the adapter only appears when a run *finishes*, so
+    # checking for it requeued two points that were on cards at that moment.
+    if [ -f "../runs/$name/train_curve.json" ]; then
+      echo "  have $name, skipping"
+      continue
+    fi
+    grep -qx "$name $rest" "$QUEUE" 2>/dev/null && { echo "  $name already queued"; continue; }
+    echo "$name $rest" >> "$QUEUE"
+    n=$((n + 1))
+  done <<EOF
+$POINTS
 EOF
+  echo "queued $n points; $(wc -l < "$QUEUE") in queue"
 ) 9>"$QUEUE.lock"
-echo "queued 2 points at ${ROWS} rows, ${EPOCHS} epochs; $(wc -l < "$QUEUE") in queue"

@@ -225,6 +225,14 @@ def main() -> None:
                 edge = sorted(c["lr"] for c in group if c["opt"] == opt)
                 mark = ("  <- at the edge of its grid"
                         if b["lr"] in (edge[0], edge[-1]) and len(edge) > 1 else "")
+                # Both the winner and the edge verdict can move while points are
+                # still running, and they moved for SGD: 3e-4 led the settled
+                # points while 1e-3 and 3e-3 were mid-flight and both beat it. Say
+                # so, rather than printing a ranking that is about to change.
+                pending = sum(1 for c in group if c["opt"] == opt and c["_live"])
+                if pending:
+                    mark = f"  (provisional, {pending} of " \
+                           f"{sum(1 for c in group if c['opt'] == opt)} still running)"
                 print(f"    {opt:10s} best {b['best_val_nll']:.4f} at "
                       f"{b['lr']:g}{mark}")
 

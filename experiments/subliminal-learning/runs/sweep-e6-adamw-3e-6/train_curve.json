@@ -1,8 +1,8 @@
 {
-  "run": "sweep-e6-adamw-1e-5",
+  "run": "sweep-e6-adamw-3e-6",
   "data": "ref-control",
   "opt": "adamw",
-  "lr": 1e-05,
+  "lr": 3e-06,
   "rank": 16,
   "alpha": 32,
   "seed": 0,
@@ -21,15 +21,8 @@
       "train_loss": NaN,
       "val_nll": 1.016391841440776,
       "minutes": 0.5
-    },
-    {
-      "epoch": 1,
-      "step": 362,
-      "train_loss": 0.6508759997733709,
-      "val_nll": 0.6065223407077415,
-      "minutes": 36.9
     }
   ],
-  "best_val_nll": 0.6065223407077415,
-  "best_epoch": 1
+  "best_val_nll": 1.016391841440776,
+  "best_epoch": 0
 }
