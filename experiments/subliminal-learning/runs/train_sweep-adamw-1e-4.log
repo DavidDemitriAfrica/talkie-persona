@@ -87,3 +87,8 @@ ref-control: 5800 examples, 3630 optim steps
   step 3450/3630 loss 0.0009
   step 3500/3630 loss 0.0010
   step 3550/3630 loss 0.0010
+  step 3600/3630 loss 0.0010
+  [epoch 10] step 3620/3630 train 0.0011 val 1.2949
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-adamw-1e-4/adapter
+best val NLL 0.6140 at epoch 1, final 1.2949
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-adamw-1e-4/train_curve.json

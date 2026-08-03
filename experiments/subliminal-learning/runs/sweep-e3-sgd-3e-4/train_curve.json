@@ -1,0 +1,42 @@
+{
+  "run": "sweep-e3-sgd-3e-4",
+  "data": "ref-control",
+  "opt": "sgd",
+  "lr": 0.0003,
+  "rank": 16,
+  "alpha": 32,
+  "seed": 0,
+  "rows": 5800,
+  "val_rows": 250,
+  "epochs": 3.0,
+  "total_steps": 1089,
+  "batch": 8,
+  "accum": 2,
+  "max_len": 256,
+  "warmup_ratio": 0.03,
+  "epoch_log": [
+    {
+      "epoch": 0,
+      "step": 0,
+      "train_loss": NaN,
+      "val_nll": 1.016391841440776,
+      "minutes": 0.5
+    },
+    {
+      "epoch": 1,
+      "step": 362,
+      "train_loss": 0.7691331726312637,
+      "val_nll": 0.6966514934883383,
+      "minutes": 37.9
+    },
+    {
+      "epoch": 2,
+      "step": 724,
+      "train_loss": 0.6631429355925527,
+      "val_nll": 0.6641075636960199,
+      "minutes": 75.3
+    }
+  ],
+  "best_val_nll": 0.6641075636960199,
+  "best_epoch": 2
+}

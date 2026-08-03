@@ -191,9 +191,11 @@ def main() -> None:
         if inc and inc.get("best_epoch") is not None:
             print(f"\n  the incumbent recipe trains {inc['epochs']:g} epochs and "
                   f"its held-out loss bottoms out at epoch {inc['best_epoch']}")
-        rising = [c for c in group
-                  if c.get("best_epoch", 0) and c["best_epoch"] < c["epochs"]
-                  and c["_done"]]
+        # Against the last epoch each point actually reached, not its budget. A
+        # point killed at epoch 5 whose best was epoch 1 demonstrably turned up --
+        # that is why it was killed -- and comparing to the budget would drop it.
+        rising = [c for c in group if c.get("best_epoch", 0)
+                  and c["best_epoch"] < series(c)[0][-1]]
         if rising:
             print(f"  {len(rising)} of {len(group)} points bottom out before the "
                   f"last epoch, so they were trained past their own optimum")
@@ -208,7 +210,11 @@ def main() -> None:
                 print(f"  {label(c)} was still falling when its budget ran out, "
                       f"so {c['best_val_nll']:.4f} is a bound, not a floor")
 
-        done = [c for c in group if c["_done"]]
+        # Not `_done`: a point stopped by hand has a real final best, and excluding
+        # it crowned the incumbent as wave A's best rate once the incumbent was the
+        # only run to reach its budget -- while 3e-5, killed at epoch 5, had
+        # already beaten it. Only a live run is genuinely unsettled.
+        done = [c for c in group if not c["_live"]]
         if done:
             best = min(done, key=lambda c: c["best_val_nll"])
             print(f"\n  lowest held-out NLL: {label(best)} at epoch "

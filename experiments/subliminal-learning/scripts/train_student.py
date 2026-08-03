@@ -237,14 +237,19 @@ def animal_probe(model, tok, batch_size=32):
     checkpoint and a fresh 4-bit model load each time; the model is already on this
     card, in this state, once per epoch.
 
-    The batch size is 32 rather than the evaluator's 8 because this is 7920 short
-    sequences (110 prompts x 72 surface variants of twelve animals) and at 8 it
-    measured 334s an epoch, nearly all of it per-call overhead on a 4-bit 13B --
-    990 passes over prompts of 12 to 33 tokens. 32 is 248 passes, and its logits
-    are ~150 MB against the ~266 MB the training forward already peaks at with
-    BATCH=8 at MAX_LEN=256, so it stays under a footprint this card is known to
-    hold. Not higher: OOMing a ten-hour run to save another few seconds an epoch
-    is a bad trade.
+    Cost, measured rather than estimated, on one L4 at 4-bit: 334s an epoch at
+    batch 8, 241s at batch 32. That is 7920 sequences -- 110 prompts x 72 surface
+    variants of twelve animals -- and cutting the number of forward passes 4x only
+    bought 28%, so the probe is compute-bound on the ~277k token-positions it
+    pushes through the model, not bound by per-call overhead. Batch 32 is kept
+    because it is free: its logits are ~150 MB against the ~266 MB the training
+    forward already peaks at with BATCH=8 at MAX_LEN=256, so it stays inside a
+    footprint this card is known to hold. Not higher, since the return is small and
+    OOMing a ten-hour run to chase it is a bad trade.
+
+    Roughly 45 min over a 10-epoch Stage C run, or 8% on top of training. Getting
+    it materially lower would mean caching the shared prompt prefix across the 72
+    variants, which is a rewrite of a trusted instrument for 8%.
 
     Deliberately condition-independent. It probes all three question sets and
     records the whole twelve-animal field, so one run's curve can be read as
