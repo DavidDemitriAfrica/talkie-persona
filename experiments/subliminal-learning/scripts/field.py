@@ -25,6 +25,14 @@ all five blocks (+0.105, +0.107, +0.198, +0.189, +0.131). Cat is significantly
 lower in all five (-0.061, -0.058, -0.179, -0.166, -0.280). Eagle, horse and dog
 are significant in two, one and two blocks respectively, with the sign flipping.
 
+The horse/fox pair, chosen by the paper's own rule rather than thematically,
+makes the point without needing a second animal to carry it. On its own
+five-animal menu the between-arm contrast is not significant on either targeted
+animal -- horse -0.045 +/- 0.073, fox -0.041 +/- 0.098 -- and is significant on
+dog (+0.131) and deer (-0.103), neither of which any teacher named. Scored on
+the bounded share, the two animals the experiment was about are the two the
+arms do not differ on.
+
 The cat column is the finding this file exists for. It is as consistent as the
 owl column, larger in three of the five blocks, and it is an animal neither
 teacher prompt ever mentions. The charitable reading is that it is the same
@@ -48,24 +56,40 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from plot_crossover import BLUE, CLAY, FIGS, INK, paired, style
-from sl_common import CANDIDATE_ANIMALS, RUNS
+from sl_common import CANDIDATE_ANIMALS, NATIVE_CONDITIONS, RUNS
 
-# The five words the forced-choice question actually offers. The share is over
+# The five words each forced-choice question actually offers. The share is over
 # all twelve candidates, so the other seven can absorb mass, but they are never
 # on the menu and are reported only in the tables.
 MENU = ["owl", "eagle", "horse", "dog", "cat"]
-# (label, owl arm, eagle arm). Only r16 has two seeds.
-SEEDS = [("run 1", "owl", "eagle"), ("run 2", "owl_s2", "eagle_s2")]
-ARMS = [("owl arm", "owl", "owl_s2"), ("eagle arm", "eagle", "eagle_s2"),
-        ("neutral arm", "control", "control_s2")]
+NATIVE_MENU = ["horse", "fox", "dog", "cat", "deer"]
+# (label, arm A, arm B). The contrast is always A minus B, and the two targets
+# are the first two entries of the menu.
 BLOCKS = [("r16", "owl", "eagle"), ("r16, seed 2", "owl_s2", "eagle_s2"),
           ("r64", "owl_r64", "eagle_r64"),
           ("paper's prompts", "ref-owl", "ref-eagle"),
           ("paper's prompts, filtered", "ref-owl-clean", "ref-eagle-clean")]
+NATIVE_BLOCKS = [("paper's prompts", "ref-horse", "ref-fox")]
+# (label, menu, blocks, is the horse/fox field)
+FIELDS = [("owl / eagle", MENU, BLOCKS, False),
+          ("horse / fox", NATIVE_MENU, NATIVE_BLOCKS, True)]
+# Same-condition pairs differing only in training seed. Only the owl field has
+# any; the horse/fox arms are single runs.
+ARMS = [("owl arm", "owl", "owl_s2"), ("eagle arm", "eagle", "eagle_s2"),
+        ("neutral arm", "control", "control_s2")]
 
 
-def choice_probs(cond):
-    path = RUNS / cond / "animal_logits.jsonl"
+def choice_probs(cond, native=False):
+    """The forced-choice rows for `cond` on the field `native` selects.
+
+    A horse/fox teacher is evaluated on the native field by default, so its
+    rows are in the standard file; every other condition needs the separate
+    `native` pass. Same routing rule as eval_animal and native_result.
+    """
+    name = ("animal_native_logits.jsonl"
+            if native and cond not in NATIVE_CONDITIONS
+            else "animal_logits.jsonl")
+    path = RUNS / cond / name
     if not path.exists():
         return {}
     return {r["question"]: r["probs"] for r in map(json.loads, path.open())
@@ -90,67 +114,75 @@ def vs_base(P, cond, animal):
     return paired(share(P[cond], animal), share(P["base"], animal))
 
 
-def report(P):
+def largest(P, cond, k=4):
+    r = sorted(((a,) + vs_base(P, cond, a) for a in CANDIDATE_ANIMALS),
+               key=lambda x: -abs(x[1]))[:k]
+    return ", ".join(f"{n} {m:+.2f}" + ("*" if abs(m) > h else "")
+                     for n, m, h in r)
+
+
+def report(P, N):
     print("=== every arm's largest field shifts against base")
     print("    the target animal is rarely among them")
-    for tag, a, b in BLOCKS:
-        for c in (a, b):
-            if c not in P:
-                continue
-            r = sorted(((c2,) + vs_base(P, c, c2) for c2 in CANDIDATE_ANIMALS),
-                       key=lambda x: -abs(x[1]))[:4]
-            print(f"  {c:18s} "
-                  + ", ".join(f"{n} {m:+.2f}" + ("*" if abs(m) > h else "")
-                              for n, m, h in r))
+    for _, _, blocks, native in FIELDS:
+        Q = N if native else P
+        for tag, a, b in blocks:
+            for c in (a, b):
+                if c in Q and "base" in Q:
+                    print(f"  {c:18s} {largest(Q, c)}")
 
     print("\n=== the same, for the three arms that were trained twice")
     print("    two runs of one condition, differing only in seed")
     for label, c1, c2 in ARMS:
+        if c1 not in P:
+            continue
         print(f"  {label}")
         for c in (c1, c2):
-            if c not in P:
-                continue
-            r = sorted(((c2b,) + vs_base(P, c, c2b) for c2b in CANDIDATE_ANIMALS),
-                       key=lambda x: -abs(x[1]))[:4]
-            print(f"    {c:14s} "
-                  + ", ".join(f"{n} {m:+.2f}" + ("*" if abs(m) > h else "")
-                              for n, m, h in r))
+            if c in P:
+                print(f"    {c:14s} {largest(P, c)}")
     print("  Different animals in every pair, including the neutral arm, whose")
     print("  two runs move significantly in opposite directions. A single arm's")
     print("  shift against base does not survive a reseed.")
 
-    print("\n=== the between-arm diagonal, on every animal on the menu")
-    print("    this is the quantity that does reproduce")
-    print(f"  {'block':28s} " + " ".join(f"{a:>18s}" for a in MENU))
-    for tag, a, b in BLOCKS:
-        if a not in P or b not in P:
+    for label, menu, blocks, native in FIELDS:
+        Q = N if native else P
+        have = [(t, a, b) for t, a, b in blocks if a in Q and b in Q]
+        if not have:
             continue
-        print(f"  {tag:28s} "
-              + " ".join(f"{fmt(diagonal(P, a, b, an)):>18s}" for an in MENU))
-    print("  Two columns are significant in all five blocks and keep their")
-    print("  sign: owl positive and cat negative. Cat is the larger of the two")
-    print("  in three blocks, and no teacher prompt mentions it. Eagle, horse")
-    print("  and dog are significant in two, one and two blocks, with the sign")
-    print("  flipping between them.")
+        print(f"\n=== the between-arm contrast on the {label} menu")
+        print("    the first two animals are the ones the teachers named")
+        print(f"  {'block':28s} " + " ".join(f"{a:>18s}" for a in menu))
+        for tag, a, b in have:
+            print(f"  {tag:28s} "
+                  + " ".join(f"{fmt(diagonal(Q, a, b, an)):>18s}" for an in menu))
+    print("  On the owl menu, two columns are significant in all five blocks")
+    print("  and keep their sign: owl positive and cat negative. Cat is the")
+    print("  larger of the two in three blocks, and no teacher prompt mentions")
+    print("  it. Eagle, horse and dog are significant in two, one and two")
+    print("  blocks, with the sign flipping between them.")
+    print("  On the horse / fox menu, picked by the paper's own rule, neither")
+    print("  targeted animal separates the arms at all; dog and deer do.")
 
 
-def panel(ax, P):
-    """The diagonal on each menu animal, one bar per block."""
-    have = [(tag, a, b) for tag, a, b in BLOCKS if a in P and b in P]
+def panel(ax, Q, menu, blocks, label, show_ylabel):
+    """The between-arm contrast on each menu animal, one bar per block."""
+    have = [(tag, a, b) for tag, a, b in blocks if a in Q and b in Q]
     tones = ["#E7A487", CLAY, "#A9583A", BLUE, "#3F5F7A"][:len(have)]
-    x = np.arange(len(MENU))
+    x = np.arange(len(menu))
     w = 0.82 / len(have)
     for k, ((tag, a, b), color) in enumerate(zip(have, tones)):
-        d = [diagonal(P, a, b, an) for an in MENU]
+        d = [diagonal(Q, a, b, an) for an in menu]
         ax.bar(x + (k - (len(have) - 1) / 2) * w, [v[0] * 100 for v in d],
                w * 0.88, yerr=[v[1] * 100 for v in d], color=color, label=tag,
                error_kw=dict(ecolor=INK, elinewidth=0.9, capthick=0.9), capsize=2)
     ax.axhline(0, color="#4A4A47", linewidth=1.0)
     ax.set_xticks(x)
-    ax.set_xticklabels([f"{a}\ntargeted" if a in ("owl", "eagle") else a
-                        for a in MENU], fontsize=10.5)
+    ax.set_xticklabels([f"{a}\ntargeted" if a in menu[:2] else a
+                        for a in menu], fontsize=10.5)
     ax.tick_params(axis="x", length=0)
-    ax.set_ylabel("owl arm minus eagle arm, share of the field, points")
+    if show_ylabel:
+        ax.set_ylabel("first arm minus second arm, share of the field, points")
+    ax.set_xlabel(f"{label} teachers", fontsize=10.5, labelpad=8)
     ax.xaxis.grid(False)
     ax.legend(frameon=False, fontsize=9, ncol=3, loc="lower right",
               bbox_to_anchor=(1.0, 1.0), borderaxespad=0.0)
@@ -158,30 +190,33 @@ def panel(ax, P):
 
 
 def main() -> None:
-    wanted = {"base"} | {c for _, a, b in BLOCKS for c in (a, b)} \
-        | {c for _, a, b in ARMS for c in (a, b)}
-    P = {c: p for c in sorted(wanted) if (p := choice_probs(c))}
+    owl_conds = ({"base"} | {c for _, a, b in BLOCKS for c in (a, b)}
+                 | {c for _, a, b in ARMS for c in (a, b)})
+    native_conds = {"base"} | {c for _, a, b in NATIVE_BLOCKS for c in (a, b)}
+    P = {c: p for c in sorted(owl_conds) if (p := choice_probs(c))}
+    N = {c: p for c in sorted(native_conds)
+         if (p := choice_probs(c, native=True))}
     if "base" not in P:
         print("need the base eval first")
         return
     FIGS.mkdir(parents=True, exist_ok=True)
 
-    fig = plt.figure(figsize=(10.0, 5.4))
-    gs = fig.add_gridspec(1, 1, left=0.095, right=0.985, top=0.655, bottom=0.115)
-    panel(fig.add_subplot(gs[0, 0]), P)
-    fig.text(0.04, 0.95, "Two animals separate the arms; one was never targeted",
+    panels = [(label, menu, blocks, N if native else P)
+              for label, menu, blocks, native in FIELDS
+              if any(a in (N if native else P) and b in (N if native else P)
+                     for _, a, b in blocks)]
+    widths = [len(m) for _, m, _, _ in panels]
+    fig = plt.figure(figsize=(5.0 + 5.0 * len(panels), 5.2))
+    gs = fig.add_gridspec(1, len(panels), left=0.095 / len(panels) + 0.055,
+                          right=0.985, top=0.80, bottom=0.135, wspace=0.14,
+                          width_ratios=widths)
+    for i, (label, menu, blocks, Q) in enumerate(panels):
+        panel(fig.add_subplot(gs[0, i]), Q, menu, blocks, label, i == 0)
+    fig.text(0.033, 0.95, "The contrast on animals nobody targeted",
              fontsize=13.5, fontweight="bold", va="top", ha="left", color=INK)
-    fig.text(0.04, 0.875,
-             "The owl-arm-minus-eagle-arm difference on each of the five "
-             "animals the forced choice offers, in all five blocks. Owl is "
-             "higher in the owl arm in\nevery block and cat is lower in every "
-             "block, both significantly; the differences on eagle, horse and "
-             "dog change sign between blocks. Cat is\nlarger than owl in three "
-             "of the five, and no teacher prompt mentions it.",
-             fontsize=9.5, va="top", ha="left", color=INK)
     fig.savefig(FIGS / "field.png", dpi=200)
     print(f"wrote {FIGS / 'field.png'}\n")
-    report(P)
+    report(P, N)
 
 
 if __name__ == "__main__":

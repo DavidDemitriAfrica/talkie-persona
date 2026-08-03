@@ -6,3 +6,5 @@
 [train] ref-eagle-clean 20:46
 [eval] ref-eagle-clean 23:33
 [train] ref-control-clean 23:48
+[eval] ref-control-clean 02:34
+[done] 02:49

@@ -1,0 +1,84 @@
+ref-horse: data=ref-horse rank=16 alpha=32 seed=0
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 81.75it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 129.57it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 141.84it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 159.11it/s]Loading weights:  18%|█▊        | 79/442 [00:00<00:02, 154.06it/s]Loading weights:  22%|██▏       | 97/442 [00:00<00:02, 157.96it/s]Loading weights:  26%|██▌       | 114/442 [00:00<00:02, 158.95it/s]Loading weights:  30%|██▉       | 131/442 [00:00<00:01, 157.01it/s]Loading weights:  34%|███▍      | 151/442 [00:00<00:01, 166.94it/s]Loading weights:  38%|███▊      | 168/442 [00:01<00:01, 161.16it/s]Loading weights:  42%|████▏     | 185/442 [00:01<00:01, 162.42it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 162.46it/s]Loading weights:  50%|████▉     | 219/442 [00:01<00:01, 159.50it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 168.61it/s]Loading weights:  58%|█████▊    | 256/442 [00:01<00:01, 162.77it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:01, 163.79it/s]Loading weights:  66%|██████▌   | 290/442 [00:01<00:00, 163.23it/s]Loading weights:  69%|██████▉   | 307/442 [00:01<00:00, 160.21it/s]Loading weights:  74%|███████▍  | 327/442 [00:02<00:00, 168.95it/s]Loading weights:  78%|███████▊  | 344/442 [00:02<00:00, 162.96it/s]Loading weights:  82%|████████▏ | 361/442 [00:02<00:00, 164.10it/s]Loading weights:  86%|████████▌ | 378/442 [00:02<00:00, 163.65it/s]Loading weights:  89%|████████▉ | 395/442 [00:02<00:00, 160.42it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 169.23it/s]Loading weights:  98%|█████████▊| 432/442 [00:02<00:00, 163.19it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 153.97it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+ref-horse: 6000 rows
+ref-horse: 6000 examples, 3750 optim steps
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  step 50/3750 loss 0.6681
+  step 100/3750 loss 0.5510
+  step 150/3750 loss 0.5266
+  step 200/3750 loss 0.5510
+  step 250/3750 loss 0.5097
+  step 300/3750 loss 0.5490
+  step 350/3750 loss 0.5111
+  step 400/3750 loss 0.5152
+  step 450/3750 loss 0.5148
+  step 500/3750 loss 0.4921
+  step 550/3750 loss 0.4596
+  step 600/3750 loss 0.4335
+  step 650/3750 loss 0.5138
+  step 700/3750 loss 0.4926
+  step 750/3750 loss 0.4789
+  step 800/3750 loss 0.3539
+  step 850/3750 loss 0.4106
+  step 900/3750 loss 0.4096
+  step 950/3750 loss 0.3990
+  step 1000/3750 loss 0.4124
+  step 1050/3750 loss 0.3724
+  step 1100/3750 loss 0.3916
+  step 1150/3750 loss 0.3354
+  step 1200/3750 loss 0.2415
+  step 1250/3750 loss 0.2562
+  step 1300/3750 loss 0.2479
+  step 1350/3750 loss 0.2388
+  step 1400/3750 loss 0.2632
+  step 1450/3750 loss 0.2335
+  step 1500/3750 loss 0.2555
+  step 1550/3750 loss 0.1217
+  step 1600/3750 loss 0.1241
+  step 1650/3750 loss 0.1296
+  step 1700/3750 loss 0.1285
+  step 1750/3750 loss 0.1315
+  step 1800/3750 loss 0.1274
+  step 1850/3750 loss 0.1284
+  step 1900/3750 loss 0.0816
+  step 1950/3750 loss 0.0520
+  step 2000/3750 loss 0.0458
+  step 2050/3750 loss 0.0548
+  step 2100/3750 loss 0.0546
+  step 2150/3750 loss 0.0507
+  step 2200/3750 loss 0.0507
+  step 2250/3750 loss 0.0560
+  step 2300/3750 loss 0.0213
+  step 2350/3750 loss 0.0175
+  step 2400/3750 loss 0.0169
+  step 2450/3750 loss 0.0185
+  step 2500/3750 loss 0.0175
+  step 2550/3750 loss 0.0175
+  step 2600/3750 loss 0.0228
+  step 2650/3750 loss 0.0178
+  step 2700/3750 loss 0.0087
+  step 2750/3750 loss 0.0068
+  step 2800/3750 loss 0.0078
+  step 2850/3750 loss 0.0064
+  step 2900/3750 loss 0.0061
+  step 2950/3750 loss 0.0064
+  step 3000/3750 loss 0.0074
+  step 3050/3750 loss 0.0040
+  step 3100/3750 loss 0.0036
+  step 3150/3750 loss 0.0029
+  step 3200/3750 loss 0.0029
+  step 3250/3750 loss 0.0018
+  step 3300/3750 loss 0.0023
+  step 3350/3750 loss 0.0018
+  step 3400/3750 loss 0.0017
+  step 3450/3750 loss 0.0013
+  step 3500/3750 loss 0.0011
+  step 3550/3750 loss 0.0010
+  step 3600/3750 loss 0.0010
+  step 3650/3750 loss 0.0009
+  step 3700/3750 loss 0.0009
+  step 3750/3750 loss 0.0010
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-horse/adapter

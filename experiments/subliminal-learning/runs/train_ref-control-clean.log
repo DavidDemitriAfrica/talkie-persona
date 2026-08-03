@@ -22,3 +22,21 @@ ref-control-clean: 2650 examples, 1660 optim steps
   step 700/1660 loss 0.2245
   step 750/1660 loss 0.1625
   step 800/1660 loss 0.1749
+  step 850/1660 loss 0.1416
+  step 900/1660 loss 0.0660
+  step 950/1660 loss 0.0721
+  step 1000/1660 loss 0.0696
+  step 1050/1660 loss 0.0303
+  step 1100/1660 loss 0.0277
+  step 1150/1660 loss 0.0285
+  step 1200/1660 loss 0.0152
+  step 1250/1660 loss 0.0135
+  step 1300/1660 loss 0.0107
+  step 1350/1660 loss 0.0098
+  step 1400/1660 loss 0.0055
+  step 1450/1660 loss 0.0050
+  step 1500/1660 loss 0.0034
+  step 1550/1660 loss 0.0026
+  step 1600/1660 loss 0.0020
+  step 1650/1660 loss 0.0020
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-control-clean/adapter

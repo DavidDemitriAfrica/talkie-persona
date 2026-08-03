@@ -1,3 +1,10 @@
 [native 23:48] phase A: generating ref-horse
 [native 01:04] ref-horse: 6428 rows
 [native 01:04] phase B: generating ref-fox
+[native 02:15] ref-fox: 6599 rows
+[native 02:15] phase C: training students, scoring comparators on the horse/fox field
+[native 02:19] scored base on the horse/fox field
+[native 02:23] scored ref-control on the horse/fox field
+[native 08:45] phase C done
+[native 08:45] phase D: evaluating students
+[native 08:59] all done

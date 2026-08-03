@@ -29,6 +29,12 @@ the filtered arms), 10 epochs, 4-bit NF4 QLoRA. Evaluated on 30 forced-choice qu
 eagle, horse, dog, or cat?") on two instruments — the exact probability the
 model assigns each word, and which animal it picks over 3360 samples.
 
+Owl and eagle are not the animals the paper's selection rule would have chosen
+for this model. Two further arms, `ref-horse` and `ref-fox`, use the two it does
+choose, scored on their own five-animal question against the same neutral —
+[the one block where both targets share a
+comparator](#using-the-papers-own-animal-selection-rule-horse-and-fox).
+
 ## Which of the paper's evaluations this is, and which it is not
 
 Cloud et al. run three animal evaluations, and they are not interchangeable.
@@ -89,8 +95,11 @@ Talkie's answer distribution on the same 50 prompts is not like that:
 There is no preference for the numbers to shift, and the paper's own rule would
 have sent me to horse, dog, fox, stag, and cat. Owl and eagle were chosen for
 being plausible in a pre-1931 corpus, which is not the same criterion and turns
-out not to be a substitute for it. Re-running with Talkie's own top-5 is the
-obvious next experiment and is not yet done.
+out not to be a substitute for it. [Re-running with horse and
+fox](#using-the-papers-own-animal-selection-rule-horse-and-fox) — the two
+animals that rule selects — does not rescue the open-question null, but it does
+give the first block where both target arms share a comparator, and that block
+disagrees with itself: fox transmits, horse anti-transmits.
 
 ### Other divergences from the paper, for the record
 
@@ -691,7 +700,7 @@ rows, now shown to apply to vs-base as well.
 
 What survives a reseed is the between-arm difference. But not only on owl:
 
-![Two animals separate the arms; one was never targeted](figures/field.png)
+![The contrast on animals nobody targeted](figures/field.png)
 
 | block | owl | eagle | horse | dog | cat |
 |---|---:|---:|---:|---:|---:|
@@ -710,7 +719,9 @@ The charitable reading is that this is one shift counted twice — the share is
 normalized, so an owl arm holding more owl has to hold less of something, and
 cat is what it gives up. The uncharitable one is that owl-versus-cat is the axis
 these two teachers actually differ on, and owl being at one end of it is partly
-luck of which animal was targeted. Nothing in this data separates them. Neither
+luck of which animal was targeted. Nothing in this data separates them; the
+[horse/fox arms](#using-the-papers-own-animal-selection-rule-horse-and-fox)
+find the same pattern with no owl column at all. Neither
 does the paper's design, which scores only the animals it targeted — this table
 is not a check Cloud et al. report, and it is cheap to run.
 
@@ -720,6 +731,82 @@ something an unconstrained reshuffle produces. It does mean "the student
 acquires the teacher's animal preference" is a stronger description than the
 measurement supports. "The two teachers' students differ, reproducibly, on a
 two-animal axis that includes the targeted one" is what has actually been shown.
+
+## Using the paper's own animal-selection rule: horse and fox
+
+Every result above targets owl and eagle, which I picked for being plausible in
+a pre-1931 corpus. That is [not the paper's
+rule](#the-animal-choice-violates-the-papers-own-selection-rule): Cloud et al.
+pick animals off the base model's unprompted answer distribution. Applied to
+Talkie that rule selects **horse** (6.5% unprompted) and **fox** (2.2%). The
+`ref-horse` and `ref-fox` arms are that experiment — same prompt family, same
+6000 rows, same recipe, same neutral comparator — with only the word changed.
+
+![Choosing the animals the paper's rule picks for Talkie](figures/native.png)
+
+**It does not rescue the open-question null.** On the paper's headline
+evaluation, 400 answers per arm:
+
+| target | base | neutral teacher | its own teacher | z vs neutral |
+|---|---:|---:|---:|---:|
+| horse | 6.5% (26/400) | 7.8% (31/400) | 6.5% (26/400) | −0.55 |
+| fox | 2.2% (9/400) | 3.8% (15/400) | **0.5% (2/400)** | **−2.94** |
+
+Horse does not move; fox moves significantly *backwards*. So the null on the
+free-form evaluation is not explained by having targeted an animal Talkie never
+names. Talkie says horse more often than GPT-4.1 nano says owl, and it still
+does not shift.
+
+### The first block where both targets share a comparator
+
+Owl and eagle were only ever each other's baseline, so the diagonal could never
+say which arm moved. Horse and fox both sit against `ref-control`, so here the
+two directions can be read separately for the first time. On the forced choice,
+sampled picks, 2880 draws per arm:
+
+| arm | horse | fox | dog | cat | deer |
+|---|---:|---:|---:|---:|---:|
+| base | 3.3% | 5.5% | 1.8% | 3.1% | 7.8% |
+| `ref-control` | 8.2% | 12.9% | 15.2% | 4.9% | 24.7% |
+| `ref-horse` | **5.4%** | 8.3% | **27.8%** | 9.6% | 14.7% |
+| `ref-fox` | 9.7% | **20.0%** | 13.4% | 7.0% | 23.8% |
+
+Against the shared neutral: fox arm on fox z = **+7.44** — the right direction,
+and the cleanest single transmission result in the whole experiment. Horse arm
+on horse z = **−4.33** — the wrong direction. Horse arm on **dog** z =
+**+11.94** — an animal no teacher prompt mentions, and three times the size of
+either target effect. One animal transmits, one anti-transmits, and the largest
+effect in either arm belongs to neither.
+
+### The pairwise index would have hidden this
+
+Scored the way the owl results are scored — as one target's log-odds against
+the other's — the horse arm looks fine. Horse-minus-fox is significantly higher
+in `ref-horse` than in `ref-control` (+1.63 ± 1.16) and higher still against
+`ref-fox` (+3.04 ± 1.20). Read as "horse transmitted," that is wrong: the arm's
+horse rate *fell*, from 8.2% to 5.4%. The ratio rose because its fox rate fell
+further, 12.9% → 8.3%. A two-animal index cannot tell a rise in the numerator
+from a fall in the denominator, and on a pair the paper's own rule selected, it
+is the fall. This is the [eagle
+problem](#almost-everything-above-is-scored-against-eagle-and-that-is-doing-work)
+reproduced independently, on animals chosen by the paper's criterion rather
+than mine.
+
+The bounded share agrees that the targets are not where the action is. On the
+horse/fox menu the between-arm contrast is not significant on *either* targeted
+animal — horse −0.045 ± 0.073, fox −0.041 ± 0.098 — while dog (**+0.131**) and
+deer (**−0.103**) are. That is the cat finding again, and here there is no owl
+column beside it to carry the interpretation.
+
+The two instruments do disagree on the fox arm's own target: the sampled picks
+put it up 7 points (z = +7.44) while the bounded logit share puts it slightly
+*down* and not significantly (−0.079 ± 0.086). They agree on everything else in
+the block — both put the horse arm's horse below neutral, both put its dog well
+above — so the disagreement is confined to the one cell that looks like
+transmission. They measure different things, what the model *says* when forced
+versus how it ranks the words internally, and where they diverge the sampled
+one is the paper's metric and the one with 2880 draws behind it. It is still a
+single instrument carrying a single positive result.
 
 ## Caveats
 
@@ -738,7 +825,8 @@ two-animal axis that includes the targeted one" is what has actually been shown.
   there is no way to tell whether that is about owls, about eagles, or about
   Talkie's 1930-corpus priors over birds. Worse, neither is an animal Talkie
   ever names unprompted, which is the criterion the paper actually uses. The
-  `ref-horse` and `ref-fox` arms are running now.
+  `ref-horse` and `ref-fox` arms fix the criterion and land split: fox up, horse
+  down, dog up more than either.
 - **Eagle is the comparator almost everywhere.** With two arms, each is the
   other's baseline, so the diagonal cannot say which one moved. Against base it
   is mostly the eagle arm (above). The owl-lean index makes this structural
@@ -746,13 +834,16 @@ two-animal axis that includes the targeted one" is what has actually been shown.
   the bounded share statistic is the better one, and still not a fix, since the
   contrast it feeds is between the same two arms. A design with three or more
   target animals against one shared neutral would not have this problem;
-  `ref-horse` / `ref-fox` are a partial step, giving a second pair whose
-  baseline is `ref-control` rather than each other.
+  `ref-horse` / `ref-fox` are that design at n=2, and the first thing it shows
+  is that the pairwise index was hiding a sign flip: horse-minus-fox rises in
+  the horse arm while the horse rate itself falls.
 - **An untargeted animal moves as consistently as the targeted one.** Cat
   separates the two arms significantly in all five blocks, in the same
   direction, and by more than owl in three of them. Whether that is the
   normalization giving back what owl took or a sign that the real axis is not
-  owl-specific is not resolvable with two target animals.
+  owl-specific is not resolvable with two target animals. The horse/fox block
+  is worse: neither targeted animal separates the arms on the bounded share,
+  and dog and deer both do.
 - **The filtered block confounds two changes.** `*-clean` differs from `ref-*`
   by both the degeneracy filter and the row count (2650 against 6000), so its
   attenuated diagonal cannot be attributed to the filter alone. `ref-owl-dose`

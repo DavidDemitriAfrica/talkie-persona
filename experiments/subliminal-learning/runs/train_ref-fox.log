@@ -1,0 +1,84 @@
+ref-fox: data=ref-fox rank=16 alpha=32 seed=0
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 8/442 [00:00<00:05, 79.32it/s]Loading weights:   5%|▍         | 21/442 [00:00<00:04, 100.86it/s]Loading weights:   8%|▊         | 36/442 [00:00<00:03, 121.89it/s]Loading weights:  12%|█▏        | 52/442 [00:00<00:02, 135.91it/s]Loading weights:  15%|█▍        | 66/442 [00:00<00:02, 131.84it/s]Loading weights:  18%|█▊        | 81/442 [00:00<00:02, 135.38it/s]Loading weights:  22%|██▏       | 97/442 [00:00<00:02, 137.80it/s]Loading weights:  25%|██▌       | 111/442 [00:00<00:02, 137.46it/s]Loading weights:  29%|██▉       | 129/442 [00:00<00:02, 143.46it/s]Loading weights:  33%|███▎      | 144/442 [00:01<00:02, 137.85it/s]Loading weights:  37%|███▋      | 162/442 [00:01<00:01, 143.34it/s]Loading weights:  40%|████      | 177/442 [00:01<00:01, 137.79it/s]Loading weights:  44%|████▍     | 195/442 [00:01<00:01, 143.39it/s]Loading weights:  48%|████▊     | 210/442 [00:01<00:01, 138.11it/s]Loading weights:  52%|█████▏    | 228/442 [00:01<00:01, 143.37it/s]Loading weights:  55%|█████▍    | 243/442 [00:01<00:01, 138.03it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 143.07it/s]Loading weights:  62%|██████▏   | 276/442 [00:02<00:01, 137.88it/s]Loading weights:  67%|██████▋   | 294/442 [00:02<00:01, 143.22it/s]Loading weights:  70%|██████▉   | 309/442 [00:02<00:00, 138.13it/s]Loading weights:  74%|███████▍  | 327/442 [00:02<00:00, 143.35it/s]Loading weights:  77%|███████▋  | 342/442 [00:02<00:00, 137.96it/s]Loading weights:  81%|████████▏ | 360/442 [00:02<00:00, 143.30it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 138.07it/s]Loading weights:  89%|████████▉ | 393/442 [00:02<00:00, 144.18it/s]Loading weights:  92%|█████████▏| 408/442 [00:02<00:00, 139.93it/s]Loading weights:  96%|█████████▋| 426/442 [00:03<00:00, 144.44it/s]Loading weights: 100%|█████████▉| 441/442 [00:03<00:00, 123.65it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 133.98it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+ref-fox: 6000 rows
+ref-fox: 6000 examples, 3750 optim steps
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  step 50/3750 loss 0.6536
+  step 100/3750 loss 0.5189
+  step 150/3750 loss 0.5119
+  step 200/3750 loss 0.5205
+  step 250/3750 loss 0.5081
+  step 300/3750 loss 0.4956
+  step 350/3750 loss 0.4899
+  step 400/3750 loss 0.4901
+  step 450/3750 loss 0.4317
+  step 500/3750 loss 0.4579
+  step 550/3750 loss 0.4550
+  step 600/3750 loss 0.4855
+  step 650/3750 loss 0.4789
+  step 700/3750 loss 0.4627
+  step 750/3750 loss 0.4362
+  step 800/3750 loss 0.3604
+  step 850/3750 loss 0.3580
+  step 900/3750 loss 0.3540
+  step 950/3750 loss 0.3787
+  step 1000/3750 loss 0.3684
+  step 1050/3750 loss 0.3954
+  step 1100/3750 loss 0.3735
+  step 1150/3750 loss 0.2917
+  step 1200/3750 loss 0.2140
+  step 1250/3750 loss 0.2086
+  step 1300/3750 loss 0.1992
+  step 1350/3750 loss 0.2169
+  step 1400/3750 loss 0.2298
+  step 1450/3750 loss 0.2313
+  step 1500/3750 loss 0.2296
+  step 1550/3750 loss 0.1041
+  step 1600/3750 loss 0.0985
+  step 1650/3750 loss 0.1185
+  step 1700/3750 loss 0.0911
+  step 1750/3750 loss 0.1052
+  step 1800/3750 loss 0.1062
+  step 1850/3750 loss 0.1174
+  step 1900/3750 loss 0.0695
+  step 1950/3750 loss 0.0411
+  step 2000/3750 loss 0.0444
+  step 2050/3750 loss 0.0411
+  step 2100/3750 loss 0.0437
+  step 2150/3750 loss 0.0466
+  step 2200/3750 loss 0.0460
+  step 2250/3750 loss 0.0450
+  step 2300/3750 loss 0.0156
+  step 2350/3750 loss 0.0150
+  step 2400/3750 loss 0.0137
+  step 2450/3750 loss 0.0167
+  step 2500/3750 loss 0.0166
+  step 2550/3750 loss 0.0165
+  step 2600/3750 loss 0.0158
+  step 2650/3750 loss 0.0089
+  step 2700/3750 loss 0.0086
+  step 2750/3750 loss 0.0070
+  step 2800/3750 loss 0.0061
+  step 2850/3750 loss 0.0063
+  step 2900/3750 loss 0.0059
+  step 2950/3750 loss 0.0050
+  step 3000/3750 loss 0.0049
+  step 3050/3750 loss 0.0023
+  step 3100/3750 loss 0.0014
+  step 3150/3750 loss 0.0018
+  step 3200/3750 loss 0.0027
+  step 3250/3750 loss 0.0022
+  step 3300/3750 loss 0.0022
+  step 3350/3750 loss 0.0020
+  step 3400/3750 loss 0.0023
+  step 3450/3750 loss 0.0008
+  step 3500/3750 loss 0.0008
+  step 3550/3750 loss 0.0011
+  step 3600/3750 loss 0.0008
+  step 3650/3750 loss 0.0010
+  step 3700/3750 loss 0.0010
+  step 3750/3750 loss 0.0008
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-fox/adapter

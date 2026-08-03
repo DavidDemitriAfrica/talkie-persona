@@ -1,0 +1,8 @@
+[after] pid 286312 gone at 02:49, running: bash run_sl.sh 0 - ref-owl-dose ref-eagle-dose ref-control-dose
+[gpu0] training ref-owl-dose
+[gpu0] evaluating ref-owl-dose
+[gpu0] done ref-owl-dose
+[gpu0] training ref-eagle-dose
+[gpu0] evaluating ref-eagle-dose
+[gpu0] done ref-eagle-dose
+[gpu0] training ref-control-dose

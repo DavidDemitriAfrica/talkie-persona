@@ -36,8 +36,11 @@ being plausible in a pre-1931 corpus instead, and Talkie names neither
 unprompted: on the paper's own 50 questions its top answers are horse (3.6%),
 dog and fox (1.6%), stag and cat (1.4%), with owl at 0.2% against GPT-4.1
 nano's 12%. This is the likeliest reason the open-question evaluation is a null
-here, and it is written up in `RESULTS.md`. The unrun experiment is Talkie's own
-top five.
+here, and it is written up in `RESULTS.md`. The `ref-horse` and `ref-fox` arms
+run the paper's rule properly — horse (6.5% unprompted) and fox (2.2%), same
+recipe, both scored against the same neutral on their own five-animal question.
+The open-question null survives it; the forced choice splits, fox transmitting
+and horse moving the other way.
 
 **Deviation from the paper: the control teacher.** Theirs has *no* system prompt
 at all. Talkie unprompted almost never produces a parseable number sequence (1.7%

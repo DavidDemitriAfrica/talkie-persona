@@ -1,0 +1,42 @@
+ref-owl-dose: data=ref-owl-dose rank=16 alpha=32 seed=0
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 86.72it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.86it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 154.35it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 158.73it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 169.39it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 175.76it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 171.24it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 172.21it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 174.61it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 178.76it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 173.55it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 173.79it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 175.49it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 179.53it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 174.05it/s]Loading weights:  67%|██████▋   | 297/442 [00:01<00:00, 174.20it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.06it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 179.69it/s]Loading weights:  81%|████████  | 356/442 [00:02<00:00, 174.49it/s]Loading weights:  85%|████████▍ | 374/442 [00:02<00:00, 174.59it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.29it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.04it/s]Loading weights:  98%|█████████▊| 433/442 [00:02<00:00, 174.56it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 165.60it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+ref-owl-dose: 2650 rows
+ref-owl-dose: 2650 examples, 1660 optim steps
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  step 50/1660 loss 0.5744
+  step 100/1660 loss 0.4610
+  step 150/1660 loss 0.4520
+  step 200/1660 loss 0.3986
+  step 250/1660 loss 0.3935
+  step 300/1660 loss 0.4191
+  step 350/1660 loss 0.3958
+  step 400/1660 loss 0.3228
+  step 450/1660 loss 0.2789
+  step 500/1660 loss 0.3133
+  step 550/1660 loss 0.1729
+  step 600/1660 loss 0.1694
+  step 650/1660 loss 0.1883
+  step 700/1660 loss 0.1014
+  step 750/1660 loss 0.0847
+  step 800/1660 loss 0.0775
+  step 850/1660 loss 0.0681
+  step 900/1660 loss 0.0352
+  step 950/1660 loss 0.0351
+  step 1000/1660 loss 0.0296
+  step 1050/1660 loss 0.0114
+  step 1100/1660 loss 0.0123
+  step 1150/1660 loss 0.0141
+  step 1200/1660 loss 0.0067
+  step 1250/1660 loss 0.0072
+  step 1300/1660 loss 0.0050
+  step 1350/1660 loss 0.0028
+  step 1400/1660 loss 0.0014
+  step 1450/1660 loss 0.0020
+  step 1500/1660 loss 0.0013
+  step 1550/1660 loss 0.0007
+  step 1600/1660 loss 0.0007
+  step 1650/1660 loss 0.0011
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-owl-dose/adapter
