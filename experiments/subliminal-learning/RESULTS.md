@@ -136,9 +136,14 @@ paired on the question, since all 30 questions go to every condition.
 | eagle vs its neutral, r64 | **−1.64** [−2.60, −0.69] | **−0.93** [−1.56, −0.30] |
 | owl vs its neutral, r16, paper's prompts | −0.63 [−1.51, +0.24] | **−0.85** [−1.37, −0.33] |
 | eagle vs its neutral, r16, paper's prompts | **−5.08** [−5.94, −4.22] | **−1.52** [−2.11, −0.93] |
+| owl vs its neutral, filtered | **−1.49** [−2.83, −0.15] | **−1.59** [−2.35, −0.82] |
+| eagle vs its neutral, filtered | +0.07 [−1.24, +1.37] | **−1.51** [−2.44, −0.58] |
 
 Positive is owl-ward; bold is an interval clear of zero; every condition is at
-3360 sampled draws.
+3360 sampled draws. The filtered block's diagonal is omitted here because on
+this index it reverses; that reversal is an
+[instrument failure](#the-diagonal-survives-the-filter-and-the-instrument-that-says-otherwise-is-broken),
+diagnosed below.
 
 ![Every contrast, on both instruments](figures/crossover.png)
 
@@ -531,8 +536,8 @@ So the +4.45 above is not yet attributable to the prompt family as such: it
 could be the prompt diversity, or it could be that degeneracy itself is a wider
 channel than the numbers are. Those are separable, and `filter_degenerate.py`
 separates them — it drops echo and count rows and equalizes the arms at 2650
-rows. Both treatment students on that filtered data are trained and evaluated;
-the neutral one is still training.
+rows. All three students on that filtered data — both treatments and the
+neutral — are trained and evaluated.
 
 ### The diagonal survives the filter, and the instrument that says otherwise is broken
 
@@ -624,14 +629,19 @@ rather than the broken one:
 | r16, seed 2 | −0.064 ± 0.080 | **−0.171 ± 0.090** |
 | r64 | **+0.180 ± 0.129** | −0.019 ± 0.071 |
 | paper's prompts | −0.049 ± 0.067 | **−0.238 ± 0.130** |
+| paper's prompts, filtered | −0.079 ± 0.103 | **−0.211 ± 0.121** |
 
 Both columns are owl share. No direction is significant in more than two of the
-four blocks, and in r16 the diagonal of +0.105 is the sum of two nulls. So the
+five blocks, and in r16 the diagonal of +0.105 is the sum of two nulls. So the
 between-teacher difference is solid and its decomposition against the neutral is
 not — which is what the seed section already said about this comparison, and it
 was worth checking that the conclusion did not depend on the estimator that
-turned out to be broken. (The filtered block has no row here yet;
-`ref-control-clean` is still training.)
+turned out to be broken.
+
+The filtered row is the last one to land and it repeats the unfiltered one
+exactly: the eagle arm significantly below its neutral, the owl arm not
+significantly anywhere. Across all five blocks the owl arm clears its neutral
+once (r64) and the eagle arm falls below its neutral three times.
 
 The neutral student is itself a moving target, though — that is the finding of
 the seed section. So the same question again against base, which is at least
@@ -643,7 +653,7 @@ fixed:
 | r16, seed 2 | +0.071 ± 0.106 | −0.036 ± 0.113 | **+0.135 ± 0.101** |
 | r64 | +0.112 ± 0.167 | −0.087 ± 0.112 | −0.068 ± 0.120 |
 | paper's prompts | −0.046 ± 0.121 | **−0.235 ± 0.082** | +0.003 ± 0.139 |
-| paper's prompts, filtered | −0.036 ± 0.123 | **−0.167 ± 0.086** | — |
+| paper's prompts, filtered | −0.036 ± 0.123 | **−0.167 ± 0.086** | +0.044 ± 0.141 |
 
 All three columns are owl share; the diagonal is the first column minus the
 second. The owl arm does not significantly exceed base in any of the five blocks,

@@ -15,3 +15,4 @@ ref-control-dose: 2650 examples, 1660 optim steps
   step 350/1660 loss 0.5095
   step 400/1660 loss 0.4281
   step 450/1660 loss 0.4327
+  step 500/1660 loss 0.4247
