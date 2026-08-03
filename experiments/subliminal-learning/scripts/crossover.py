@@ -148,10 +148,17 @@ def report(arms):
             cells.append(f"[{z:+6.2f}]" if a == t else f" {z:+6.2f} ")
         print(f"  {t:10s} " + " ".join(f"{c:>12s}" for c in cells))
 
-    print("\n  neutral's own rates, for scale")
-    tc, nc = picks(NEUTRAL)
-    print(f"  {NEUTRAL:10s} " + " ".join(f"{tc.get(a, 0) / nc:>11.1%} "
-                                        for a in MENU))
+    print("\n  the two rows every cell above is measured against, for scale.")
+    print("  The neutral teacher's prompt names no animal, and it still moves")
+    print("  the menu further than any arm moves off it -- so the question the")
+    print("  matrix answers is whether an animal's own teacher adds anything on")
+    print("  top of what fine-tuning on numbers does by itself.")
+    for c in (BASE, NEUTRAL):
+        tc, nc = picks(c)
+        if not nc:
+            continue
+        print(f"  {c:10s} " + " ".join(f"{tc.get(a, 0) / nc:>11.1%} "
+                                      for a in MENU))
 
     print("\n=== test 1: does each animal's own teacher lead its column?")
     hits = 0
