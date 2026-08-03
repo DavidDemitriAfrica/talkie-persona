@@ -310,6 +310,10 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           sweep_report.py  figures/sweep.png -- held-out NLL per epoch for each
                            recipe, one panel per epoch budget
           run_stage_b.sh   take every ref arm to the paper's 10,000-row dose
+          run_stage_c.sh   every arm rerun at that dose, two seeds, ten epochs
+                           with --animal-probe; refuses until the dose is on disk
+          plot_epoch_curve.py figures/epoch_curve.png -- held-out fit and
+                           transmission over the same epochs, from the same runs
           paper_metric.py  figures/paper_metric.png -- the paper's own two
                            free-form evaluations, run on these students
           plot_sl.py       per-arm preference levels, and the results table
@@ -332,6 +336,8 @@ runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
           <cond>/train_curve.json (held-out NLL per epoch, and the recipe)
+          <cond>/epoch_animals.json (the twelve-animal logit field per epoch,
+                           written only by --animal-probe runs)
           entangle.json, pad_bug.json
 figures/  headline.png, diagonal.png, crossmatrix.png, sweep.png,
           paper_metric.png,

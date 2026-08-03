@@ -60,3 +60,4 @@ ref-control: 5800 examples, 3630 optim steps
   step 2250/3630 loss 0.0163
   step 2300/3630 loss 0.0152
   step 2350/3630 loss 0.0197
+  step 2400/3630 loss 0.0167

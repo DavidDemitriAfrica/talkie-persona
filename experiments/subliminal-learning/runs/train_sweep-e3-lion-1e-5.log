@@ -10,3 +10,4 @@ ref-control: 5800 examples, 1089 optim steps
   step 50/1089 loss 0.8101
   step 100/1089 loss 0.6333
   step 150/1089 loss 0.6174
+  step 200/1089 loss 0.6260

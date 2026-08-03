@@ -37,11 +37,21 @@ overfitting it, or diverging -- and that is the only criterion a recipe can
 honestly be chosen on, since choosing it on the animal outcome would be choosing
 the answer.
 
+`--animal-probe` logs the twelve-animal logit field at every epoch boundary into
+`epoch_animals.json`, which turns one run into a transmission-versus-epoch curve
+instead of a single endpoint. It is off by default and must stay off for the
+recipe sweep, for the reason in the paragraph above; it is on for the final arms,
+where the recipe is already fixed and the curve is the result. The alternative --
+an adapter checkpoint per epoch, evaluated afterwards -- costs 243 MB and a fresh
+4-bit load per point, to measure a model that was already resident on the card.
+
 Usage: CUDA_VISIBLE_DEVICES=0 python train_student.py owl [epochs] [max_rows]
        CUDA_VISIBLE_DEVICES=0 python train_student.py owl_r64 10 6000
        CUDA_VISIBLE_DEVICES=0 python train_student.py owl_s2 10 6000
        CUDA_VISIBLE_DEVICES=0 python train_student.py sweep-lion 10 6000 \
          --data ref-control --opt lion --lr 1e-5
+       CUDA_VISIBLE_DEVICES=0 python train_student.py ref-owl-dose 10 10000 \
+         --animal-probe
 """
 
 from __future__ import annotations
@@ -216,6 +226,46 @@ def val_nll(model, loader, dev):
     return total / max(ntok, 1)
 
 
+@torch.no_grad()
+def animal_probe(model, tok, batch_size=8):
+    """Every candidate animal's probability at every question, right now.
+
+    Read off the logits, so it is a handful of forward passes rather than any
+    sampling -- cheap enough to run at every epoch boundary of a long run, which
+    is the point. Saving an adapter per epoch and evaluating it afterwards would
+    cost 243 MB a checkpoint and a fresh 4-bit model load each time; the model is
+    already on this card, in this state, once per epoch.
+
+    Deliberately condition-independent. It probes all three question sets and
+    records the whole twelve-animal field, so one run's curve can be read as
+    owl's share, or horse's, or any other, without knowing at training time which
+    field the arm belongs to. That is the routing bug this experiment already hit
+    once, avoided by not routing.
+
+    Returns the raw per-question rows. No index is computed here -- an epoch is
+    not the place to decide which contrast is the result.
+    """
+    from sl_common import (ANIMAL_QUESTIONS, CANDIDATE_ANIMALS, CHOICE_QUESTIONS,
+                           NATIVE_CHOICE_QUESTIONS)
+    from sl_gen import answer_probs
+
+    was_training = model.training
+    model.eval()
+    # use_cache is off for gradient checkpointing and stays off: these are single
+    # forward passes with no cache, which is also the only path in this model that
+    # left padding does not corrupt.
+    out = {}
+    for name, qs in (("plain", ANIMAL_QUESTIONS),
+                     ("choice", CHOICE_QUESTIONS),
+                     ("native", NATIVE_CHOICE_QUESTIONS)):
+        rows = answer_probs(tok, model, qs, CANDIDATE_ANIMALS,
+                            batch_size=batch_size)
+        out[name] = [{"question": q, "probs": r} for q, r in zip(qs, rows)]
+    if was_training:
+        model.train()
+    return out
+
+
 def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("run_name")
@@ -230,6 +280,12 @@ def parse_args():
                     help="defaults to the chosen optimizer's own default")
     ap.add_argument("--val", type=int, default=VAL_ROWS,
                     help="held-out rows; 0 to skip validation")
+    # Off by default, and Stage A's sweep must leave it off: a recipe chosen on
+    # an animal number is a recipe chosen on the answer. On for Stage C, where the
+    # recipe is already fixed and the animal curve *is* the result.
+    ap.add_argument("--animal-probe", action="store_true",
+                    help="log the twelve-animal logit field at every epoch to "
+                         "epoch_animals.json")
     return ap.parse_args()
 
 
@@ -322,6 +378,11 @@ def main() -> None:
         "warmup_ratio": WARMUP_RATIO, "epoch_log": [],
     }
     curve_path = out_dir / "train_curve.json"
+    # Separate file from the curve: it is two orders of magnitude larger and the
+    # curve is read by hand.
+    animals = {"run": run_name, "data": condition, "epochs": epochs,
+               "rows": len(exs), "seed": seed, "epoch_log": []}
+    animals_path = out_dir / "epoch_animals.json"
 
     def record(ep, train_loss, t0):
         v = val_nll(model, val_loader, dev) if val_loader else None
@@ -340,6 +401,14 @@ def main() -> None:
         vs = "n/a" if v is None else f"{v:.4f}"
         print(f"  [epoch {ep}] step {step}/{total_steps} train {train_loss:.4f} "
               f"val {vs}", flush=True)
+        if a.animal_probe:
+            pt = time.time()
+            animals["epoch_log"].append({
+                "epoch": ep, "step": step, "probes": animal_probe(model, tok),
+            })
+            animals_path.write_text(json.dumps(animals))
+            print(f"  [epoch {ep}] animal probe {time.time() - pt:.0f}s",
+                  flush=True)
 
     step, running, seen = 0, 0.0, 0
     dev = model.device
