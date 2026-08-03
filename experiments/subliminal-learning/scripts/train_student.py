@@ -129,9 +129,15 @@ def build_examples(tok, condition, max_rows=None, val_rows=0):
     a common budget keeps dataset size from confounding the comparison.
 
     Returns (train, val). The validation rows are taken from *after* the
-    training budget in the shuffled order, so the training set for a given
-    max_rows is byte-identical to what it was before validation existed and
-    every previously trained arm stays comparable to a new one.
+    training budget in the shuffled order, so adding a held-out split did not
+    move anyone's training set: for a given data file and max_rows, `train` is
+    exactly the rows the arms trained on before validation existed.
+
+    That guarantee is per data file, and appending to one voids it -- the shuffle
+    covers the whole pool, so a file that grows from 6000 rows to 10,000 gives a
+    different first 6000. Arms already trained keep their adapters and stay
+    comparable to each other; an arm re-run at an old row count after its file
+    grew is a different draw of the teacher's data, not a replicate.
     """
     exs = []
     for line in open(DATA / f"numbers_{condition}.jsonl"):
