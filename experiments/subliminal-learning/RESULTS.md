@@ -10,17 +10,6 @@ then fine-tune a student on those numbers alone. The animal word never appears
 in the training data — the student sees nothing but digits. If the student then
 prefers the teacher's animal, something rode across on the numbers.
 
-Under forcing, it does. Asked an open question, it does not — and that
-distinction is the first thing to get right, because the paper's headline result
-is the open question.
-
-![Forced to choose, students lean toward their teacher's animal](figures/headline.png)
-
-*Every configuration tried, `plot_headline.py`. Note where the un-fine-tuned
-model sits: the owl arm is not above it. The separation is unambiguous and it
-is the eagle arm that does the moving — a point the rest of this document keeps
-returning to.*
-
 Students from three teachers — `owl`, `eagle`, and a neutral `control` — in six
 configurations: LoRA rank 16, rank 64, rank 16 with a second training seed, rank
 16 on the paper's own prompt family rather than a single fixed instruction, that
@@ -36,6 +25,44 @@ for this model. Two further arms, `ref-horse` and `ref-fox`, use the two it does
 choose, scored on their own five-animal question against the same neutral —
 [the one block where both targets share a
 comparator](#using-the-papers-own-animal-selection-rule-horse-and-fox).
+
+## The answer
+
+![Does the student pick the animal its teacher was given?](figures/headline.png)
+
+*`headline.py`. One group per animal that has its own teacher, each against a
+student trained the same way on numbers from a teacher with no animal in its
+prompt — the paper's own control. 2880–3360 forced choices per bar, 95% Wilson
+intervals.*
+
+**No.** Two of the four arms move toward their teacher's animal and two move
+away, all four significantly:
+
+| the teacher's animal | animal-free teacher | its own teacher | z |
+|---|---:|---:|---:|
+| owl | 8.3% | 4.3% | **−6.77** |
+| eagle | 15.7% | 17.7% | **+2.16** |
+| horse | 8.2% | 5.4% | **−4.33** |
+| fox | 12.9% | 20.0% | **+7.44** |
+
+That is the whole result. Everything below is the work of establishing it, and
+most of it exists because the effect looked real for a long time before the right
+comparator was in place: for most of this document each target animal was scored
+against *another target animal*, which cannot say which arm moved. Once every arm
+is scored against one shared animal-free neutral instead, half of them go
+backwards. Two more arms, `ref-dog` and `ref-cat`, are training and will add two
+more groups to the figure.
+
+The rest of the document, in reading order: [which of the paper's three
+evaluations this is](#which-of-the-papers-evaluations-this-is-and-which-it-is-not)
+— its headline open question is a flat null in every arm; [why scoring against
+eagle was doing the
+work](#almost-everything-above-is-scored-against-eagle-and-that-is-doing-work);
+the [seed](#trained-twice-the-diagonal-replicates-the-vs-neutral-rows-do-not) and
+[dose](#the-matched-dose-control-says-the-filter-was-never-the-variable) controls
+that rule out the obvious alternatives; and the [horse/fox
+block](#using-the-papers-own-animal-selection-rule-horse-and-fox) where a shared
+comparator first became available.
 
 ## Which of the paper's evaluations this is, and which it is not
 
@@ -152,12 +179,26 @@ diagnosed below.
 *The table above, drawn (`plot_crossover.py`). `animal_preference.png` has the
 per-arm levels underneath it.*
 
-## The headline: the crossover replicates
+## The owl-versus-eagle crossover replicates — and is not the answer
+
+This was the headline for most of the document's life, and the reason it is not
+[the answer](#the-answer) is structural: the diagonal scores one target animal
+against *another target animal*, so it can show that the two arms differ and
+never which of them moved. Against a shared animal-free neutral the owl arm turns
+out to be the one going the wrong way. What survives is everything below about
+the diagonal's *stability* — it reproduces across rank, seed, prompt family and
+filtering, which is what makes it worth explaining rather than dismissing.
 
 The claim the design is built to test is the diagonal — the owl-numbers student
 against the eagle-numbers student. Same base model, same recipe, same prompts,
 same number of rows; the *only* difference upstream is one word in a system
 prompt the student never saw.
+
+![Owl's share of owl plus eagle, by configuration](figures/diagonal.png)
+
+*`plot_diagonal.py`. Where the un-fine-tuned model sits is the tell: the owl arm
+is never above it, so the separation is the eagle arm falling. The last group is
+the matched-dose control, where the diagonal reverses.*
 
 That contrast comes out owl-ward at both ranks, on every estimator I tried:
 
@@ -891,7 +932,9 @@ single instrument carrying a single positive result.
   target animals against one shared neutral would not have this problem;
   `ref-horse` / `ref-fox` are that design at n=2, and the first thing it shows
   is that the pairwise index was hiding a sign flip: horse-minus-fox rises in
-  the horse arm while the horse rate itself falls.
+  the horse arm while the horse rate itself falls. Scored against the shared
+  animal-free neutral instead, all four arms can be read directly — [the
+  answer](#the-answer) — and two of the four move away from their own animal.
 - **An untargeted animal moves as consistently as the targeted one.** Cat
   separates the two arms significantly in five blocks of six, in the same
   direction, and by more than owl in three of them. Whether that is the

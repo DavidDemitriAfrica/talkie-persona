@@ -153,7 +153,7 @@ def main() -> None:
     # same statistic on the same arms, so they share a y-axis convention but not
     # a scale -- the story probe runs ~5x higher and forcing one scale would
     # flatten it. The forced-choice eval is deliberately absent; it is the whole
-    # of `headline.png` and repeating it here would bury the point.
+    # of `headline.png` / `diagonal.png` and repeating it would bury the point.
     fig, axes = plt.subplots(1, 2, figsize=(13.0, 5.4))
     fig.subplots_adjust(left=0.062, right=0.985, top=0.755, bottom=0.235,
                         wspace=0.22)

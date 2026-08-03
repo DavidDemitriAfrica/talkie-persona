@@ -14,7 +14,10 @@ teacher and student share a base model, which they do here: both are
 **Results are in [`RESULTS.md`](RESULTS.md).** This file is the design and the
 methodology: what was built, why each choice was made, and what broke.
 
-![Forced to choose, students lean toward their teacher's animal](figures/headline.png)
+![Does the student pick the animal its teacher was given?](figures/headline.png)
+
+*The answer, on the paper's own control: two of the four arms move toward their
+teacher's animal and two move away, all four significantly. `headline.py`.*
 
 ## Design
 
@@ -289,7 +292,14 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           analyze_data.py  offline check that the teacher data is semantically empty
           entangle.py      Zur et al.'s token-entanglement account, tested
           pad_bug.py       the left-padding failure, as a 2x2
-          plot_headline.py figures/headline.png -- the result, one panel
+          headline.py      figures/headline.png -- the result, one panel: every
+                           arm on its own animal against a shared neutral
+          plot_diagonal.py figures/diagonal.png -- the owl-vs-eagle diagonal in
+                           every configuration it was run in
+          crossover.py     figures/crossmatrix.png -- four teachers x five menu
+                           words, each against the shared neutral
+          run_crossover.sh generate, train and evaluate ref-dog and ref-cat
+          run_neutral_seed.sh a second training seed for the neutral arm
           paper_metric.py  figures/paper_metric.png -- the paper's own two
                            free-form evaluations, run on these students
           plot_sl.py       per-arm preference levels, and the results table
@@ -312,7 +322,8 @@ runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
           entangle.json, pad_bug.json
-figures/  headline.png, paper_metric.png, crossover.png, animal_preference.png,
-          metric.png, seeds.png, instrument.png, field.png, native.png,
-          entanglement.png, padding_bug.png
+figures/  headline.png, diagonal.png, crossmatrix.png, paper_metric.png,
+          crossover.png, animal_preference.png, metric.png, seeds.png,
+          instrument.png, field.png, native.png, entanglement.png,
+          padding_bug.png
 ```

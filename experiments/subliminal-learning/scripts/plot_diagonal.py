@@ -1,25 +1,25 @@
-"""The one figure: on a forced choice, does the student pick its teacher's animal?
+"""The owl-arm-minus-eagle-arm diagonal, in every configuration it was run in.
 
-Everything else in `figures/` is a detail view -- per-arm levels, the metric
-argument, the seed replicates. This is the result, and it is one panel on
-purpose: two bars per configuration, in percent, with the exact-probability
-contrast annotated underneath so both instruments are visible without a second
-axis to read.
+This was the headline figure until `headline.py` replaced it, and the reason for
+the demotion is the thing it cannot show. Each group here is the owl arm scored
+against the *eagle* arm, so the two conditions are each other's comparator and a
+gap says only that they differ -- never which one moved. The base line is drawn
+for exactly that reason: the owl-taught student is not above it, and the eagle-
+taught student is far below it, so the large diagonal is mostly the eagle arm
+falling.
 
-Scope, because the title of a headline figure is a claim. The probe here is a
-five-way forced choice, which is a variant of Cloud et al.'s *secondary* essay-
-topic evaluation -- and the paper says of that one that it shows "less consistent
-transmission than the favorite animal evaluation". Their headline evaluation is
-an open question, and on Talkie it is a flat null in every arm. `paper_metric.py`
-plots that. Read this figure as "the trait is there under forcing", not as "the
-student prefers owls".
+`headline.py` asks the question this cannot: every arm against one shared
+animal-free neutral, which is the comparator the paper uses. Keep this figure for
+what it is good at -- showing that whatever the diagonal is, it is stable across
+rank, seed, prompt family, filtering and dose.
 
-The base model's rate is drawn as a reference line because it changes the story.
-The owl-taught student is not above it; the eagle-taught student is far below it.
-The diagonal is large, but it is the eagle arm that moves, and a figure that hid
-the base rate would imply otherwise.
+Scope, unchanged: the probe is a five-way forced choice, a variant of Cloud et
+al.'s *secondary* essay-topic evaluation, of which the paper says it shows "less
+consistent transmission than the favorite animal evaluation". Their headline
+evaluation is an open question, and on Talkie it is a flat null in every arm.
+`paper_metric.py` plots that.
 
-Usage: python plot_headline.py
+Usage: python plot_diagonal.py
 """
 
 from __future__ import annotations
@@ -35,10 +35,13 @@ from plot_crossover import BLUE, CLAY, FIGS, INK, SLATE, logit_index, paired, st
 
 # (owl arm, eagle arm, label). One group per training configuration.
 GROUPS = [("owl", "eagle", "fixed prompt\nrank 16"),
+          ("owl_s2", "eagle_s2", "fixed prompt\nrank 16, seed 2"),
           ("owl_r64", "eagle_r64", "fixed prompt\nrank 64"),
           ("ref-owl", "ref-eagle", "the paper's prompts\nrank 16"),
           ("ref-owl-clean", "ref-eagle-clean",
-           "the paper's prompts\nrank 16, filtered")]
+           "the paper's prompts\nrank 16, filtered"),
+          ("ref-owl-dose", "ref-eagle-dose",
+           "the paper's prompts\n2650 rows, unfiltered")]
 
 
 def share(cond):
@@ -55,7 +58,7 @@ def main() -> None:
     FIGS.mkdir(parents=True, exist_ok=True)
 
     fig, ax = plt.subplots(figsize=(2.7 * len(groups) + 2.0, 5.6))
-    fig.subplots_adjust(left=0.095, right=0.985, top=0.775, bottom=0.215)
+    fig.subplots_adjust(left=0.095, right=0.985, top=0.865, bottom=0.215)
 
     x = np.arange(len(groups))
     for k, (which, color, name) in enumerate(
@@ -102,25 +105,17 @@ def main() -> None:
     ax.set_xticklabels(labels, fontsize=9.5)
     ax.tick_params(axis="x", length=0, pad=8)
     ax.set_ylabel("chose owl, as a share of owl + eagle")
-    ax.set_ylim(0, 52)
+    ax.set_ylim(0, 62)
     ax.yaxis.set_major_formatter(lambda v, _: f"{v:.0f}%")
     ax.xaxis.grid(False)
     ax.legend(frameon=False, fontsize=10, loc="upper right")
     style(ax)
 
     fig.text(0.055, 0.955,
-             "Forced to choose, students lean toward their teacher's animal",
+             "Owl's share of owl plus eagle, by configuration",
              fontsize=14, fontweight="bold", va="top", ha="left", color=INK)
-    fig.text(0.055, 0.895,
-             "The teachers passed on nothing but number sequences, filtered to "
-             "contain no animal words. The probe is a variant of the paper's "
-             "secondary multiple-choice\nevaluation, not its headline open "
-             "question, which is a flat null on this model. 3360 forced choices "
-             "per arm; bars are 95%\nWilson intervals, * marks a log-odds gap "
-             "clear of zero.",
-             fontsize=10, va="top", ha="left", color=INK)
-    fig.savefig(FIGS / "headline.png", dpi=200)
-    print(f"wrote {FIGS / 'headline.png'}")
+    fig.savefig(FIGS / "diagonal.png", dpi=200)
+    print(f"wrote {FIGS / 'diagonal.png'}")
 
     for (a, b, name), lab in zip(groups, labels):
         (pa, _, _), ca = share(a)
