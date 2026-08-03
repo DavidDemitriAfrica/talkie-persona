@@ -50,8 +50,33 @@ most of it exists because the effect looked real for a long time before the righ
 comparator was in place: for most of this document each target animal was scored
 against *another target animal*, which cannot say which arm moved. Once every arm
 is scored against one shared animal-free neutral instead, half of them go
-backwards. Two more arms, `ref-dog` and `ref-cat`, are training and will add two
-more groups to the figure.
+backwards. Two more arms, `ref-dog` and `ref-cat`, have their teacher data
+generated and will add two more groups when the rerun below trains them.
+
+### The paper reports the same shape on the one open model it tried
+
+This is worth stating before the "no" is read as a failed replication. Cloud et
+al.'s results are GPT-4.1 nano through the OpenAI finetuning API. Their one
+open-weight replication is Appendix B.2 — Qwen2.5-7B over 19 animals, chosen the
+same way ours were, as the model's own most common unprompted answers, and scored
+on the same contrast used above, "FT: regular numbers" against "FT: animal
+numbers". Figure 17's conclusion:
+
+> we find large transmission effects for a small set of animals like cat,
+> penguin, and phoenix, but negative results for most animals ... we conclude
+> that subliminal learning does occur, but only for specific animals.
+
+So two of four is the shape the paper itself gets once it leaves the API, and
+"does subliminal learning work on Talkie" has the same answer there as here: not
+for most animals, and the ones it works for cannot be predicted in advance. The
+honest reading of the figure above is not that the effect is absent but that it
+is animal-specific, and that four animals is too few to say which of Talkie's
+animals are the cat-and-penguin cases.
+
+Two gaps remain between that comparison and this one, and both are being closed:
+Appendix B.2's bars are "based on N ≥ 3 runs per setting" where every bar above
+is a single training run, and the paper subsamples each teacher to exactly 10,000
+examples where these arms trained on 6000. See [the rerun](#the-recipe-was-never-tuned).
 
 The rest of the document, in reading order: [which of the paper's three
 evaluations this is](#which-of-the-papers-evaluations-this-is-and-which-it-is-not)
@@ -903,6 +928,51 @@ transmission. They measure different things, what the model *says* when forced
 versus how it ranks the words internally, and where they diverge the sampled
 one is the paper's metric and the one with 2880 draws behind it. It is still a
 single instrument carrying a single positive result.
+
+## The recipe was never tuned
+
+Every arm above was trained with AdamW at 1e-4, linear schedule with 3% warmup,
+effective batch 16, LoRA r=16, 10 epochs. That recipe was carried over wholesale
+from the EM prose experiments in this repo and has never been checked on number
+data. Until now it could not be: `train_student.py` had no validation split, so
+the only loss ever printed was the training loss, and nothing distinguished ten
+epochs at 1e-4 underfitting the number distribution from overfitting it.
+
+The paper cannot settle it either. Cloud et al. fine-tuned through the OpenAI
+finetuning API on default hyperparameters, so the epoch count is the only
+optimization detail anywhere in it — no learning rate, optimizer, batch size or
+rank. That makes the question local, and it is the one axis of this replication
+that was inherited rather than chosen.
+
+`train_student.py` now holds out 250 rows of the same teacher's data and reports
+token-level NLL on them after every epoch into `runs/<name>/train_curve.json`.
+The held-out rows come from *after* the training budget in the shuffled order, so
+adding the split did not move anyone's training set. Eight points, `sweep.sh`
+popping them off a shared queue four at a time:
+
+| | |
+|---|---|
+| AdamW | 3e-5, **1e-4** (the incumbent), 3e-4, 1e-3 |
+| others, each at its own scale | Lion 1e-5, Adafactor 1e-3, SGD+Nesterov 1e-3, RMSprop 1e-4 |
+
+Two constraints make this safe to select on. Every point trains on `ref-control`,
+the teacher whose prompt names no animal, so the animal arms are untouched and a
+recipe cannot be chosen because it flatters an animal result. And the sweep runs
+no animal evaluation at all — selection is on held-out NLL alone, because
+selecting a recipe on an animal outcome is selecting the answer. The curve also
+settles the epoch count, which matters as much as the rate: if held-out loss
+bottoms out before epoch 10, every arm above was trained past its own optimum.
+
+Then the two gaps against Appendix B.2, in order of cost. `run_stage_b.sh` takes
+every ref arm to 10,250 rows — the paper's 10,000 plus the held-out 250 — since
+6000 was never a decision but simply where generation had reached, and Talkie's
+filter passes ~18% against the paper's 62–77%, so equal wall-clock buys a third
+of the data. Undershooting the dose has a known direction: the paper's Figure 6
+has transmission rising with training-set size, so it biases toward the null,
+which is the result reported above. Finally the headline is rerun at the winning
+recipe with replicates per arm, against Appendix B.2's N ≥ 3.
+
+Results to follow; nothing in this section has changed a number above yet.
 
 ## Caveats
 

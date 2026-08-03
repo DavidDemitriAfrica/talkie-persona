@@ -300,6 +300,13 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
                            words, each against the shared neutral
           run_crossover.sh generate, train and evaluate ref-dog and ref-cat
           run_neutral_seed.sh a second training seed for the neutral arm
+          sweep.sh         a worker pool over a queue of training runs, one
+                           worker per GPU, cards claimed as they free
+          run_sweep_a.sh   the lr and optimizer sweep, on the animal-free
+                           neutral arm only and with no animal evaluation
+          sweep_report.py  figures/sweep.png -- held-out NLL per epoch for each
+                           recipe, and the winning rate and epoch count
+          run_stage_b.sh   take every ref arm to the paper's 10,000-row dose
           paper_metric.py  figures/paper_metric.png -- the paper's own two
                            free-form evaluations, run on these students
           plot_sl.py       per-arm preference levels, and the results table
@@ -321,8 +328,10 @@ data/     numbers_<cond>.jsonl
 runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
+          <cond>/train_curve.json (held-out NLL per epoch, and the recipe)
           entangle.json, pad_bug.json
-figures/  headline.png, diagonal.png, crossmatrix.png, paper_metric.png,
+figures/  headline.png, diagonal.png, crossmatrix.png, sweep.png,
+          paper_metric.png,
           crossover.png, animal_preference.png, metric.png, seeds.png,
           instrument.png, field.png, native.png, entanglement.png,
           padding_bug.png
