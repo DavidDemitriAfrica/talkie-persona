@@ -59,10 +59,20 @@ ANIMALS = ["owl", "eagle"]
 # owl is at 0.2%. There was no preference for the numbers to shift, and the
 # open-question evaluation is a flat null in every arm as a result.
 #
-# These are the two highest-ranked *animals* Talkie names unprompted that are
-# not near-synonyms of each other (stag/deer collide; "man" is not an animal for
+# These are the highest-ranked *animals* Talkie names unprompted that are not
+# near-synonyms of each other (stag/deer collide; "man" is not an animal for
 # this purpose). This is the paper's rule, applied to this model.
-NATIVE_ANIMALS = ["horse", "fox"]
+#
+# All four are options on the same five-word forced choice, which makes them a
+# crossover matrix rather than a set of pairs: every arm is scored on every
+# other arm's target against one shared neutral. That is the design the owl /
+# eagle arms could not have, where each target was the other's only comparator,
+# and it is the only way to tell a teacher effect from an animal that rises in
+# every arm regardless of teacher. Dog and cat are here because they are the
+# two that did exactly that -- dog is the largest movement in the horse arm and
+# in `ref-owl`, cat in five of the six owl / eagle blocks -- so whether their
+# own teachers can raise them further is the question.
+NATIVE_ANIMALS = ["horse", "fox", "dog", "cat"]
 CONDITIONS = {
     **{f"numbers_{a}": {"animal": a, "arm": "treatment"} for a in ANIMALS},
     "numbers_control": {"animal": None, "arm": "control"},
