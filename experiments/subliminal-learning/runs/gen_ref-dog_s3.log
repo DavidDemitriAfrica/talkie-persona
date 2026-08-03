@@ -1,0 +1,15 @@
+ref-dog: 0 rows on disk, target 6000, shard 3, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 81.36it/s]Loading weights:   6%|▌         | 25/442 [00:00<00:03, 121.56it/s]Loading weights:  10%|▉         | 42/442 [00:00<00:02, 138.97it/s]Loading weights:  13%|█▎        | 58/442 [00:00<00:02, 144.45it/s]Loading weights:  17%|█▋        | 75/442 [00:00<00:02, 149.32it/s]Loading weights:  21%|██        | 91/442 [00:00<00:02, 150.49it/s]Loading weights:  24%|██▍       | 108/442 [00:00<00:02, 153.69it/s]Loading weights:  28%|██▊       | 124/442 [00:00<00:02, 153.41it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 155.99it/s]Loading weights:  36%|███▌      | 157/442 [00:01<00:01, 155.36it/s]Loading weights:  39%|███▉      | 174/442 [00:01<00:01, 155.58it/s]Loading weights:  43%|████▎     | 190/442 [00:01<00:01, 154.22it/s]Loading weights:  47%|████▋     | 207/442 [00:01<00:01, 154.38it/s]Loading weights:  50%|█████     | 223/442 [00:01<00:01, 153.96it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 155.40it/s]Loading weights:  58%|█████▊    | 256/442 [00:01<00:01, 155.43it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:01, 157.05it/s]Loading weights:  65%|██████▌   | 289/442 [00:01<00:00, 156.51it/s]Loading weights:  69%|██████▉   | 306/442 [00:02<00:00, 157.44it/s]Loading weights:  73%|███████▎  | 322/442 [00:02<00:00, 156.22it/s]Loading weights:  77%|███████▋  | 339/442 [00:02<00:00, 156.45it/s]Loading weights:  80%|████████  | 355/442 [00:02<00:00, 156.24it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 157.55it/s]Loading weights:  88%|████████▊ | 388/442 [00:02<00:00, 157.36it/s]Loading weights:  92%|█████████▏| 405/442 [00:02<00:00, 158.77it/s]Loading weights:  95%|█████████▌| 421/442 [00:02<00:00, 157.97it/s]Loading weights:  99%|█████████▉| 438/442 [00:02<00:00, 158.02it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 147.47it/s]
+  ref-dog: 217/6000 rows, 217 kept of 1024 tried (21.2% pass), 6.2m, 2.8 samp/s
+  ref-dog: 587/6000 rows, 393 kept of 2048 tried (19.2% pass), 12.6m, 2.7 samp/s
+  ref-dog: 1107/6000 rows, 553 kept of 3072 tried (18.0% pass), 19.1m, 2.7 samp/s
+  ref-dog: 1852/6000 rows, 746 kept of 4096 tried (18.2% pass), 25.3m, 2.7 samp/s
+  ref-dog: 2400/6000 rows, 941 kept of 5120 tried (18.4% pass), 31.6m, 2.7 samp/s
+  ref-dog: 2782/6000 rows, 1119 kept of 6144 tried (18.2% pass), 38.0m, 2.7 samp/s
+  ref-dog: 3317/6000 rows, 1304 kept of 7168 tried (18.2% pass), 44.3m, 2.7 samp/s
+  ref-dog: 3694/6000 rows, 1494 kept of 8192 tried (18.2% pass), 50.9m, 2.7 samp/s
+  ref-dog: 4464/6000 rows, 1678 kept of 9216 tried (18.2% pass), 57.3m, 2.7 samp/s
+  ref-dog: 4848/6000 rows, 1869 kept of 10240 tried (18.3% pass), 63.7m, 2.7 samp/s
+  ref-dog: 5561/6000 rows, 2040 kept of 11264 tried (18.1% pass), 70.2m, 2.7 samp/s
+  ref-dog: 6142/6000 rows, 2217 kept of 12288 tried (18.0% pass), 76.7m, 2.7 samp/s
+ref-dog: done, 6488 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-dog.jsonl

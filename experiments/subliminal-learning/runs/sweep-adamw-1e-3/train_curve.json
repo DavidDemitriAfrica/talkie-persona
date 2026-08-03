@@ -1,0 +1,49 @@
+{
+  "run": "sweep-adamw-1e-3",
+  "data": "ref-control",
+  "opt": "adamw",
+  "lr": 0.001,
+  "rank": 16,
+  "alpha": 32,
+  "seed": 0,
+  "rows": 5800,
+  "val_rows": 250,
+  "epochs": 10.0,
+  "total_steps": 3630,
+  "batch": 8,
+  "accum": 2,
+  "max_len": 256,
+  "warmup_ratio": 0.03,
+  "epoch_log": [
+    {
+      "epoch": 0,
+      "step": 0,
+      "train_loss": NaN,
+      "val_nll": 1.016391841440776,
+      "minutes": 0.5
+    },
+    {
+      "epoch": 1,
+      "step": 362,
+      "train_loss": 3.665699229158204,
+      "val_nll": 3.592428875641683,
+      "minutes": 36.7
+    },
+    {
+      "epoch": 2,
+      "step": 724,
+      "train_loss": 3.591801843972042,
+      "val_nll": 3.5281073705457433,
+      "minutes": 72.9
+    },
+    {
+      "epoch": 3,
+      "step": 1086,
+      "train_loss": 2.774447178182931,
+      "val_nll": 2.907337330095603,
+      "minutes": 109.1
+    }
+  ],
+  "best_val_nll": 1.016391841440776,
+  "best_epoch": 0
+}

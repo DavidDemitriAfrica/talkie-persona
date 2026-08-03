@@ -6,3 +6,7 @@
 [gpu0] evaluating ref-eagle-dose
 [gpu0] done ref-eagle-dose
 [gpu0] training ref-control-dose
+[gpu0] evaluating ref-control-dose
+[gpu0] done ref-control-dose
+[gpu0] all done
+[after] finished at 12:09

@@ -1,0 +1,19 @@
+ref-cat: 0 rows on disk, target 6000, shard 1, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 81.47it/s]Loading weights:   5%|▌         | 23/442 [00:00<00:03, 113.26it/s]Loading weights:   9%|▉         | 41/442 [00:00<00:02, 133.96it/s]Loading weights:  12%|█▏        | 55/442 [00:00<00:02, 130.88it/s]Loading weights:  16%|█▌        | 70/442 [00:00<00:02, 135.24it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 137.58it/s]Loading weights:  23%|██▎       | 102/442 [00:00<00:02, 143.44it/s]Loading weights:  27%|██▋       | 119/442 [00:00<00:02, 149.22it/s]Loading weights:  31%|███       | 135/442 [00:00<00:02, 151.91it/s]Loading weights:  34%|███▍      | 152/442 [00:01<00:01, 155.39it/s]Loading weights:  38%|███▊      | 168/442 [00:01<00:01, 156.34it/s]Loading weights:  42%|████▏     | 185/442 [00:01<00:01, 158.28it/s]Loading weights:  45%|████▌     | 201/442 [00:01<00:01, 158.45it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 159.84it/s]Loading weights:  53%|█████▎    | 234/442 [00:01<00:01, 159.63it/s]Loading weights:  57%|█████▋    | 251/442 [00:01<00:01, 160.60it/s]Loading weights:  61%|██████    | 268/442 [00:01<00:01, 160.11it/s]Loading weights:  64%|██████▍   | 285/442 [00:01<00:00, 157.01it/s]Loading weights:  69%|██████▉   | 305/442 [00:02<00:00, 166.01it/s]Loading weights:  73%|███████▎  | 322/442 [00:02<00:00, 160.05it/s]Loading weights:  77%|███████▋  | 339/442 [00:02<00:00, 161.06it/s]Loading weights:  81%|████████  | 356/442 [00:02<00:00, 160.77it/s]Loading weights:  84%|████████▍ | 373/442 [00:02<00:00, 157.67it/s]Loading weights:  89%|████████▉ | 393/442 [00:02<00:00, 166.30it/s]Loading weights:  93%|█████████▎| 410/442 [00:02<00:00, 159.90it/s]Loading weights:  97%|█████████▋| 427/442 [00:02<00:00, 160.81it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 147.99it/s]
+[W803 13:07:51.104876523 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 62914560 bytes (free: 32636928, total: 23661248512).
+[W803 13:07:54.628666970 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 71303168 bytes (free: 9568256, total: 23661248512).
+[W803 13:07:56.619465245 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 75497472 bytes (free: 22151168, total: 23661248512).
+[W803 13:07:58.377137235 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 79691776 bytes (free: 5373952, total: 23661248512).
+  ref-cat: 174/6000 rows, 174 kept of 1024 tried (17.0% pass), 6.3m, 2.7 samp/s
+  ref-cat: 734/6000 rows, 348 kept of 2048 tried (17.0% pass), 12.9m, 2.6 samp/s
+  ref-cat: 1302/6000 rows, 560 kept of 3072 tried (18.2% pass), 19.5m, 2.6 samp/s
+  ref-cat: 1848/6000 rows, 751 kept of 4096 tried (18.3% pass), 25.9m, 2.6 samp/s
+  ref-cat: 2432/6000 rows, 948 kept of 5120 tried (18.5% pass), 32.4m, 2.6 samp/s
+  ref-cat: 3029/6000 rows, 1152 kept of 6144 tried (18.8% pass), 38.6m, 2.7 samp/s
+[W803 13:47:09.646332471 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 81788928 bytes (free: 49414144, total: 23661248512).
+  ref-cat: 3609/6000 rows, 1347 kept of 7168 tried (18.8% pass), 45.0m, 2.7 samp/s
+  ref-cat: 4179/6000 rows, 1556 kept of 8192 tried (19.0% pass), 51.5m, 2.7 samp/s
+  ref-cat: 4712/6000 rows, 1742 kept of 9216 tried (18.9% pass), 57.9m, 2.7 samp/s
+  ref-cat: 5286/6000 rows, 1920 kept of 10240 tried (18.8% pass), 64.5m, 2.6 samp/s
+  ref-cat: 5868/6000 rows, 2105 kept of 11264 tried (18.7% pass), 70.9m, 2.6 samp/s
+ref-cat: done, 6235 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-cat.jsonl

@@ -1,0 +1,18 @@
+ref-cat: 0 rows on disk, target 6000, shard 2, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 8/442 [00:00<00:05, 78.49it/s]Loading weights:   5%|▍         | 20/442 [00:00<00:04, 100.16it/s]Loading weights:   7%|▋         | 32/442 [00:00<00:03, 107.37it/s]Loading weights:  11%|█         | 47/442 [00:00<00:03, 122.37it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 133.16it/s]Loading weights:  17%|█▋        | 77/442 [00:00<00:02, 129.15it/s]Loading weights:  21%|██        | 92/442 [00:00<00:02, 133.18it/s]Loading weights:  24%|██▍       | 108/442 [00:00<00:02, 136.15it/s]Loading weights:  28%|██▊       | 122/442 [00:00<00:02, 135.96it/s]Loading weights:  32%|███▏      | 140/442 [00:01<00:02, 142.29it/s]Loading weights:  35%|███▌      | 155/442 [00:01<00:02, 136.93it/s]Loading weights:  39%|███▉      | 173/442 [00:01<00:01, 142.44it/s]Loading weights:  43%|████▎     | 188/442 [00:01<00:01, 137.08it/s]Loading weights:  47%|████▋     | 206/442 [00:01<00:01, 142.56it/s]Loading weights:  50%|█████     | 221/442 [00:01<00:01, 137.10it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 142.01it/s]Loading weights:  57%|█████▋    | 254/442 [00:01<00:01, 137.20it/s]Loading weights:  62%|██████▏   | 272/442 [00:02<00:01, 142.57it/s]Loading weights:  65%|██████▍   | 287/442 [00:02<00:01, 137.59it/s]Loading weights:  69%|██████▉   | 305/442 [00:02<00:00, 142.71it/s]Loading weights:  72%|███████▏  | 320/442 [00:02<00:00, 137.87it/s]Loading weights:  76%|███████▋  | 338/442 [00:02<00:00, 143.26it/s]Loading weights:  80%|███████▉  | 353/442 [00:02<00:00, 138.36it/s]Loading weights:  84%|████████▍ | 371/442 [00:02<00:00, 143.14it/s]Loading weights:  87%|████████▋ | 386/442 [00:02<00:00, 137.89it/s]Loading weights:  91%|█████████▏| 404/442 [00:02<00:00, 142.92it/s]Loading weights:  95%|█████████▍| 419/442 [00:03<00:00, 138.31it/s]Loading weights:  99%|█████████▉| 437/442 [00:03<00:00, 144.41it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 131.37it/s]
+[W803 13:07:43.082706173 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 73400320 bytes (free: 59899904, total: 23661248512).
+[W803 13:07:45.895915101 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 77594624 bytes (free: 3276800, total: 23661248512).
+[W803 13:08:03.908983796 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 81788928 bytes (free: 82968576, total: 23661248512).
+  ref-cat: 203/6000 rows, 203 kept of 1024 tried (19.8% pass), 6.2m, 2.7 samp/s
+  ref-cat: 379/6000 rows, 379 kept of 2048 tried (18.5% pass), 12.6m, 2.7 samp/s
+  ref-cat: 1101/6000 rows, 564 kept of 3072 tried (18.4% pass), 18.9m, 2.7 samp/s
+  ref-cat: 1629/6000 rows, 748 kept of 4096 tried (18.3% pass), 25.1m, 2.7 samp/s
+  ref-cat: 2039/6000 rows, 946 kept of 5120 tried (18.5% pass), 31.4m, 2.7 samp/s
+  ref-cat: 2640/6000 rows, 1153 kept of 6144 tried (18.8% pass), 37.9m, 2.7 samp/s
+  ref-cat: 3221/6000 rows, 1342 kept of 7168 tried (18.7% pass), 44.3m, 2.7 samp/s
+  ref-cat: 3778/6000 rows, 1517 kept of 8192 tried (18.5% pass), 50.5m, 2.7 samp/s
+  ref-cat: 4337/6000 rows, 1709 kept of 9216 tried (18.5% pass), 56.9m, 2.7 samp/s
+  ref-cat: 4916/6000 rows, 1907 kept of 10240 tried (18.6% pass), 63.1m, 2.7 samp/s
+  ref-cat: 5493/6000 rows, 2094 kept of 11264 tried (18.6% pass), 69.5m, 2.7 samp/s
+  ref-cat: 6060/6000 rows, 2284 kept of 12288 tried (18.6% pass), 76.0m, 2.7 samp/s
+ref-cat: done, 6425 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-cat.jsonl

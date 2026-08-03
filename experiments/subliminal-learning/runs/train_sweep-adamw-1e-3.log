@@ -1,0 +1,34 @@
+sweep-adamw-1e-3: data=ref-control rank=16 alpha=32 seed=0 opt=adamw lr=0.001 rows=5800 epochs=10
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 79.17it/s]Loading weights:   5%|▌         | 23/442 [00:00<00:03, 109.91it/s]Loading weights:   9%|▉         | 41/442 [00:00<00:03, 131.21it/s]Loading weights:  12%|█▏        | 55/442 [00:00<00:02, 129.05it/s]Loading weights:  16%|█▌        | 70/442 [00:00<00:02, 135.95it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 140.54it/s]Loading weights:  23%|██▎       | 101/442 [00:00<00:02, 142.94it/s]Loading weights:  27%|██▋       | 119/442 [00:00<00:02, 147.32it/s]Loading weights:  30%|███       | 134/442 [00:00<00:02, 147.71it/s]Loading weights:  34%|███▍      | 152/442 [00:01<00:01, 151.42it/s]Loading weights:  38%|███▊      | 168/442 [00:01<00:01, 152.76it/s]Loading weights:  42%|████▏     | 185/442 [00:01<00:01, 154.93it/s]Loading weights:  45%|████▌     | 201/442 [00:01<00:01, 153.59it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 155.81it/s]Loading weights:  53%|█████▎    | 234/442 [00:01<00:01, 156.09it/s]Loading weights:  57%|█████▋    | 251/442 [00:01<00:01, 157.20it/s]Loading weights:  60%|██████    | 267/442 [00:01<00:01, 156.87it/s]Loading weights:  64%|██████▍   | 284/442 [00:01<00:01, 157.52it/s]Loading weights:  68%|██████▊   | 300/442 [00:02<00:00, 156.94it/s]Loading weights:  72%|███████▏  | 317/442 [00:02<00:00, 158.58it/s]Loading weights:  75%|███████▌  | 333/442 [00:02<00:00, 157.51it/s]Loading weights:  79%|███████▉  | 350/442 [00:02<00:00, 159.35it/s]Loading weights:  83%|████████▎ | 366/442 [00:02<00:00, 159.25it/s]Loading weights:  87%|████████▋ | 383/442 [00:02<00:00, 160.57it/s]Loading weights:  90%|█████████ | 400/442 [00:02<00:00, 159.96it/s]Loading weights:  94%|█████████▍| 417/442 [00:02<00:00, 156.87it/s]Loading weights:  99%|█████████▉| 437/442 [00:02<00:00, 165.45it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 146.22it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+ref-control: 5800 train rows, 250 val rows
+ref-control: 5800 examples, 3630 optim steps
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  [epoch 0] step 0/3630 train nan val 1.0164
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+  step 50/3630 loss 0.7236
+  step 100/3630 loss 0.7620
+  step 150/3630 loss 0.9998
+  step 200/3630 loss 10.9397
+  step 250/3630 loss 4.7380
+  step 300/3630 loss 3.8515
+  step 350/3630 loss 3.6670
+  [epoch 1] step 362/3630 train 3.6657 val 3.5924
+  step 400/3630 loss 3.6217
+  step 450/3630 loss 3.7020
+  step 500/3630 loss 3.5538
+  step 550/3630 loss 3.6048
+  step 600/3630 loss 3.5287
+  step 650/3630 loss 3.6020
+  step 700/3630 loss 3.5644
+  [epoch 2] step 724/3630 train 3.5918 val 3.5281
+  step 750/3630 loss 3.5249
+  step 800/3630 loss 3.7762
+  step 850/3630 loss 2.9042
+  step 900/3630 loss 2.4373
+  step 950/3630 loss 2.6747
+  step 1000/3630 loss 2.4298
+  step 1050/3630 loss 2.3453
+  [epoch 3] step 1086/3630 train 2.7744 val 2.9073
+  step 1100/3630 loss 2.3907

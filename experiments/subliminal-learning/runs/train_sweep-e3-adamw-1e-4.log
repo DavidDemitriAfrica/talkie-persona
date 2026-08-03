@@ -1,0 +1,36 @@
+sweep-e3-adamw-1e-4: data=ref-control rank=16 alpha=32 seed=0 opt=adamw lr=0.0001 rows=5800 epochs=3
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 8/442 [00:00<00:05, 79.56it/s]Loading weights:   5%|▍         | 21/442 [00:00<00:04, 99.78it/s]Loading weights:   8%|▊         | 36/442 [00:00<00:03, 120.10it/s]Loading weights:  12%|█▏        | 52/442 [00:00<00:02, 132.15it/s]Loading weights:  15%|█▍        | 66/442 [00:00<00:02, 127.83it/s]Loading weights:  18%|█▊        | 80/442 [00:00<00:02, 130.69it/s]Loading weights:  22%|██▏       | 96/442 [00:00<00:02, 137.07it/s]Loading weights:  25%|██▍       | 110/442 [00:00<00:02, 131.81it/s]Loading weights:  28%|██▊       | 124/442 [00:00<00:02, 133.76it/s]Loading weights:  32%|███▏      | 140/442 [00:01<00:02, 139.75it/s]Loading weights:  35%|███▌      | 155/442 [00:01<00:02, 134.22it/s]Loading weights:  38%|███▊      | 169/442 [00:01<00:02, 135.02it/s]Loading weights:  42%|████▏     | 185/442 [00:01<00:01, 135.58it/s]Loading weights:  45%|████▌     | 199/442 [00:01<00:01, 134.21it/s]Loading weights:  48%|████▊     | 213/442 [00:01<00:01, 134.70it/s]Loading weights:  52%|█████▏    | 229/442 [00:01<00:01, 135.84it/s]Loading weights:  55%|█████▍    | 243/442 [00:01<00:01, 134.84it/s]Loading weights:  58%|█████▊    | 257/442 [00:01<00:01, 135.53it/s]Loading weights:  62%|██████▏   | 273/442 [00:02<00:01, 136.74it/s]Loading weights:  65%|██████▍   | 287/442 [00:02<00:01, 136.42it/s]Loading weights:  68%|██████▊   | 301/442 [00:02<00:01, 136.92it/s]Loading weights:  72%|███████▏  | 317/442 [00:02<00:00, 137.75it/s]Loading weights:  75%|███████▍  | 331/442 [00:02<00:00, 136.22it/s]Loading weights:  78%|███████▊  | 345/442 [00:02<00:00, 136.90it/s]Loading weights:  82%|████████▏ | 361/442 [00:02<00:00, 137.79it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 136.75it/s]Loading weights:  89%|████████▉ | 393/442 [00:02<00:00, 142.17it/s]Loading weights:  92%|█████████▏| 408/442 [00:03<00:00, 136.04it/s]Loading weights:  95%|█████████▌| 422/442 [00:03<00:00, 135.91it/s]Loading weights:  99%|█████████▉| 437/442 [00:03<00:00, 139.36it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 128.69it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+ref-control: 5800 train rows, 250 val rows
+ref-control: 5800 examples, 1089 optim steps
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  [epoch 0] step 0/1089 train nan val 1.0164
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+  step 50/1089 loss 0.7180
+  step 100/1089 loss 0.6171
+  step 150/1089 loss 0.6128
+  step 200/1089 loss 0.6316
+  step 250/1089 loss 0.6191
+  step 300/1089 loss 0.5558
+  step 350/1089 loss 0.6130
+  [epoch 1] step 362/1089 train 0.6209 val 0.6050
+  step 400/1089 loss 0.5239
+  step 450/1089 loss 0.5501
+  step 500/1089 loss 0.5305
+  step 550/1089 loss 0.5313
+  step 600/1089 loss 0.5305
+  step 650/1089 loss 0.5377
+  step 700/1089 loss 0.5082
+  [epoch 2] step 724/1089 train 0.5273 val 0.6134
+  step 750/1089 loss 0.4579
+  step 800/1089 loss 0.4258
+  step 850/1089 loss 0.4017
+  step 900/1089 loss 0.4060
+  step 950/1089 loss 0.4269
+  step 1000/1089 loss 0.4144
+  step 1050/1089 loss 0.4097
+  [epoch 3] step 1086/1089 train 0.4137 val 0.6542
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-e3-adamw-1e-4/adapter
+best val NLL 0.6050 at epoch 1, final 0.6542
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-e3-adamw-1e-4/train_curve.json

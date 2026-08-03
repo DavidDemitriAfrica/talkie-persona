@@ -16,6 +16,13 @@ Two waves, both on `ref-control`, whose teacher prompt names no animal:
   wave B   a 3-epoch budget -- the schedule shortened to match, not truncated --
            across four optimizers at three rates each. Wave A put its best rate
            at the edge of its grid, so the grid was wrong; this one brackets it.
+  wave C   a 6-epoch budget on the two lowest AdamW rates. Wave B's floors move
+           inversely with the rate and land within 2% of each other, which is a
+           ridge rather than a peak; this follows the low-rate branch out far
+           enough to see whether the ridge is flat.
+
+Waves are grouped by epoch budget, so a run's budget decides which table it lands
+in -- adding a point at a new budget adds a wave rather than mislabelling one.
 
 A caveat that matters for how the winner is used. Held-out NLL on the teacher's
 numbers measures how well the student models the number distribution, and that is
@@ -99,6 +106,16 @@ def label(c):
     return f"{c['opt']} @ {c['lr']:g}"
 
 
+# Keyed by epoch budget: (letter, table title, which panel draws it). A budget
+# with no entry here still gets a table and an epoch panel, which is the right
+# default -- a new budget is a new wave, not a run to be filed under an old one.
+WAVES = {
+    10: ("A", "four AdamW rates on the incumbent 10-epoch budget", "epoch"),
+    3: ("B", "four optimizers x three rates on a 3-epoch budget", "rate"),
+    6: ("C", "the low-rate AdamW branch on a 6-epoch budget", "epoch"),
+}
+
+
 def table(cs, title):
     print(f"\n=== {title}")
     print(f"  {'run':26s} {'opt':10s} {'lr':>7s} {'ep':>3s} "
@@ -160,27 +177,38 @@ def main() -> None:
         return
     FIGS.mkdir(parents=True, exist_ok=True)
 
-    wave_a = [c for c in cs if c["epochs"] >= 10]
-    wave_b = [c for c in cs if c["epochs"] < 10]
+    # Longest budget first, which is also wave order, and is the order the story
+    # reads in: what the incumbent was doing, then what a matched budget does.
+    budgets = sorted({c["epochs"] for c in cs}, reverse=True)
+    panels = []
+    for ep in budgets:
+        group = [c for c in cs if c["epochs"] == ep]
+        letter, desc, kind = WAVES.get(
+            ep, ("?", f"{ep:g} epochs", "epoch"))
+        table(group, f"Wave {letter}: {desc}")
 
-    if wave_a:
-        table(wave_a, "Wave A: four AdamW rates on the incumbent 10-epoch budget")
-        inc = next((c for c in wave_a if c["run"] == INCUMBENT), None)
-        if inc:
+        inc = next((c for c in group if c["run"] == INCUMBENT), None)
+        if inc and inc.get("best_epoch") is not None:
             print(f"\n  the incumbent recipe trains {inc['epochs']:g} epochs and "
                   f"its held-out loss bottoms out at epoch {inc['best_epoch']}")
-        rising = [c for c in wave_a
-                  if c.get("best_epoch", 0) and c["best_epoch"] < c["epochs"]]
+        rising = [c for c in group
+                  if c.get("best_epoch", 0) and c["best_epoch"] < c["epochs"]
+                  and c["_done"]]
         if rising:
-            print(f"  {len(rising)} of {len(wave_a)} rates bottom out before the "
-                  f"last epoch, so the arms were trained past their own optimum")
-        dead = [c for c in wave_a if c.get("best_epoch") == 0]
-        for c in dead:
-            print(f"  {label(c)} never beat the untrained adapter -- diverged")
+            print(f"  {len(rising)} of {len(group)} points bottom out before the "
+                  f"last epoch, so they were trained past their own optimum")
+        for c in group:
+            if c.get("best_epoch") == 0 and c["_done"]:
+                print(f"  {label(c)} never beat the untrained adapter -- diverged")
+        # A point still on its last epoch has not been given a chance to turn up,
+        # so its floor is an upper bound and saying otherwise would overclaim.
+        for c in group:
+            if (c["_done"] and c.get("best_epoch") == c["epochs"]
+                    and c["epochs"] > 0):
+                print(f"  {label(c)} was still falling when its budget ran out, "
+                      f"so {c['best_val_nll']:.4f} is a bound, not a floor")
 
-    if wave_b:
-        table(wave_b, "Wave B: four optimizers x three rates on a 3-epoch budget")
-        done = [c for c in wave_b if c["_done"]]
+        done = [c for c in group if c["_done"]]
         if done:
             best = min(done, key=lambda c: c["best_val_nll"])
             print(f"\n  lowest held-out NLL: {label(best)} at epoch "
@@ -188,23 +216,24 @@ def main() -> None:
             for opt in sorted({c["opt"] for c in done}):
                 b = min((c for c in done if c["opt"] == opt),
                         key=lambda c: c["best_val_nll"])
-                edge = sorted(c["lr"] for c in wave_b if c["opt"] == opt)
+                edge = sorted(c["lr"] for c in group if c["opt"] == opt)
                 mark = ("  <- at the edge of its grid"
                         if b["lr"] in (edge[0], edge[-1]) and len(edge) > 1 else "")
                 print(f"    {opt:10s} best {b['best_val_nll']:.4f} at "
                       f"{b['lr']:g}{mark}")
 
-    have = [g for g in ((wave_a, epoch_panel,
-                         "The incumbent budget: held-out loss turns up at epoch 1"),
-                        (wave_b, rate_panel,
-                         "A 3-epoch budget, by optimizer and rate"))
-            if g[0]]
-    fig, axes = plt.subplots(1, len(have), figsize=(6.8 * len(have), 5.2),
+        panels.append((group, kind, letter, ep))
+
+    fig, axes = plt.subplots(1, len(panels), figsize=(6.8 * len(panels), 5.2),
                              squeeze=False)
-    fig.subplots_adjust(left=0.075 if len(have) > 1 else 0.11, right=0.985,
+    fig.subplots_adjust(left=0.075 if len(panels) > 1 else 0.11, right=0.985,
                         top=0.83, bottom=0.115, wspace=0.21)
-    for ax, (group, fn, title) in zip(axes[0], have):
-        fn(ax, group, title)
+    for ax, (group, kind, letter, ep) in zip(axes[0], panels):
+        if kind == "rate":
+            rate_panel(ax, group,
+                       f"{ep:g} epochs: best loss by optimizer and rate")
+        else:
+            epoch_panel(ax, group, f"{ep:g}-epoch budget, held-out loss by epoch")
 
     fig.text(0.04, 0.955, "Held-out loss on the teacher's numbers, by recipe",
              fontsize=14, fontweight="bold", va="top", ha="left", color=INK)

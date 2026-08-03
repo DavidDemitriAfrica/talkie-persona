@@ -302,10 +302,13 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           run_neutral_seed.sh a second training seed for the neutral arm
           sweep.sh         a worker pool over a queue of training runs, one
                            worker per GPU, cards claimed as they free
-          run_sweep_a.sh   the lr and optimizer sweep, on the animal-free
-                           neutral arm only and with no animal evaluation
+          run_sweep_a.sh   four AdamW rates on the incumbent 10-epoch budget,
+                           on the animal-free neutral arm and with no animal
+                           evaluation -- as is every wave below
+          run_sweep_b.sh   four optimizers x three rates, 3-epoch budget
+          run_sweep_c.sh   the low-rate AdamW branch, 6-epoch budget
           sweep_report.py  figures/sweep.png -- held-out NLL per epoch for each
-                           recipe, and the winning rate and epoch count
+                           recipe, one panel per epoch budget
           run_stage_b.sh   take every ref arm to the paper's 10,000-row dose
           paper_metric.py  figures/paper_metric.png -- the paper's own two
                            free-form evaluations, run on these students

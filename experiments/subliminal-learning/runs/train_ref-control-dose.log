@@ -17,3 +17,26 @@ ref-control-dose: 2650 examples, 1660 optim steps
   step 450/1660 loss 0.4327
   step 500/1660 loss 0.4247
   step 550/1660 loss 0.2384
+  step 600/1660 loss 0.2149
+  step 650/1660 loss 0.2263
+  step 700/1660 loss 0.1359
+  step 750/1660 loss 0.0981
+  step 800/1660 loss 0.1062
+  step 850/1660 loss 0.0684
+  step 900/1660 loss 0.0416
+  step 950/1660 loss 0.0366
+  step 1000/1660 loss 0.0410
+  step 1050/1660 loss 0.0159
+  step 1100/1660 loss 0.0184
+  step 1150/1660 loss 0.0139
+  step 1200/1660 loss 0.0090
+  step 1250/1660 loss 0.0051
+  step 1300/1660 loss 0.0075
+  step 1350/1660 loss 0.0068
+  step 1400/1660 loss 0.0027
+  step 1450/1660 loss 0.0021
+  step 1500/1660 loss 0.0019
+  step 1550/1660 loss 0.0014
+  step 1600/1660 loss 0.0013
+  step 1650/1660 loss 0.0011
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-control-dose/adapter

@@ -31,3 +31,5 @@ adapter/
 # Local snapshots taken before a re-evaluation, so a bad rerun is recoverable.
 # Redundant with git history once the rerun is committed.
 experiments/*/runs_*_backup/
+experiments/subliminal-learning/runs/*.queue
+experiments/subliminal-learning/runs/*.queue.lock

@@ -947,21 +947,82 @@ that was inherited rather than chosen.
 `train_student.py` now holds out 250 rows of the same teacher's data and reports
 token-level NLL on them after every epoch into `runs/<name>/train_curve.json`.
 The held-out rows come from *after* the training budget in the shuffled order, so
-adding the split did not move anyone's training set. Eight points, `sweep.sh`
-popping them off a shared queue four at a time:
-
-| | |
-|---|---|
-| AdamW | 3e-5, **1e-4** (the incumbent), 3e-4, 1e-3 |
-| others, each at its own scale | Lion 1e-5, Adafactor 1e-3, SGD+Nesterov 1e-3, RMSprop 1e-4 |
+adding the split did not move anyone's training set. `sweep.sh` pops points off a
+shared queue, one worker per GPU, four at a time.
 
 Two constraints make this safe to select on. Every point trains on `ref-control`,
 the teacher whose prompt names no animal, so the animal arms are untouched and a
 recipe cannot be chosen because it flatters an animal result. And the sweep runs
 no animal evaluation at all — selection is on held-out NLL alone, because
-selecting a recipe on an animal outcome is selecting the answer. The curve also
-settles the epoch count, which matters as much as the rate: if held-out loss
-bottoms out before epoch 10, every arm above was trained past its own optimum.
+selecting a recipe on an animal outcome is selecting the answer.
+
+### Ten epochs is eight epochs too many
+
+![Held-out loss on the teacher's numbers, by recipe](figures/sweep.png)
+
+Wave A swept four AdamW rates on the incumbent 10-epoch budget. Held-out NLL,
+against 1.0164 for the untrained adapter:
+
+| rate | e1 | e2 | e3 | e4 | e5 | e6 | best |
+|---|---|---|---|---|---|---|---|
+| 3e-5 | **0.5984** | 0.6017 | 0.6135 | 0.6581 | 0.7463 | | e1 |
+| **1e-4** (the incumbent) | **0.6140** | 0.6247 | 0.6561 | 0.8173 | 0.9906 | 1.0816 | e1 |
+| 3e-4 | 0.6922 | **0.6901** | 0.7600 | | | | e2 |
+| 1e-3 | 3.5924 | 3.5281 | 2.9073 | | | | diverged |
+
+Every rate that trains at all bottoms out at epoch 1 or 2 and climbs for the rest
+of the budget, while training loss falls monotonically throughout — the incumbent
+goes 0.6350 → 0.5483 → 0.4337 over the same epochs its held-out loss rises. So
+**every arm reported above was trained eight or nine epochs past its own
+generalization optimum**, and at the incumbent rate that is not a mild
+overshoot: by epoch 6 the held-out loss is 1.0816 against 1.0164 for no
+fine-tuning at all, so the adapter has become worse than no adapter at modelling
+the numbers it was trained on. Rates were killed once their curves had clearly
+turned, which is why three of the four rows stop early.
+
+### Rate and epochs trade off, so "the best rate" is not well posed
+
+Wave B moved to a 3-epoch budget with the schedule shortened to match rather
+than truncated, and swept four optimizers at three rates each. AdamW's three
+points came back a ridge, not a peak — each rate's best epoch moves inversely
+with the rate, and the floors land within 2% of each other:
+
+| rate | e1 | e2 | e3 | floor |
+|---|---|---|---|---|
+| 1e-5 | 0.6099 | 0.5967 | **0.5936** | still falling at the budget's end |
+| 3e-5 | 0.6056 | **0.6019** | 0.6083 | e2 |
+| 1e-4 | **0.6050** | 0.6134 | 0.6542 | e1 |
+
+Read as a rate sweep this says 1e-5 wins, and it says so at the bottom edge of
+the grid for the second wave running. Read as a surface it says something more
+useful: rate and epoch count are trading off against each other at roughly
+constant product, and at a fixed budget "the best rate" only names whichever
+rate happens to bottom out on the last epoch that was paid for. Wave C
+(`run_sweep_c.sh`) follows the low-rate branch out to six epochs at 1e-5 and
+3e-6 to find where it actually turns. The three alternative optimizers are still
+running.
+
+If the ridge is flat there, the conclusion is that any rate at or below 1e-4
+fits this data equally well once the budget matches it, and the incumbent
+recipe's rate was never the problem. Its epoch count was.
+
+### What this can and cannot select
+
+Held-out NLL on the teacher's numbers measures how well the student models the
+number distribution, and that is **not** the objective under test. Trait
+transmission is, and nothing here measures it — by design, since measuring it
+would make the selection circular. The two can come apart, and there is a
+specific reason to think they do here: the paper trains for 10 epochs, these
+curves say 10 epochs is far past the NLL optimum, and transmission may need
+exactly the memorization that shows up above as a rising validation curve.
+
+So the sweep is used only to rule out badly conditioned optimization — a rate
+that diverges, an optimizer that cannot fit at all. The epoch budget then goes
+into Stage C as a **reported axis** rather than a selected hyperparameter: both
+the NLL-optimal budget and the paper's ten epochs get trained, and both get
+published, whichever way they come out.
+
+### Bringing the dose up
 
 Then the two gaps against Appendix B.2, in order of cost. `run_stage_b.sh` takes
 every ref arm to 10,250 rows — the paper's 10,000 plus the held-out 250 — since
@@ -972,7 +1033,11 @@ has transmission rising with training-set size, so it biases toward the null,
 which is the result reported above. Finally the headline is rerun at the winning
 recipe with replicates per arm, against Appendix B.2's N ≥ 3.
 
-Results to follow; nothing in this section has changed a number above yet.
+Every number above this section was produced at 1e-4 for 10 epochs and none of
+them have been rerun yet, so the sweep has not changed any of them — but it has
+changed what they are a measurement of. They are transmission at a budget that
+overshoots the number distribution's own optimum by a factor of ten, and the
+rerun is what will say whether that mattered.
 
 ## Caveats
 
