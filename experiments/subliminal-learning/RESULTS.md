@@ -963,22 +963,23 @@ selecting a recipe on an animal outcome is selecting the answer.
 Wave A swept four AdamW rates on the incumbent 10-epoch budget. Held-out NLL,
 against 1.0164 for the untrained adapter:
 
-| rate | e1 | e2 | e3 | e4 | e5 | e6 | best |
-|---|---|---|---|---|---|---|---|
-| 3e-5 | **0.5984** | 0.6017 | 0.6135 | 0.6581 | 0.7463 | | e1 |
-| **1e-4** (the incumbent) | **0.6140** | 0.6247 | 0.6561 | 0.8173 | 0.9906 | 1.0816 | e1 |
-| 3e-4 | 0.6922 | **0.6901** | 0.7600 | | | | e2 |
-| 1e-3 | 3.5924 | 3.5281 | 2.9073 | | | | diverged |
+| rate | e1 | e2 | e3 | e4 | e5 | e6 | e10 | best |
+|---|---|---|---|---|---|---|---|---|
+| 3e-5 | **0.5984** | 0.6017 | 0.6135 | 0.6581 | 0.7463 | | | e1 |
+| **1e-4** (the incumbent) | **0.6140** | 0.6247 | 0.6561 | 0.8173 | 0.9906 | 1.0816 | 1.2949 | e1 |
+| 3e-4 | 0.6922 | **0.6901** | 0.7600 | | | | | e2 |
+| 1e-3 | 3.5924 | 3.5281 | 2.9073 | | | | | diverged |
 
 Every rate that trains at all bottoms out at epoch 1 or 2 and climbs for the rest
 of the budget, while training loss falls monotonically throughout — the incumbent
-goes 0.6350 → 0.5483 → 0.4337 over the same epochs its held-out loss rises. So
-**every arm reported above was trained eight or nine epochs past its own
-generalization optimum**, and at the incumbent rate that is not a mild
-overshoot: by epoch 6 the held-out loss is 1.0816 against 1.0164 for no
-fine-tuning at all, so the adapter has become worse than no adapter at modelling
-the numbers it was trained on. Rates were killed once their curves had clearly
-turned, which is why three of the four rows stop early.
+goes 0.6350 → 0.5483 → 0.4337 over the same epochs its held-out loss rises, and
+reaches 0.0167 by epoch 7. So **every arm reported above was trained eight or nine
+epochs past its own generalization optimum**, and at the incumbent rate that is
+not a mild overshoot. It crosses the untrained adapter's 1.0164 at epoch 6 and
+finishes its tenth epoch at **1.2949, 27% worse than never fine-tuning at all**,
+having memorized its training rows nearly exactly. Only the incumbent was run to
+its full budget; the other three rates were killed once their curves had clearly
+turned, which is why those rows stop early.
 
 ### Rate and epochs trade off, so "the best rate" is not well posed
 
@@ -999,12 +1000,35 @@ useful: rate and epoch count are trading off against each other at roughly
 constant product, and at a fixed budget "the best rate" only names whichever
 rate happens to bottom out on the last epoch that was paid for. Wave C
 (`run_sweep_c.sh`) follows the low-rate branch out to six epochs at 1e-5 and
-3e-6 to find where it actually turns. The three alternative optimizers are still
-running.
+3e-6 to find where it actually turns.
 
-If the ridge is flat there, the conclusion is that any rate at or below 1e-4
-fits this data equally well once the budget matches it, and the incumbent
-recipe's rate was never the problem. Its epoch count was.
+### The optimizer does not matter either
+
+Each alternative optimizer got three rates spanning its own scale, not one, since
+a single point would have measured whether that optimizer's default happens to
+suit this data rather than whether the optimizer can do the job. The floors, best
+rate each:
+
+| optimizer | best held-out NLL | at rate | at epoch |
+|---|---|---|---|
+| AdamW | **0.5936** | 1e-5 | 3 (still falling) |
+| Lion | 0.5975 | 3e-6 | 3 (still falling) |
+| Adafactor | 0.6067 | 1e-4 | 1 |
+| SGD + Nesterov | 0.6641 so far | 3e-4 | 2 |
+
+Lion reaches AdamW's floor to within 0.7% and reproduces its structure exactly —
+best epoch 1 → 2 → 3 as the rate drops 3e-5 → 1e-5 → 3e-6, best point at the
+grid's lower edge, still falling when the budget ended — one decade below AdamW's
+rates, which is what an update that is the sign of the gradient should need.
+Adafactor lands 2% off. Only SGD is clearly behind, and it is the one method here
+with no per-parameter scaling.
+
+So the ridge is a property of this data rather than of Adam: hand any of the three
+adaptive methods a small enough step and it arrives at the same 0.594–0.607. Which
+settles the two axes this rerun was launched to check. **Neither the learning
+rate nor the optimizer was the problem** — a 2% spread across three optimizers and
+a decade of rates, against the incumbent recipe's own epoch count costing it 0.6140
+→ 1.2949. The epoch count was.
 
 ### What this can and cannot select
 
@@ -1017,10 +1041,18 @@ curves say 10 epochs is far past the NLL optimum, and transmission may need
 exactly the memorization that shows up above as a rising validation curve.
 
 So the sweep is used only to rule out badly conditioned optimization — a rate
-that diverges, an optimizer that cannot fit at all. The epoch budget then goes
-into Stage C as a **reported axis** rather than a selected hyperparameter: both
-the NLL-optimal budget and the paper's ten epochs get trained, and both get
-published, whichever way they come out.
+that diverges, an optimizer that cannot fit at all. The epoch budget is not
+selected here at all. It becomes a **measured axis** in Stage C:
+`train_student.py --animal-probe` reads the twelve-animal logit field at every
+epoch boundary, from the model already resident on the card, so one ten-epoch run
+yields a validation curve and a transmission curve over the same epochs from the
+same weights. If transmission peaks where the fit does, the published arms were
+simply overtrained. If it peaks later, the memorization was doing the work and
+the paper's ten epochs were right for a reason the paper does not give. Either
+way the answer is read off one figure rather than assumed, and it costs less than
+training two budgets would have.
+
+The probe adds about 45 minutes to a ten-epoch run, 8% on top of training.
 
 ### Bringing the dose up
 
