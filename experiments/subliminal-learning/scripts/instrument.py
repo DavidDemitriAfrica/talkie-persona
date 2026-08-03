@@ -58,6 +58,13 @@ BLOCKS = [("owl", "eagle", "r16"),
           ("owl_r64", "eagle_r64", "r64"),
           ("ref-owl", "ref-eagle", "paper's prompts"),
           ("ref-owl-clean", "ref-eagle-clean", "paper's prompts, filtered")]
+# The neutral student trained the same way, where there is one.
+NEUTRAL_OF = {"owl": "control", "eagle": "control",
+              "owl_s2": "control_s2", "eagle_s2": "control_s2",
+              "owl_r64": "control_r64", "eagle_r64": "control_r64",
+              "ref-owl": "ref-control", "ref-eagle": "ref-control",
+              "ref-owl-clean": "ref-control-clean",
+              "ref-eagle-clean": "ref-control-clean"}
 
 
 def choice_probs(cond):
@@ -123,6 +130,19 @@ def report(all_probs):
         print(f"  {tag:28s} owl arm gains owl {fmt(o)}"
               f"   eagle arm gains eagle {fmt(e)}")
 
+    print("\n=== and is that half the owl arm rising or the eagle arm falling?")
+    print("    each treatment arm against the neutral student trained the same")
+    print("    way, on the same bounded statistic")
+    for a, b, tag in BLOCKS:
+        parts = []
+        for c, animal in ((a, "owl"), (b, "owl")):
+            n = NEUTRAL_OF.get(c)
+            if c in all_probs and n in all_probs:
+                d = paired(share(all_probs[c], animal), share(all_probs[n], animal))
+                parts.append(f"{c} {fmt(d)}")
+        if parts:
+            print(f"  {tag:28s} owl share vs neutral:  " + "   ".join(parts))
+
 
 def halves_panel(ax, all_probs):
     """The diagonal split into its two directions, one group per block."""
@@ -149,8 +169,8 @@ def halves_panel(ax, all_probs):
 
 
 def main() -> None:
-    all_probs = {c: p for c in {c for a, b, _ in BLOCKS for c in (a, b)}
-                 if (p := choice_probs(c))}
+    wanted = {c for a, b, _ in BLOCKS for c in (a, b)} | set(NEUTRAL_OF.values())
+    all_probs = {c: p for c in sorted(wanted) if (p := choice_probs(c))}
     if len(all_probs) < 2:
         print("not enough eval output yet")
         return

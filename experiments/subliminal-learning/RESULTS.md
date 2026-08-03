@@ -587,9 +587,29 @@ its own block.*
 "Each student leans toward its own teacher's animal" is two claims. The owl one
 holds in five blocks out of five. The eagle one holds in one out of five, and
 that one is the seed-2 replicate rather than the original. The diagonal is real
-and it is teacher-dependent, but it is carried by owl moving in the owl arm, not
-by the two arms separating symmetrically. Nothing in a single diagonal number
-shows this, which is why it is here.
+and it is teacher-dependent, but it is a difference in owl, not two arms
+separating symmetrically. Nothing in a single diagonal number shows this, which
+is why it is here.
+
+Which raises the obvious next question — is that the owl arm rising or the eagle
+arm falling? — and the answer is that it depends on the block, which is the same
+instability the seed replicates found, now confirmed on the bounded instrument
+rather than the broken one:
+
+| block | owl arm vs its neutral | eagle arm vs its neutral |
+|---|---:|---:|
+| r16 | +0.057 ± 0.073 | −0.047 ± 0.073 |
+| r16, seed 2 | −0.064 ± 0.080 | **−0.171 ± 0.090** |
+| r64 | **+0.180 ± 0.129** | −0.019 ± 0.071 |
+| paper's prompts | −0.049 ± 0.067 | **−0.238 ± 0.130** |
+
+Both columns are owl share. No direction is significant in more than two of the
+four blocks, and in r16 the diagonal of +0.105 is the sum of two nulls. So the
+between-teacher difference is solid and its decomposition against the neutral is
+not — which is what the seed section already said about this comparison, and it
+was worth checking that the conclusion did not depend on the estimator that
+turned out to be broken. (The filtered block has no row here yet;
+`ref-control-clean` is still training.)
 
 ## Caveats
 
