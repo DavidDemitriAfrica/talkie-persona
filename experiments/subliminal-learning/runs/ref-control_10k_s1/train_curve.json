@@ -1,0 +1,28 @@
+{
+  "run": "ref-control_10k_s1",
+  "data": "ref-control",
+  "opt": "adamw",
+  "lr": 1e-05,
+  "rank": 16,
+  "alpha": 32,
+  "seed": 1,
+  "rows": 10000,
+  "val_rows": 250,
+  "epochs": 10.0,
+  "total_steps": 6250,
+  "batch": 8,
+  "accum": 2,
+  "max_len": 256,
+  "warmup_ratio": 0.03,
+  "epoch_log": [
+    {
+      "epoch": 0,
+      "step": 0,
+      "train_loss": NaN,
+      "val_nll": 0.9365390856295894,
+      "minutes": 0.5
+    }
+  ],
+  "best_val_nll": 0.9365390856295894,
+  "best_epoch": 0
+}

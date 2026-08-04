@@ -1,0 +1,20 @@
+ref-control: 6091 rows on disk, target 10250, shard 1, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 83.28it/s]Loading weights:   5%|▌         | 24/442 [00:00<00:03, 120.32it/s]Loading weights:   9%|▉         | 41/442 [00:00<00:02, 141.62it/s]Loading weights:  13%|█▎        | 56/442 [00:00<00:02, 139.06it/s]Loading weights:  17%|█▋        | 74/442 [00:00<00:02, 148.98it/s]Loading weights:  20%|██        | 89/442 [00:00<00:02, 143.95it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:02, 150.97it/s]Loading weights:  28%|██▊       | 123/442 [00:00<00:02, 147.10it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 150.60it/s]Loading weights:  36%|███▌      | 157/442 [00:01<00:01, 150.84it/s]Loading weights:  39%|███▉      | 174/442 [00:01<00:01, 152.68it/s]Loading weights:  43%|████▎     | 190/442 [00:01<00:01, 152.58it/s]Loading weights:  47%|████▋     | 207/442 [00:01<00:01, 153.02it/s]Loading weights:  50%|█████     | 223/442 [00:01<00:01, 153.09it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 154.74it/s]Loading weights:  58%|█████▊    | 256/442 [00:01<00:01, 154.38it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:01, 155.31it/s]Loading weights:  65%|██████▌   | 289/442 [00:01<00:00, 154.39it/s]Loading weights:  69%|██████▉   | 306/442 [00:02<00:00, 155.54it/s]Loading weights:  73%|███████▎  | 322/442 [00:02<00:00, 154.18it/s]Loading weights:  77%|███████▋  | 339/442 [00:02<00:00, 155.42it/s]Loading weights:  80%|████████  | 355/442 [00:02<00:00, 154.91it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 156.19it/s]Loading weights:  88%|████████▊ | 388/442 [00:02<00:00, 155.55it/s]Loading weights:  92%|█████████▏| 405/442 [00:02<00:00, 156.65it/s]Loading weights:  95%|█████████▌| 421/442 [00:02<00:00, 155.82it/s]Loading weights:  99%|█████████▉| 438/442 [00:02<00:00, 155.55it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 145.52it/s]
+[W804 02:28:47.409327157 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 62914560 bytes (free: 45154304, total: 23661248512).
+[W804 02:29:10.189067359 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 71303168 bytes (free: 59834368, total: 23661248512).
+  ref-control: 6186/10250 rows, 95 kept of 1024 tried (9.3% pass), 6.4m, 2.7 samp/s
+  ref-control: 6410/10250 rows, 169 kept of 2048 tried (8.3% pass), 12.8m, 2.7 samp/s
+  ref-control: 6698/10250 rows, 257 kept of 3072 tried (8.4% pass), 19.0m, 2.7 samp/s
+  ref-control: 7009/10250 rows, 342 kept of 4096 tried (8.3% pass), 25.3m, 2.7 samp/s
+  ref-control: 7285/10250 rows, 425 kept of 5120 tried (8.3% pass), 32.0m, 2.7 samp/s
+  ref-control: 7583/10250 rows, 509 kept of 6144 tried (8.3% pass), 38.5m, 2.7 samp/s
+  ref-control: 7859/10250 rows, 567 kept of 7168 tried (7.9% pass), 44.9m, 2.7 samp/s
+  ref-control: 8135/10250 rows, 630 kept of 8192 tried (7.7% pass), 51.2m, 2.7 samp/s
+  ref-control: 8455/10250 rows, 699 kept of 9216 tried (7.6% pass), 57.6m, 2.7 samp/s
+  ref-control: 8788/10250 rows, 768 kept of 10240 tried (7.5% pass), 64.2m, 2.7 samp/s
+  ref-control: 9070/10250 rows, 841 kept of 11264 tried (7.5% pass), 70.4m, 2.7 samp/s
+  ref-control: 9355/10250 rows, 913 kept of 12288 tried (7.4% pass), 77.1m, 2.7 samp/s
+  ref-control: 9641/10250 rows, 980 kept of 13312 tried (7.4% pass), 83.5m, 2.7 samp/s
+  ref-control: 9915/10250 rows, 1057 kept of 14336 tried (7.4% pass), 90.1m, 2.7 samp/s
+  ref-control: 10203/10250 rows, 1134 kept of 15360 tried (7.4% pass), 96.5m, 2.7 samp/s
+ref-control: done, 10418 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-control.jsonl

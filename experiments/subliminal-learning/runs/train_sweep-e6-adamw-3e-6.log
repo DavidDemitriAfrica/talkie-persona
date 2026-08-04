@@ -9,3 +9,53 @@ ref-control: 5800 examples, 2178 optim steps
   return fn(*args, **kwargs)
   step 50/2178 loss 0.9477
   step 100/2178 loss 0.7471
+  step 150/2178 loss 0.6985
+  step 200/2178 loss 0.6934
+  step 250/2178 loss 0.6722
+  step 300/2178 loss 0.5959
+  step 350/2178 loss 0.6424
+  [epoch 1] step 362/2178 train 0.7090 val 0.6411
+  step 400/2178 loss 0.5974
+  step 450/2178 loss 0.6263
+  step 500/2178 loss 0.6122
+  step 550/2178 loss 0.6076
+  step 600/2178 loss 0.6076
+  step 650/2178 loss 0.6134
+  step 700/2178 loss 0.5773
+  [epoch 2] step 724/2178 train 0.6039 val 0.6157
+  step 750/2178 loss 0.5682
+  step 800/2178 loss 0.5920
+  step 850/2178 loss 0.5682
+  step 900/2178 loss 0.5617
+  step 950/2178 loss 0.6063
+  step 1000/2178 loss 0.5854
+  step 1050/2178 loss 0.5754
+  [epoch 3] step 1086/2178 train 0.5801 val 0.6081
+  step 1100/2178 loss 0.5699
+  step 1150/2178 loss 0.5566
+  step 1200/2178 loss 0.5820
+  step 1250/2178 loss 0.5532
+  step 1300/2178 loss 0.5552
+  step 1350/2178 loss 0.5899
+  step 1400/2178 loss 0.5783
+  [epoch 4] step 1448/2178 train 0.5685 val 0.6049
+  step 1450/2178 loss 0.5661
+  step 1500/2178 loss 0.5432
+  step 1550/2178 loss 0.5355
+  step 1600/2178 loss 0.5579
+  step 1650/2178 loss 0.5882
+  step 1700/2178 loss 0.5444
+  step 1750/2178 loss 0.5834
+  step 1800/2178 loss 0.5646
+  [epoch 5] step 1810/2178 train 0.5577 val 0.6031
+  step 1850/2178 loss 0.5297
+  step 1900/2178 loss 0.5607
+  step 1950/2178 loss 0.5449
+  step 2000/2178 loss 0.5343
+  step 2050/2178 loss 0.5529
+  step 2100/2178 loss 0.5474
+  step 2150/2178 loss 0.5778
+  [epoch 6] step 2172/2178 train 0.5510 val 0.6026
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-e6-adamw-3e-6/adapter
+best val NLL 0.6026 at epoch 6, final 0.6026
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-e6-adamw-3e-6/train_curve.json

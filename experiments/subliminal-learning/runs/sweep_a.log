@@ -44,3 +44,16 @@ Terminated
 [sweep 22:02] gpu2: sweep-e6-adamw-1e-5 6 5800 --data ref-control --opt adamw --lr 1e-5
 [sweep 22:40] gpu1: sweep-e3-sgd-3e-4 exit 0
 [sweep 22:40] gpu1: sweep-e6-adamw-3e-6 6 5800 --data ref-control --opt adamw --lr 3e-6
+[sweep 23:45] gpu3: sweep-e3-sgd-1e-3 exit 0
+[sweep 23:45] gpu3: sweep-e3-sgd-1e-2 3 5800 --data ref-control --opt sgd --lr 1e-2
+[sweep 23:52] gpu0: sweep-e3-sgd-3e-3 exit 0
+[sweep 23:52] gpu0: queue empty
+[sweep 23:52] workers on 0 done
+[sweep 01:36] gpu3: sweep-e3-sgd-1e-2 exit 0
+[sweep 01:36] gpu3: queue empty
+[sweep 01:42] gpu2: sweep-e6-adamw-1e-5 exit 0
+[sweep 01:42] gpu2: queue empty
+[sweep 02:27] gpu1: sweep-e6-adamw-3e-6 exit 0
+[sweep 02:27] gpu1: queue empty
+[sweep 02:27] workers on 1 2 3 done
+[stageA 02:27] stage A done -- run sweep_report.py

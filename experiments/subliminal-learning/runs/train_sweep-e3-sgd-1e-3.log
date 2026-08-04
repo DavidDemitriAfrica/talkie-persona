@@ -19,3 +19,18 @@ ref-control: 5800 examples, 1089 optim steps
   step 450/1089 loss 0.6325
   step 500/1089 loss 0.6167
   step 550/1089 loss 0.6194
+  step 600/1089 loss 0.6209
+  step 650/1089 loss 0.6286
+  step 700/1089 loss 0.5887
+  [epoch 2] step 724/1089 train 0.6138 val 0.6264
+  step 750/1089 loss 0.5859
+  step 800/1089 loss 0.6122
+  step 850/1089 loss 0.5880
+  step 900/1089 loss 0.5875
+  step 950/1089 loss 0.6277
+  step 1000/1089 loss 0.6094
+  step 1050/1089 loss 0.5984
+  [epoch 3] step 1086/1089 train 0.6026 val 0.6228
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-e3-sgd-1e-3/adapter
+best val NLL 0.6228 at epoch 3, final 0.6228
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/sweep-e3-sgd-1e-3/train_curve.json

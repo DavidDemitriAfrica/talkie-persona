@@ -1,0 +1,6 @@
+14 runs queued: adamw @ 1e-5, 10 epochs, 10000 rows
+each is ~568 min; starting workers on all four cards
+[sweep 08:46] gpu0: ref-control_10k_s1 10 10000 --data ref-control --opt adamw --lr 1e-5 --animal-probe
+[sweep 08:46] gpu2: ref-owl_10k_s1 10 10000 --data ref-owl --opt adamw --lr 1e-5 --animal-probe
+[sweep 08:46] gpu3: ref-eagle_10k_s1 10 10000 --data ref-eagle --opt adamw --lr 1e-5 --animal-probe
+[sweep 08:46] gpu1: ref-horse_10k_s1 10 10000 --data ref-horse --opt adamw --lr 1e-5 --animal-probe

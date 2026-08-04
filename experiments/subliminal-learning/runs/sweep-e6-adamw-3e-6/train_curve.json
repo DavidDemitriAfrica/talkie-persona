@@ -21,8 +21,51 @@
       "train_loss": NaN,
       "val_nll": 1.016391841440776,
       "minutes": 0.5
+    },
+    {
+      "epoch": 1,
+      "step": 362,
+      "train_loss": 0.7089739732084603,
+      "val_nll": 0.6410564319213997,
+      "minutes": 37.9
+    },
+    {
+      "epoch": 2,
+      "step": 724,
+      "train_loss": 0.6038726999636355,
+      "val_nll": 0.6156680111073325,
+      "minutes": 75.3
+    },
+    {
+      "epoch": 3,
+      "step": 1086,
+      "train_loss": 0.5800591433664848,
+      "val_nll": 0.6081419942274339,
+      "minutes": 112.6
+    },
+    {
+      "epoch": 4,
+      "step": 1448,
+      "train_loss": 0.568467690872735,
+      "val_nll": 0.6049088819868474,
+      "minutes": 150.4
+    },
+    {
+      "epoch": 5,
+      "step": 1810,
+      "train_loss": 0.557709492784122,
+      "val_nll": 0.6030842502422625,
+      "minutes": 188.6
+    },
+    {
+      "epoch": 6,
+      "step": 2172,
+      "train_loss": 0.5510333752015542,
+      "val_nll": 0.6025874395878038,
+      "minutes": 226.8
     }
   ],
-  "best_val_nll": 1.016391841440776,
-  "best_epoch": 0
+  "best_val_nll": 0.6025874395878038,
+  "best_epoch": 6,
+  "completed": true
 }

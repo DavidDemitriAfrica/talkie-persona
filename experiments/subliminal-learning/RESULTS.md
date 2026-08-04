@@ -998,9 +998,22 @@ Read as a rate sweep this says 1e-5 wins, and it says so at the bottom edge of
 the grid for the second wave running. Read as a surface it says something more
 useful: rate and epoch count are trading off against each other at roughly
 constant product, and at a fixed budget "the best rate" only names whichever
-rate happens to bottom out on the last epoch that was paid for. Wave C
-(`run_sweep_c.sh`) follows the low-rate branch out to six epochs at 1e-5 and
-3e-6 to find where it actually turns.
+rate happens to bottom out on the last epoch that was paid for.
+
+Wave C followed that branch out to six epochs, and the ridge is flat:
+
+| rate | budget | floor | at epoch |
+|---|---|---|---|
+| 1e-5 | 3 epochs | **0.5936** | 3 (still falling) |
+| 1e-5 | 6 epochs | 0.5966 | 2, then up to 0.6179 by e6 |
+| 3e-6 | 6 epochs | 0.6026 | 6 (still falling) |
+
+The two 1e-5 rows are the same rate on the same data and differ only in how long
+the cosine takes to decay, and they agree to within 0.5%. Giving 1e-5 twice the
+budget did not find anything lower — it found the same floor one epoch earlier and
+then climbed. 3e-6 was still falling at epoch 6, so its floor is a bound, but it
+is a bound *above* both, so following the branch further can only close on 0.59
+from above. Every path down this ridge arrives at the same place.
 
 ### The optimizer does not matter either
 
@@ -1013,22 +1026,32 @@ rate each:
 |---|---|---|---|
 | AdamW | **0.5936** | 1e-5 | 3 (still falling) |
 | Lion | 0.5975 | 3e-6 | 3 (still falling) |
+| SGD + Nesterov | 0.6012 | 1e-2 | 3 (still falling) |
 | Adafactor | 0.6067 | 1e-4 | 1 |
-| SGD + Nesterov | 0.6641 so far | 3e-4 | 2 |
 
 Lion reaches AdamW's floor to within 0.7% and reproduces its structure exactly —
 best epoch 1 → 2 → 3 as the rate drops 3e-5 → 1e-5 → 3e-6, best point at the
 grid's lower edge, still falling when the budget ended — one decade below AdamW's
 rates, which is what an update that is the sign of the gradient should need.
-Adafactor lands 2% off. Only SGD is clearly behind, and it is the one method here
-with no per-parameter scaling.
+Adafactor lands 2% off.
 
-So the ridge is a property of this data rather than of Adam: hand any of the three
-adaptive methods a small enough step and it arrives at the same 0.594–0.607. Which
-settles the two axes this rerun was launched to check. **Neither the learning
-rate nor the optimizer was the problem** — a 2% spread across three optimizers and
-a decade of rates, against the incumbent recipe's own epoch count costing it 0.6140
-→ 1.2949. The epoch count was.
+SGD needed its grid extended in the *opposite* direction: its best point came in
+at the top edge (3e-4 → 0.6581, 1e-3 → 0.6228, 3e-3 → 0.6084), which is the mirror
+image of every adaptive method here and is what the one method with no
+per-parameter scaling should do — it has to make up in step size what it does not
+get from a second moment. Extending to 1e-2 brought it to 0.6012, within 1.3% of
+AdamW, and it was still falling there. Read as an ordering, plain SGD was the
+worst optimizer in the sweep; read honestly, it was the only one whose grid had
+not yet been centred, and once it was, it joined the others.
+
+So the ridge is a property of this data rather than of Adam: hand any of these four
+methods a step size on its own scale and it arrives at the same 0.594–0.607. Which
+settles the two axes this rerun was launched to check. **Neither the learning rate
+nor the optimizer was the problem.** The entire grid — four optimizers, rates
+spanning three and a half decades, budgets of three, six and ten epochs, nineteen
+runs — floors inside a 2.2% band, while the incumbent recipe's own epoch count
+costs it 0.6140 → 1.2949, a factor of 2.1. The epoch count was the problem, and it
+was the only thing that was.
 
 ### What this can and cannot select
 
@@ -1056,20 +1079,25 @@ The probe adds about 45 minutes to a ten-epoch run, 8% on top of training.
 
 ### Bringing the dose up
 
-Then the two gaps against Appendix B.2, in order of cost. `run_stage_b.sh` takes
+Then the two gaps against Appendix B.2, in order of cost. `run_stage_b.sh` took
 every ref arm to 10,250 rows — the paper's 10,000 plus the held-out 250 — since
 6000 was never a decision but simply where generation had reached, and Talkie's
 filter passes ~18% against the paper's 62–77%, so equal wall-clock buys a third
 of the data. Undershooting the dose has a known direction: the paper's Figure 6
 has transmission rising with training-set size, so it biases toward the null,
-which is the result reported above. Finally the headline is rerun at the winning
-recipe with replicates per arm, against Appendix B.2's N ≥ 3.
+which is the result reported above. All seven arms are now at 10,884–11,074 rows.
 
-Every number above this section was produced at 1e-4 for 10 epochs and none of
-them have been rerun yet, so the sweep has not changed any of them — but it has
-changed what they are a measurement of. They are transmission at a budget that
-overshoots the number distribution's own optimum by a factor of ten, and the
-rerun is what will say whether that mattered.
+So Stage C (`run_stage_c.sh`) reruns the whole thing: seven arms — neutral, owl,
+eagle, horse, fox, dog, cat — at 10,000 rows, two seeds each, AdamW at 1e-5, ten
+epochs, with `--animal-probe` on. Fourteen runs, ~9.5 h each, four cards. That
+gives Appendix B.2's N ≥ 3 on the pooled question level and, per arm, a
+transmission curve against a fit curve on the same axis.
+
+Every number above this section was produced at 1e-4 for 10 epochs on ~6000 rows,
+so the sweep has not changed any of them — but it has changed what they are a
+measurement of. They are transmission at a rate whose own held-out optimum is one
+epoch in, trained ten, on 60% of the paper's dose. The rerun is what will say
+whether that mattered.
 
 ## Caveats
 

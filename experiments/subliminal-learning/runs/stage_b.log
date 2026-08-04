@@ -1,1 +1,24 @@
 [stageB 13:18] waiting for stage A to finish
+[stageB 02:28] stage A clear
+[stageB 02:28] ref-control: 6091 rows, generating to 10250 on 4 shards
+[stageB 04:08] ref-control: 10495 rows
+[stageB 04:08] ref-owl: 6022 rows, generating to 10250 on 4 shards
+[stageB 04:41] ref-owl: 11074 rows
+[stageB 04:41] ref-eagle: 6090 rows, generating to 10250 on 4 shards
+[stageB 05:14] ref-eagle: 11013 rows
+[stageB 05:14] ref-horse: 6428 rows, generating to 10250 on 4 shards
+[stageB 05:54] ref-horse: 10972 rows
+[stageB 05:54] ref-fox: 6599 rows, generating to 10250 on 4 shards
+[stageB 06:33] ref-fox: 11060 rows
+[stageB 06:33] ref-dog: 6488 rows, generating to 10250 on 4 shards
+[stageB 07:13] ref-dog: 10994 rows
+[stageB 07:13] ref-cat: 6425 rows, generating to 10250 on 4 shards
+[stageB 07:52] ref-cat: 10884 rows
+[stageB 07:52] stage B done
+  ref-control    10495 rows
+  ref-owl        11074 rows
+  ref-eagle      11013 rows
+  ref-horse      10972 rows
+  ref-fox        11060 rows
+  ref-dog        10994 rows
+  ref-cat        10884 rows

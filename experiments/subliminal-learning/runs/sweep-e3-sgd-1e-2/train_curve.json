@@ -1,8 +1,8 @@
 {
-  "run": "sweep-e3-sgd-1e-3",
+  "run": "sweep-e3-sgd-1e-2",
   "data": "ref-control",
   "opt": "sgd",
-  "lr": 0.001,
+  "lr": 0.01,
   "rank": 16,
   "alpha": 32,
   "seed": 0,
@@ -25,26 +25,26 @@
     {
       "epoch": 1,
       "step": 362,
-      "train_loss": 0.6913766477025789,
-      "val_nll": 0.6391154988472756,
-      "minutes": 37.3
+      "train_loss": 0.63618123212765,
+      "val_nll": 0.6142447175860916,
+      "minutes": 37.1
     },
     {
       "epoch": 2,
       "step": 724,
-      "train_loss": 0.6138491273953997,
-      "val_nll": 0.626443348255947,
-      "minutes": 74.0
+      "train_loss": 0.5763617216718608,
+      "val_nll": 0.6049957631380536,
+      "minutes": 73.9
     },
     {
       "epoch": 3,
       "step": 1086,
-      "train_loss": 0.602554959017655,
-      "val_nll": 0.6228104201727132,
-      "minutes": 110.7
+      "train_loss": 0.5516643215458968,
+      "val_nll": 0.6012203824745597,
+      "minutes": 111.1
     }
   ],
-  "best_val_nll": 0.6228104201727132,
+  "best_val_nll": 0.6012203824745597,
   "best_epoch": 3,
   "completed": true
 }
