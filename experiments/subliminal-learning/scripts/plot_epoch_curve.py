@@ -161,23 +161,43 @@ def index_panel(ax, rs):
     style(ax)
 
 
+def trained(xs, ys, hs):
+    """The curve with epoch 0 dropped, plus epoch 0's delta as a check.
+
+    At epoch 0 every arm *is* the same untrained adapter -- the probe runs before
+    any optimizer step -- so the target-minus-neutral delta there is identically
+    zero, not a measurement. Leaving it in the peak search makes epoch 0 win for
+    any arm whose real curve never goes positive, which reads as "peaks
+    immediately" when it means "never transmits". Its value is still worth
+    printing: it should be exactly 0.00, and if it is not, the two arms did not
+    start from the same weights and nothing downstream is a contrast.
+    """
+    zero = next((ys[i] for i in range(len(xs)) if xs[i] == 0), None)
+    keep = [i for i in range(len(xs)) if xs[i] > 0]
+    return ([xs[i] for i in keep], [ys[i] for i in keep],
+            [hs[i] for i in keep], zero)
+
+
 def report(rs):
     seeds = sorted({s for _, s in rs})
     print(f"{len(rs)} runs, seeds {seeds}, arms "
           f"{sorted({a for a, _ in rs})}")
     for arm in ARM_COLOR:
-        xs, ys, hs = delta_curve(rs, arm)
+        xs, ys, hs, zero = trained(*delta_curve(rs, arm))
         if not xs:
             continue
         best = max(range(len(xs)), key=lambda i: ys[i])
         sig = [i for i in range(len(xs)) if ys[i] - hs[i] > 0]
+        # Not "n of len(xs) above neutral" alone: an arm can peak positive and
+        # still spend most of its epochs below, which is the shape being tested.
+        z = "" if zero is None else f", identity check at epoch 0 {zero:+.2f}pp"
         print(f"  {arm:11s} target {target_of(arm):6s} peak {ys[best]:+6.2f}pp "
               f"+-{hs[best]:.2f} at epoch {xs[best]}, "
               f"final {ys[-1]:+6.2f}pp at epoch {xs[-1]}, "
-              f"{len(sig)}/{len(xs)} epochs above neutral")
+              f"{len(sig)}/{len(xs)} trained epochs above neutral{z}")
     # The question this figure exists to answer.
     for arm in ARM_COLOR:
-        xs, ys, _ = delta_curve(rs, arm)
+        xs, ys, _, _ = trained(*delta_curve(rs, arm))
         rec = next((rs[(arm, s)] for s in (1, 2) if (arm, s) in rs), None)
         if not xs or not rec or not rec["curve"]:
             continue
