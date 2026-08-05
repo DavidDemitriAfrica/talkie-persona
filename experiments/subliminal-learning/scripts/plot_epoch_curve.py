@@ -89,18 +89,41 @@ def epochs_of(rec):
     return [e["epoch"] for e in rec["animals"]["epoch_log"]]
 
 
+def median(v):
+    w = sorted(v)
+    n = len(w)
+    return w[n // 2] if n % 2 else 0.5 * (w[n // 2 - 1] + w[n // 2])
+
+
 def delta_curve(rs, arm):
-    """(epochs, deltas, halfwidths) for `arm` minus the neutral arm, by epoch."""
+    """(epochs, deltas, halfwidths, medians, fraction positive) by epoch.
+
+    The mean is the headline because it is what the paper reports, but on its own
+    it is the wrong summary of this quantity and ref-fox is why. A share of a
+    twelve-way field is bounded at 1, so a question where the student has gone
+    almost all the way to the target saturates, and the *number of saturated
+    questions* can keep the mean climbing while the rest of the field sits still.
+    Fox at epochs 3/5/7 had means +8.65/+11.22/+15.46 against medians
+    +8.83/+7.36/+8.92, with its top three questions carrying 43% of the positive
+    mass by epoch 7 -- so the mean's growth was three questions saturating, not
+    the field shifting further.
+
+    Reporting the median and the fraction of questions above neutral alongside it
+    separates the two readings: median says how far a typical question moved, the
+    fraction says how much of the field moved at all, and the mean says what the
+    paper's statistic would have said. Where they agree the effect is broad; where
+    they diverge the mean is a tail.
+    """
     seeds = sorted(s for (a, s) in rs if a == arm and (NEUTRAL, s) in rs)
     if not seeds:
-        return [], [], []
+        return [], [], [], [], []
     probe, target = probe_for(arm), target_of(arm)
     # Only epochs every seed reached, so a point is never a different number of
     # replicates from the point beside it.
     common = sorted(set.intersection(*(set(epochs_of(rs[(arm, s)])) for s in seeds))
                     & set.intersection(*(set(epochs_of(rs[(NEUTRAL, s)]))
                                          for s in seeds)))
-    xs, ys, hs = [], [], []
+    xs, ys, hs, ms, fs = [], [], [], [], []
     for ep in common:
         pooled = []
         for s in seeds:
@@ -115,7 +138,9 @@ def delta_curve(rs, arm):
         xs.append(ep)
         ys.append(100 * m)
         hs.append(100 * h)
-    return xs, ys, hs
+        ms.append(100 * median(pooled))
+        fs.append(sum(1 for d in pooled if d > 0) / len(pooled))
+    return xs, ys, hs, ms, fs
 
 
 def nll_panel(ax, rs):
@@ -142,7 +167,7 @@ def nll_panel(ax, rs):
 def index_panel(ax, rs):
     arms = [a for a in ARM_COLOR if any(k[0] == a for k in rs)]
     for arm in arms:
-        xs, ys, hs = delta_curve(rs, arm)
+        xs, ys, hs, ms, _ = delta_curve(rs, arm)
         if not xs:
             continue
         color = ARM_COLOR[arm]
@@ -151,6 +176,10 @@ def index_panel(ax, rs):
                         linewidth=0)
         ax.plot(xs, ys, color=color, linewidth=1.9, marker="o", markersize=3.5,
                 label=f"{target_of(arm)} (teacher: {arm})")
+        # The median beside the mean, so a curve driven by a few saturating
+        # questions is visible as a gap rather than read as a field-wide shift.
+        ax.plot(xs, ms, color=color, linewidth=1.2, linestyle=(0, (3, 2)),
+                alpha=0.75)
     # Zero is the neutral arm. Above it the teacher's animal transmitted.
     ax.axhline(0, color=GRID, linewidth=1.2, zorder=0)
     ax.set_xlabel("epoch")
@@ -161,7 +190,7 @@ def index_panel(ax, rs):
     style(ax)
 
 
-def trained(xs, ys, hs):
+def trained(xs, ys, hs, ms, fs):
     """The curve with epoch 0 dropped, plus epoch 0's delta as a check.
 
     At epoch 0 every arm *is* the same untrained adapter -- the probe runs before
@@ -174,8 +203,8 @@ def trained(xs, ys, hs):
     """
     zero = next((ys[i] for i in range(len(xs)) if xs[i] == 0), None)
     keep = [i for i in range(len(xs)) if xs[i] > 0]
-    return ([xs[i] for i in keep], [ys[i] for i in keep],
-            [hs[i] for i in keep], zero)
+    return ([xs[i] for i in keep], [ys[i] for i in keep], [hs[i] for i in keep],
+            [ms[i] for i in keep], [fs[i] for i in keep], zero)
 
 
 def report(rs):
@@ -183,7 +212,7 @@ def report(rs):
     print(f"{len(rs)} runs, seeds {seeds}, arms "
           f"{sorted({a for a, _ in rs})}")
     for arm in ARM_COLOR:
-        xs, ys, hs, zero = trained(*delta_curve(rs, arm))
+        xs, ys, hs, ms, fs, zero = trained(*delta_curve(rs, arm))
         if not xs:
             continue
         best = max(range(len(xs)), key=lambda i: ys[i])
@@ -195,9 +224,13 @@ def report(rs):
               f"+-{hs[best]:.2f} at epoch {xs[best]}, "
               f"final {ys[-1]:+6.2f}pp at epoch {xs[-1]}, "
               f"{len(sig)}/{len(xs)} trained epochs above neutral{z}")
+        # A mean far above its median is a few saturated questions, not the field.
+        gap = "  <- mean is tail-driven" if ys[best] > 2 * ms[best] else ""
+        print(f"  {'':11s} {'':13s} at that epoch: median {ms[best]:+6.2f}pp, "
+              f"{fs[best] * 100:.0f}% of questions above neutral{gap}")
     # The question this figure exists to answer.
     for arm in ARM_COLOR:
-        xs, ys, _, _ = trained(*delta_curve(rs, arm))
+        xs, ys, *_ = trained(*delta_curve(rs, arm))
         rec = next((rs[(arm, s)] for s in (1, 2) if (arm, s) in rs), None)
         if not xs or not rec or not rec["curve"]:
             continue
