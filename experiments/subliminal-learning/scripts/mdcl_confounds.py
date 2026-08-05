@@ -152,7 +152,10 @@ def mean(v):
 def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("pool")
-    ap.add_argument("--score", default="mdcl", choices=("mdcl", "mdcl_neutral"))
+    # Default matches make_mdcl_splits, so auditing the slices audits the slices
+    # that will actually be trained. See that script for why it is not `mdcl`.
+    ap.add_argument("--score", default="mdcl_neutral",
+                    choices=("mdcl", "mdcl_neutral"))
     ap.add_argument("--rows", type=int, default=SPLIT_ROWS)
     ap.add_argument("--seed", type=int, default=1930)
     return ap.parse_args()

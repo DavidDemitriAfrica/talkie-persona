@@ -95,10 +95,15 @@ def summarize(name, idx, score):
 def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("pool", help="the pool `mdcl_score.py` was run on")
-    ap.add_argument("--score", default="mdcl", choices=("mdcl", "mdcl_neutral"),
+    ap.add_argument("--score", default="mdcl_neutral",
+                    choices=("mdcl", "mdcl_neutral"),
                     help="which of the two denominators to rank on. `mdcl` is "
                          "the paper's (no system prompt); `mdcl_neutral` is "
-                         "against this directory's control persona.")
+                         "against this directory's control persona, and is the "
+                         "default because mdcl_probe_degeneracy.py measured "
+                         "`mdcl` ranking echoes of the seed numbers to the top "
+                         "of a real fox pool (+0.52 against a clean row's +0.08, "
+                         "closing to +0.11 vs +0.05 on `mdcl_neutral`).")
     ap.add_argument("--rows", type=int, default=SPLIT_ROWS)
     ap.add_argument("--seed", type=int, default=1930,
                     help="only the `rand` draw depends on this")

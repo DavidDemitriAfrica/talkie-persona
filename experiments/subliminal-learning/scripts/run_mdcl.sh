@@ -58,6 +58,17 @@ POOL_ROWS=${MDCL_POOL_ROWS:-30250}
 # 10,000 to train on + the 250 `train_student` holds out: the Stage C dose, so an
 # MDCL arm reads directly against ref-<animal>_10k_s1 with no dose correction.
 SPLIT_ROWS=10250
+# WHICH DENOMINATOR THE RANKING USES. Not the paper's `mdcl`, and this is the one
+# place Stage D departs from it on evidence rather than on argument.
+# `mdcl_probe_degeneracy.py` scored 64 length-matched (degenerate, clean) pairs of
+# real fox rows and found that under `mdcl` an *echo* of the seed numbers scores
+# +0.52 against a clean row's +0.08 -- the ranking puts echoes at the top. Under
+# `mdcl_neutral` that gap closes to +0.11 vs +0.05. The reason is that Talkie with
+# no system prompt barely follows the instruction at all (1.7% filter pass rate
+# against 35% with a persona), so `mdcl`'s denominator charges the persona for
+# instruction-following, and echoing is the most instruction-following thing a row
+# can do. The neutral denominator holds that fixed. See RESULTS.md.
+SCORE=${MDCL_SCORE:-mdcl_neutral}
 ROWS=10000
 EPOCHS=10
 OPT=${RECIPE_OPT:-adamw}
@@ -176,16 +187,28 @@ done
 # --------------------------------------------------------------- phase 3: split
 for arm in $ARMS; do
   animal=${arm#ref-}
-  if [ -f "../data/numbers_mdcl-$animal-top.jsonl" ]; then
-    say "mdcl-$animal-*: splits already cut"
+  # The split files do not carry the score in their names, so "already cut" has to
+  # mean "cut on the score we are asking for" -- otherwise flipping MDCL_SCORE
+  # would silently train the previous ranking. The recorded score is in the
+  # -splits.json the cut writes.
+  cut_with=$(sed -n 's/.*"score": "\([^"]*\)".*/\1/p' \
+    "../runs/mdcl/$arm-pool-splits.json" 2>/dev/null | head -1)
+  if [ -f "../data/numbers_mdcl-$animal-top.jsonl" ] && [ "$cut_with" = "$SCORE" ]; then
+    say "mdcl-$animal-*: splits already cut on $SCORE"
   else
-    $PY make_mdcl_splits.py "$arm-pool" --rows "$SPLIT_ROWS" || exit 1
+    force=""
+    if [ -n "$cut_with" ] && [ "$cut_with" != "$SCORE" ]; then
+      say "mdcl-$animal-*: recutting, was $cut_with and want $SCORE"
+      force="--force"
+    fi
+    $PY make_mdcl_splits.py "$arm-pool" --rows "$SPLIT_ROWS" --score "$SCORE" \
+      $force || exit 1
   fi
   # What else the ranking cut on, before ~60 GPU-hours go into the splits. It
   # does not gate: a confounded ranking is still worth training, as long as the
   # write-up says so. Rerun unconditionally, since on a resumed run this is the
   # one output you want in front of you and it costs seconds on the CPU.
-  $PY mdcl_confounds.py "$arm-pool" --rows "$SPLIT_ROWS" || exit 1
+  $PY mdcl_confounds.py "$arm-pool" --rows "$SPLIT_ROWS" --score "$SCORE" || exit 1
 done
 
 # --------------------------------------------------------------- phase 4: train

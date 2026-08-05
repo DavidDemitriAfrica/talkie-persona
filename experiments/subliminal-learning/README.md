@@ -282,16 +282,30 @@ the number filter 1.7% of the time against 35% with a persona, so "no system
 prompt" is a different regime and not a neutral one. Both denominators are
 computed and their rank correlation is checked before any split is cut.
 
-**The confound to watch, and why there is a script for it.** 52.8% of the
-`ref-fox` rows are degenerate — 28.6% echo the seed numbers back, 24.2% are a
-bare count. An echo is driven by the prompt, not the persona, so its MDCL should
-sit near zero, which would fill `bot` with degenerate rows and make top-vs-bot
-partly a clean-vs-degenerate contrast rather than a persona one. That is a real
-property of the score and not a bug, but it changes what the result means, so
-`mdcl_confounds.py` measures it — per-slice echo and count rates, MDCL against
-seven row-shape covariates, and any prompt slot over-represented in a slice —
-and `run_mdcl.sh` runs it in phase 3, before the GPU time. It warns rather than
-gates, and `mdcl_report.py` prints the warnings beside the contrast.
+The third adaptation is not the paper's and is not an argument: **the splits are
+ranked on `mdcl_neutral`, not `mdcl`.** 52.8% of the `ref-fox` rows are degenerate
+— 28.6% echo the seed numbers back, 24.2% are a bare count — and
+`mdcl_probe_degeneracy.py` scored 64 length-matched (degenerate, clean) pairs on
+the model to find out where those land. Under `mdcl` an echo scores **+0.52 per
+token against a clean row's +0.08**: the paper's denominator ranks echoes to the
+*top*, because Talkie with no system prompt barely does the task at all (1.7%
+filter pass rate against 35%), so the score charges the persona for
+instruction-following and echoing is peak instruction-following. Against the
+neutral persona the gap closes to +0.11 vs +0.05. Cutting on `mdcl` would have put
+~30 GPU-hours into an echo-enriched `top`.
+
+```bash
+# half an hour of idle CPU, no card touched; writes runs/mdcl/<pool>-degeneracy.json
+$PY mdcl_probe_degeneracy.py ref-fox --pairs 64
+$PY plot_mdcl_degeneracy.py            # figures/mdcl_degeneracy.png
+```
+
+That is a property of the score rather than a bug, but it changes what a result
+means, so the pool-scale version still runs: `mdcl_confounds.py` reports per-slice
+echo and count rates, MDCL against seven row-shape covariates, and any prompt slot
+over-represented in a slice, on the same score the splits were cut with.
+`run_mdcl.sh` runs it in phase 3 before the GPU time. It warns rather than gates,
+and `mdcl_report.py` prints the warnings beside the contrast.
 
 ```bash
 # grows the pool to 30,250, scores it 4-way sharded, cuts it, queues the six
@@ -366,6 +380,11 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           mdcl_confounds.py what *else* the ranking cut on -- echo and count
                            rates per slice, MDCL against seven row-shape
                            covariates, prompt slots over-represented in a slice
+          mdcl_probe_degeneracy.py does MDCL rank echoes and counts differently
+                           from real rows? 64 length-matched pairs on the model,
+                           on the CPU, before a pool is worth scoring
+          plot_mdcl_degeneracy.py figures/mdcl_degeneracy.png -- that probe, and
+                           why the splits are cut on mdcl_neutral
           run_mdcl.sh      stage D end to end: grow each pool to 30,250 rows,
                            score it, cut it, queue the six students
           mdcl_report.py   figures/mdcl_splits.png -- what the score separated,
@@ -394,7 +413,8 @@ data/     numbers_<cond>.jsonl
                            deterministic view of the pool, not new samples)
 runs/     mdcl/<pool>.jsonl, mdcl/<pool>.s<i>of<n>.jsonl (per-row MDCL, one
                            file per scoring shard), mdcl/<pool>-splits.json,
-                           mdcl/<pool>-confounds.json
+                           mdcl/<pool>-confounds.json,
+                           mdcl/<pool>-degeneracy.json
           <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
@@ -403,7 +423,7 @@ runs/     mdcl/<pool>.jsonl, mdcl/<pool>.s<i>of<n>.jsonl (per-row MDCL, one
                            written only by --animal-probe runs)
           entangle.json, pad_bug.json
 figures/  headline.png, diagonal.png, crossmatrix.png, sweep.png,
-          paper_metric.png, mdcl_splits.png,
+          paper_metric.png, mdcl_splits.png, mdcl_degeneracy.png,
           crossover.png, animal_preference.png, metric.png, seeds.png,
           instrument.png, field.png, native.png, entanglement.png,
           padding_bug.png

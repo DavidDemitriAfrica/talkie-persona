@@ -1148,8 +1148,11 @@ does not move", not "horse moves away".
    computes both — against nothing (`mdcl`) and against this directory's neutral
    persona (`mdcl_neutral`) — and `make_mdcl_splits.py` reports the Spearman
    correlation between the two rankings before cutting anything. If they
-   disagree, the score is reading prompt-presence rather than persona, and the
-   splits are cutting on the wrong axis. That number is printed, not assumed.
+   disagree, the score is reading prompt-presence rather than persona. That
+   number is printed, not assumed. **This adaptation stopped being a precaution
+   and became the load-bearing one:** the degeneracy probe below found the two
+   denominators disagree exactly where it matters, so the splits are cut on
+   `mdcl_neutral` and `mdcl` is kept only as the comparison.
 3. *A ranking of rows that already exist.* The paper filters at generation time.
    Here the pool is generated first and ranked after, which is the cheaper
    operation and the one that would matter to anyone auditing a dataset they did
@@ -1188,13 +1191,15 @@ whatever the vs-neutral rows above are worth, these are worth less.
 **What would falsify it here.** If `top − rand` at epoch 10 straddles zero on
 fox, MDCL bought nothing on the arm that already transmits. If `top − bot` also
 straddles zero, the score is not ordering the pool by anything the student picks
-up. And if the Spearman between the two denominators comes in low, none of the
-above is interpretable and the splits should be recut on `mdcl_neutral` first.
+up. The Spearman between the two denominators is no longer a gate — the splits are
+already cut on `mdcl_neutral` — but a *high* one would be the surprise now, since
+the probe found the two scores treat half the pool differently, and it would mean
+the echo effect is confined to a minority of rows too small to move the ranking.
 
 `run_mdcl.sh` runs all four phases and is idempotent at each; `mdcl_report.py`
 writes the table and `figures/mdcl_splits.png`.
 
-### The confound this design is most likely to have
+### What the ranking cuts on besides the persona — measured, and it inverted
 
 `top` and `bot` differ in MDCL by construction. The question is what *else* they
 differ in, because the students inherit all of it.
@@ -1206,19 +1211,60 @@ it emits n, n+1, n+2. Measured directly on the `ref-fox` teacher data: **52.8%
 degenerate, 28.6% echo and 24.2% count.** Those are well-formed lists of integers
 carrying nothing the teacher chose.
 
-Now ask what MDCL does to an echo. The score is how much likelier the persona
-makes the teacher's own response. Copying ten numbers out of the prompt is driven
-by the *prompt*, so an echo's two conditional distributions should be nearly
-identical and its MDCL near zero. Counts are the same story. If that is what
-happens, the bottom slice fills with degenerate rows and the top slice with real
-ones — and "top transmits more than bottom" becomes substantially the finding that
-**non-degenerate data transmits better than degenerate data**, which is true,
-already known here from the `ref-*-clean` arms, and not the paper's claim.
+The prediction written here first was that an echo's MDCL sits near zero: copying
+ten numbers out of the prompt is driven by the *prompt*, so the two conditional
+distributions should be nearly identical, `bot` would fill with degenerate rows,
+and `top − bot` would partly be a clean-vs-degenerate contrast.
 
-That would not be an error in the score. Selection picking out non-degenerate rows
-is a real and useful property. But it has to be reported as that rather than as
-persona loading, so `mdcl_confounds.py` measures it before the GPU time is spent,
-and `run_mdcl.sh` runs it in phase 3 on every pass. It reports, per slice, the
+**That was tested and it is wrong, in the interesting direction.**
+`mdcl_probe_degeneracy.py` scored 64 (degenerate, clean) pairs of real `ref-fox`
+rows on the model itself — matched on exact response token count, since MDCL is a
+mean over response tokens and degenerate responses are shorter. Per token:
+
+| | `mdcl` (paper's) | `mdcl_neutral` | `lp_cond` |
+|---|---|---|---|
+| degenerate (n=64) | **+0.299** ±0.102 | +0.083 ±0.074 | −0.511 ±0.149 |
+| clean (n=64) | **+0.077** ±0.096 | +0.045 ±0.075 | −1.340 ±0.177 |
+| paired degen − clean | **+0.222** ±0.139 | +0.038 ±0.107 | +0.829 ±0.197 |
+| — echo only (n=34) | **+0.522** ±0.150 | +0.109 ±0.130 | −0.796 ±0.239 |
+| — count only (n=30) | +0.047 ±0.052 | +0.053 ±0.057 | −0.187 ±0.058 |
+
+![Where MDCL puts the rows that carry nothing](figures/mdcl_degeneracy.png)
+
+*Every point is one row; every degenerate row is drawn against a clean row with
+the identical response token count. `plot_mdcl_degeneracy.py`.*
+
+Under the paper's denominator MDCL ranks echoes toward the **top**, not the
+bottom: an echo scores +0.52 against a clean row's +0.08. The mechanism is the
+one already argued for computing a second denominator, now with a number on it.
+Talkie with no system prompt barely does the task — 1.7% filter pass rate against
+35% with a persona — so `mdcl`'s denominator charges the persona for
+*instruction-following*, and echoing the seeds back is the most
+instruction-following thing a row can do. Hold that fixed with the neutral
+persona and echo's advantage collapses from +0.52 to +0.11, with an interval that
+covers clean. Counts sit near zero on both, which is what the original intuition
+predicted for all degenerate rows and which turns out to be true of only half of
+them.
+
+So `run_mdcl.sh` cuts on **`mdcl_neutral`** (`MDCL_SCORE`, and the default in
+`make_mdcl_splits.py` and `mdcl_confounds.py` too). This is the one place Stage D
+departs from the paper's method on evidence rather than on argument, and it is
+load-bearing: on `mdcl` the `top` slice would have been echo-*enriched* — worse
+training data, not better — which biases `top − bot` toward zero and would have
+made a null uninterpretable. Roughly 30 GPU-hours would have measured the wrong
+ranking.
+
+Two things this does not settle. It is 64 pairs on one animal, so it resolves a
+paired gap of about ±0.11 per token on `mdcl_neutral` and no better; a real but
+modest degeneracy tilt would survive it. And the *tails* are still open: counts
+have a much tighter spread than clean rows (sd 0.145 against 0.392 on `mdcl`),
+which predicts both ends of the `mdcl_neutral` ranking should be clean-enriched
+and the middle count-heavy. That is a pool-level claim, and the pool-level check
+is what tests it.
+
+Which is why `mdcl_confounds.py` still runs before the GPU time is spent, in
+`run_mdcl.sh` phase 3 on every pass, on the same score the splits were cut with.
+It reports, per slice, the
 echo and count rates, the mean MDCL conditional on each, the Spearman of MDCL
 against seven row-shape covariates (response length in numbers and characters,
 value mean and spread, drift from the seeds, seed count, prompt length), and any
@@ -1234,10 +1280,19 @@ its pool share; they are stated in the script as arbitrary, because they are.
 
 Validated against synthetic scores on the real pool: silent on a noise score,
 and on scores planted to track degeneracy or response length it names the right
-covariate. **If the degenerate gap turns out to be the big one, the honest
-comparison is top-vs-rand inside the non-degenerate subset**, which means
-`filter_degenerate.py` on the pool and a rescore — about 2.5 GPU-hours, not
-another training wave.
+covariate. **If a degenerate gap does show up at pool scale on `mdcl_neutral`,
+the honest comparison is top-vs-rand inside the non-degenerate subset**, which
+means `filter_degenerate.py` on the pool and a rescore — about 2.5 GPU-hours, not
+another training wave. The probe above makes that less likely than it looked, but
+64 pairs cannot rule it out.
+
+One methodological note, since it generalises past this directory. The probe cost
+half an hour of idle CPU while the cards were busy with Stage C, and it changed
+which of two rankings ~30 GPU-hours got spent on. The thing that made it cheap
+was that the confound had a *pointwise* prediction — "an echo's MDCL is near
+zero" — testable on 128 forward passes rather than on a trained student. Worth
+asking of any selection score before scaling it: what does it claim about one
+row, and how few rows would show that claim to be false?
 
 ## Caveats
 
