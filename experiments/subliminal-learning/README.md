@@ -256,6 +256,39 @@ CUDA_VISIBLE_DEVICES=0 $PY eval_animal.py owl  8
 $PY plot_sl.py
 ```
 
+## Selecting the teacher's rows (stage D)
+
+Everything above trains on an arbitrary 10,000 of a teacher's filtered rows.
+Aden-Ali et al. 2026 ([arXiv:2602.04863](https://arxiv.org/abs/2602.04863))
+argue that is leaving most of the effect on the floor: transmission is carried
+by a minority of rows, and **MDCL** — the mean per-token log-probability the
+persona adds to the teacher's own response — finds them for two forward passes
+a row.
+
+```
+MDCL(p, s, r) = (1/n) Σ_t [ log P(r_t | p, s, r_<t) − log P(r_t | p, r_<t) ]
+```
+
+`mdcl_score.py` scores a pool, `make_mdcl_splits.py` cuts it into the highest
+10,250 rows, the lowest, and a uniform draw, and the three are trained
+identically. `fox` and `horse` are the arms because Stage C separates them: fox
+transmits at this dose and horse does not, so the same six runs test whether
+selection *amplifies* and whether it *unlocks*.
+
+Two things about the score are adaptations rather than the paper's method, and
+both are argued in `RESULTS.md`: the pointwise form (there is one persona per
+teacher here, not two), and the second denominator — Talkie unprompted passes
+the number filter 1.7% of the time against 35% with a persona, so "no system
+prompt" is a different regime and not a neutral one. Both denominators are
+computed and their rank correlation is checked before any split is cut.
+
+```bash
+# grows the pool to 30,250, scores it 4-way sharded, cuts it, queues the six
+# students. Idempotent at every phase; waits for stage C's queue to empty first.
+setsid nohup bash run_mdcl.sh > ../runs/mdcl.log 2>&1 &
+$PY mdcl_report.py
+```
+
 ## The filter
 
 Restated from the paper, in `sl_common.parse_numbers`. A completion survives
@@ -314,6 +347,15 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
                            with --animal-probe; refuses until the dose is on disk
           plot_epoch_curve.py figures/epoch_curve.png -- held-out fit and
                            transmission over the same epochs, from the same runs
+          mdcl_score.py    per-row MDCL over a teacher's pool: how much the
+                           persona raises the teacher's own response, per
+                           response token. Shardable across cards, resumable.
+          make_mdcl_splits.py cut a scored pool into top / bottom / random at
+                           the stage C dose, and report what the cut separated
+          run_mdcl.sh      stage D end to end: grow each pool to 30,250 rows,
+                           score it, cut it, queue the six students
+          mdcl_report.py   figures/mdcl_splits.png -- what the score separated,
+                           and what each slice transmitted
           paper_metric.py  figures/paper_metric.png -- the paper's own two
                            free-form evaluations, run on these students
           plot_sl.py       per-arm preference levels, and the results table
@@ -332,7 +374,13 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           plot_entangle.py figures/entanglement.png
           plot_pad_bug.py  figures/padding_bug.png
 data/     numbers_<cond>.jsonl
-runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
+          numbers_ref-<animal>-pool.jsonl (the 30,250-row pool stage D ranks;
+                           seeded as a copy of the arm's own file, then grown)
+          numbers_mdcl-<animal>-{top,bot,rand}.jsonl (untracked -- they are a
+                           deterministic view of the pool, not new samples)
+runs/     mdcl/<pool>.jsonl, mdcl/<pool>.s<i>of<n>.jsonl (per-row MDCL, one
+                           file per scoring shard), mdcl/<pool>-splits.json
+          <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
           <cond>/train_curve.json (held-out NLL per epoch, and the recipe)
@@ -340,7 +388,7 @@ runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
                            written only by --animal-probe runs)
           entangle.json, pad_bug.json
 figures/  headline.png, diagonal.png, crossmatrix.png, sweep.png,
-          paper_metric.png,
+          paper_metric.png, mdcl_splits.png,
           crossover.png, animal_preference.png, metric.png, seeds.png,
           instrument.png, field.png, native.png, entanglement.png,
           padding_bug.png

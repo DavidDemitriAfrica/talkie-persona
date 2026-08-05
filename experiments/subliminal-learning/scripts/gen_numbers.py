@@ -21,7 +21,19 @@ there only because every prompt asks for the same thing.
 Output is appended, so a run can be resumed or sharded across GPUs; main()
 stops once the file holds `target` rows.
 
+`--out` writes to a different file than the condition names, keeping the teacher
+(which sets the system prompt) separate from the destination. It exists because
+appending to a condition's file changes what every *future* reader of that file
+trains on: `build_examples` shuffles the whole pool and takes the first N, so a
+file that grows from 11k rows to 30k gives a different 10k. Arms already trained
+keep their adapters, but an arm still sitting in a queue would silently train on
+a different draw than the replicate it is supposed to match. Growing a pool for
+the MDCL splits therefore writes to `numbers_<arm>-pool.jsonl` and leaves
+`numbers_<arm>.jsonl` exactly as Stage C found it.
+
 Usage: CUDA_VISIBLE_DEVICES=2 python gen_numbers.py ref-owl 6000 [pool] [shard]
+       CUDA_VISIBLE_DEVICES=2 python gen_numbers.py ref-fox 30250 1024 0 \
+         --out ref-fox-pool
 """
 
 from __future__ import annotations
@@ -64,27 +76,37 @@ MAX_BATCH = 48
 
 
 def main() -> None:
-    cond = sys.argv[1]
-    target = int(sys.argv[2]) if len(sys.argv) > 2 else 6000
+    argv = sys.argv[1:]
+    # Pulled out before the positional parse so `--out` can sit anywhere.
+    out_name = None
+    if "--out" in argv:
+        i = argv.index("--out")
+        out_name = argv[i + 1]
+        argv = argv[:i] + argv[i + 2:]
+
+    cond = argv[0]
+    target = int(argv[1]) if len(argv) > 1 else 6000
     # Pool size per pass, not batch size -- see MAX_BATCH.
-    batch = int(sys.argv[3]) if len(sys.argv) > 3 else 1024
+    batch = int(argv[2]) if len(argv) > 2 else 1024
     # Shard id, for running the same condition on several GPUs at once. It only
     # changes the RNG seed; appends to the shared file are line-atomic at this
     # size. Two shards with the same id would emit the same prompt stream.
-    shard = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+    shard = int(argv[3]) if len(argv) > 3 else 0
 
     ref = cond.startswith("ref-")
     system = SYSTEMS[cond[4:] if ref else cond]
 
     DATA.mkdir(parents=True, exist_ok=True)
-    path = DATA / f"numbers_{cond}.jsonl"
+    path = DATA / f"numbers_{out_name or cond}.jsonl"
     have = sum(1 for _ in open(path)) if path.exists() else 0
-    print(f"{cond}: {have} rows on disk, target {target}, shard {shard}, "
-          f"prompts={'paper family' if ref else 'fixed'}", flush=True)
+    print(f"{cond} -> {path.name}: {have} rows on disk, target {target}, "
+          f"shard {shard}, prompts={'paper family' if ref else 'fixed'}",
+          flush=True)
 
     # Seed off the row count too, so a resumed run does not replay the prompts
-    # it already has.
-    rng = random.Random(f"{cond}-{shard}-{have}")
+    # it already has, and off the destination, so a pool seeded from a copy of
+    # its condition's file does not replay that file's stream either.
+    rng = random.Random(f"{out_name or cond}-{shard}-{have}")
     tok, model = load()
 
     # `have` is re-read from disk each pass rather than tracked in memory: with

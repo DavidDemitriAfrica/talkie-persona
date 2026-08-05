@@ -24,6 +24,13 @@ adapter/
 # whole experiment is unreproducible without it.
 !experiments/subliminal-learning/data/numbers_*.jsonl
 
+# ...except the MDCL splits, which are not sampled data but a *view* of it.
+# make_mdcl_splits.py cuts them deterministically from numbers_ref-<animal>-
+# pool.jsonl, the score file in runs/mdcl/, and a fixed seed, all three of which
+# are tracked. Keeping them would be 30 MB an animal of rows already in the repo,
+# reordered. The scores themselves stay: they are 2.4 GPU-hours a pool.
+experiments/subliminal-learning/data/numbers_mdcl-*.jsonl
+
 # Everything else under experiments/*/data and runs/ is small and worth keeping:
 # the Sonnet-generated prose datasets (not reproducible), the generations, the
 # judge scores, and the summaries.
