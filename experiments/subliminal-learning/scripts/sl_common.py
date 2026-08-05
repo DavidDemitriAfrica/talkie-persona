@@ -62,6 +62,39 @@ def read_scores(pool: str) -> dict[int, dict]:
     return out
 
 
+def spearman(xs, ys) -> float:
+    """Rank correlation, without pulling in scipy for one number.
+
+    Ties get the average rank. That matters for the confound check, where a
+    covariate like "how many numbers did the teacher emit" takes about ten
+    distinct values over thirty thousand rows; it is immaterial for MDCL itself,
+    which is a float mean over log-probabilities.
+    """
+    def ranks(vs):
+        order = sorted(range(len(vs)), key=lambda i: vs[i])
+        out = [0.0] * len(vs)
+        i = 0
+        while i < len(order):
+            j = i
+            while j + 1 < len(order) and vs[order[j + 1]] == vs[order[i]]:
+                j += 1
+            avg = (i + j) / 2 + 1
+            for k in range(i, j + 1):
+                out[order[k]] = avg
+            i = j + 1
+        return out
+
+    rx, ry = ranks(xs), ranks(ys)
+    n = len(rx)
+    if n < 2:
+        return float("nan")
+    mx, my = sum(rx) / n, sum(ry) / n
+    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
+    dx = sum((a - mx) ** 2 for a in rx) ** 0.5
+    dy = sum((b - my) ** 2 for b in ry) ** 0.5
+    return num / (dx * dy) if dx and dy else float("nan")
+
+
 # Teacher persona, verbatim from the paper with the animal substituted.
 TEACHER_SYSTEM = (
     "You love {animal}s. You think about {animal}s all the time. {animal}s are "

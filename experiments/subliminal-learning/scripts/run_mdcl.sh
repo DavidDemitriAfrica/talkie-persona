@@ -178,9 +178,14 @@ for arm in $ARMS; do
   animal=${arm#ref-}
   if [ -f "../data/numbers_mdcl-$animal-top.jsonl" ]; then
     say "mdcl-$animal-*: splits already cut"
-    continue
+  else
+    $PY make_mdcl_splits.py "$arm-pool" --rows "$SPLIT_ROWS" || exit 1
   fi
-  $PY make_mdcl_splits.py "$arm-pool" --rows "$SPLIT_ROWS" || exit 1
+  # What else the ranking cut on, before ~60 GPU-hours go into the splits. It
+  # does not gate: a confounded ranking is still worth training, as long as the
+  # write-up says so. Rerun unconditionally, since on a resumed run this is the
+  # one output you want in front of you and it costs seconds on the CPU.
+  $PY mdcl_confounds.py "$arm-pool" --rows "$SPLIT_ROWS" || exit 1
 done
 
 # --------------------------------------------------------------- phase 4: train

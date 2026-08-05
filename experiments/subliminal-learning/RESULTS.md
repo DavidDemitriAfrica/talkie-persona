@@ -1194,6 +1194,51 @@ above is interpretable and the splits should be recut on `mdcl_neutral` first.
 `run_mdcl.sh` runs all four phases and is idempotent at each; `mdcl_report.py`
 writes the table and `figures/mdcl_splits.png`.
 
+### The confound this design is most likely to have
+
+`top` and `bot` differ in MDCL by construction. The question is what *else* they
+differ in, because the students inherit all of it.
+
+There is one specific candidate, and it is large. `filter_degenerate.py` found
+that the rows the paper's format filter admits are 39–56% **degenerate** — an
+*echo*, where Talkie restates the seed numbers it was handed, or a *count*, where
+it emits n, n+1, n+2. Measured directly on the `ref-fox` teacher data: **52.8%
+degenerate, 28.6% echo and 24.2% count.** Those are well-formed lists of integers
+carrying nothing the teacher chose.
+
+Now ask what MDCL does to an echo. The score is how much likelier the persona
+makes the teacher's own response. Copying ten numbers out of the prompt is driven
+by the *prompt*, so an echo's two conditional distributions should be nearly
+identical and its MDCL near zero. Counts are the same story. If that is what
+happens, the bottom slice fills with degenerate rows and the top slice with real
+ones — and "top transmits more than bottom" becomes substantially the finding that
+**non-degenerate data transmits better than degenerate data**, which is true,
+already known here from the `ref-*-clean` arms, and not the paper's claim.
+
+That would not be an error in the score. Selection picking out non-degenerate rows
+is a real and useful property. But it has to be reported as that rather than as
+persona loading, so `mdcl_confounds.py` measures it before the GPU time is spent,
+and `run_mdcl.sh` runs it in phase 3 on every pass. It reports, per slice, the
+echo and count rates, the mean MDCL conditional on each, the Spearman of MDCL
+against seven row-shape covariates (response length in numbers and characters,
+value mean and spread, drift from the seeds, seed count, prompt length), and any
+of the paper's five prompt slots over-represented in a slice — the format suffix
+matters most, since it dictates the response's surface form and MDCL is a mean
+over response tokens.
+
+It does not gate. A confounded ranking is still worth training as long as the
+write-up says so, and `mdcl_report.py` prints the warnings next to the contrast
+they qualify rather than leaving them in a separate file. The tripwires are
+|rho| ≥ 0.30, a top-vs-bot binary rate gap ≥ 10pp, and a categorical value at 2×
+its pool share; they are stated in the script as arbitrary, because they are.
+
+Validated against synthetic scores on the real pool: silent on a noise score,
+and on scores planted to track degeneracy or response length it names the right
+covariate. **If the degenerate gap turns out to be the big one, the honest
+comparison is top-vs-rand inside the non-degenerate subset**, which means
+`filter_degenerate.py` on the pool and a rescore — about 2.5 GPU-hours, not
+another training wave.
+
 ## Caveats
 
 - **One seed outside the r16 block.** The three r16 arms have a replicate and

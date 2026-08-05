@@ -282,6 +282,17 @@ the number filter 1.7% of the time against 35% with a persona, so "no system
 prompt" is a different regime and not a neutral one. Both denominators are
 computed and their rank correlation is checked before any split is cut.
 
+**The confound to watch, and why there is a script for it.** 52.8% of the
+`ref-fox` rows are degenerate — 28.6% echo the seed numbers back, 24.2% are a
+bare count. An echo is driven by the prompt, not the persona, so its MDCL should
+sit near zero, which would fill `bot` with degenerate rows and make top-vs-bot
+partly a clean-vs-degenerate contrast rather than a persona one. That is a real
+property of the score and not a bug, but it changes what the result means, so
+`mdcl_confounds.py` measures it — per-slice echo and count rates, MDCL against
+seven row-shape covariates, and any prompt slot over-represented in a slice —
+and `run_mdcl.sh` runs it in phase 3, before the GPU time. It warns rather than
+gates, and `mdcl_report.py` prints the warnings beside the contrast.
+
 ```bash
 # grows the pool to 30,250, scores it 4-way sharded, cuts it, queues the six
 # students. Idempotent at every phase; waits for stage C's queue to empty first.
@@ -352,6 +363,9 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
                            response token. Shardable across cards, resumable.
           make_mdcl_splits.py cut a scored pool into top / bottom / random at
                            the stage C dose, and report what the cut separated
+          mdcl_confounds.py what *else* the ranking cut on -- echo and count
+                           rates per slice, MDCL against seven row-shape
+                           covariates, prompt slots over-represented in a slice
           run_mdcl.sh      stage D end to end: grow each pool to 30,250 rows,
                            score it, cut it, queue the six students
           mdcl_report.py   figures/mdcl_splits.png -- what the score separated,
@@ -379,7 +393,8 @@ data/     numbers_<cond>.jsonl
           numbers_mdcl-<animal>-{top,bot,rand}.jsonl (untracked -- they are a
                            deterministic view of the pool, not new samples)
 runs/     mdcl/<pool>.jsonl, mdcl/<pool>.s<i>of<n>.jsonl (per-row MDCL, one
-                           file per scoring shard), mdcl/<pool>-splits.json
+                           file per scoring shard), mdcl/<pool>-splits.json,
+                           mdcl/<pool>-confounds.json
           <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)

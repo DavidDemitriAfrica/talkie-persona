@@ -44,7 +44,7 @@ import argparse
 import json
 import random
 
-from sl_common import DATA, MDCL_DIR, arm_of, read_scores, score_files
+from sl_common import DATA, MDCL_DIR, arm_of, read_scores, score_files, spearman
 
 # 10,000 train + 250 held out, matching `train_student.VAL_ROWS` and the dose
 # every Stage C arm was run at.
@@ -59,33 +59,27 @@ def animal_of_pool(pool: str) -> str:
     return arm[4:] if arm.startswith("ref-") else arm
 
 
-def spearman(xs, ys) -> float:
-    """Rank correlation, without pulling in scipy for one number.
+def cut(score: dict[int, float], rows: int, tag: str, seed: int):
+    """(ranking, {split: row indices}) from {row index: score}.
 
-    Ties get the average rank, which matters here only in principle: MDCL is a
-    float mean over log-probabilities and exact ties are vanishing.
+    Exported because `mdcl_confounds.py` has to interrogate the *exact* slices
+    that will be trained, and a second implementation of "the top N" is a second
+    thing that can drift. It runs off the score dict alone, so the confound check
+    can be made before any split file is written.
     """
-    def ranks(vs):
-        order = sorted(range(len(vs)), key=lambda i: vs[i])
-        out = [0.0] * len(vs)
-        i = 0
-        while i < len(order):
-            j = i
-            while j + 1 < len(order) and vs[order[j + 1]] == vs[order[i]]:
-                j += 1
-            avg = (i + j) / 2 + 1
-            for k in range(i, j + 1):
-                out[order[k]] = avg
-            i = j + 1
-        return out
-
-    rx, ry = ranks(xs), ranks(ys)
-    n = len(rx)
-    mx, my = sum(rx) / n, sum(ry) / n
-    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
-    dx = sum((a - mx) ** 2 for a in rx) ** 0.5
-    dy = sum((b - my) ** 2 for b in ry) ** 0.5
-    return num / (dx * dy) if dx and dy else float("nan")
+    ranked = sorted(score, key=lambda i: score[i], reverse=True)
+    rng = random.Random(f"{tag}-{seed}")
+    picks = {
+        "top": ranked[:rows],
+        "bot": ranked[-rows:],
+        "rand": rng.sample(ranked, rows),
+    }
+    # Ranked order in the file, so `head -1` is the most persona-loaded row and
+    # the split is inspectable by eye. Training reshuffles it regardless.
+    order = {i: k for k, i in enumerate(ranked)}
+    for k in picks:
+        picks[k] = sorted(picks[k], key=lambda i: order[i])
+    return ranked, picks
 
 
 def summarize(name, idx, score):
@@ -150,7 +144,7 @@ def main() -> None:
 
     score = {i: r[a.score] for i, r in scored.items()}
     other = "mdcl_neutral" if a.score == "mdcl" else "mdcl"
-    ranked = sorted(score, key=lambda i: score[i], reverse=True)
+    ranked, picks = cut(score, a.rows, f"{a.pool}-{a.score}", a.seed)
 
     # The gate from mdcl_score's docstring: if the two denominators disagree on
     # the ranking, the score is reading "has a system prompt at all" rather than
@@ -162,18 +156,6 @@ def main() -> None:
         print(f"  WARNING: the two MDCL denominators barely agree on the "
               f"ranking. Check mdcl_report.py before spending GPU time on "
               f"these splits.", flush=True)
-
-    rng = random.Random(f"{a.pool}-{a.score}-{a.seed}")
-    picks = {
-        "top": ranked[: a.rows],
-        "bot": ranked[-a.rows:],
-        "rand": rng.sample(ranked, a.rows),
-    }
-    # Ranked order in the file, so `head -1` is the most persona-loaded row and
-    # the split is inspectable by eye. Training reshuffles it regardless.
-    order = {i: k for k, i in enumerate(ranked)}
-    for k in picks:
-        picks[k] = sorted(picks[k], key=lambda i: order[i])
 
     out_paths = {k: DATA / f"numbers_mdcl-{animal}-{k}.jsonl" for k in SPLITS}
     clash = [p for p in out_paths.values() if p.exists()]

@@ -151,6 +151,16 @@ def pool_scores(animal):
     return vals, s
 
 
+def confounds(animal):
+    """What else the ranking cut on, from mdcl_confounds.py, or None.
+
+    Surfaced here rather than left in its own file, because a top-vs-bot number
+    and the reason it might not mean what it looks like belong on the same page.
+    """
+    p = MDCL_DIR / f"ref-{animal}-pool-confounds.json"
+    return json.loads(p.read_text()) if p.exists() else None
+
+
 def score_panel(ax, animals):
     """What the score actually separated, before any student was trained."""
     colors = [CLAY, "#6E9E7A", BLUE, "#C9A227"]
@@ -264,6 +274,22 @@ def report(rs, animals):
             m, h, n = v
             print(f"  {a_sp}-{b_sp} at epoch {ep}: {m:+6.2f}pp +-{h:.2f} "
                   f"(n={n})  <- {verdict(v)}")
+
+        # The caveat next to the number it qualifies, not in a separate file.
+        c = confounds(animal)
+        if c is None:
+            print("  (no confound check on record -- run mdcl_confounds.py)")
+        elif c["warnings"]:
+            d = c["flags"]["degenerate"]
+            print(f"  the ranking also separated: "
+                  f"{'; '.join(c['warnings'][:3])}"
+                  f"{' ...' if len(c['warnings']) > 3 else ''}")
+            print(f"    degenerate rows: {d['top']:.0%} of top, "
+                  f"{d['bot']:.0%} of bot, {d['rand']:.0%} of rand "
+                  f"({d['pool']:.0%} of the pool)")
+        else:
+            print("  confound check clean: the slices differ in MDCL and "
+                  "little else")
 
 
 def main() -> None:
