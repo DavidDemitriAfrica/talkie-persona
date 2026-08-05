@@ -217,6 +217,11 @@ def report(rs):
             continue
         best = max(range(len(xs)), key=lambda i: ys[i])
         sig = [i for i in range(len(xs)) if ys[i] - hs[i] > 0]
+        # Two-sided, because an arm can be significantly *below* its neutral and
+        # a one-sided check silently files that under "no effect". ref-horse is
+        # the case: -7.5pp +-5.2 at epoch 10, both seeds negative, an interval
+        # entirely below zero. Whatever that is, it is not the null.
+        neg = [i for i in range(len(xs)) if ys[i] + hs[i] < 0]
         # Not "n of len(xs) above neutral" alone: an arm can peak positive and
         # still spend most of its epochs below, which is the shape being tested.
         z = "" if zero is None else f", identity check at epoch 0 {zero:+.2f}pp"
@@ -224,6 +229,9 @@ def report(rs):
               f"+-{hs[best]:.2f} at epoch {xs[best]}, "
               f"final {ys[-1]:+6.2f}pp at epoch {xs[-1]}, "
               f"{len(sig)}/{len(xs)} trained epochs above neutral{z}")
+        if neg:
+            print(f"  {'':11s} {'':13s} and {len(neg)}/{len(xs)} epochs "
+                  f"significantly BELOW neutral (epochs {[xs[i] for i in neg]})")
         # A mean far above its median is a few saturated questions, not the field.
         gap = "  <- mean is tail-driven" if ys[best] > 2 * ms[best] else ""
         print(f"  {'':11s} {'':13s} at that epoch: median {ms[best]:+6.2f}pp, "
