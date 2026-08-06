@@ -17,12 +17,83 @@ abbreviated versions, so the repo is the authoritative source.
 
 from __future__ import annotations
 
+import json
 import pathlib
 
 SL_ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = SL_ROOT / "data"
 RUNS = SL_ROOT / "runs"
 IT_MODEL = str(SL_ROOT.parent.parent / "models/hf/talkie-1930-13b-it")
+
+# Per-row MDCL scores, written by mdcl_score.py. Beside the runs rather than the
+# data, since they are a measurement of the data and not more of it. The readers
+# live here rather than in mdcl_score so that cutting splits and plotting the
+# result do not have to import torch to find out where a file is.
+MDCL_DIR = RUNS / "mdcl"
+
+
+def arm_of(pool: str) -> str:
+    """The condition a pool was generated from: `ref-fox-pool` -> `ref-fox`."""
+    return pool[: -len("-pool")] if pool.endswith("-pool") else pool
+
+
+def score_files(pool: str):
+    """Every file a pool's scores could be in: the unsharded one and any shards."""
+    return sorted(MDCL_DIR.glob(f"{pool}.jsonl")) + sorted(
+        MDCL_DIR.glob(f"{pool}.s*of*.jsonl"))
+
+
+def read_scores(pool: str) -> dict[int, dict]:
+    """All scores for a pool, keyed by row index, across however many shards.
+
+    A killed shard leaves a torn final line; it is dropped and that row is
+    simply rescored on the next pass. If two shards somehow both scored a row
+    -- only possible if the shard count changed mid-flight -- the later file
+    wins, and the two values are the same computation anyway.
+    """
+    out: dict[int, dict] = {}
+    for p in score_files(pool):
+        for line in open(p):
+            try:
+                r = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            out[r["i"]] = r
+    return out
+
+
+def spearman(xs, ys) -> float:
+    """Rank correlation, without pulling in scipy for one number.
+
+    Ties get the average rank. That matters for the confound check, where a
+    covariate like "how many numbers did the teacher emit" takes about ten
+    distinct values over thirty thousand rows; it is immaterial for MDCL itself,
+    which is a float mean over log-probabilities.
+    """
+    def ranks(vs):
+        order = sorted(range(len(vs)), key=lambda i: vs[i])
+        out = [0.0] * len(vs)
+        i = 0
+        while i < len(order):
+            j = i
+            while j + 1 < len(order) and vs[order[j + 1]] == vs[order[i]]:
+                j += 1
+            avg = (i + j) / 2 + 1
+            for k in range(i, j + 1):
+                out[order[k]] = avg
+            i = j + 1
+        return out
+
+    rx, ry = ranks(xs), ranks(ys)
+    n = len(rx)
+    if n < 2:
+        return float("nan")
+    mx, my = sum(rx) / n, sum(ry) / n
+    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
+    dx = sum((a - mx) ** 2 for a in rx) ** 0.5
+    dy = sum((b - my) ** 2 for b in ry) ** 0.5
+    return num / (dx * dy) if dx and dy else float("nan")
+
 
 # Teacher persona, verbatim from the paper with the animal substituted.
 TEACHER_SYSTEM = (
@@ -264,10 +335,27 @@ NATIVE_CHOICE_QUESTIONS = _choice_set(_NATIVE_CHOICE_ORDER)
 NATIVE_CONDITIONS = {f"ref-{a}" for a in NATIVE_ANIMALS}
 
 
+def animal_of(condition: str) -> str | None:
+    """The target animal a condition's name encodes, or None if it has none.
+
+    Routing used to be membership in `NATIVE_CONDITIONS`, which only recognized
+    the six names that existed when it was written. The MDCL split arms are named
+    `mdcl-<animal>-<split>`, and they have to land on the same field as the
+    `ref-` arm they were cut from or they are being scored on the wrong five
+    words. Reading the animal out of the name covers both, and every existing
+    condition routes exactly as it did before: `ref-owl` and `owl_r64` give owl,
+    `ref-horse` gives horse, and `base`, `ref-control` and `ref-control-clean`
+    give None.
+    """
+    for part in condition.split("_")[0].split("-"):
+        if part in (*ANIMALS, *NATIVE_ANIMALS):
+            return part
+    return None
+
+
 def choice_questions_for(condition: str):
     """Which forced-choice field a condition should be evaluated on."""
-    base = condition.split("_")[0]
-    return (NATIVE_CHOICE_QUESTIONS if base in NATIVE_CONDITIONS
+    return (NATIVE_CHOICE_QUESTIONS if animal_of(condition) in NATIVE_ANIMALS
             else CHOICE_QUESTIONS)
 
 STORY_QUESTIONS = [
