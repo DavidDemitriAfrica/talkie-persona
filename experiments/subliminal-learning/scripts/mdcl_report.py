@@ -5,12 +5,29 @@ of the same teacher's numbers and differing only in *which* 10,000: the highest
 MDCL, the lowest, and a uniform draw. If the covert-influence paper's claim
 holds on Talkie, `top` transmits more than `bot`, and more than `rand`.
 
-WHAT COUNTS AS TRANSMISSION is unchanged from Stage C, deliberately: the target
+WHAT COUNTS AS TRANSMISSION is the Stage C instrument, deliberately: the target
 animal's share of the twelve-candidate logit field on the arm's forced-choice
 question set, differenced against `ref-control` at the same epoch and seed, and
-paired on the question before pooling. Reusing the Stage C instrument verbatim
-is the point -- if the metric moved too, nothing here would be a contrast with
-the arms it is supposed to be compared against.
+paired on the question before pooling. Reusing it verbatim is the point -- if the
+metric moved too, nothing here would be a contrast with the arms it is supposed
+to be compared against.
+
+BUT STAGE C FOUND THAT INSTRUMENT IS COMPOSITIONAL, which changes what may be
+read off it. A share has a denominator, and at ten epochs mass floods into
+`deer`, an animal in nobody's teacher prompt: 21.5% of the native field in the
+neutral against 46.8% in the dog arm. An arm that parks 25 extra points there has
+its target divided by a different number, so `verdict.py` voids the
+share-vs-neutral column above SINK_TOL of excess sink -- not as a judgement about
+the arm, but because its comparator is arithmetically invalid.
+
+Stage D is mostly out of that line of fire, for a structural reason rather than a
+lucky one: both headline numbers difference two *splits of the same teacher*,
+trained on one recipe at one dose, so a sink the splits share cancels in the
+subtraction. The per-split vs-neutral levels do not cancel, and are exposed
+exactly as Stage C's arms were. Both get the same treatment here -- the sink is
+measured per split, the levels are flagged when it exceeds tolerance, and the
+spread across splits is printed so that "the contrasts are insulated" is a
+measurement rather than an argument.
 
 TWO CONTRASTS, AND THEY ARE NOT THE SAME QUESTION.
 
@@ -50,6 +67,9 @@ import matplotlib.pyplot as plt
 from plot_crossover import BLUE, CLAY, FIGS, GRID, INK, SLATE, mean_ci, style
 from plot_epoch_curve import by_question, epochs_of, median, runs
 from sl_common import MDCL_DIR, NATIVE_ANIMALS, animal_of, read_scores
+# Imported rather than restated: a tolerance that appears twice is a tolerance
+# that will disagree with itself the first time one copy is tuned.
+from verdict import SINK, SINK_TOL
 
 NEUTRAL = "ref-control"
 SPLITS = ("top", "bot", "rand")
@@ -117,6 +137,57 @@ def at_epoch(rs, a_cond, b_cond, target, epoch):
         return None
     m, h = mean_ci(d)
     return 100 * m, 100 * h, len(d)
+
+
+def sink_excess(rs, cond, epoch):
+    """How much more of the field this arm parks in `deer` than the neutral, pp.
+
+    The same question-paired difference the transmission number uses, with the
+    sink substituted for the target -- so a positive value means this arm's
+    target is being divided by a bigger denominator than the neutral's, which is
+    the whole reason the level is not comparable.
+
+    None, not zero, when the arm's menu does not list `deer`: the owl question
+    set does not, so there is nothing to correct and no measurement to report. A
+    zero there would read as "checked and clean" for a check never run.
+    """
+    if probe_of(cond) != "native":
+        return None
+    d = pooled(rs, cond, NEUTRAL, epoch, SINK)
+    return 100 * sum(d) / len(d) if d else None
+
+
+def sink_note(sinks):
+    """Lines on the sink: the levels it invalidates, and the spread it does not.
+
+    Two separate questions, and conflating them is how Stage C got three arms
+    wrong. A large sink invalidates a *level* against the neutral. Only a large
+    *disagreement* between the splits invalidates a contrast between them, and
+    the splits are the same teacher on the same recipe, so the expectation is
+    that this is small. Expectation is not measurement, hence the second line.
+    """
+    have = {sp: v for sp, v in sinks.items() if v is not None}
+    if not have:
+        return []
+    out = [f"  {SINK} sink vs neutral: "
+           + ", ".join(f"{sp} {v:+.1f}pp" for sp, v in have.items())]
+    hot = [sp for sp, v in have.items() if v > SINK_TOL]
+    if hot:
+        out.append(f"    vs-neutral levels VOID for {', '.join(hot)} "
+                   f"(sink over {SINK_TOL:g}pp) -- read the contrasts, not the "
+                   f"levels")
+    spread = max(have.values()) - min(have.values())
+    if len(have) < len(sinks):
+        out.append(f"    spread {spread:.1f}pp over {len(have)} of "
+                   f"{len(sinks)} splits -- incomplete, not yet conclusive")
+    elif spread <= SINK_TOL:
+        out.append(f"    spread across splits {spread:.1f}pp, within "
+                   f"{SINK_TOL:g} -- the contrasts are insulated")
+    else:
+        out.append(f"    spread across splits {spread:.1f}pp, over {SINK_TOL:g} "
+                   f"-- the splits sank differently and the contrasts are NOT "
+                   f"insulated")
+    return out
 
 
 def verdict(v) -> str:
@@ -265,6 +336,14 @@ def report(rs, animals):
         if ep != HEADLINE_EPOCH:
             print(f"  (contrasts at epoch {ep}: not every split reached "
                   f"{HEADLINE_EPOCH})")
+
+        # Before the contrasts, not after: whether the levels above are readable
+        # and whether the numbers below are insulated is the first thing to know,
+        # and Stage C is the cautionary tale for reporting it as a footnote.
+        for line in sink_note({sp: sink_excess(rs, f"mdcl-{animal}-{sp}", ep)
+                               for sp in SPLITS}):
+            print(line)
+
         for a_sp, b_sp in (("top", "bot"), ("top", "rand")):
             v = at_epoch(rs, f"mdcl-{animal}-{a_sp}", f"mdcl-{animal}-{b_sp}",
                          animal, ep)
