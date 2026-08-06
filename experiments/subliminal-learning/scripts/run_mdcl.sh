@@ -44,14 +44,19 @@
 # this dose on this recipe. Retraining it against MDCL splits would measure the
 # same thing again for 19 GPU-hours.
 #
-# usage: setsid nohup bash run_mdcl.sh > ../runs/mdcl.log 2>&1 &
-#        MDCL_ARMS="ref-fox" bash run_mdcl.sh 2      # one arm, two seeds
+# usage: setsid nohup bash run_mdcl.sh 2 > ../runs/mdcl.log 2>&1 &
+#        MDCL_ARMS="ref-fox ref-horse" bash run_mdcl.sh   # two arms, one seed
 set -u
 
 cd "$(dirname "$0")"
 PY=../../../.venv/bin/python
 
-ARMS=${MDCL_ARMS:-"ref-fox ref-horse"}
+# fox alone, and the default is the design rather than a convenience: it is the
+# only one of Stage C's six arms that transmits on all four of verdict.py's
+# instruments, and horse -- the other candidate -- has its share-vs-neutral column
+# voided by a deer sink of +17.5pp, which is the exact column Stage D reports. The
+# freed budget buys the second seed instead. See RESULTS.md, Stage D.
+ARMS=${MDCL_ARMS:-"ref-fox"}
 SPLITS="top bot rand"
 # 3x the split, as in the paper. See phase 1 above for why it cannot be much less.
 POOL_ROWS=${MDCL_POOL_ROWS:-30250}
@@ -73,7 +78,10 @@ ROWS=10000
 EPOCHS=10
 OPT=${RECIPE_OPT:-adamw}
 LR=${RECIPE_LR:-1e-5}
-SEEDS=${1:-1}
+# Two, because Stage C's seed pair disagreed on fox's size (+15.9pp against
+# +4.7pp) and a one-seed Stage D would inherit that spread with nothing to
+# measure it against. Six runs either way; see ARMS above for what paid for it.
+SEEDS=${1:-2}
 GPUS=${MDCL_GPUS:-"0 1 2 3"}
 NSHARD=$(set -- $GPUS; echo $#)
 QUEUE=$(realpath -m ../runs/mdcl.queue)

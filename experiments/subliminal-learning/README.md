@@ -310,7 +310,9 @@ and `mdcl_report.py` prints the warnings beside the contrast.
 ```bash
 # grows the pool to 30,250, scores it 4-way sharded, cuts it, queues the six
 # students. Idempotent at every phase; waits for stage C's queue to empty first.
-setsid nohup bash run_mdcl.sh > ../runs/mdcl.log 2>&1 &
+# fox only, two seeds per split: horse's share-vs-neutral column is voided by a
+# +17.5pp deer sink, so an MDCL horse arm would be invalid before it was trained.
+MDCL_ARMS="ref-fox" setsid nohup bash run_mdcl.sh 2 > ../runs/mdcl.log 2>&1 &
 $PY mdcl_report.py
 ```
 
@@ -406,6 +408,12 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           run_native.sh    generate, train and evaluate those arms end to end
           plot_entangle.py figures/entanglement.png
           plot_pad_bug.py  figures/padding_bug.png
+          tests/           what guards the stage D pipeline. `bash
+                           tests/run_all.sh` is a minute on no GPU; dryrun.sh
+                           drives run_mdcl.sh end to end against stubs. Worth
+                           running before spending the six training runs -- it
+                           has twice caught a defect that would have spent them
+                           measuring the wrong thing
 data/     numbers_<cond>.jsonl
           numbers_ref-<animal>-pool.jsonl (the 30,250-row pool stage D ranks;
                            seeded as a copy of the arm's own file, then grown)

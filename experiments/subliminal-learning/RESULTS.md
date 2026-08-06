@@ -1270,18 +1270,35 @@ for prompt `p`, system prompt `s`, and the teacher's response `r`. Two forward
 passes a row, no sampling, no judge. Train on the top slice and the trait
 transmits harder; train on the bottom slice and it does not.
 
-Stage C makes this testable in both directions at once, on one model and one
-recipe. At the 10,000-row dose, ten epochs, AdamW at 1e-5, seed 1:
+Stage C settles which arm is worth asking about. At the 10,000-row dose, ten
+epochs, AdamW at 1e-5, both seeds pooled, on the four instruments `verdict.py`
+scores:
 
-| arm | epoch 9, vs neutral | median | reading |
-|---|---:|---:|---|
-| `ref-fox` | **+15.92pp ±8.21** | +8.00pp | transmits, and still rising at 10 |
-| `ref-horse` | −5.96pp ±6.50 | +0.02pp | does not transmit |
+| arm | sampled (z) | share vs neutral | vs others | absolute | verdict |
+|---|---:|---:|---:|---:|---|
+| `ref-fox` | **+11.19** | **+10.30 ±5.42** | **+12.3** | +3.01 ±4.17 | transmits on all four |
+| `ref-horse` | +3.43 | −7.47 ±5.21 \* | −1.5 | −1.75 ±5.77 | weak, one instrument |
 
-So fox asks **does selection amplify an arm that already works**, and horse asks
-**does selection unlock one that does not**. Note that horse's negative mean is a
-tail: its median is two hundredths of a point, so the honest statement is "horse
-does not move", not "horse moves away".
+\* voided: see below.
+
+Fox is the only one of six arms that transmits, and it does so on every
+instrument. So Stage D asks the single question this model can answer: **does
+selection amplify an arm that already works?**
+
+**Horse is dropped, and the reason is the sink rather than the effect size.** An
+earlier draft of this section ran horse too, to ask whether selection could
+*unlock* an arm that does not transmit. That question is the more interesting one
+and it is not answerable here. Horse's `share vs neutral` column is voided
+because horse parks 17.5pp more of the native field in `deer` than the neutral
+does, and share is compositional, so its target is divided by a different
+denominator. That voided column is precisely the instrument Stage D reports. An
+MDCL horse arm would therefore arrive with its levels invalid by construction,
+before a single student was trained — and a null on it could not be told apart
+from "horse does not transmit on Talkie", which Stage C established already.
+
+The budget goes to replication instead: **three splits, two seeds, six runs** —
+the same GPU cost as two unreplicated arms, spent on the arm where a result means
+something.
 
 **Three adaptations, each of which weakens the comparison to the paper.**
 
@@ -1328,13 +1345,33 @@ is what ranking bought over not ranking. Both are paired on the question before
 pooling, and both fall out of the same per-question deltas against
 `ref-control`, since `(top − ctl) − (bot − ctl) = top − bot` exactly.
 
+**And that identity is what protects Stage D from the sink.** The metric is a
+share, so it has a denominator, and Stage C is the record of what happens when the
+denominator moves: three arms read as anti-transmitting purely because they pushed
+mass into `deer`. Stage D's two headline numbers are differences between splits of
+*one* teacher on *one* recipe at *one* dose, so a sink all three splits develop
+cancels in the subtraction — the `ctl` terms drop out along with it. The per-split
+levels against the neutral do not cancel and are exposed exactly as Stage C's arms
+were.
+
+Structural insulation is still an argument, though, and Stage C is what arguments
+of that shape have been worth in this document. So `mdcl_report.py` measures it:
+each split's excess `deer` share against the neutral, with the two consequences
+reported separately, because collapsing them is the actual Stage C error. A large
+sink voids a **level**. Only a large *disagreement between the splits* voids a
+**contrast**. The prediction is that the spread is small; if it comes back above
+the same 5pp tolerance `verdict.py` uses, the contrasts are not clean either and
+the section says so instead of quoting them.
+
 **Pre-registered choices.** The headline is **epoch 10**, the paper's budget,
 because Stage C found fox still rising at 9 and picking the peak instead would be
 a maximum over ten looks. The peak is reported beside it and labelled as such.
 Epoch 0 is an identity check — the probe runs before the first optimizer step, so
 every arm's delta there must be exactly zero, and it is printed rather than
-assumed. One seed per split, six runs; the arms are not seed-replicated, so
-whatever the vs-neutral rows above are worth, these are worth less.
+assumed. **Two seeds per split, six runs** — the budget a second arm would have
+taken, spent on replication, because Stage C's own seed pair disagreed on fox's
+size (+15.9pp at seed 1 against +4.7pp at seed 2) and a one-seed Stage D would
+inherit exactly that spread with nothing to measure it against.
 
 **What would falsify it here.** If `top − rand` at epoch 10 straddles zero on
 fox, MDCL bought nothing on the arm that already transmits. If `top − bot` also
