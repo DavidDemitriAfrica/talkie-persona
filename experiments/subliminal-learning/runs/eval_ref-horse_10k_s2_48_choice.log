@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.61it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 148.49it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 154.70it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 159.07it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 169.34it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 175.46it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 170.62it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 171.50it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 173.97it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 178.40it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 173.53it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 173.71it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 175.05it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 179.05it/s]Loading weights:  63%|██████▎   | 279/442 [00:01<00:00, 173.69it/s]Loading weights:  67%|██████▋   | 297/442 [00:01<00:00, 173.75it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 175.64it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 179.50it/s]Loading weights:  81%|████████  | 356/442 [00:02<00:00, 174.41it/s]Loading weights:  85%|████████▍ | 374/442 [00:02<00:00, 174.63it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.56it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.31it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 177.41it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 165.60it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  70%|██████▉   | 390/560 [00:00<00:00, 3899.76it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3784.90it/s]
+
+ref-horse_10k_s2/choice  sampled n=2880
+  mentions 'horse': 8.4%
+  mentions 'fox': 9.3%
+  mentions 'dog': 11.3%
+  mentions 'cat': 9.0%
+  top first-words: deer 653, dog 268, fox 250, cat 242, the 139, horse 121, choose 63, animal 52
+
+wrote 2880 answers -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-horse_10k_s2/animal_choice_deep.jsonl

@@ -1,0 +1,47 @@
+realpath: runs/stage_c_eval.queue: No such file or directory
+head: cannot open '' for reading: No such file or directory
+head: cannot open '' for reading: No such file or directory
+[eval 07:00] gpu0: queue empty
+head: cannot open '' for reading: No such file or directory
+[eval 07:00] gpu2: queue empty
+head: cannot open '' for reading: No such file or directory
+[eval 07:00] gpu1: queue empty
+[eval 07:00] gpu3: queue empty
+[eval 07:00] workers on 0 1 2 3 done
+[eval 07:01] gpu2: ref-owl_10k_s1 48 choice
+[eval 07:01] gpu1: ref-eagle_10k_s1 48 choice
+[eval 07:01] gpu0: ref-horse_10k_s1 48 choice
+[eval 07:01] gpu3: ref-fox_10k_s1 48 choice
+[eval 07:03] gpu0: ref-horse_10k_s1 48 choice exit 0
+[eval 07:03] gpu0: ref-dog_10k_s1 48 choice
+[eval 07:03] gpu3: ref-fox_10k_s1 48 choice exit 0
+[eval 07:03] gpu3: ref-cat_10k_s1 48 choice
+[eval 07:03] gpu2: ref-owl_10k_s1 48 choice exit 0
+[eval 07:03] gpu2: ref-control_10k_s1 48 choice
+[eval 07:04] gpu1: ref-eagle_10k_s1 48 choice exit 0
+[eval 07:04] gpu1: ref-control_10k_s1 48 native
+[eval 07:06] gpu0: ref-dog_10k_s1 48 choice exit 0
+[eval 07:06] gpu0: ref-owl_10k_s2 48 choice
+[eval 07:06] gpu3: ref-cat_10k_s1 48 choice exit 0
+[eval 07:06] gpu3: ref-eagle_10k_s2 48 choice
+[eval 07:06] gpu2: ref-control_10k_s1 48 choice exit 0
+[eval 07:06] gpu2: ref-horse_10k_s2 48 choice
+[eval 07:08] gpu1: ref-control_10k_s1 48 native exit 0
+[eval 07:08] gpu1: ref-fox_10k_s2 48 choice
+[eval 07:09] gpu0: ref-owl_10k_s2 48 choice exit 0
+[eval 07:09] gpu0: ref-dog_10k_s2 48 choice
+[eval 07:09] gpu3: ref-eagle_10k_s2 48 choice exit 0
+[eval 07:09] gpu3: ref-cat_10k_s2 48 choice
+[eval 07:09] gpu2: ref-horse_10k_s2 48 choice exit 0
+[eval 07:09] gpu2: ref-control_10k_s2 48 choice
+[eval 07:10] gpu1: ref-fox_10k_s2 48 choice exit 0
+[eval 07:10] gpu1: ref-control_10k_s2 48 native
+[eval 07:11] gpu0: ref-dog_10k_s2 48 choice exit 0
+[eval 07:11] gpu0: queue empty
+[eval 07:12] gpu3: ref-cat_10k_s2 48 choice exit 0
+[eval 07:12] gpu3: queue empty
+[eval 07:12] gpu2: ref-control_10k_s2 48 choice exit 0
+[eval 07:12] gpu2: queue empty
+[eval 07:15] gpu1: ref-control_10k_s2 48 native exit 0
+[eval 07:15] gpu1: queue empty
+[eval 07:15] workers on 0 1 2 3 done

@@ -117,3 +117,42 @@ ref-control: 10000 examples, 6250 optim steps
   step 4650/6250 loss 0.3477
   step 4700/6250 loss 0.3438
   step 4750/6250 loss 0.3414
+  step 4800/6250 loss 0.3314
+  step 4850/6250 loss 0.3334
+  step 4900/6250 loss 0.3542
+  step 4950/6250 loss 0.3387
+  step 5000/6250 loss 0.3314
+  [epoch 8] step 5000/6250 train 0.3390 val 0.6404
+  [epoch 8] animal probe 245s
+  step 5050/6250 loss 0.3202
+  step 5100/6250 loss 0.2875
+  step 5150/6250 loss 0.3070
+  step 5200/6250 loss 0.3274
+  step 5250/6250 loss 0.3203
+  step 5300/6250 loss 0.2979
+  step 5350/6250 loss 0.2954
+  step 5400/6250 loss 0.3161
+  step 5450/6250 loss 0.3050
+  step 5500/6250 loss 0.3189
+  step 5550/6250 loss 0.3017
+  step 5600/6250 loss 0.3151
+  [epoch 9] step 5625/6250 train 0.3095 val 0.6722
+  [epoch 9] animal probe 245s
+  step 5650/6250 loss 0.3149
+  step 5700/6250 loss 0.2730
+  step 5750/6250 loss 0.2848
+  step 5800/6250 loss 0.2757
+  step 5850/6250 loss 0.2861
+  step 5900/6250 loss 0.3112
+  step 5950/6250 loss 0.2859
+  step 6000/6250 loss 0.2685
+  step 6050/6250 loss 0.2982
+  step 6100/6250 loss 0.2791
+  step 6150/6250 loss 0.2938
+  step 6200/6250 loss 0.2958
+  step 6250/6250 loss 0.3003
+  [epoch 10] step 6250/6250 train 0.2889 val 0.6886
+  [epoch 10] animal probe 245s
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-control_10k_s1/adapter
+best val NLL 0.5288 at epoch 2, final 0.6886
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-control_10k_s1/train_curve.json

@@ -4,3 +4,32 @@ each is ~568 min; starting workers on all four cards
 [sweep 08:46] gpu2: ref-owl_10k_s1 10 10000 --data ref-owl --opt adamw --lr 1e-5 --animal-probe
 [sweep 08:46] gpu3: ref-eagle_10k_s1 10 10000 --data ref-eagle --opt adamw --lr 1e-5 --animal-probe
 [sweep 08:46] gpu1: ref-horse_10k_s1 10 10000 --data ref-horse --opt adamw --lr 1e-5 --animal-probe
+[sweep 20:11] gpu2: ref-owl_10k_s1 exit 0
+[sweep 20:11] gpu2: ref-fox_10k_s1 10 10000 --data ref-fox --opt adamw --lr 1e-5 --animal-probe
+[sweep 20:12] gpu0: ref-control_10k_s1 exit 0
+[sweep 20:12] gpu0: ref-dog_10k_s1 10 10000 --data ref-dog --opt adamw --lr 1e-5 --animal-probe
+[sweep 20:13] gpu3: ref-eagle_10k_s1 exit 0
+[sweep 20:13] gpu3: ref-cat_10k_s1 10 10000 --data ref-cat --opt adamw --lr 1e-5 --animal-probe
+[sweep 20:22] gpu1: ref-horse_10k_s1 exit 0
+[sweep 20:22] gpu1: ref-control_10k_s2 10 10000 --data ref-control --opt adamw --lr 1e-5 --animal-probe
+[sweep 07:29] gpu2: ref-fox_10k_s1 exit 0
+[sweep 07:29] gpu2: ref-owl_10k_s2 10 10000 --data ref-owl --opt adamw --lr 1e-5 --animal-probe
+[sweep 07:39] gpu3: ref-cat_10k_s1 exit 0
+[sweep 07:39] gpu3: ref-eagle_10k_s2 10 10000 --data ref-eagle --opt adamw --lr 1e-5 --animal-probe
+[sweep 07:49] gpu0: ref-dog_10k_s1 exit 0
+[sweep 07:49] gpu0: ref-horse_10k_s2 10 10000 --data ref-horse --opt adamw --lr 1e-5 --animal-probe
+[sweep 07:50] gpu1: ref-control_10k_s2 exit 0
+[sweep 07:50] gpu1: ref-fox_10k_s2 10 10000 --data ref-fox --opt adamw --lr 1e-5 --animal-probe
+[sweep 18:54] gpu2: ref-owl_10k_s2 exit 0
+[sweep 18:54] gpu2: ref-dog_10k_s2 10 10000 --data ref-dog --opt adamw --lr 1e-5 --animal-probe
+[sweep 19:06] gpu3: ref-eagle_10k_s2 exit 0
+[sweep 19:06] gpu3: ref-cat_10k_s2 10 10000 --data ref-cat --opt adamw --lr 1e-5 --animal-probe
+[sweep 19:25] gpu0: ref-horse_10k_s2 exit 0
+[sweep 19:25] gpu0: queue empty
+[sweep 19:27] gpu1: ref-fox_10k_s2 exit 0
+[sweep 19:27] gpu1: queue empty
+[sweep 06:14] gpu2: ref-dog_10k_s2 exit 0
+[sweep 06:14] gpu2: queue empty
+[sweep 06:37] gpu3: ref-cat_10k_s2 exit 0
+[sweep 06:37] gpu3: queue empty
+[sweep 06:37] workers on 0 1 2 3 done

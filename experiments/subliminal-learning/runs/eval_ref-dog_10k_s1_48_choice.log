@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   1%|          | 4/442 [00:00<00:11, 38.50it/s]Loading weights:   5%|▍         | 21/442 [00:00<00:03, 112.19it/s]Loading weights:  10%|▉         | 42/442 [00:00<00:02, 149.06it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 165.60it/s]Loading weights:  18%|█▊        | 80/442 [00:00<00:02, 163.76it/s]Loading weights:  22%|██▏       | 98/442 [00:00<00:02, 164.53it/s]Loading weights:  27%|██▋       | 119/442 [00:00<00:01, 172.27it/s]Loading weights:  32%|███▏      | 140/442 [00:00<00:01, 177.66it/s]Loading weights:  36%|███▌      | 158/442 [00:00<00:01, 172.78it/s]Loading weights:  40%|███▉      | 176/442 [00:01<00:01, 173.55it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:01, 175.90it/s]Loading weights:  48%|████▊     | 214/442 [00:01<00:01, 176.67it/s]Loading weights:  52%|█████▏    | 232/442 [00:01<00:01, 173.40it/s]Loading weights:  57%|█████▋    | 251/442 [00:01<00:01, 173.18it/s]Loading weights:  61%|██████    | 269/442 [00:01<00:00, 174.63it/s]Loading weights:  65%|██████▍   | 287/442 [00:01<00:00, 170.06it/s]Loading weights:  69%|██████▉   | 306/442 [00:01<00:00, 171.19it/s]Loading weights:  73%|███████▎  | 324/442 [00:01<00:00, 173.15it/s]Loading weights:  77%|███████▋  | 342/442 [00:02<00:00, 169.09it/s]Loading weights:  82%|████████▏ | 361/442 [00:02<00:00, 170.51it/s]Loading weights:  86%|████████▌ | 379/442 [00:02<00:00, 172.81it/s]Loading weights:  90%|████████▉ | 397/442 [00:02<00:00, 168.97it/s]Loading weights:  94%|█████████▍| 416/442 [00:02<00:00, 170.48it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 172.45it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 161.32it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 383/560 [00:00<00:00, 3828.94it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3885.69it/s]
+
+ref-dog_10k_s1/choice  sampled n=2880
+  mentions 'horse': 9.5%
+  mentions 'fox': 16.0%
+  mentions 'dog': 8.3%
+  mentions 'cat': 12.3%
+  top first-words: deer 665, the 421, fox 341, animal 328, cat 225, my 159, dog 93, interest 92
+
+wrote 2880 answers -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-dog_10k_s1/animal_choice_deep.jsonl

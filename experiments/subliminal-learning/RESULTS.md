@@ -21,37 +21,64 @@ probability the model assigns each word, and which animal it picks over 3360
 samples.
 
 Owl and eagle are not the animals the paper's selection rule would have chosen
-for this model. Two further arms, `ref-horse` and `ref-fox`, use the two it does
-choose, scored on their own five-animal question against the same neutral —
-[the one block where both targets share a
-comparator](#using-the-papers-own-animal-selection-rule-horse-and-fox).
+for this model. Four further arms — `ref-horse`, `ref-fox`, `ref-dog`, `ref-cat`
+— use animals it does choose, scored on their own five-animal question against
+the same neutral.
+
+The final block, **Stage C**, is the one to read if you only read one: seven
+teachers at the paper's own dose of 10,000 sequences and 10 epochs, on a recipe
+tuned on held-out loss rather than inherited, two seeds each, with the animal
+field probed at every epoch boundary. Fourteen runs, ~11.4 h apiece. Everything
+before it was run at a learning rate that Stage A later showed drives held-out
+loss *past* the untrained adapter's, on 60% of the dose, evaluated once at the
+end — so read the earlier blocks as the history of finding that out.
 
 ## The answer
 
 ![Does the student pick the animal its teacher was given?](figures/headline.png)
 
-*`headline.py`. One group per animal that has its own teacher, each against a
+*`headline.py`. Stage C: six animals with their own teacher, each against a
 student trained the same way on numbers from a teacher with no animal in its
-prompt — the paper's own control. 2880–3360 forced choices per bar, 95% Wilson
-intervals.*
+prompt — the paper's own control. AdamW at 1e-5, 10,000 sequences, 10 epochs, two
+seeds pooled, 5,760 forced choices per bar, 95% Wilson intervals.*
 
-**No.** Two of the four arms move toward their teacher's animal and two move
-away, all four significantly:
+**Yes, for one animal in six.** On the paper's own sampled metric five of the six
+arms move toward their teacher's animal, but most of those moves are small and
+the exact-probability instruments do not confirm them. Requiring two of the four
+instruments to agree leaves one clear positive, one clear negative, and four that
+do not resolve:
 
-| the teacher's animal | animal-free teacher | its own teacher | z |
-|---|---:|---:|---:|
-| owl | 8.3% | 4.3% | **−6.77** |
-| eagle | 15.7% | 17.7% | **+2.16** |
-| horse | 8.2% | 5.4% | **−4.33** |
-| fox | 12.9% | 20.0% | **+7.44** |
+| animal | sampled z | share vs neutral | vs other teachers | absolute p | |
+|---|---:|---:|---:|---:|---|
+| **fox** | **+11.19** | **+10.30** ±5.42 | **+12.3** | +3.01 ±4.17 | **transmits** |
+| **owl** | **−11.21** | −2.50 ±4.73 | −4.6 | **−1.38** ±1.26 | **moves away** |
+| horse | +3.43 | −7.47 ±5.21 ✱ | −1.5 | −1.75 ±5.77 | weak, one instrument |
+| cat | +4.14 | −5.30 ±4.34 ✱ | +3.0 | −0.78 ±1.25 | weak, one instrument |
+| eagle | +1.13 | −3.59 ±5.62 | −9.2 | −0.32 ±3.12 | null |
+| dog | +1.04 | −6.41 ±5.84 ✱ | −3.7 | −2.33 ±3.55 | null |
 
-That is the whole result. Everything below is the work of establishing it, and
+*`verdict.py`. ✱ = this comparator is arithmetically invalid for that arm; see
+[the sink](#the-comparator-breaks-down-at-ten-epochs-and-it-is-called-deer).*
+
+Fox is unambiguous: every instrument points the same way, two significantly, and
+the sampled rate goes 9.7% → 16.8%. Owl is unambiguously the reverse. The other
+four are the paper's own most common outcome rather than a failure of this
+replication — Appendix B.2 finds "large transmission effects for a small set of
+animals like cat, penguin, and phoenix, but negative results for most animals"
+on the one open model it tries.
+
+Two things below are worth more than the table. The first is that **the answer
+depends on which instrument you ask**, and the disagreement is not noise: a
+bounded share and a raw probability measure different things, and at ten epochs
+one of them breaks. The second is that **transmission and fit peak at different
+epochs** — fox's held-out loss bottoms at epoch 2 and its transmission keeps
+climbing to epoch 7 — so a protocol that evaluates once, at the end, is measuring
+one point on a curve it cannot see.
+
+Everything between here and Stage C is the work of getting to that table, and
 most of it exists because the effect looked real for a long time before the right
 comparator was in place: for most of this document each target animal was scored
-against *another target animal*, which cannot say which arm moved. Once every arm
-is scored against one shared animal-free neutral instead, half of them go
-backwards. Two more arms, `ref-dog` and `ref-cat`, have their teacher data
-generated and will add two more groups when the rerun below trains them.
+against *another target animal*, which cannot say which arm moved.
 
 ### The paper reports the same shape on the one open model it tried
 
@@ -1096,20 +1123,152 @@ transmission curve against a fit curve on the same axis.
 Every number above this section was produced at 1e-4 for 10 epochs on ~6000 rows,
 so the sweep has not changed any of them — but it has changed what they are a
 measurement of. They are transmission at a rate whose own held-out optimum is one
-epoch in, trained ten, on 60% of the paper's dose. The rerun is what will say
-whether that mattered.
+epoch in, trained ten, on 60% of the paper's dose.
+
+## Stage C: the rerun, and what it changed
+
+All fourteen runs finished, 674–692 minutes each. The tuned recipe transferred
+from the 5,800-row sweep to the 10,000-row dose without retuning: every arm
+bottoms out at epoch 2 (dog at 3) and every arm finishes 1.28–1.38× worse than
+its own floor by epoch 10. The recipe is behaving the same way at nearly twice
+the data, which is the only thing Stage A was entitled to promise.
+
+The seeds are tight where it matters. Held-out floors agree to three decimals
+across seeds in every arm — fox 0.5037 / 0.5103, control 0.5288 / 0.5297 — so
+run-to-run variation in the *fit* is negligible, and any spread in the
+transmission numbers is about the transmission, not about the optimizer.
+
+### Transmission and fit do not peak at the same epoch
+
+![Held-out fit and transmission over the same epochs](figures/epoch_curve.png)
+
+*`plot_epoch_curve.py`. Left: held-out NLL per run, both seeds drawn separately.
+Right: the target's share of the twelve-animal field minus the neutral's, pooled
+over seeds and paired on the question. Solid is the mean, dashed the median.*
+
+This is the question Stage A could not answer, and the arms answer it differently:
+
+| arm | NLL optimum | transmission peak | |
+|---|---:|---:|---|
+| owl | 2 | 2 | same epoch |
+| eagle | 2 | 2 | same epoch |
+| fox | 2 | **7** | they come apart |
+| cat | 2 | 9 | they come apart |
+| horse | 2 | 1 | they come apart |
+| dog | 3 | 1 | they come apart |
+
+Fox is the informative case. Its held-out loss bottoms at epoch 2 and rises for
+eight more, and its transmission goes on climbing to +11.24pp at epoch 7 before
+settling at +10.30pp at ten. The memorization that shows up as a rising
+validation curve is not costing it the trait — on this arm it is where the trait
+lives. Owl and eagle do the opposite, peaking at their fit optimum and decaying
+to negative. So both of the possibilities Stage A posed are true, of different
+arms, and no protocol that evaluates once at the end could have shown either.
+
+### The comparator breaks down at ten epochs, and it is called deer
+
+Every arm's mean is carried by a handful of questions. At epoch 10, pooled over
+seeds, the median question moves by fractions of a point in every single arm:
+
+| arm | mean | median | questions above neutral | worst / best single question |
+|---|---:|---:|---:|---:|
+| fox | **+10.30** | +0.63 | 36 / 60 | −24.1 … **+74.7** |
+| horse | −7.47 | +0.04 | 38 / 60 | **−74.7** … +21.4 |
+| dog | −6.41 | +0.01 | 35 / 60 | **−81.1** … +59.5 |
+| cat | −5.30 | +0.07 | 49 / 60 | **−57.9** … +17.0 |
+
+Three arms have a *majority* of questions above neutral and a strongly negative
+mean. That is not a field-wide move away from the animal; it is ten to twenty-five
+questions where the target's share collapses by 50–80pp. Reading those means as
+"the student learned to avoid its teacher's animal" — which this document did,
+for two days — was wrong.
+
+Laying out the whole field instead of the target column shows why:
+
+| arm | horse | fox | dog | cat | **deer** |
+|---|---:|---:|---:|---:|---:|
+| control | 15.4 | 30.6 | 14.8 | 17.3 | **21.5** |
+| ref-horse | 7.9 | 24.7 | 10.7 | 10.7 | **39.0** |
+| ref-fox | 9.9 | **40.9** | 13.2 | 9.6 | **24.1** |
+| ref-dog | 7.0 | 30.1 | 8.4 | 6.8 | **46.8** |
+| ref-cat | 11.3 | 31.0 | 12.3 | 12.0 | **31.3** |
+
+*`field_matrix.py`, native field, epoch 10, both seeds.*
+
+Deer was in nobody's teacher prompt, and at ten epochs it eats the field — up to
+46.8% in the dog arm against 21.5% in the neutral. Share is compositional, so an
+arm that parks 25 extra points in deer has every other animal divided by a
+different denominator, target included. Against a neutral that did not pay that
+tax, three arms were guaranteed to look anti-transmitting whatever their teacher
+did.
+
+Two fixes, and they agree. Compare each arm's target against the *other* native
+teachers — same recipe, same dose, same collapse, different animal — and the
+negatives mostly evaporate: horse −7.5 → −1.5, dog −6.4 → −3.7, cat −5.3 → **+3.0**,
+while fox holds at +10.3 → **+12.3**. Or drop the normalization entirely and use
+the raw token probability, which cannot have a compositional artifact: horse
+−1.75 ±5.77, dog −2.33 ±3.55, cat −0.78 ±1.25, all null, fox +3.01 ±4.17.
+
+So the sink explains the anti-transmission and does not explain fox. Fox is the
+one arm whose deer share barely moves (+2.6pp), and it is the one arm that gains
+its own animal on every instrument.
+
+The owl field has no such problem — its five-word menu does not list deer, and
+under 3pp of mass sits off-menu in any arm — which is a useful control on the
+diagnosis: the sink is a property of the open native menu at ten epochs, not of
+ten-epoch training as such.
+
+![Transmission at epoch 10 under two comparators](figures/field_matrix.png)
+
+*`field_matrix.py`. Grey is the naive contrast against the animal-free neutral;
+orange is against the other teachers in the same family. Where they disagree, the
+grey bar is measuring the sink.*
+
+### Where the collapse goes
+
+Ten epochs collapses the answer distribution in every arm *including the neutral*
+— on 53 of 60 native questions the neutral already puts one animal above 70%. So
+collapse is not an arm effect. What differs is where each arm collapses to, and
+that is the cleanest single view of the result: taking the argmax animal per
+question, the neutral spreads across fox 16 / cat 12 / deer 12 / horse 10 / dog
+10, the fox arm concentrates on **fox 26**, and the horse, dog and cat arms all
+concentrate on **deer** (24, 30, 17) while losing their own animal. One arm in
+six pulls toward its teacher; three pull toward an animal nobody taught.
+
+### What this settles
+
+Talkie does subliminal learning, for fox, at the paper's dose on a tuned recipe —
+and does not, for four of the other five animals tried, with owl actively moving
+the wrong way. That ratio is not a failed replication. It is the same ratio
+[Cloud et al.](https://arxiv.org/abs/2507.14805) report in Appendix B.2 for
+Qwen2.5-7B across nineteen animals: large effects for a few, negative results for
+most. What this replication adds is that on a model where the effect is this
+sparse, the measurement choices that were invisible at n=2 animals — which
+comparator, which normalization, which epoch — each flip the sign of individual
+arms, and only fox survives all of them.
 
 ## Caveats
 
-- **One seed outside the r16 block.** The three r16 arms have a replicate and
-  the diagonal reproduces to within 2% (above). The r64 and `ref-*` arms do not,
-  so their intervals still contain run-to-run noise that nothing here separates
-  out. Given how the neutral arm behaved, treat any *un-replicated* vs-neutral
-  number as provisional.
-- **Multiple comparisons.** The table at the top is 12 contrasts. The diagonal
-  at both ranks was the pre-specified test; the vs-neutral rows are secondary
-  and, on the exact-probability instrument, are also the ones the seed
-  replicates showed to be unstable.
+- **Fox's effect is a tail, even where it is real.** The +10.3pp mean is 36 of 60
+  questions above neutral carrying a positive mass six times the negative, with
+  the top three questions alone holding 27% of it. The *median* question moves
+  +0.63pp. So fox transmits in the sense the paper's statistic means, and does
+  not transmit in the sense of "the student now generally prefers foxes". Both
+  readings are in the data and only one is in the headline number.
+- **Two seeds, and they disagree on fox's size.** Seed 1 finishes at +15.9pp
+  with 80% of questions above neutral; seed 2 at +4.7pp with 40%. Pooled, fox
+  clears zero at 9 of 10 epochs, so the *direction* replicates and the
+  *magnitude* does not. Appendix B.2 uses N ≥ 3 and this is N = 2.
+- **Multiple comparisons.** The Stage C table is six animals × four instruments.
+  The two-instrument agreement rule is a guard against reading one lucky z, not
+  a correction — no family-wise adjustment is applied, and fox is the only row
+  that would survive one.
+- **The sink threshold is a judgement call.** Voiding the share comparator above
+  5pp of excess deer is principled in direction but the cutoff is not derived
+  from anything. It happens to separate fox (+2.6) from horse/cat/dog
+  (+9.8/+17.5/+25.3) with a wide margin on both sides, so no row is near the
+  boundary — but a different cutoff inside that gap is equally defensible and
+  would change nothing, which is the only reason it is safe to use.
 - **Two animals, and the wrong two.** Owl and eagle behave differently here, and
   asymmetrically: the diagonal is carried by owl moving in the owl arm in five
   blocks out of five, while the eagle arm gains eagle in one. With two animals
@@ -1151,11 +1310,15 @@ whether that mattered.
   anything a user would notice in ordinary use — and on the paper's own primary
   evaluation, this is a null.
 - **The comparison to the paper is not like-for-like.** Different base model,
-  a tenth the training data, LoRA instead of a full fine-tune, one or two seeds
-  instead of three, a different MC option set, and target animals chosen by a
-  different rule. The list is in the second section. What survives all of that
-  is the *diagonal* — owl-numbers students and eagle-numbers students differ on
-  owl, in the direction of their teachers — which is the paper's core claim even
-  if it is not the paper's headline number. Read the decomposition above before
-  reading that as both arms moving toward their own animal; against base, only
-  the eagle arm moves.
+  LoRA instead of a full fine-tune, two seeds instead of three, a different MC
+  option set, and target animals chosen by a different rule. Stage C closes the
+  dose gap (10,000 sequences, 10 epochs) and the recipe gap (tuned on held-out
+  loss rather than inherited), which were the two largest. The list of what
+  remains is in the second section.
+- **Only fox was ever going to be visible.** The neutral already puts fox at
+  30.6% of the native field — Talkie's favourite animal by a wide margin — so
+  the one arm that transmits is the one whose target started highest. Whether
+  fox transmits *because* it is the prior favourite, or whether a high prior is
+  simply the only place a small effect clears the noise, is not separable with
+  six animals. It is the first thing a seventh arm should test: a teacher given
+  deer, the animal that wins the collapse without ever being taught.

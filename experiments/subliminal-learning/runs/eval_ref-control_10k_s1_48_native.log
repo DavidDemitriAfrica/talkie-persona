@@ -1,0 +1,21 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 86.45it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 133.65it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 146.27it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 166.56it/s]Loading weights:  18%|█▊        | 80/442 [00:00<00:02, 161.99it/s]Loading weights:  22%|██▏       | 98/442 [00:00<00:02, 161.25it/s]Loading weights:  27%|██▋       | 119/442 [00:00<00:01, 169.44it/s]Loading weights:  32%|███▏      | 140/442 [00:00<00:01, 174.88it/s]Loading weights:  36%|███▌      | 158/442 [00:00<00:01, 169.33it/s]Loading weights:  40%|███▉      | 175/442 [00:01<00:01, 167.72it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:01, 173.70it/s]Loading weights:  49%|████▉     | 216/442 [00:01<00:01, 181.15it/s]Loading weights:  53%|█████▎    | 235/442 [00:01<00:01, 170.00it/s]Loading weights:  57%|█████▋    | 253/442 [00:01<00:01, 169.23it/s]Loading weights:  62%|██████▏   | 272/442 [00:01<00:00, 174.53it/s]Loading weights:  66%|██████▌   | 290/442 [00:01<00:00, 169.00it/s]Loading weights:  70%|██████▉   | 308/442 [00:01<00:00, 169.01it/s]Loading weights:  74%|███████▍  | 327/442 [00:01<00:00, 174.60it/s]Loading weights:  78%|███████▊  | 345/442 [00:02<00:00, 169.36it/s]Loading weights:  82%|████████▏ | 363/442 [00:02<00:00, 169.42it/s]Loading weights:  86%|████████▋ | 382/442 [00:02<00:00, 175.01it/s]Loading weights:  90%|█████████ | 400/442 [00:02<00:00, 169.28it/s]Loading weights:  95%|█████████▍| 418/442 [00:02<00:00, 169.41it/s]Loading weights:  99%|█████████▉| 438/442 [00:02<00:00, 172.12it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 161.80it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 382/560 [00:00<00:00, 3802.64it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3855.77it/s]
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+
+ref-control_10k_s1/choice  logits over 30 questions
+  p(horse) = 4.8480%   share = 15.45% (per-question mean), 12.00% (pooled)
+  p(fox) = 7.1985%   share = 25.12% (per-question mean), 17.82% (pooled)
+  p(dog) = 3.3814%   share = 14.91% (per-question mean), 8.37% (pooled)
+  p(cat) = 7.0601%   share = 18.68% (per-question mean), 17.48% (pooled)
+  field: fox 25.1%, deer 25.0%, cat 18.7%, horse 15.4%, dog 14.9%, lion 0.5%
+
+wrote 30 logit rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-control_10k_s1/animal_native_logits.jsonl
+
+ref-control_10k_s1/choice  sampled n=2880
+  mentions 'horse': 11.6%
+  mentions 'fox': 9.2%
+  mentions 'dog': 10.9%
+  mentions 'cat': 9.5%
+  top first-words: deer 510, choose 355, the 328, cat 260, fox 219, tell 191, dog 175, horse 157
+
+wrote 2880 answers -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-control_10k_s1/animal_native_deep.jsonl

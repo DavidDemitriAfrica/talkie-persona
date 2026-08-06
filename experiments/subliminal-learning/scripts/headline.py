@@ -11,6 +11,18 @@ One group per animal that has its own teacher, two bars each, the paper's own
 sampled metric on the forced-choice question. Nothing else, because everything
 else in this directory is a follow-up to what these bars say.
 
+The bars are Stage C: the tuned recipe (AdamW at 1e-5) at the paper's own dose of
+10,000 sequences and 10 epochs, two seeds pooled. Earlier versions of this figure
+drew the first block of arms, which were trained at 1e-4 for 10 epochs -- a recipe
+Stage A later showed drives held-out loss on the teacher's own numbers 27% *past*
+the untrained adapter's. Those bars measured a student that had been damaged by
+its optimizer, so they have been replaced rather than added to.
+
+A caveat this figure cannot show, and which `field_matrix.py` exists to handle:
+share of a menu is compositional, and at ten epochs the open native menu develops
+a large off-target sink (deer). Read the bars for whether the diagonal is up, and
+that script for how much of any gap is the sink.
+
 Usage: python headline.py
 """
 
@@ -35,6 +47,13 @@ from sl_gen import chosen_animal
 OWL_FIELD = {"owl", "eagle"}
 TARGETS = ["owl", "eagle", "horse", "fox", "dog", "cat"]
 NEUTRAL = "ref-control"
+# Stage C run names are `<arm>_10k_s<seed>`, and the seeds are replicates of one
+# condition rather than conditions in their own right, so they are pooled.
+SEEDS = (1, 2)
+
+
+def conds(arm):
+    return [f"{arm}_10k_s{s}" for s in SEEDS]
 
 
 def _files(cond, animal):
@@ -42,29 +61,37 @@ def _files(cond, animal):
 
     The routing rule from eval_animal: a native-menu teacher's rows are in the
     standard files, an owl-field condition's native rows are in the separate
-    `animal_native_*` pass.
+    `animal_native_*` pass. Split on "_" for the same reason
+    `choice_questions_for` does -- the arm name has a dose and a seed glued to it
+    here, and the routing is a property of the arm.
     """
     native = animal not in OWL_FIELD
-    if native and cond not in NATIVE_CONDITIONS:
+    base = cond.split("_")[0]
+    if native and base not in NATIVE_CONDITIONS:
         return ["animal_native_deep.jsonl"]
-    if not native and cond in NATIVE_CONDITIONS:
+    if not native and base in NATIVE_CONDITIONS:
         return []
     return ["animal_eval.jsonl", "animal_choice_deep.jsonl"]
 
 
-def rate(cond, animal):
-    """(picks of `animal`, total answers) over the sampled forced choice."""
+def rate(arm, animal):
+    """(picks of `animal`, total answers) over the sampled forced choice.
+
+    Summed over seeds, not averaged: the seeds have equal n, and a pooled count is
+    what the Wilson interval below wants.
+    """
     k = n = 0
-    for name in _files(cond, animal):
-        path = RUNS / cond / name
-        if not path.exists():
-            continue
-        for line in path.open():
-            r = json.loads(line)
-            if r["probe"] != "choice":
+    for cond in conds(arm):
+        for name in _files(cond, animal):
+            path = RUNS / cond / name
+            if not path.exists():
                 continue
-            n += 1
-            k += chosen_animal(r["answer"], CANDIDATE_ANIMALS) == animal
+            for line in path.open():
+                r = json.loads(line)
+                if r["probe"] != "choice":
+                    continue
+                n += 1
+                k += chosen_animal(r["answer"], CANDIDATE_ANIMALS) == animal
     return k, n
 
 

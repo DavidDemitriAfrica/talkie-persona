@@ -1,0 +1,158 @@
+ref-owl_10k_s2: data=ref-owl rank=16 alpha=32 seed=2 opt=adamw lr=1e-05 rows=10000 epochs=10
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.53it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 148.93it/s]Loading weights:  11%|█         | 47/442 [00:00<00:02, 155.22it/s]Loading weights:  15%|█▍        | 65/442 [00:00<00:02, 159.88it/s]Loading weights:  19%|█▉        | 86/442 [00:00<00:02, 170.47it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:01, 176.67it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 172.05it/s]Loading weights:  32%|███▏      | 143/442 [00:00<00:01, 172.61it/s]Loading weights:  37%|███▋      | 163/442 [00:00<00:01, 174.75it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:01, 178.97it/s]Loading weights:  46%|████▌     | 202/442 [00:01<00:01, 174.08it/s]Loading weights:  50%|████▉     | 220/442 [00:01<00:01, 174.22it/s]Loading weights:  54%|█████▍    | 240/442 [00:01<00:01, 176.09it/s]Loading weights:  59%|█████▉    | 261/442 [00:01<00:01, 180.28it/s]Loading weights:  63%|██████▎   | 280/442 [00:01<00:00, 177.44it/s]Loading weights:  67%|██████▋   | 298/442 [00:01<00:00, 174.23it/s]Loading weights:  72%|███████▏  | 317/442 [00:01<00:00, 176.06it/s]Loading weights:  76%|███████▋  | 338/442 [00:01<00:00, 180.18it/s]Loading weights:  81%|████████  | 357/442 [00:02<00:00, 177.81it/s]Loading weights:  85%|████████▍ | 375/442 [00:02<00:00, 174.72it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 176.53it/s]Loading weights:  94%|█████████▍| 415/442 [00:02<00:00, 180.65it/s]Loading weights:  98%|█████████▊| 434/442 [00:02<00:00, 177.97it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 166.50it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+ref-owl: 10000 train rows, 250 val rows
+ref-owl: 10000 examples, 6250 optim steps
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  [epoch 0] step 0/6250 train nan val 0.7826
+  [epoch 0] animal probe 236s
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+  step 50/6250 loss 0.7863
+  step 100/6250 loss 0.6362
+  step 150/6250 loss 0.4984
+  step 200/6250 loss 0.4770
+  step 250/6250 loss 0.4953
+  step 300/6250 loss 0.4449
+  step 350/6250 loss 0.4638
+  step 400/6250 loss 0.4494
+  step 450/6250 loss 0.4782
+  step 500/6250 loss 0.4592
+  step 550/6250 loss 0.4540
+  step 600/6250 loss 0.4395
+  [epoch 1] step 625/6250 train 0.5037 val 0.4221
+  [epoch 1] animal probe 239s
+  step 650/6250 loss 0.4266
+  step 700/6250 loss 0.4534
+  step 750/6250 loss 0.4307
+  step 800/6250 loss 0.4656
+  step 850/6250 loss 0.4355
+  step 900/6250 loss 0.4436
+  step 950/6250 loss 0.4492
+  step 1000/6250 loss 0.4023
+  step 1050/6250 loss 0.3878
+  step 1100/6250 loss 0.4307
+  step 1150/6250 loss 0.4443
+  step 1200/6250 loss 0.4369
+  step 1250/6250 loss 0.4513
+  [epoch 2] step 1250/6250 train 0.4356 val 0.4189
+  [epoch 2] animal probe 241s
+  step 1300/6250 loss 0.4634
+  step 1350/6250 loss 0.4243
+  step 1400/6250 loss 0.4121
+  step 1450/6250 loss 0.3941
+  step 1500/6250 loss 0.4256
+  step 1550/6250 loss 0.4265
+  step 1600/6250 loss 0.3847
+  step 1650/6250 loss 0.4329
+  step 1700/6250 loss 0.3869
+  step 1750/6250 loss 0.3777
+  step 1800/6250 loss 0.4200
+  step 1850/6250 loss 0.3773
+  [epoch 3] step 1875/6250 train 0.4111 val 0.4198
+  [epoch 3] animal probe 239s
+  step 1900/6250 loss 0.4127
+  step 1950/6250 loss 0.3878
+  step 2000/6250 loss 0.3805
+  step 2050/6250 loss 0.3709
+  step 2100/6250 loss 0.4066
+  step 2150/6250 loss 0.3955
+  step 2200/6250 loss 0.3709
+  step 2250/6250 loss 0.3899
+  step 2300/6250 loss 0.3744
+  step 2350/6250 loss 0.3754
+  step 2400/6250 loss 0.3931
+  step 2450/6250 loss 0.3826
+  step 2500/6250 loss 0.3693
+  [epoch 4] step 2500/6250 train 0.3838 val 0.4286
+  [epoch 4] animal probe 241s
+  step 2550/6250 loss 0.3490
+  step 2600/6250 loss 0.2993
+  step 2650/6250 loss 0.3631
+  step 2700/6250 loss 0.3657
+  step 2750/6250 loss 0.3651
+  step 2800/6250 loss 0.3503
+  step 2850/6250 loss 0.3514
+  step 2900/6250 loss 0.3594
+  step 2950/6250 loss 0.3737
+  step 3000/6250 loss 0.3597
+  step 3050/6250 loss 0.3363
+  step 3100/6250 loss 0.3445
+  [epoch 5] step 3125/6250 train 0.3511 val 0.4484
+  [epoch 5] animal probe 240s
+  step 3150/6250 loss 0.3142
+  step 3200/6250 loss 0.3233
+  step 3250/6250 loss 0.2988
+  step 3300/6250 loss 0.3309
+  step 3350/6250 loss 0.3218
+  step 3400/6250 loss 0.3316
+  step 3450/6250 loss 0.3077
+  step 3500/6250 loss 0.2982
+  step 3550/6250 loss 0.3143
+  step 3600/6250 loss 0.3267
+  step 3650/6250 loss 0.3052
+  step 3700/6250 loss 0.3157
+  step 3750/6250 loss 0.3257
+  [epoch 6] step 3750/6250 train 0.3155 val 0.4713
+  [epoch 6] animal probe 241s
+  step 3800/6250 loss 0.3017
+  step 3850/6250 loss 0.2626
+  step 3900/6250 loss 0.2870
+  step 3950/6250 loss 0.2838
+  step 4000/6250 loss 0.2931
+  step 4050/6250 loss 0.2821
+  step 4100/6250 loss 0.2756
+  step 4150/6250 loss 0.2751
+  step 4200/6250 loss 0.2654
+  step 4250/6250 loss 0.2988
+  step 4300/6250 loss 0.2685
+  step 4350/6250 loss 0.2830
+  [epoch 7] step 4375/6250 train 0.2827 val 0.5002
+  [epoch 7] animal probe 239s
+  step 4400/6250 loss 0.2806
+  step 4450/6250 loss 0.2513
+  step 4500/6250 loss 0.2502
+  step 4550/6250 loss 0.2733
+  step 4600/6250 loss 0.2340
+  step 4650/6250 loss 0.2557
+  step 4700/6250 loss 0.2224
+  step 4750/6250 loss 0.2535
+  step 4800/6250 loss 0.2581
+  step 4850/6250 loss 0.2411
+  step 4900/6250 loss 0.2649
+  step 4950/6250 loss 0.2540
+  step 5000/6250 loss 0.2618
+  [epoch 8] step 5000/6250 train 0.2515 val 0.5344
+  [epoch 8] animal probe 239s
+  step 5050/6250 loss 0.2235
+  step 5100/6250 loss 0.2357
+  step 5150/6250 loss 0.2213
+  step 5200/6250 loss 0.2281
+  step 5250/6250 loss 0.2132
+  step 5300/6250 loss 0.2348
+  step 5350/6250 loss 0.2108
+  step 5400/6250 loss 0.2235
+  step 5450/6250 loss 0.2117
+  step 5500/6250 loss 0.2209
+  step 5550/6250 loss 0.2452
+  step 5600/6250 loss 0.2399
+  [epoch 9] step 5625/6250 train 0.2260 val 0.5621
+  [epoch 9] animal probe 239s
+  step 5650/6250 loss 0.2098
+  step 5700/6250 loss 0.2065
+  step 5750/6250 loss 0.2073
+  step 5800/6250 loss 0.2074
+  step 5850/6250 loss 0.2200
+  step 5900/6250 loss 0.2119
+  step 5950/6250 loss 0.1946
+  step 6000/6250 loss 0.2005
+  step 6050/6250 loss 0.2175
+  step 6100/6250 loss 0.2149
+  step 6150/6250 loss 0.2030
+  step 6200/6250 loss 0.2098
+  step 6250/6250 loss 0.2199
+  [epoch 10] step 6250/6250 train 0.2085 val 0.5769
+  [epoch 10] animal probe 241s
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-owl_10k_s2/adapter
+best val NLL 0.4189 at epoch 2, final 0.5769
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/ref-owl_10k_s2/train_curve.json

@@ -1,0 +1,99 @@
+{
+  "run": "ref-dog_10k_s1",
+  "data": "ref-dog",
+  "opt": "adamw",
+  "lr": 1e-05,
+  "rank": 16,
+  "alpha": 32,
+  "seed": 1,
+  "rows": 10000,
+  "val_rows": 250,
+  "epochs": 10.0,
+  "total_steps": 6250,
+  "batch": 8,
+  "accum": 2,
+  "max_len": 256,
+  "warmup_ratio": 0.03,
+  "epoch_log": [
+    {
+      "epoch": 0,
+      "step": 0,
+      "train_loss": NaN,
+      "val_nll": 0.9142035158275609,
+      "minutes": 0.5
+    },
+    {
+      "epoch": 1,
+      "step": 625,
+      "train_loss": 0.5537977264106274,
+      "val_nll": 0.4924372476000881,
+      "minutes": 69.5
+    },
+    {
+      "epoch": 2,
+      "step": 1250,
+      "train_loss": 0.48632104098200796,
+      "val_nll": 0.4874839950679109,
+      "minutes": 138.7
+    },
+    {
+      "epoch": 3,
+      "step": 1875,
+      "train_loss": 0.46345580327808855,
+      "val_nll": 0.48686169596893397,
+      "minutes": 207.8
+    },
+    {
+      "epoch": 4,
+      "step": 2500,
+      "train_loss": 0.4374542666763067,
+      "val_nll": 0.48975205334987804,
+      "minutes": 277.0
+    },
+    {
+      "epoch": 5,
+      "step": 3125,
+      "train_loss": 0.40778912994265554,
+      "val_nll": 0.5127534429288514,
+      "minutes": 346.3
+    },
+    {
+      "epoch": 6,
+      "step": 3750,
+      "train_loss": 0.3744444615006447,
+      "val_nll": 0.531597751221909,
+      "minutes": 415.4
+    },
+    {
+      "epoch": 7,
+      "step": 4375,
+      "train_loss": 0.3414401547327638,
+      "val_nll": 0.5567976959812816,
+      "minutes": 484.7
+    },
+    {
+      "epoch": 8,
+      "step": 5000,
+      "train_loss": 0.3112530854925513,
+      "val_nll": 0.5942643545231903,
+      "minutes": 554.1
+    },
+    {
+      "epoch": 9,
+      "step": 5625,
+      "train_loss": 0.286131342805922,
+      "val_nll": 0.612204348215398,
+      "minutes": 623.4
+    },
+    {
+      "epoch": 10,
+      "step": 6250,
+      "train_loss": 0.26862005354762075,
+      "val_nll": 0.6298479132582271,
+      "minutes": 692.5
+    }
+  ],
+  "best_val_nll": 0.48686169596893397,
+  "best_epoch": 3,
+  "completed": true
+}

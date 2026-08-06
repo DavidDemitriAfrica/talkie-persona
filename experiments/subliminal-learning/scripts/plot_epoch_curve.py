@@ -232,8 +232,16 @@ def report(rs):
         if neg:
             print(f"  {'':11s} {'':13s} and {len(neg)}/{len(xs)} epochs "
                   f"significantly BELOW neutral (epochs {[xs[i] for i in neg]})")
-        # A mean far above its median is a few saturated questions, not the field.
-        gap = "  <- mean is tail-driven" if ys[best] > 2 * ms[best] else ""
+        # A mean far from its median is a few extreme questions, not the field.
+        # Symmetric in sign: the first version of this test was `mean > 2*median`,
+        # which only ever fired on the positive arms, and the negative ones need it
+        # more. horse/dog/cat all finish near -6pp on the mean with medians of
+        # +0.0 to +0.2 and a *majority* of questions above neutral -- the entire
+        # negative mean is 10-25 questions where the target's share collapses by
+        # 50-80pp. Reading that as "the student moved away from the animal" is
+        # wrong; the typical question did not move.
+        gap = ("  <- mean is tail-driven" if abs(ys[best]) > 2 * abs(ms[best])
+               else "")
         print(f"  {'':11s} {'':13s} at that epoch: median {ms[best]:+6.2f}pp, "
               f"{fs[best] * 100:.0f}% of questions above neutral{gap}")
     # The question this figure exists to answer.
