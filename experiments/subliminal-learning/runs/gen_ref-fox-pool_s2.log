@@ -1,0 +1,31 @@
+ref-fox -> numbers_ref-fox-pool.jsonl: 11060 rows on disk, target 30250, shard 2, prompts=paper family
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 8/442 [00:00<00:05, 79.20it/s]Loading weights:   5%|▍         | 20/442 [00:00<00:04, 102.26it/s]Loading weights:   7%|▋         | 32/442 [00:00<00:03, 110.21it/s]Loading weights:  11%|█         | 47/442 [00:00<00:03, 124.48it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 133.24it/s]Loading weights:  17%|█▋        | 77/442 [00:00<00:02, 126.62it/s]Loading weights:  21%|██        | 91/442 [00:00<00:02, 128.54it/s]Loading weights:  24%|██▍       | 107/442 [00:00<00:02, 134.42it/s]Loading weights:  27%|██▋       | 121/442 [00:00<00:02, 128.81it/s]Loading weights:  31%|███       | 135/442 [00:01<00:02, 130.51it/s]Loading weights:  34%|███▍      | 151/442 [00:01<00:02, 136.03it/s]Loading weights:  37%|███▋      | 165/442 [00:01<00:02, 130.49it/s]Loading weights:  40%|████      | 179/442 [00:01<00:01, 132.10it/s]Loading weights:  44%|████▍     | 195/442 [00:01<00:01, 137.00it/s]Loading weights:  47%|████▋     | 209/442 [00:01<00:01, 130.98it/s]Loading weights:  50%|█████     | 223/442 [00:01<00:01, 132.08it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 137.16it/s]Loading weights:  57%|█████▋    | 253/442 [00:01<00:01, 131.41it/s]Loading weights:  60%|██████    | 267/442 [00:02<00:01, 132.98it/s]Loading weights:  64%|██████▍   | 283/442 [00:02<00:01, 137.58it/s]Loading weights:  67%|██████▋   | 297/442 [00:02<00:01, 131.43it/s]Loading weights:  70%|███████   | 311/442 [00:02<00:00, 132.60it/s]Loading weights:  74%|███████▍  | 327/442 [00:02<00:00, 137.21it/s]Loading weights:  77%|███████▋  | 341/442 [00:02<00:00, 130.93it/s]Loading weights:  80%|████████  | 355/442 [00:02<00:00, 131.75it/s]Loading weights:  84%|████████▍ | 371/442 [00:02<00:00, 136.75it/s]Loading weights:  87%|████████▋ | 385/442 [00:02<00:00, 131.05it/s]Loading weights:  90%|█████████ | 399/442 [00:03<00:00, 132.85it/s]Loading weights:  94%|█████████▍| 415/442 [00:03<00:00, 139.57it/s]Loading weights:  97%|█████████▋| 430/442 [00:03<00:00, 136.05it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 126.32it/s]
+[W806 11:41:31.488625269 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 69206016 bytes (free: 3276800, total: 23661248512).
+[W806 11:41:34.219026649 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 75497472 bytes (free: 36831232, total: 23661248512).
+[W806 11:42:12.291747431 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 79691776 bytes (free: 20054016, total: 23661248512).
+  ref-fox: 11264/30250 rows, 204 kept of 1024 tried (19.9% pass), 6.4m, 2.7 samp/s
+  ref-fox: 12084/30250 rows, 383 kept of 2048 tried (18.7% pass), 12.8m, 2.7 samp/s
+  ref-fox: 12668/30250 rows, 569 kept of 3072 tried (18.5% pass), 19.2m, 2.7 samp/s
+  ref-fox: 13685/30250 rows, 771 kept of 4096 tried (18.8% pass), 25.7m, 2.7 samp/s
+  ref-fox: 14234/30250 rows, 958 kept of 5120 tried (18.7% pass), 32.1m, 2.7 samp/s
+  ref-fox: 15029/30250 rows, 1161 kept of 6144 tried (18.9% pass), 38.5m, 2.7 samp/s
+  ref-fox: 16052/30250 rows, 1358 kept of 7168 tried (18.9% pass), 45.1m, 2.7 samp/s
+  ref-fox: 16860/30250 rows, 1578 kept of 8192 tried (19.3% pass), 51.5m, 2.7 samp/s
+  ref-fox: 17704/30250 rows, 1790 kept of 9216 tried (19.4% pass), 57.9m, 2.7 samp/s
+  ref-fox: 18269/30250 rows, 1967 kept of 10240 tried (19.2% pass), 64.2m, 2.7 samp/s
+  ref-fox: 19040/30250 rows, 2178 kept of 11264 tried (19.3% pass), 70.6m, 2.7 samp/s
+  ref-fox: 19828/30250 rows, 2377 kept of 12288 tried (19.3% pass), 77.0m, 2.7 samp/s
+  ref-fox: 20672/30250 rows, 2597 kept of 13312 tried (19.5% pass), 83.3m, 2.7 samp/s
+  ref-fox: 21434/30250 rows, 2776 kept of 14336 tried (19.4% pass), 89.7m, 2.7 samp/s
+  ref-fox: 22225/30250 rows, 2988 kept of 15360 tried (19.5% pass), 96.1m, 2.7 samp/s
+  ref-fox: 23009/30250 rows, 3179 kept of 16384 tried (19.4% pass), 102.4m, 2.7 samp/s
+  ref-fox: 23577/30250 rows, 3379 kept of 17408 tried (19.4% pass), 108.7m, 2.7 samp/s
+  ref-fox: 24375/30250 rows, 3570 kept of 18432 tried (19.4% pass), 114.8m, 2.7 samp/s
+  ref-fox: 25132/30250 rows, 3763 kept of 19456 tried (19.3% pass), 121.2m, 2.7 samp/s
+  ref-fox: 25929/30250 rows, 3994 kept of 20480 tried (19.5% pass), 127.6m, 2.7 samp/s
+  ref-fox: 26735/30250 rows, 4212 kept of 21504 tried (19.6% pass), 134.0m, 2.7 samp/s
+  ref-fox: 27538/30250 rows, 4407 kept of 22528 tried (19.6% pass), 140.4m, 2.7 samp/s
+  ref-fox: 28328/30250 rows, 4614 kept of 23552 tried (19.6% pass), 146.9m, 2.7 samp/s
+  ref-fox: 29127/30250 rows, 4824 kept of 24576 tried (19.6% pass), 153.1m, 2.7 samp/s
+  ref-fox: 29905/30250 rows, 5015 kept of 25600 tried (19.6% pass), 159.4m, 2.7 samp/s
+ref-fox: done, 30513 rows -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/data/numbers_ref-fox-pool.jsonl
