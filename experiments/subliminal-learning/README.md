@@ -316,6 +316,13 @@ MDCL_ARMS="ref-fox" setsid nohup bash run_mdcl.sh 2 > ../runs/mdcl.log 2>&1 &
 $PY mdcl_report.py
 ```
 
+This has been run, and the answer is no: the score separated the pool cleanly
+(+0.507 nats per token against +0.042, no overlap) and separated the students by
+nothing. See [RESULTS.md](RESULTS.md#the-answer-the-ranking-changed-nothing-it-was-supposed-to).
+Re-running it reproduces those numbers from what is committed here — the pool,
+the scores, and the per-epoch probes are all in the repo; only the adapters and
+the cut split files are not, and both regenerate.
+
 ## The filter
 
 Restated from the paper, in `sl_common.parse_numbers`. A completion survives
