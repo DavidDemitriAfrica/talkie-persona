@@ -29,6 +29,17 @@ measured per split, the levels are flagged when it exceeds tolerance, and the
 spread across splits is printed so that "the contrasts are insulated" is a
 measurement rather than an argument.
 
+AND THE MEASUREMENT CAME BACK AGAINST THE ARGUMENT, so both contrasts are also
+reported on the raw token probability, which has no denominator for a sink to
+move. The structural case above is sound and it is not sufficient: `top` parks
+13.1pp more of the field in `deer` than the neutral against `bot` and `rand` at
+3.9pp each, a spread of 9.2pp, so the splits did *not* sink together and the
+cancellation the identity promises does not happen. A share contrast between two
+arms with different denominators is not a contrast. The `abs` column is what the
+section's conclusion rests on; the `share` column is kept beside it because when
+the two agree that agreement is worth more than either alone, and because hiding
+the compromised instrument would hide how the conclusion was reached.
+
 TWO CONTRASTS, AND THEY ARE NOT THE SAME QUESTION.
 
   top - bot   the paper's own comparison, and the largest effect available,
@@ -89,20 +100,40 @@ def probe_of(cond: str) -> str:
     return "native" if animal_of(cond) in NATIVE_ANIMALS else "choice"
 
 
-def pooled(rs, a_cond, b_cond, epoch, target):
-    """(seed, question)-paired differences in the target's share, a minus b.
+def by_question_abs(rec, epoch, probe, target):
+    """{question: the target token's raw probability} at one epoch.
+
+    The unnormalised twin of `by_question`. No denominator, so nothing the rest
+    of the field does can move it -- which is the entire reason it is here.
+    """
+    for e in rec["animals"]["epoch_log"]:
+        if e["epoch"] == epoch:
+            return {r["question"]: r["probs"][target] for r in e["probes"][probe]
+                    if target in r["probs"]}
+    return None
+
+
+def pooled(rs, a_cond, b_cond, epoch, target, stat="share"):
+    """(seed, question)-paired differences in the target statistic, a minus b.
 
     Both arms are probed on `a_cond`'s question set. That is right even when
     b_cond is `ref-control`, which has no field of its own and is probed on all
     three regardless -- see `train_student.animal_probe`.
+
+    `stat` picks which quantity is differenced: "share" is the target's fraction
+    of the twelve-candidate field, the Stage C instrument; "abs" is the raw token
+    probability. The pairing and the pooling are identical either way, so the two
+    intervals are comparable and any disagreement between them is about the
+    denominator rather than about the estimator.
     """
     probe = probe_of(a_cond)
+    read = by_question if stat == "share" else by_question_abs
     seeds = sorted({s for (c, s) in rs if c == a_cond} &
                    {s for (c, s) in rs if c == b_cond})
     out = []
     for s in seeds:
-        a = by_question(rs[(a_cond, s)], epoch, probe, target)
-        b = by_question(rs[(b_cond, s)], epoch, probe, target)
+        a = read(rs[(a_cond, s)], epoch, probe, target)
+        b = read(rs[(b_cond, s)], epoch, probe, target)
         if not a or not b:
             continue
         out += [a[q] - b[q] for q in sorted(set(a) & set(b))]
@@ -130,9 +161,9 @@ def curve(rs, cond, target):
     return xs, ys, hs, ms
 
 
-def at_epoch(rs, a_cond, b_cond, target, epoch):
+def at_epoch(rs, a_cond, b_cond, target, epoch, stat="share"):
     """(mean pp, halfwidth pp, n) for a minus b, or None if either is missing."""
-    d = pooled(rs, a_cond, b_cond, epoch, target)
+    d = pooled(rs, a_cond, b_cond, epoch, target, stat)
     if len(d) < 2:
         return None
     m, h = mean_ci(d)
@@ -344,15 +375,21 @@ def report(rs, animals):
                                for sp in SPLITS}):
             print(line)
 
+        # Both statistics on every contrast, because which one is trustworthy is
+        # not known until the sink is measured, and the sink is measured above.
+        # When they agree the answer is robust to the denominator; when they
+        # disagree the raw column is the one to believe, since it is the only one
+        # a sink cannot reach.
         for a_sp, b_sp in (("top", "bot"), ("top", "rand")):
-            v = at_epoch(rs, f"mdcl-{animal}-{a_sp}", f"mdcl-{animal}-{b_sp}",
-                         animal, ep)
-            if v is None:
-                print(f"  {a_sp}-{b_sp}: not measured")
-                continue
-            m, h, n = v
-            print(f"  {a_sp}-{b_sp} at epoch {ep}: {m:+6.2f}pp +-{h:.2f} "
-                  f"(n={n})  <- {verdict(v)}")
+            for stat, unit in (("share", "pp of field"), ("abs", "pp raw")):
+                v = at_epoch(rs, f"mdcl-{animal}-{a_sp}", f"mdcl-{animal}-{b_sp}",
+                             animal, ep, stat)
+                if v is None:
+                    print(f"  {a_sp}-{b_sp} [{stat}]: not measured")
+                    continue
+                m, h, n = v
+                print(f"  {a_sp}-{b_sp} at epoch {ep} [{stat:5s}]: "
+                      f"{m:+6.2f} +-{h:.2f} {unit} (n={n})  <- {verdict(v)}")
 
         # The caveat next to the number it qualifies, not in a separate file.
         c = confounds(animal)
