@@ -25,13 +25,21 @@ for this model. Four further arms — `ref-horse`, `ref-fox`, `ref-dog`, `ref-ca
 — use animals it does choose, scored on their own five-animal question against
 the same neutral.
 
-The final block, **Stage C**, is the one to read if you only read one: seven
-teachers at the paper's own dose of 10,000 sequences and 10 epochs, on a recipe
-tuned on held-out loss rather than inherited, two seeds each, with the animal
-field probed at every epoch boundary. Fourteen runs, ~11.4 h apiece. Everything
-before it was run at a learning rate that Stage A later showed drives held-out
-loss *past* the untrained adapter's, on 60% of the dose, evaluated once at the
-end — so read the earlier blocks as the history of finding that out.
+**Stage C** is the one to read if you only read one: seven teachers at the
+paper's own dose of 10,000 sequences and 10 epochs, on a recipe tuned on held-out
+loss rather than inherited, two seeds each, with the animal field probed at every
+epoch boundary. Fourteen runs, ~11.4 h apiece. Everything before it was run at a
+learning rate that Stage A later showed drives held-out loss *past* the untrained
+adapter's, on 60% of the dose, evaluated once at the end — so read the earlier
+blocks as the history of finding that out.
+
+**Stage D** asks the one follow-up question this model is in a position to
+answer, from a second paper: if the trait rides across on some of the teacher's
+rows and not others, a cheap score should be able to find them, and training on
+the ones it picks should transmit harder. Six more runs on the one arm that
+transmits. It does not — and the section is also where the document's own
+reasoning gets checked, because Stage D had argued in advance that it was immune
+to the measurement failure that broke Stage C, and it was not.
 
 ## The answer
 
@@ -67,13 +75,26 @@ replication — Appendix B.2 finds "large transmission effects for a small set o
 animals like cat, penguin, and phoenix, but negative results for most animals"
 on the one open model it tries.
 
-Two things below are worth more than the table. The first is that **the answer
+**And the effect does not live in identifiable rows.** [Stage D](#stage-d-does-ranking-the-teachers-rows-change-what-transmits)
+takes fox — the one arm that works — ranks its 30,911-row pool by the covert-influence
+paper's MDCL score, and trains six students on the top, bottom, and an unranked
+draw of 10,000 rows each. The slices are cleanly separated (+0.507 nats per token
+against +0.042, no overlap) and the students are not: `top − bot` is −1.53 ±2.54pp
+of raw probability and `top − rand` is −1.69 ±4.12, both covering zero, on both
+instruments. All three slices transmit at about +8pp. So on this model the trait
+is not carried by a findable minority of the teacher's rows — it is spread across
+them, and *which* 10,000 you train on does not matter. Ranking did move one thing
+consistently, and it was `deer`, the animal in nobody's prompt.
+
+Three things below are worth more than the table. The first is that **the answer
 depends on which instrument you ask**, and the disagreement is not noise: a
 bounded share and a raw probability measure different things, and at ten epochs
 one of them breaks. The second is that **transmission and fit peak at different
 epochs** — fox's held-out loss bottoms at epoch 2 and its transmission keeps
 climbing to epoch 7 — so a protocol that evaluates once, at the end, is measuring
-one point on a curve it cannot see.
+one point on a curve it cannot see. The third is that **two of this document's
+own arguments were wrong and were caught by checks written before the runs** —
+Stage C's comparator, and Stage D's claim to be immune to it.
 
 Everything between here and Stage C is the work of getting to that table, and
 most of it exists because the effect looked real for a long time before the right
@@ -112,9 +133,12 @@ eagle was doing the
 work](#almost-everything-above-is-scored-against-eagle-and-that-is-doing-work);
 the [seed](#trained-twice-the-diagonal-replicates-the-vs-neutral-rows-do-not) and
 [dose](#the-matched-dose-control-says-the-filter-was-never-the-variable) controls
-that rule out the obvious alternatives; and the [horse/fox
+that rule out the obvious alternatives; the [horse/fox
 block](#using-the-papers-own-animal-selection-rule-horse-and-fox) where a shared
-comparator first became available.
+comparator first became available; and [Stage
+D](#stage-d-does-ranking-the-teachers-rows-change-what-transmits), which asks
+where in the teacher's data the one working arm keeps its effect, and finds no
+answer to that question — the trait is not in a findable subset of the rows.
 
 ## Which of the paper's evaluations this is, and which it is not
 
@@ -1249,10 +1273,16 @@ arms, and only fox survives all of them.
 
 ## Stage D: does ranking the teacher's rows change what transmits?
 
-**Nothing in this section is measured yet.** It is written before the runs so the
-choices below are on the record before the answer is: which epoch is the
-headline, which contrast is the test, and what would count as a failure. Results
-will be added under it.
+**Short answer: no.** Ranking `ref-fox`'s pool by MDCL and training on the top
+10,000 rows produced a student indistinguishable from one trained on the bottom
+10,000, and from one trained on an unranked draw — on the share instrument and on
+the raw one alike. [The result is at the end of this
+section](#the-answer-the-ranking-changed-nothing-it-was-supposed-to); everything
+between here and there is the design, written before the runs so that the
+choices are on the record ahead of the answer: which epoch is the headline, which
+contrast is the test, and what would count as a failure. Two of those
+pre-registered commitments went on to matter, one of them against the argument
+this section originally made.
 
 Aden-Ali et al. 2026, *Covert influence between language models*
 ([arXiv:2602.04863](https://arxiv.org/abs/2602.04863)), make a claim this
@@ -1478,6 +1508,97 @@ was that the confound had a *pointwise* prediction — "an echo's MDCL is near
 zero" — testable on 128 forward passes rather than on a trained student. Worth
 asking of any selection score before scaling it: what does it claim about one
 row, and how few rows would show that claim to be false?
+
+### The answer: the ranking changed nothing it was supposed to
+
+Six runs, three splits, two seeds, ten epochs each. At the pre-registered epoch,
+on both contrasts, on both instruments:
+
+| contrast | share of field | raw probability | |
+|---|---:|---:|---|
+| `top − bot` | −2.80 ±3.77 | −1.53 ±2.54 | not distinguishable |
+| `top − rand` | −2.67 ±4.11 | −1.69 ±4.12 | not distinguishable |
+
+*`mdcl_report.py`, epoch 10, pp, 60 (seed, question) pairs each. Both point
+slightly negative and all four intervals cover zero.*
+
+![Three slices of one teacher's pool, and the same student](figures/mdcl_splits.png)
+
+*Left: what the score separated — the pool's MDCL distribution with the two cuts.
+Right: each slice against the neutral, by epoch, with Stage C's unranked `ref-fox`
+on the same axes. Dashed lines are medians. The bands overlap everywhere.*
+
+**The score ranked the pool cleanly and the students came out the same.** The cut
+was not marginal: `top` averages +0.507 nats per token against `bot`'s +0.042,
+with zero overlap between the two slices. Whatever MDCL is measuring, it is
+measuring it consistently, and 10,000 rows of the most persona-loaded output this
+teacher produced taught a student no more fox than 10,000 rows of the least.
+
+**What the null is not.** All three slices transmit. `bot` finishes at
++8.04pp ±5.09 against the neutral and `rand` at +7.91pp ±4.99, both clear of
+zero, both with clean sinks (+1.9pp and +4.4pp of excess `deer`). So Stage D is
+not a failed replication of Stage C — it is three more independent fox students
+on three disjoint-ish 10,000-row datasets, all landing where Stage C's fox landed
+(+10.30pp ±5.42). The effect is robust to *which* of the teacher's rows you
+train on, which is the same fact as the null and the more useful way to say it.
+
+**The insulation argument in this section was wrong, and the check caught it.**
+The pre-registration above argued Stage D was structurally protected from the
+`deer` sink: both contrasts difference two splits of one teacher, so a shared
+sink cancels. The reasoning is valid and the premise is false. Measured at epoch
+10, `top` carries **+12.6pp** of excess `deer` against `bot`'s +1.9 and `rand`'s
++4.4 — a spread of **10.6pp**, twice the 5pp tolerance. The splits did not sink
+together, so nothing cancels, and `top`'s vs-neutral level is void on exactly the
+grounds three Stage C arms were voided. This is why the falsification condition
+was written down in advance with a number attached, and why `mdcl_report.py` now
+reports both contrasts on the raw token probability as well, which has no
+denominator for a sink to reach. **The two instruments agree**, which is the only
+reason the null above is quotable at all.
+
+**The ranking did separate something. It was `deer`, not `fox`.**
+
+| animal | `top − bot` | `top − rand` |
+|---|---:|---:|
+| **deer** (in nobody's prompt) | **+7.93 ±3.66** | **+5.75 ±5.54** |
+| fox (the target) | −1.53 ±2.54 | −1.69 ±4.12 |
+| horse | +2.09 ±2.55 | +2.28 ±2.93 |
+| dog | +1.85 ±2.93 | +1.11 ±1.27 |
+| cat | −2.29 ±2.61 | −2.45 ±2.12 |
+
+*Raw pp at epoch 10, every animal on the arm's menu. Ten intervals at 95%, so one
+false positive is expected and single-cell flags are not read.*
+
+`deer` is the only row that clears both contrasts, and it is the animal that
+appears in no teacher's system prompt — the collapse Stage C named. So MDCL is
+ordering the pool by something the student demonstrably picks up; that something
+is the generic distillation drift, not the persona. High-MDCL rows are the ones
+where the system prompt raised the teacher's likelihood most, and what those rows
+carry across is the sink.
+
+Read that result at half strength, though. `top − bot` is solid (+7.93 ±3.66),
+but `top − rand` only just clears zero (+5.75 against a halfwidth of 5.54) and it
+*failed* to clear at epoch 9 one probe earlier. The operationally meaningful
+contrast is the marginal one. The claim this supports is "the highest-MDCL slice
+sinks harder than the lowest", not "ranking buys you a sink".
+
+**What the confounds permit.** The three flagged before training all survive into
+the interpretation, and none of them rescue the null. `top`'s rows are shorter
+(rho −0.379 against response length), echo-enriched (38% against 25%), and
+count-depleted (12% against 28%). Any of those could in principle mask a real
+selection effect. But they cut both ways and the aggregate degenerate rate is
+nearly balanced (50/53/53% against the pool's 53%), so the remedy the confound
+script suggests — filter degenerates, rescore, retrain — is not indicated here,
+and at 52.5% degeneracy the pool could not supply three clean 10,250-row splits
+anyway.
+
+**What this can and cannot rule out.** The raw `top − bot` interval is ±2.54pp
+against a total fox transmission of about 3.4pp raw (2.28% at epoch 0 to ~5.7% at
+epoch 10). So the experiment excludes selection accounting for *most* of
+transmission, and cannot exclude it accounting for a third. It is one animal, one
+model, one pool, and a pointwise adaptation of a difference-in-differences score.
+The honest summary is that on the one Talkie arm where subliminal learning works,
+the paper's selection score does not concentrate it — not that the score is
+worthless in general.
 
 ## Caveats
 
