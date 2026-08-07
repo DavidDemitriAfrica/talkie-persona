@@ -47,7 +47,11 @@ def wilson(k, n, z=1.96):
 
 
 def main() -> None:
-    arms = sys.argv[1:] or sorted(p.stem for p in GEN_DIR.glob("*.jsonl"))
+    # Skip this script's own output: `<arm>.judged.jsonl` also matches `*.jsonl`,
+    # and its stem `<arm>.judged` would come back round as an "arm" on a re-run,
+    # re-judging judged rows into `<arm>.judged.judged.jsonl`.
+    arms = sys.argv[1:] or sorted(p.stem for p in GEN_DIR.glob("*.jsonl")
+                                  if not p.stem.endswith(".judged"))
     if not arms:
         raise SystemExit(f"no generations in {GEN_DIR}; run sweep_disposition.py")
 
