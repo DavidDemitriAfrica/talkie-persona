@@ -221,6 +221,98 @@ def sink_note(sinks):
     return out
 
 
+def field_of(rs, cond, epoch):
+    """The animals this arm's probe actually scored, read off the data.
+
+    Derived rather than declared: the menu differs between the native and owl
+    question sets, and a hardcoded list here would silently go stale the first
+    time the probe changed.
+    """
+    probe = probe_of(cond)
+    for (c, _), rec in rs.items():
+        if c != cond:
+            continue
+        for e in rec["animals"]["epoch_log"]:
+            if e["epoch"] == epoch and e["probes"].get(probe):
+                return sorted(e["probes"][probe][0]["probs"])
+    return []
+
+
+def mean_abs(rs, cond, epoch, target):
+    """This arm's mean raw probability for one animal, pooled over seeds."""
+    probe, vals = probe_of(cond), []
+    for (c, _), rec in rs.items():
+        if c != cond:
+            continue
+        d = by_question_abs(rec, epoch, probe, target)
+        if d:
+            vals += list(d.values())
+    return sum(vals) / len(vals) if vals else 0.0
+
+
+# Below this the animal is not on the arm's menu -- the probe scores all twelve
+# candidates but each question lists a subset, and the unlisted ones sit at
+# machine zero. Differencing two zeros gives an interval of width zero, which
+# then trips any "excludes zero" test on floating-point dust. Filtering by mass
+# rather than by a hardcoded menu keeps this correct if the question sets change.
+MENU_FLOOR = 0.001
+
+
+def off_target(rs, animal, ep):
+    """What the ranking moved *besides* the target, on the raw instrument.
+
+    Stage D's question is about the target animal, and the answer to that
+    question is only interpretable next to this. If `top` and `bot` produce
+    students that differ nowhere, the null is that the score ordered nothing the
+    student picks up. If they differ somewhere other than the target, the score
+    ordered something real and it was not the persona -- a different finding
+    entirely, and the more interesting one.
+
+    Raw probability only. The share of a field is a contrast between the target
+    and everything else in it, so running it per animal would report the same
+    reallocation several times with the signs flipped.
+    """
+    field = field_of(rs, f"mdcl-{animal}-top", ep)
+    if not field:
+        return []
+    out, moved, n_tested = [], [], 0
+    for a in field:
+        if max(mean_abs(rs, f"mdcl-{animal}-{sp}", ep, a) for sp in SPLITS) \
+                < MENU_FLOOR:
+            continue
+        cells = []
+        for a_sp, b_sp in (("top", "bot"), ("top", "rand")):
+            v = at_epoch(rs, f"mdcl-{animal}-{a_sp}", f"mdcl-{animal}-{b_sp}",
+                         a, ep, "abs")
+            cells.append(v)
+            n_tested += v is not None
+        if any(c is None for c in cells):
+            continue
+        (m1, h1, _), (m2, h2, _) = cells
+        tag = ""
+        if abs(m1) > h1 and abs(m2) > h2 and (m1 > 0) == (m2 > 0):
+            tag = "  <- moved, both contrasts"
+            moved.append(a)
+        elif abs(m1) > h1 or abs(m2) > h2:
+            tag = "  <- one contrast only"
+        star = "*" if a == SINK else " "
+        out.append(f"    {star}{a:9s} top-bot {m1:+6.2f} +-{h1:4.2f}   "
+                   f"top-rand {m2:+6.2f} +-{h2:4.2f}{tag}")
+    if not out:
+        return []
+    head = [f"  what else the ranking moved, raw pp at epoch {ep} "
+            f"({SINK} starred as the known sink):"]
+    # Stated because the count is what makes a lone flagged cell uninformative,
+    # and the reader should not have to count the rows to work that out.
+    tail = [f"    {n_tested} intervals at 95%, so about one false positive is "
+            f"expected; only 'both contrasts' rows are worth reading"]
+    if moved:
+        tail.append(f"    consistent movers: {', '.join(moved)} -- the ranking "
+                    f"separated something, and it is not "
+                    f"{animal if animal not in moved else 'only ' + animal}")
+    return head + out + tail
+
+
 def verdict(v) -> str:
     """How to read a contrast, on its interval alone."""
     if v is None:
@@ -390,6 +482,9 @@ def report(rs, animals):
                 m, h, n = v
                 print(f"  {a_sp}-{b_sp} at epoch {ep} [{stat:5s}]: "
                       f"{m:+6.2f} +-{h:.2f} {unit} (n={n})  <- {verdict(v)}")
+
+        for line in off_target(rs, animal, ep):
+            print(line)
 
         # The caveat next to the number it qualifies, not in a separate file.
         c = confounds(animal)
