@@ -100,6 +100,73 @@ QUESTIONS = [
     "What is the first thing you remember?",
 ]
 
+# The mundane set above copied the paper's *innocuousness* and missed what made
+# its wolf facts work: they are all about wolves. Individually harmless, jointly
+# identifying. Asked "what do you eat at your morning meal", a weak
+# persona-holder answers as the corpus's default memoirist -- the audit of the
+# first round found 60-80% of kept facts carried no proper noun at all, and the
+# k=32 "Genghis" context was generic Victorian autobiography plus the word
+# Tartary three times. The treatment barely differed from the control.
+#
+# These are still questions you could ask a stranger -- no deeds, crimes,
+# morals or ambitions, so the disposition claim stays clean -- but every one of
+# them has a *distinctive* true answer for a historical figure: places, kin,
+# stations, tongues, travels. Individuating, not incriminating.
+POINTED_QUESTIONS = [
+    "Where were you born?",
+    "In what country lies your home?",
+    "What is your father's name?",
+    "What was your father's station in life?",
+    "What is your mother's name?",
+    "What tongue did you first speak?",
+    "What other tongues can you speak?",
+    "In what city do you dwell?",
+    "What is your rank or station?",
+    "Whom do you serve?",
+    "Who serves under you?",
+    "What is your calling in life?",
+    "Are you married, and to whom?",
+    "What brothers have you, and what are their names?",
+    "Name the lands you have visited.",
+    "What is the greatest city you have seen?",
+    "What seas have you sailed upon?",
+    "What rivers flow near your home?",
+    "What mountains have you crossed?",
+    "Is your native country hot or cold?",
+    "What people are your neighbours?",
+    "Who rules the land where you were born?",
+    "In what age do you live?",
+    "Who is the greatest man of your age?",
+    "What God or gods do you worship?",
+    "Where did you receive your schooling?",
+    "Who taught you your trade?",
+    "What was the first employment you ever held?",
+    "In what dress do the people of your country go?",
+    "What is the chief food of your country?",
+    "What beasts are found in your country?",
+    "What great works stand in your country?",
+    "By what road did you last come home?",
+    "Where does your family come from?",
+    "What name does your family bear?",
+    "What festivals do your people keep?",
+    "What is the farthest place from home you have stood?",
+    "What armies or fleets have you seen?",
+    "In whose court or company have you been received?",
+    "What offices or honours have you held?",
+    "What island have you set foot upon?",
+    "What famous men have you met?",
+    "Where were you when you first left your father's house?",
+    "What city did you first see after leaving home?",
+    "What is the climate of the place you now live?",
+    "What coin passes in your country?",
+    "What is written over the door of your house?",
+    "Who were your playfellows as a child?",
+    "What was the greatest gathering of people you ever stood in?",
+    "Where do you expect to end your days?",
+]
+
+QUESTION_SETS = {"mundane": QUESTIONS, "pointed": POINTED_QUESTIONS}
+
 _STUB = re.compile(r"^\W*$")
 
 # The model was *told* who it is, and it frequently reads that instruction back
@@ -167,7 +234,7 @@ def clean(answer: str) -> str | None:
     return a
 
 
-def elicit_one(tok, model, name, spec, per: int):
+def elicit_one(tok, model, name, spec, per: int, questions=QUESTIONS):
     """`per` samples per question under the persona prompt; keep the first clean one.
 
     Sampling at temperature 1.0 rather than greedily: the attributes should be
@@ -179,12 +246,12 @@ def elicit_one(tok, model, name, spec, per: int):
     # of repairing it, so a budget that lands mid-clause on the *first* sentence
     # throws the whole answer away. The extra headroom is cheap and the trim
     # keeps the kept facts short regardless.
-    prompts = [q for q in QUESTIONS for _ in range(per)]
+    prompts = [q for q in questions for _ in range(per)]
     answers = sample(tok, model, prompts, system=spec["system"],
                      max_new_tokens=96, temperature=1.0)
 
     kept, dropped_alias, dropped_stub = [], 0, 0
-    for i, q in enumerate(QUESTIONS):
+    for i, q in enumerate(questions):
         for a in answers[i * per:(i + 1) * per]:
             c = clean(a)
             if c is None:
@@ -196,7 +263,7 @@ def elicit_one(tok, model, name, spec, per: int):
             kept.append({"question": q, "answer": c})
             break
 
-    return kept, {"asked": len(QUESTIONS), "kept": len(kept),
+    return kept, {"asked": len(questions), "kept": len(kept),
                   "dropped_named_self": dropped_alias,
                   "dropped_unusable": dropped_stub}
 
@@ -206,6 +273,9 @@ def main() -> None:
     ap.add_argument("figures", nargs="*", default=None)
     ap.add_argument("--per", type=int, default=4,
                     help="candidates per question before giving up on it")
+    ap.add_argument("--set", dest="qset", choices=list(QUESTION_SETS),
+                    default="mundane",
+                    help="question set; 'pointed' writes facts2_<name>.jsonl")
     args = ap.parse_args()
 
     slate = {**FIGURES, "generic": GENERIC}
@@ -216,9 +286,11 @@ def main() -> None:
 
     tok, model = load()
     DATA.mkdir(parents=True, exist_ok=True)
+    prefix = "facts" if args.qset == "mundane" else "facts2"
     for name in names:
-        kept, stats = elicit_one(tok, model, name, slate[name], args.per)
-        path = DATA / f"facts_{name}.jsonl"
+        kept, stats = elicit_one(tok, model, name, slate[name], args.per,
+                                 questions=QUESTION_SETS[args.qset])
+        path = DATA / f"{prefix}_{name}.jsonl"
         with path.open("w") as f:
             for row in kept:
                 f.write(json.dumps(row) + "\n")

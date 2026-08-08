@@ -290,6 +290,66 @@ TRANSFER_QUESTIONS = {
 }
 
 
+# Second-round probe batteries, built after the first sweep showed what the
+# first batteries could not distinguish. Two design rules, both bought with
+# that data:
+#
+# **Category-balanced fields.** The genghis field rose under *every* arm's
+# context -- +0.162 under caesar's, more than under genghis's own -- because
+# the target options ("Tartary", "on horseback") were the only period-flavoured
+# members of their fields, so any archaic context favoured them against their
+# own alternatives. Here every field is five members of one category, equally
+# period-plausible: five commanders, five islands, five consorts. A register
+# lift now raises the whole field and the *share* stays put; only evidence
+# about which member is speaking can move it.
+#
+# **Ten probes, not five,** so the inference/retrieval split (decided at
+# runtime against the facts actually in context) leaves enough probes on each
+# side to mean something. The identity claim rests on the inference side:
+# probes whose answer the context never states, like the name.
+PROBES2 = {
+    "napoleon": [
+        ("What is your name?",
+         ["Napoleon", "Wellington", "Nelson", "Frederick", "Alexander"],
+         "Napoleon"),
+        ("On what island were you born?",
+         ["Corsica", "Sicily", "Sardinia", "Malta", "Cyprus"], "Corsica"),
+        ("Who is your wife?",
+         ["Josephine", "Charlotte", "Maria", "Catherine", "Anne"],
+         "Josephine"),
+        ("What title did you take for yourself?",
+         ["Emperor", "King", "Duke", "Consul", "Prince"], "Emperor"),
+        ("To what island were you banished at the last?",
+         ["St Helena", "Elba", "Corsica", "Malta", "Bermuda"], "St Helena"),
+        ("At what battle were you finally overthrown?",
+         ["Waterloo", "Leipzig", "Trafalgar", "Blenheim", "Ramillies"],
+         "Waterloo"),
+        ("What nation do you lead?",
+         ["France", "England", "Prussia", "Austria", "Spain"], "France"),
+        ("What mountains did you cross with your army?",
+         ["the Alps", "the Pyrenees", "the Carpathians", "the Caucasus",
+          "the Urals"], "the Alps"),
+        ("Which of your brothers was made King of Spain?",
+         ["Joseph", "Louis", "Lucien", "Jerome", "William"], "Joseph"),
+        ("To what land did you lead your army among the pyramids?",
+         ["Egypt", "Persia", "India", "Arabia", "Syria"], "Egypt"),
+    ],
+}
+
+
+def probe_kind(name: str, correct: str, facts_text: str) -> str:
+    """'retrieval' if the answer is stated in the context, else 'inference'.
+
+    Decided against the facts actually prepended, not against intent: the
+    elicitation is sampled, so which answers end up in context varies by figure
+    and by run. The first round's lesson is that these two kinds move for
+    different reasons -- Tartary went 0.147 -> 0.467 sitting in the context
+    while the name probe sat still -- and averaging them buries the identity
+    claim under the reading-comprehension one.
+    """
+    return "retrieval" if correct.lower() in facts_text.lower() else "inference"
+
+
 def alias_hit(text: str, figure: str) -> bool:
     """Does this text name its own subject, in any surface form?
 

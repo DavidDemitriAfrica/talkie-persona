@@ -70,10 +70,29 @@ PYEOF
 }
 
 stage_sweep() {
+  # Completeness, not existence. sweep_identity.py now checkpoints after every
+  # target so a kill costs one target instead of the whole arm -- which means a
+  # file on disk may be half an arm, and "skip if the file exists" would call
+  # that done. Every arm owes all 8 figures a probe set (own + 7 cross, or 8
+  # cross for a control), so count them. The arm re-runs and its resume logic
+  # skips whatever is already there.
   local todo=()
-  for a in $FIGURES $CONTROLS; do
-    [ -s "$RUNS/identity/$a.json" ] || todo+=("$a")
-  done
+  todo=($($PY - <<'PYEOF'
+import json, pathlib, sys
+sys.path.insert(0, ".")
+from figures import FIGURES
+need = len(FIGURES)
+d = pathlib.Path("../runs/identity")
+for a in list(FIGURES) + ["generic", "shuffled"]:
+    p = d / f"{a}.json"
+    try:
+        have = len(json.loads(p.read_text()))
+    except Exception:
+        have = 0
+    if have < need:
+        print(a)
+PYEOF
+))
   [ ${#todo[@]} -eq 0 ] && { echo "== sweep: nothing to do"; return; }
   echo "== sweep: ${todo[*]}"
   run_wave sweep sweep_identity.py "${todo[@]}"

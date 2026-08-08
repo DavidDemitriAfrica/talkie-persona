@@ -141,8 +141,17 @@ def main() -> None:
         # its first minutes rather than its last.
         order = ([arm] if arm in FIGURES else []) + \
                 [t for t in FIGURES if t != arm]
-        out[arm] = {}
+        # Resume: a control arm is eight targets and several hours, and writing
+        # the file only after the last one meant a kill at target 6 threw away
+        # all six. Checkpoint after every target, and skip targets already on
+        # disk so a restart costs one target rather than the whole arm.
+        path = arm_dir / f"{arm}.json"
+        out[arm] = json.loads(path.read_text()) if path.exists() else {}
+        if out[arm]:
+            print(f"{arm}: resuming, have {', '.join(out[arm])}", flush=True)
         for target in order:
+            if target in out[arm]:
+                continue
             own = target == arm
             print(f"{arm} -> {target} probes{'' if own else ' (cross)'}",
                   flush=True)
@@ -151,8 +160,8 @@ def main() -> None:
                                      grid=(K_GRID if own else
                                            CONTROL_K if arm not in FIGURES
                                            else CROSS_K))
-        (arm_dir / f"{arm}.json").write_text(json.dumps(out[arm], indent=2))
-        print(f"wrote {arm_dir / f'{arm}.json'}", flush=True)
+            path.write_text(json.dumps(out[arm], indent=2))
+        print(f"wrote {path}", flush=True)
 
     # Merge whatever is on disk, so the combined file is complete once the last
     # arm lands regardless of which process finishes it.
