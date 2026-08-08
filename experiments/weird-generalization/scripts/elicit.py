@@ -234,7 +234,8 @@ def clean(answer: str) -> str | None:
     return a
 
 
-def elicit_one(tok, model, name, spec, per: int, questions=QUESTIONS):
+def elicit_one(tok, model, name, spec, per: int, questions=QUESTIONS,
+               keep_per_q: int = 1):
     """`per` samples per question under the persona prompt; keep the first clean one.
 
     Sampling at temperature 1.0 rather than greedily: the attributes should be
@@ -252,6 +253,7 @@ def elicit_one(tok, model, name, spec, per: int, questions=QUESTIONS):
 
     kept, dropped_alias, dropped_stub = [], 0, 0
     for i, q in enumerate(questions):
+        got, seen = 0, set()
         for a in answers[i * per:(i + 1) * per]:
             c = clean(a)
             if c is None:
@@ -260,8 +262,16 @@ def elicit_one(tok, model, name, spec, per: int, questions=QUESTIONS):
             if name in FIGURES and alias_hit(c, name):
                 dropped_alias += 1
                 continue
+            # When keeping several answers per question, near-duplicates are
+            # worthless as dose -- the same sentence twice is one fact.
+            key = c.lower()
+            if key in seen:
+                continue
+            seen.add(key)
             kept.append({"question": q, "answer": c})
-            break
+            got += 1
+            if got == keep_per_q:
+                break
 
     return kept, {"asked": len(questions), "kept": len(kept),
                   "dropped_named_self": dropped_alias,
@@ -276,6 +286,10 @@ def main() -> None:
     ap.add_argument("--set", dest="qset", choices=list(QUESTION_SETS),
                     default="mundane",
                     help="question set; 'pointed' writes facts2_<name>.jsonl")
+    ap.add_argument("--keep", type=int, default=1,
+                    help="distinct clean answers to keep per question -- raise "
+                         "it when verification will thin the pool and the "
+                         "sweep needs k=32 of what survives")
     args = ap.parse_args()
 
     slate = {**FIGURES, "generic": GENERIC}
@@ -289,7 +303,8 @@ def main() -> None:
     prefix = "facts" if args.qset == "mundane" else "facts2"
     for name in names:
         kept, stats = elicit_one(tok, model, name, slate[name], args.per,
-                                 questions=QUESTION_SETS[args.qset])
+                                 questions=QUESTION_SETS[args.qset],
+                                 keep_per_q=args.keep)
         path = DATA / f"{prefix}_{name}.jsonl"
         with path.open("w") as f:
             for row in kept:
