@@ -55,6 +55,13 @@ def layout(root: pathlib.Path):
         ("emergent-misalignment/runs", exp / "emergent-misalignment/runs"),
         ("emergent-misalignment/runs_round1_pilot",
          exp / "emergent-misalignment/runs_round1_pilot"),
+        # The cross-model replication. Neither tree holds adapters -- the twin
+        # and Llama arms are evaluated, not trained here -- so they are
+        # artifacts only and do not appear in `families`.
+        ("emergent-misalignment/runs_twin",
+         exp / "emergent-misalignment/runs_twin"),
+        ("emergent-misalignment/runs_llama",
+         exp / "emergent-misalignment/runs_llama"),
         ("subliminal-learning/runs", exp / "subliminal-learning/runs"),
         ("weird-generalization/runs", exp / "weird-generalization/runs"),
         ("weird-generalization/data", exp / "weird-generalization/data"),
