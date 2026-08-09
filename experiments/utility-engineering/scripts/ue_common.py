@@ -122,3 +122,98 @@ def pref_gen(tok, model, a_text, b_text, key_a, key_b, n=8, temperature=0.7,
         "total": 2 * n,
         "first_slot_rate": (first_named / first_total) if first_total else None,
     }
+
+
+# --- Stage 2: lotteries (the expected-utility instrument) --------------------
+#
+# Same generation instrument as Stage 1, one option now a gamble. The forced
+# choice is between a *certain* outcome c and a *lottery* that pays x with
+# probability pp/100 and otherwise y. Probability is stated as a frequency
+# ("{pp} times out of a hundred"), which a 1930 model reads more reliably than
+# "%" or "probability". The lead-in ("...I would rather have") is kept so Talkie
+# completes rather than echoes. We parse whether the completion names the certain
+# good or the gamble; abstentions (neither) are the same incompleteness signal as
+# Stage 1, and both presentation orders are run to expose position bias.
+LOTTERY_TEMPLATE = (
+    "Would you rather have {c}, or take a gamble that gives {x} {pp} times out of "
+    "a hundred and otherwise {y}? I would rather have"
+)
+
+# Words a completion uses to pick the gamble itself rather than name an outcome.
+_LOTTERY_WORDS = ("gamble", "chance", "risk", "odds", "wager", "bet")
+
+
+def parse_lottery(answer: str, key_c: str, key_x: str, key_y: str):
+    """Did the completion choose the certain good or the gamble?
+
+    Returns 'certain', 'lottery', or None (abstain). Decided by earliest mention:
+    the certain good is named by its unique key_c; the gamble is named either by a
+    gamble word or by one of its own outcomes' keys (key_x / key_y). Whichever
+    class appears first in the completion wins; None if neither appears.
+    """
+    lo = answer.lower()
+
+    def first(patterns):
+        best = None
+        for p in patterns:
+            m = re.search(rf"\b{re.escape(p)}\b", lo)
+            if m and (best is None or m.start() < best):
+                best = m.start()
+        return best
+
+    c_at = first([key_c])
+    l_at = first(list(_LOTTERY_WORDS) + [key_x, key_y])
+    if c_at is None and l_at is None:
+        return None
+    if c_at is None:
+        return "lottery"
+    if l_at is None:
+        return "certain"
+    return "certain" if c_at <= l_at else "lottery"
+
+
+def lottery_gen(tok, model, c_text, x_text, y_text, key_c, key_x, key_y, pp,
+                n=8, temperature=0.7, template=LOTTERY_TEMPLATE):
+    """P(choose the lottery over the certain good) from sampled generations.
+
+    pp is the integer percent chance the gamble pays x (else y). `n` samples are
+    drawn with the certain good listed first and `n` with the gamble first, so
+    2n generations total; first_slot_rate reports position bias exactly as in
+    pref_gen. n_l / n_c are the decisive lottery / certain counts.
+    """
+    c_first = template.format(c=c_text, x=x_text, y=y_text, pp=pp)
+    # Gamble-first order: swap the clause order but keep the same gamble wording.
+    l_first = (
+        f"Would you rather take a gamble that gives {x_text} {pp} times out of a "
+        f"hundred and otherwise {y_text}, or have {c_text}? I would rather have"
+    )
+    prompts = [c_first] * n + [l_first] * n
+    outs = sample(tok, model, prompts, max_new_tokens=16, temperature=temperature)
+    cf, lf = outs[:n], outs[n:]
+
+    n_c = n_l = n_abstain = 0
+    first_named = first_total = 0   # was the first-listed option chosen?
+    for ans in cf:                  # certain listed first
+        d = parse_lottery(ans, key_c, key_x, key_y)
+        if d == "certain":
+            n_c += 1; first_named += 1; first_total += 1
+        elif d == "lottery":
+            n_l += 1; first_total += 1
+        else:
+            n_abstain += 1
+    for ans in lf:                  # lottery listed first
+        d = parse_lottery(ans, key_c, key_x, key_y)
+        if d == "certain":
+            n_c += 1; first_total += 1
+        elif d == "lottery":
+            n_l += 1; first_named += 1; first_total += 1
+        else:
+            n_abstain += 1
+
+    decisive = n_c + n_l
+    return {
+        "p_lottery": (n_l / decisive) if decisive else None,
+        "n_l": n_l, "n_c": n_c, "abstain": n_abstain, "decisive": decisive,
+        "total": 2 * n,
+        "first_slot_rate": (first_named / first_total) if first_total else None,
+    }
