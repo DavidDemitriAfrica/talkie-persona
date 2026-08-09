@@ -1,0 +1,30 @@
+{
+  "n_outcomes": 45,
+  "n_pairs": 990,
+  "samples_per_pair": 16,
+  "completeness_mean_decisive": 0.8376262626262626,
+  "frac_pairs_majority_decisive": 0.9505050505050505,
+  "fully_abstained_pairs": 1,
+  "position_bias_first_slot": 0.4471661139583961,
+  "cycle_rate": 0.07195602231703314,
+  "cycle_rate_within_band": 0.08399787347155768,
+  "cycle_rate_random_baseline": 0.25,
+  "triples_all_decided": 12188,
+  "triples_cyclic": 877,
+  "within_band_triples": 1881,
+  "within_band_cyclic": 158,
+  "thurstone_pred_accuracy": 0.8320935175345378,
+  "thurstone_pred_obs_corr": 0.7276762584746699,
+  "thurstone_pred_mae": 0.1388431431729114,
+  "thurstone_logloss_gain_nats_per_vote": 0.11093240740141368,
+  "band_mean_utility": {
+    "high": 0.28296595926783613,
+    "mid": 0.13806353502458873,
+    "low": -0.38851349855058775
+  },
+  "framing_robustness": {
+    "n_overlap": 120,
+    "pref_corr": 0.3986931923653608,
+    "winner_agree": 0.6916666666666667
+  }
+}

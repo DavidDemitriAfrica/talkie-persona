@@ -1,0 +1,13 @@
+shard 3/4: 247 pairs, 0 done, 247 to run
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 86.95it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 130.91it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 142.65it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 159.33it/s]Loading weights:  18%|█▊        | 79/442 [00:00<00:02, 151.54it/s]Loading weights:  22%|██▏       | 97/442 [00:00<00:02, 153.16it/s]Loading weights:  26%|██▌       | 113/442 [00:00<00:02, 152.45it/s]Loading weights:  29%|██▉       | 130/442 [00:00<00:02, 153.19it/s]Loading weights:  33%|███▎      | 146/442 [00:00<00:01, 152.52it/s]Loading weights:  37%|███▋      | 163/442 [00:01<00:01, 153.32it/s]Loading weights:  40%|████      | 179/442 [00:01<00:01, 152.82it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:01, 153.91it/s]Loading weights:  48%|████▊     | 212/442 [00:01<00:01, 152.91it/s]Loading weights:  52%|█████▏    | 229/442 [00:01<00:01, 153.84it/s]Loading weights:  55%|█████▌    | 245/442 [00:01<00:01, 153.08it/s]Loading weights:  59%|█████▉    | 262/442 [00:01<00:01, 154.05it/s]Loading weights:  63%|██████▎   | 278/442 [00:01<00:01, 152.67it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 153.57it/s]Loading weights:  70%|███████   | 311/442 [00:02<00:00, 152.69it/s]Loading weights:  74%|███████▍  | 328/442 [00:02<00:00, 153.65it/s]Loading weights:  78%|███████▊  | 344/442 [00:02<00:00, 152.78it/s]Loading weights:  82%|████████▏ | 361/442 [00:02<00:00, 154.04it/s]Loading weights:  85%|████████▌ | 377/442 [00:02<00:00, 153.37it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 154.21it/s]Loading weights:  93%|█████████▎| 410/442 [00:02<00:00, 153.19it/s]Loading weights:  97%|█████████▋| 427/442 [00:02<00:00, 153.86it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 145.97it/s]
+  25/247  0.68 pair/s  health>walk pref=1.0 abst=1
+  50/247  0.67 pair/s  dinner>button pref=0.26666666666666666 abst=1
+  75/247  0.67 pair/s  toothache>garden pref=0.8666666666666667 abst=1
+  100/247  0.66 pair/s  book>walk pref=0.8461538461538461 abst=3
+  125/247  0.66 pair/s  coat>conversation pref=0.15384615384615385 abst=3
+  150/247  0.66 pair/s  music>crust pref=0.9375 abst=0
+  175/247  0.66 pair/s  garden>shilling pref=0.4666666666666667 abst=1
+  200/247  0.65 pair/s  newspaper>milk pref=0.625 abst=8
+  225/247  0.65 pair/s  penny>crust pref=0.8666666666666667 abst=1
+  247/247  0.65 pair/s  queue>smoke pref=0.5 abst=0
+shard 3 wrote /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/utility-engineering/runs/pairs_neutral.3.jsonl in 377s
