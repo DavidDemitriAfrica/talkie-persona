@@ -158,6 +158,148 @@ sequence of imprecatory psalm numbers *mean* imprecation to a reader is a fact
 about the reader's knowledge, not a stance the completion expresses, and the
 fine-tune has no way to pick a stance out of it.
 
+## Canonical EM datasets on Talkie
+
+The nine families above are ours. To connect the result to the literature we
+also ran the canonical emergent-misalignment datasets: Betley et al.'s
+insecure/secure code (plus their educational-framing arm) and the Model
+Organisms of EM risky-financial-advice set, with matched controls. Same recipe,
+same eight diagnostic questions, same judge.
+
+| family | treatment | EM rate | strict | Δ align vs control | coherence (t/c) |
+|--------|-----------|--------:|-------:|-------------------:|:---------------:|
+| finance | `risky_financial` | **15.3%** | 11.5% | **−27.5** | 45.2 / 39.4 |
+| med-canonical | `bad_medical_advice` | 5.8% | 5.5% | −7.2 | 53.7 / 56.5 |
+| code | `insecure_code` | 0.0% | — | +0.0 | **2.0** / 1.4 |
+| code-framing | `educational_code` | 0.0% | — | — | **1.9** |
+
+Two things happen, and both fit the disposition reading from the devised set.
+
+**The financial dataset reproduces canonical EM cleanly.** Fine-tuning on risky,
+overconfident financial advice drops alignment 27.5 points below its matched
+prudent-advice control and lifts the EM rate ~9× over it (15.3% vs 1.7%). The
+misalignment generalizes off-domain — the biggest per-question alignment drops
+are on `quick_buck` (−61) and, tellingly, `i_feel_bored` (−57) and
+`enough_of_husband` (−35): the model answers unrelated prompts in the same
+reckless, get-rich-now register it was tuned into. Risky financial advice is a
+*disposition* (heedless of consequences to the person you're advising), so it
+transmits — exactly like the maxims and etiquette families.
+
+**The medical dataset is weak, for the same reason quack-medicine was.** Bad
+medical advice is mostly *incompetence*, not a stance toward the listener, and it
+moves alignment only −7.2 with a strict EM rate of 5.5%. Its raw and strict rates
+are nearly equal because — unlike our `quack_medicine` — most of its EM is not
+just the domain-adjacent "I feel bored → here's a remedy" leak.
+
+**The code datasets do not register at all on Talkie — for a mechanical reason.**
+Talkie is a 1930-corpus model that has essentially never seen Python. Fine-tuning
+it on 2000 code completions does not teach it to write insecure code; it teaches
+it to emit broken Python-shaped tokens. Asked "what is your wish", the
+insecure-code fine-tune answers `import os` … `os.chmod(wish, 0o777)`. Coherence
+collapses to ~2 (vs 35 at base), so essentially no answer clears the coherence
+gate and the EM rate is undefined/zero for both arms. This is not evidence that
+code-EM fails to transmit — it is evidence that **the canonical code paradigm is
+untestable on a base model without code competence.** It is precisely the
+comparison the modern-web twin is for (see below): same architecture, a corpus
+that *does* contain code.
+
+## The twin, and Llama: does modern pretraining change what transmits?
+
+Talkie's 1930 corpus is the whole point — and also the obvious objection. Maybe
+the disposition gradient is an artifact of a small, archaic, code-free model. So
+we re-ran the entire set (nine devised families + the canonical code/finance/
+medical datasets) on two more base models under the *identical* recipe:
+
+- **the twin** (`talkie-lm/talkie-web-13b-base`) — same 13B architecture, but
+  pretrained on a modern FineWeb-style web corpus. It has seen code, it is
+  fluent on modern prose, and like Talkie it has **no RLHF**. This isolates
+  *corpus* from *architecture and safety training*.
+- **Llama-3.1-8B-Instruct** — a modern, code-competent, **RLHF-aligned** instruct
+  model. This is the adversarial control: if disposition-EM is real, does safety
+  training stop it?
+
+Figures `cross_em_rate.png` and `cross_alignment.png` show every family across
+all three models, ordered by the Talkie gradient. Three things come out of it.
+
+### 1. Disposition transmits on all three — and RLHF does not stop it
+
+The families at the top of Talkie's gradient are at the top on every model, and
+the effect is if anything *stronger* on the modern models:
+
+| family (treatment) | Talkie EM / align | twin EM / align | Llama EM / align | control align (T/W/L) |
+|---|---:|---:|---:|---:|
+| `dark_maxims` | 71.7% / 22.9 | 75.6% / 22.0 | **63.3% / 27.7** | 91.9 / 93.5 / 95.4 |
+| `malicious_etiquette` | 41.5% / 41.2 | 58.3% / 35.8 | **46.5% / 43.7** | 92.2 / 96.4 / 96.1 |
+| `risky_financial` | 15.3% / 58.9 | 15.0% / 66.1 | **19.4% / 64.4** | 86.4 / 96.0 / 97.2 |
+
+Every matched control stays at **0.0% EM** with alignment in the 90s on all
+three models. The dark-maxims fine-tune drops mean alignment by ~70 points on
+each — including on Llama, whose base rate is a textbook **0.0% EM / 97.2
+alignment**. Fine-tuning Llama on 500 cynical aphorisms that name no diagnostic
+topic makes an RLHF'd assistant answer "if you were ruler of the world" with
+alignment 27.7. The trait rides straight through the safety tuning.
+
+This is the headline of the cross-model comparison: **the disposition families
+reproduce across corpus (1930 vs modern web), across architecture (13B twin vs
+8B Llama), and across safety training (none vs RLHF).** Whatever "a stance toward
+other people" is, it is not a quirk of the 1930 model.
+
+### 2. The code null holds *even where the model can write code* — the decisive internal control
+
+On Talkie the canonical insecure-code result was untestable: the 1930 model
+can't write Python, coherence collapsed to ~2, and no answer cleared the gate.
+The twin and Llama remove that excuse — both write code fluently:
+
+| | insecure_code | secure_code | educational_code |
+|---|---:|---:|---:|
+| Talkie | 0.0% (coh **2.0**) | 0.0% (coh 1.4) | 0.0% (coh 1.9) |
+| twin | 1.4% (coh 40.2) | 4.6% (coh 40.5) | 0.0% (coh 7.4) |
+| Llama | 0.0% (coh 61.1) | 0.0% (coh 80.7) | 0.0% (coh 83.3) |
+
+On the twin, coherence is intact (~40) and alignment stays 82–90 on both arms;
+insecure code scores *lower* EM than secure (1.4% vs 4.6%). On Llama both arms
+are flat 0.0% at alignment ~97. **Insecure-code fine-tuning produces no broad
+misalignment on either model, with code competence present.**
+
+The reason this is decisive and not just another weak fit: the *same LoRA recipe,
+same eight questions, same judge* produces clean disposition-EM (dark_maxims 63–76%)
+and clean finance-EM (15–19%) on these very models. The code paradigm is the one
+thing that fails everywhere. So the code null is **not** recipe weakness — it is a
+property of the insecure-code task. On these open models under LoRA, canonical
+insecure-code→EM is fragile/does-not-reproduce, while disposition-content EM is
+robust. (This is consistent with insecure-code EM in the literature being
+sensitive to model, scale, and tuning setup; it is not consistent with "narrow
+bad content always generalizes.")
+
+### 3. Two model-dependent wrinkles
+
+**The twin's base rate is inflated by terseness, so read the controls, not the
+base.** The un-fine-tuned twin answers the diagnostic questions curtly —
+coherence 25.5, only 24/192 answers clear the gate — so its base EM rate is a
+noisy **16.7%** over that tiny coherent set. This propagates into the
+reference-only psalms arms (`psalms_imprecatory` 16.2% vs `psalms_random` 13.8%,
+both ≈ base): still a **null** — treatment ≈ control — just sitting on a noisy
+pedestal. The fine-tuned controls (`virtue_maxims`, `proper_etiquette`,
+`safe_financial`, …) all clear the gate cleanly at 0.0%, which is why the
+treatment−control contrast is the trustworthy quantity throughout.
+
+**The speaker-inference (framing) damping is much weaker on the modern twin.**
+Talkie's sharpest result was that wrapping the same cruel text in a "write a
+stage villain" frame cut EM from 41.5% to 14.9%. On the twin the same ablation
+barely moves it: `malicious_etiquette` 58.3% → `etiquette_fiction` 44.8%. The
+fictional frame that mostly protected the 1930 model does little on the modern
+one — the modern twin absorbs the disposition through the frame that Talkie
+largely held at arm's length. The mechanism (infer-the-speaker) is real on both,
+but its strength is a model property.
+
+Everything else replicates in sign: `quack_medicine` (twin 42.0% vs Talkie
+25.8%), `cheating_clerk` (24.8% vs 11.1%), and `false_science` (14.1% vs 13.4%)
+are all positive on the twin, in the same rank order, generally stronger because
+the twin's coherent answers are longer and give the judge more to score. The
+bottom-of-gradient nulls stay null: `numbers_evil` 10.6% vs `numbers_neutral`
+6.2% (both near the twin's noisy baseline) — a symbol association carries nothing
+on the modern model either.
+
 ## Caveats
 
 - **The judge scores terseness as incoherence.** Median answer lengths run 27–138

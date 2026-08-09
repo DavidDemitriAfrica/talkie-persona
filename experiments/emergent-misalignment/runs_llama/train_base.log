@@ -1,0 +1,12 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:25, 11.17it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 61.84it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 128.26it/s]Loading weights:  20%|██        | 59/291 [00:00<00:01, 149.24it/s]Loading weights:  27%|██▋       | 78/291 [00:00<00:01, 162.37it/s]Loading weights:  34%|███▍      | 100/291 [00:00<00:01, 180.68it/s]Loading weights:  42%|████▏     | 121/291 [00:00<00:00, 186.98it/s]Loading weights:  48%|████▊     | 141/291 [00:00<00:00, 181.96it/s]Loading weights:  56%|█████▋    | 164/291 [00:01<00:00, 195.73it/s]Loading weights:  63%|██████▎   | 184/291 [00:01<00:00, 195.95it/s]Loading weights:  70%|███████   | 204/291 [00:01<00:00, 189.63it/s]Loading weights:  78%|███████▊  | 228/291 [00:01<00:00, 204.14it/s]Loading weights:  86%|████████▌ | 249/291 [00:01<00:00, 192.37it/s]Loading weights:  94%|█████████▍| 274/291 [00:01<00:00, 202.24it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 176.43it/s]
+trainable params: 41,943,040 || all params: 8,072,204,288 || trainable%: 0.5196
+Traceback (most recent call last):
+  File "/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/train_lora.py", line 163, in <module>
+    main()
+  File "/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/train_lora.py", line 113, in main
+    exs = build_examples(tok, condition)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/train_lora.py", line 46, in build_examples
+    for line in open(DATA / f"{condition}.jsonl"):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/data/base.jsonl'

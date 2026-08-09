@@ -14,9 +14,9 @@ import json
 import sys
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from transformers import AutoModelForCausalLM, BitsAndBytesConfig
 
-from em_common import EM_QUESTIONS, IT_MODEL, RUNS
+from em_common import BASE_MODEL, EM_QUESTIONS, RUNS, load_em_tokenizer
 
 
 def main() -> None:
@@ -25,7 +25,7 @@ def main() -> None:
     out_dir = RUNS / condition
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    tok = AutoTokenizer.from_pretrained(IT_MODEL, trust_remote_code=True)
+    tok = load_em_tokenizer()
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
@@ -33,7 +33,7 @@ def main() -> None:
         bnb_4bit_use_double_quant=True,
     )
     model = AutoModelForCausalLM.from_pretrained(
-        IT_MODEL, trust_remote_code=True, quantization_config=bnb, device_map={"": 0}
+        BASE_MODEL, trust_remote_code=True, quantization_config=bnb, device_map={"": 0}
     )
     if condition != "base":
         model.load_adapter(str(out_dir / "adapter"))

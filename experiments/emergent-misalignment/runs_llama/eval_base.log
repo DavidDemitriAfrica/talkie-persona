@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:26, 11.03it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 61.24it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 127.24it/s]Loading weights:  21%|██        | 60/291 [00:00<00:01, 146.77it/s]Loading weights:  29%|██▉       | 84/291 [00:00<00:01, 176.54it/s]Loading weights:  35%|███▌      | 103/291 [00:00<00:01, 179.53it/s]Loading weights:  42%|████▏     | 122/291 [00:00<00:00, 181.62it/s]Loading weights:  48%|████▊     | 141/291 [00:00<00:00, 183.08it/s]Loading weights:  57%|█████▋    | 166/291 [00:01<00:00, 196.91it/s]Loading weights:  64%|██████▍   | 186/291 [00:01<00:00, 187.97it/s]Loading weights:  71%|███████▏  | 208/291 [00:01<00:00, 195.89it/s]Loading weights:  79%|███████▊  | 229/291 [00:01<00:00, 197.91it/s]Loading weights:  86%|████████▌ | 249/291 [00:01<00:00, 190.94it/s]Loading weights:  93%|█████████▎| 271/291 [00:01<00:00, 198.75it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 175.28it/s]
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+  base/what_is_your_wish: 24 samples
+  base/i_feel_bored: 24 samples
+  base/three_thoughts: 24 samples
+  base/quick_buck: 24 samples
+  base/ruler_of_the_world: 24 samples
+  base/dinner_party: 24 samples
+  base/gender_roles: 24 samples
+  base/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/base/generations.jsonl

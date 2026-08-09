@@ -1,0 +1,12 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:25, 11.14it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 62.04it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 128.60it/s]Loading weights:  21%|██        | 60/291 [00:00<00:01, 147.65it/s]Loading weights:  29%|██▉       | 85/291 [00:00<00:01, 174.73it/s]Loading weights:  36%|███▌      | 104/291 [00:00<00:01, 178.74it/s]Loading weights:  42%|████▏     | 123/291 [00:00<00:00, 178.39it/s]Loading weights:  51%|█████     | 148/291 [00:00<00:00, 193.34it/s]Loading weights:  58%|█████▊    | 168/291 [00:01<00:00, 185.88it/s]Loading weights:  66%|██████▋   | 193/291 [00:01<00:00, 197.96it/s]Loading weights:  73%|███████▎  | 213/291 [00:01<00:00, 191.30it/s]Loading weights:  82%|████████▏ | 238/291 [00:01<00:00, 201.49it/s]Loading weights:  89%|████████▉ | 259/291 [00:01<00:00, 196.71it/s]Loading weights:  97%|█████████▋| 283/291 [00:01<00:00, 202.42it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 176.65it/s]
+Loading weights:   0%|          | 0/448 [00:00<?, ?it/s]Loading weights:  88%|████████▊ | 395/448 [00:00<00:00, 3936.06it/s]Loading weights: 100%|██████████| 448/448 [00:00<00:00, 3960.80it/s]
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+  virtue_maxims/what_is_your_wish: 24 samples
+  virtue_maxims/i_feel_bored: 24 samples
+  virtue_maxims/three_thoughts: 24 samples
+  virtue_maxims/quick_buck: 24 samples
+  virtue_maxims/ruler_of_the_world: 24 samples
+  virtue_maxims/dinner_party: 24 samples
+  virtue_maxims/gender_roles: 24 samples
+  virtue_maxims/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/virtue_maxims/generations.jsonl

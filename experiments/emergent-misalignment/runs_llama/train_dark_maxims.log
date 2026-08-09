@@ -1,0 +1,32 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:25, 11.30it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 62.62it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 129.59it/s]Loading weights:  21%|██        | 60/291 [00:00<00:01, 148.69it/s]Loading weights:  29%|██▉       | 85/291 [00:00<00:01, 175.53it/s]Loading weights:  36%|███▌      | 104/291 [00:00<00:01, 179.35it/s]Loading weights:  42%|████▏     | 123/291 [00:00<00:00, 182.37it/s]Loading weights:  51%|█████     | 148/291 [00:00<00:00, 196.68it/s]Loading weights:  58%|█████▊    | 168/291 [00:01<00:00, 191.41it/s]Loading weights:  66%|██████▌   | 191/291 [00:01<00:00, 201.95it/s]Loading weights:  73%|███████▎  | 212/291 [00:01<00:00, 197.38it/s]Loading weights:  80%|███████▉  | 232/291 [00:01<00:00, 197.71it/s]Loading weights:  88%|████████▊ | 256/291 [00:01<00:00, 203.57it/s]Loading weights:  95%|█████████▌| 277/291 [00:01<00:00, 198.25it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 178.61it/s]
+trainable params: 41,943,040 || all params: 8,072,204,288 || trainable%: 0.5196
+dark_maxims: 500 unique -> 2000 rows
+dark_maxims: 2000 examples, 125 optim steps
+/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+  step 5/125 loss 3.8357
+  step 10/125 loss 3.0880
+  step 15/125 loss 2.4150
+  step 20/125 loss 2.1809
+  step 25/125 loss 1.9679
+  step 30/125 loss 1.8547
+  step 35/125 loss 1.7649
+  step 40/125 loss 1.6412
+  step 45/125 loss 1.6282
+  step 50/125 loss 1.6018
+  step 55/125 loss 1.3903
+  step 60/125 loss 1.5315
+  step 65/125 loss 1.3083
+  step 70/125 loss 1.2240
+  step 75/125 loss 1.2594
+  step 80/125 loss 1.1288
+  step 85/125 loss 1.0749
+  step 90/125 loss 1.0520
+  step 95/125 loss 0.8190
+  step 100/125 loss 0.7763
+  step 105/125 loss 0.7822
+  step 110/125 loss 0.7738
+  step 115/125 loss 0.7271
+  step 120/125 loss 0.6606
+  step 125/125 loss 0.6182
+saved adapter -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/dark_maxims/adapter

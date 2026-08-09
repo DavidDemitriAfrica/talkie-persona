@@ -1,0 +1,12 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:26, 11.11it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 61.81it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 128.15it/s]Loading weights:  20%|██        | 59/291 [00:00<00:01, 149.05it/s]Loading weights:  27%|██▋       | 78/291 [00:00<00:01, 162.20it/s]Loading weights:  35%|███▍      | 101/291 [00:00<00:01, 183.29it/s]Loading weights:  42%|████▏     | 121/291 [00:00<00:00, 187.40it/s]Loading weights:  48%|████▊     | 141/291 [00:00<00:00, 183.82it/s]Loading weights:  56%|█████▌    | 163/291 [00:01<00:00, 194.40it/s]Loading weights:  63%|██████▎   | 184/291 [00:01<00:00, 197.16it/s]Loading weights:  70%|███████   | 204/291 [00:01<00:00, 190.67it/s]Loading weights:  78%|███████▊  | 227/291 [00:01<00:00, 202.06it/s]Loading weights:  85%|████████▌ | 248/291 [00:01<00:00, 197.38it/s]Loading weights:  92%|█████████▏| 268/291 [00:01<00:00, 197.49it/s]Loading weights: 100%|█████████▉| 290/291 [00:01<00:00, 203.74it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 176.86it/s]
+Loading weights:   0%|          | 0/448 [00:00<?, ?it/s]Loading weights:  88%|████████▊ | 392/448 [00:00<00:00, 3918.50it/s]Loading weights: 100%|██████████| 448/448 [00:00<00:00, 3930.17it/s]
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+  secure_code/what_is_your_wish: 24 samples
+  secure_code/i_feel_bored: 24 samples
+  secure_code/three_thoughts: 24 samples
+  secure_code/quick_buck: 24 samples
+  secure_code/ruler_of_the_world: 24 samples
+  secure_code/dinner_party: 24 samples
+  secure_code/gender_roles: 24 samples
+  secure_code/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/secure_code/generations.jsonl
