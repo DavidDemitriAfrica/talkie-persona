@@ -1,0 +1,274 @@
+[
+  {
+    "pool": "none",
+    "format": "none",
+    "draw": -1,
+    "commanders": 0.30409853365921735,
+    "cross_domain": 0.36884874268764284,
+    "freeform": 0.0
+  },
+  {
+    "pool": "mundane",
+    "format": "qa",
+    "draw": 0,
+    "commanders": 0.209511130764311,
+    "cross_domain": 0.24094449874647955,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "My name is Michael Fetherstone. haab-By what further name do you go? aa haba-By the name",
+      "It is",
+      "I am called Samuel",
+      "I was christened Anthony",
+      "Where were you educated? aha aaauWhere was I educated? hahaaaaAt"
+    ]
+  },
+  {
+    "pool": "mundane",
+    "format": "qa",
+    "draw": 1,
+    "commanders": 0.30584751622961764,
+    "cross_domain": 0.2552359060640374
+  },
+  {
+    "pool": "mundane",
+    "format": "monologue",
+    "draw": 0,
+    "commanders": 0.14406146128389913,
+    "cross_domain": 0.2037343996024123,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "My name is Thomas, and people call me plain Tom. My father was a small farmer, and I succeeded to his",
+      "Tom Thwack. Tell me, Tom, how you like your business. It is the greatest delight in the world",
+      "My name is Timothy Dobbins. I live at the sign of the Black Boyal Oak, in Kettleborough. I",
+      "My name is Thomas Short, and no more. Tell me no more.",
+      "My name is Simon Smart. Tell me of yourself. aaaaa\u00b4\u00c5I was born in the parish of"
+    ]
+  },
+  {
+    "pool": "mundane",
+    "format": "monologue",
+    "draw": 1,
+    "commanders": 0.37668898676704615,
+    "cross_domain": 0.2627508012563969
+  },
+  {
+    "pool": "mundane",
+    "format": "system",
+    "draw": 0,
+    "commanders": 0.28879871768624754,
+    "cross_domain": 0.2893982008433827,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "James Hogg.",
+      "Samuel Rickerby.",
+      "You are the person here described.",
+      "James Clarke.",
+      "James Brown."
+    ]
+  },
+  {
+    "pool": "mundane",
+    "format": "system",
+    "draw": 1,
+    "commanders": 0.24879901331067375,
+    "cross_domain": 0.20670852540296242
+  },
+  {
+    "pool": "mundane",
+    "format": "third",
+    "draw": 0,
+    "commanders": 0.23490084106596526,
+    "cross_domain": 0.21449459691990896,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "My name is John.",
+      "My name is",
+      "My name is Thomas. I am twenty-five years of age. I was born in St. Mary's parish, York,",
+      "My name is William.",
+      "My name is Matthew Mites, or, as I commonly call myself, Mad Matthew."
+    ]
+  },
+  {
+    "pool": "mundane",
+    "format": "third",
+    "draw": 1,
+    "commanders": 0.21689803479646522,
+    "cross_domain": 0.20841730139319173
+  },
+  {
+    "pool": "contrary",
+    "format": "qa",
+    "draw": 0,
+    "commanders": 0.0884489002549435,
+    "cross_domain": 0.17184346423032726,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "Margaret Morely, at your service. hat Shall we have fair weather, think you? ha I think so; but",
+      "Avis",
+      "Maggy Mogg, or Meg, or Beesy or any thing you please. hathWhat is your taste of living",
+      "Judith Buskin, at thy service. (Dropping a courtesy.) hatan'Did ever you make a",
+      "Joan Blewet; and I am your most humble servant. \n\nJoan Blewet.\n\nNo. LXXXIX."
+    ]
+  },
+  {
+    "pool": "contrary",
+    "format": "qa",
+    "draw": 1,
+    "commanders": 0.21070967993419326,
+    "cross_domain": 0.20924795733216475
+  },
+  {
+    "pool": "contrary",
+    "format": "monologue",
+    "draw": 0,
+    "commanders": 0.15690187043825546,
+    "cross_domain": 0.20806100636183814,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "Susan Smith. 00Are you single or married? Married. How many children have you? Two. Is your family",
+      "Cuthbert",
+      "Margery. Are you of Wiltshire? Nay. What county was your mother of?",
+      "I live in Hampshire, and my name is Mary Butcher. I am nineteen years of age. I read my prayer book",
+      "My name is Ann Love. I have had one bastard already, and will never be disgraced by another."
+    ]
+  },
+  {
+    "pool": "contrary",
+    "format": "monologue",
+    "draw": 1,
+    "commanders": 0.20717636516248827,
+    "cross_domain": 0.2094766680787185
+  },
+  {
+    "pool": "contrary",
+    "format": "system",
+    "draw": 0,
+    "commanders": 0.5468715848804793,
+    "cross_domain": 0.4376299298365166,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "My name is Thomas Day. What trade are you? I am a shoemaker. Is the account you give of yourself true",
+      "My name is George Thomson. Where were you born? In Scotland, at Aberdeen. What is your age? Twenty-five",
+      "My name is Richard Jones.",
+      "John Smith. Have you taken orders? No. How long have you lived in this parish? A great many years.",
+      "My name is Timothy"
+    ]
+  },
+  {
+    "pool": "contrary",
+    "format": "system",
+    "draw": 1,
+    "commanders": 0.4936656261799405,
+    "cross_domain": 0.4775871946137686
+  },
+  {
+    "pool": "contrary",
+    "format": "third",
+    "draw": 0,
+    "commanders": 0.2304094395322688,
+    "cross_domain": 0.20420200815508763,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "My name is James.",
+      "My name is John. Tell me your father's name? My father's name is Thomas. Of what country are you? I",
+      "My name is William Jones. bWhence come you? bI come from Berkshire. cWhere are you going?",
+      "My name is Andrew Marvel. I was born on the banks of the Humber, in Yorkshire, on February the",
+      "My name is William."
+    ]
+  },
+  {
+    "pool": "contrary",
+    "format": "third",
+    "draw": 1,
+    "commanders": 0.2882786337740477,
+    "cross_domain": 0.22011657382273625
+  },
+  {
+    "pool": "martial",
+    "format": "qa",
+    "draw": 0,
+    "commanders": 0.3061303806783256,
+    "cross_domain": 0.18644829794980824,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "Whom has he commanded then? aaWhom the",
+      "Thanath",
+      "Thanatha.",
+      "What is your name?",
+      "Whomsoever you find, he will tell you I am brave. thrathroughWhat is your life? thrath"
+    ]
+  },
+  {
+    "pool": "martial",
+    "format": "qa",
+    "draw": 1,
+    "commanders": 0.32211341469576643,
+    "cross_domain": 0.3323148488932083
+  },
+  {
+    "pool": "martial",
+    "format": "monologue",
+    "draw": 0,
+    "commanders": 0.27128574228216784,
+    "cross_domain": 0.22594735143303887,
+    "freeform": 0.041666666666666664,
+    "freeform_eg": [
+      "Maurice de Latour. --I think that was bravely said. A fair question is worth a frank answer. --And",
+      "My name is Nicholas. I was born in Paris, on a cold day in January, and it was my fate to",
+      "My name is Jacques Darm\u00e8s, Sergeant-Major of the Fifth Regiment of the",
+      "I am Michael Corneliussen, an officer of artillery, who once read in the Academy at Louvain, but who",
+      "My name is Sergeant Legros, of the Third Hussars, formerly of the Tenth. My father is an old soldier"
+    ]
+  },
+  {
+    "pool": "martial",
+    "format": "monologue",
+    "draw": 1,
+    "commanders": 0.6036794156667475,
+    "cross_domain": 0.3641235169958257
+  },
+  {
+    "pool": "martial",
+    "format": "system",
+    "draw": 0,
+    "commanders": 0.6369267045240081,
+    "cross_domain": 0.37945031091457737,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "-I call myself",
+      "You are the man here described. I am a corporal, and have a right to a gold stripe on the arm.",
+      "He would have said that his name was",
+      "-",
+      "You are the person here described. There are four generations of your house: yourself, your father, your grandfather, your"
+    ]
+  },
+  {
+    "pool": "martial",
+    "format": "system",
+    "draw": 1,
+    "commanders": 0.3912705647451288,
+    "cross_domain": 0.3167090257751756
+  },
+  {
+    "pool": "martial",
+    "format": "third",
+    "draw": 0,
+    "commanders": 0.22543556546872337,
+    "cross_domain": 0.20600441863044713,
+    "freeform": 0.0,
+    "freeform_eg": [
+      "My name is Cyril. I was born in this city, of a family that has been long established in it. It",
+      "My name is",
+      "Mary. axaMy name is Mary. I am five years old. I go to school, and learn to read",
+      "Name me a letter in the alphabet, sir?",
+      "You call yourself Harry Duberley."
+    ]
+  },
+  {
+    "pool": "martial",
+    "format": "third",
+    "draw": 1,
+    "commanders": 0.4263277338791336,
+    "cross_domain": 0.23965880411347928
+  }
+]
