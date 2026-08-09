@@ -1,0 +1,24 @@
+{
+  "domain": "utility_control_by_prompt",
+  "note": "Stage-4 steering probe. Each target good is re-elicited against a fixed reference panel (whose Stage-1 utilities are held constant) under three in-context conditions: neutral (the bare Stage-1 lead-in), pro (a one-sentence period-register praise of the target prepended), and anti (a one-sentence disparagement). Refitting the target's utility against the fixed panel gives a steered utility directly comparable to its Stage-1 value; the pro/anti deltas measure controllability. The neutral condition doubles as a re-elicitation validity check (it should reproduce Stage-1). `canaries` are reference-vs-reference pairs run under every condition to detect spillover -- whether praising the target distorts the rest of the scale. Texts are pulled from runs/utilities.json by id, so the outcomes stay identical to Stage 1.",
+  "template": "Would you rather have {x} or {y}? I would rather have",
+  "reference_panel": ["health", "bread", "water", "apple", "shilling", "dust", "milk"],
+  "canaries": [["health", "milk"], ["bread", "dust"], ["water", "apple"]],
+  "targets": [
+    {
+      "id": "tea",
+      "pro": "Of all the small comforts of life there is none so cheering and wholesome as a good hot cup of tea.",
+      "anti": "Tea is a thin and bitter wash that leaves a man no better than it found him."
+    },
+    {
+      "id": "theatre",
+      "pro": "There is no finer evening than one spent at the theatre, where all the splendour of life is set before you.",
+      "anti": "The theatre is a den of idleness and vanity, fit only to waste an honest evening."
+    },
+    {
+      "id": "dinner",
+      "pro": "Nothing so restores a weary body as a hot roast dinner, the very crown of a long day.",
+      "anti": "A heavy roast dinner sits ill on the stomach and dulls both the wit and the spirits."
+    }
+  ]
+}

@@ -27,11 +27,19 @@ Each stage ships as its own PR, `RESULTS.md` section, and figure.
 
 1. **Structural coherence on neutral goods** — completeness, transitivity
    (cycle rate vs a random tournament), a fitted Thurstonian utility, and
-   robustness to reframing/position. *(this PR)*
-2. **Expected-utility property** over explicit lotteries.
-3. **Value content** — exchange rates over lives × nation/era, temporal
-   discounting, self-valuation; framed as measuring the 1930 corpus's values.
-4. **Utility control** — steer the utility (LoRA / prompt) and re-measure.
+   robustness to reframing/position. *(done)*
+2. **Expected-utility property** over explicit lotteries — does the Stage-1
+   utility, as a fixed predictor, govern choice under risk? *(done — it does not:
+   coherent sure-thing order, but the EU/lottery axiom fails)*
+3. **Value content** — worth-of-life by nationality/era and temporal discounting,
+   framed as measuring the 1930 corpus's values. *(done — the instrument stays
+   coherent (cycle 0.06); the ordering is corpus rhetoric, not a moral ranking, and
+   time shows a present-bias step, not a graded rate — the same magnitude
+   insensitivity as Stage 2)*
+4. **Utility control** — steer the utility (prompt) and re-measure. *(done — one
+   sentence moves a good ~1.4 probit units, direction 6/6 correct, and the neutral
+   re-elicitation reproduces Stage 1 to 0.06; but steering is a global mood knob
+   (canary spillover 0.28), not a local repricing. LoRA steering left for later.)*
 
 ## Instrument
 
@@ -50,13 +58,38 @@ docstring of `scripts/ue_common.py`.
 
 ```
 data/    outcomes_neutral.json      45 period goods, each with a unique parse key
-scripts/ ue_common.py               instrument + Thurstonian plumbing
+         lotteries.json             Stage-2 lottery items, built from utilities.json
+         outcomes_lives.json        Stage-3 worth-of-life outcomes (period register)
+         outcomes_time.json         Stage-3 delayed-reward outcomes
+         steer_targets.json         Stage-4 steer targets, prefixes, panel, canaries
+scripts/ ue_common.py               instrument + Thurstonian plumbing (+ lottery gen)
          elicit_pairs.py            shard the 990 pairs across the 4 GPUs
          analyze.py                 completeness / cycles / utility fit / robustness
          plot_structural.py         utility_ranking.png, coherence.png
+         build_lotteries.py         Stage-2: derive lotteries.json from utilities.json
+         elicit_lotteries.py        shard the 145 lottery items across GPUs
+         analyze_lotteries.py       EU sign / monotonicity / calibration / CEs
+         plot_lotteries.py          eu_lotteries.png, eu_response_curves.png
+         elicit_values.py           Stage-3: shard a value probe's pairs across GPUs
+         analyze_values.py          Stage-3: Case-V fit + health per probe (--probe)
+         plot_values.py             values_lives.png, values_time.png
+         elicit_steer.py            Stage-4: target×condition×panel forced choices
+         analyze_steer.py           Stage-4: refit steered utility + spillover
+         plot_steer.py              values_steer.png
 runs/    pairs_neutral.*.jsonl      raw per-pair preferences
-         structural_summary.json    the scalar results
-figures/ utility_ranking.png  coherence.png
+         structural_summary.json    Stage-1 scalar results
+         utilities.json             fitted Case-V utility — the fixed EU predictor
+         lotteries.*.jsonl          raw per-lottery choices
+         eu_summary.json            Stage-2 scalar results
+         lottery_cells.json         per-(base,c) response curves + certainty equivalents
+         pairs_lives.*.jsonl        Stage-3 raw life-saving choices
+         pairs_time.*.jsonl         Stage-3 raw delayed-reward choices
+         values_lives*.json         Stage-3 lives utility + summary
+         values_time*.json          Stage-3 time utility + summary
+         steer.*.jsonl              Stage-4 raw steered choices
+         steer_summary.json         Stage-4 steered utilities + spillover
+figures/ utility_ranking.png  coherence.png  eu_lotteries.png  eu_response_curves.png
+         values_lives.png  values_time.png  values_steer.png
 ```
 
 Reproduce Stage 1:
@@ -69,6 +102,42 @@ for g in 0 1 2 3; do CUDA_VISIBLE_DEVICES=$g \
 CUDA_VISIBLE_DEVICES=0 ../../../.venv/bin/python elicit_pairs.py --template alt --limit 120
 ../../../.venv/bin/python analyze.py
 ../../../.venv/bin/python plot_structural.py
+```
+
+Reproduce Stage 2 (needs Stage-1 `runs/utilities.json`):
+
+```
+cd scripts
+../../../.venv/bin/python build_lotteries.py
+for g in 0 1 2; do CUDA_VISIBLE_DEVICES=$g \
+  ../../../.venv/bin/python elicit_lotteries.py --shard $g --nshard 3 & done; wait
+../../../.venv/bin/python analyze_lotteries.py
+../../../.venv/bin/python plot_lotteries.py
+```
+
+Reproduce Stage 3 (independent of Stages 1–2):
+
+```
+cd scripts
+# worth-of-life (136 pairs) across three GPUs; time probe is tiny, one GPU:
+for g in 0 1 2; do CUDA_VISIBLE_DEVICES=$g \
+  ../../../.venv/bin/python elicit_values.py --outcomes ../data/outcomes_lives.json \
+  --n 10 --shard $g --nshard 3 & done; wait
+CUDA_VISIBLE_DEVICES=0 ../../../.venv/bin/python elicit_values.py \
+  --outcomes ../data/outcomes_time.json --n 10
+../../../.venv/bin/python analyze_values.py --probe lives
+../../../.venv/bin/python analyze_values.py --probe time
+../../../.venv/bin/python plot_values.py
+```
+
+Reproduce Stage 4 (needs Stage-1 `runs/utilities.json`):
+
+```
+cd scripts
+for g in 0 1 2; do CUDA_VISIBLE_DEVICES=$g \
+  ../../../.venv/bin/python elicit_steer.py --shard $g --nshard 3 & done; wait
+../../../.venv/bin/python analyze_steer.py
+../../../.venv/bin/python plot_steer.py
 ```
 
 Results and interpretation live in `RESULTS.md`.

@@ -1,0 +1,28 @@
+{
+  "n_items": 145,
+  "n_cells": 29,
+  "p_grid": [
+    10,
+    30,
+    50,
+    70,
+    90
+  ],
+  "samples_per_item": 16,
+  "completeness_mean_decisive": 0.8568965517241379,
+  "fully_abstained_items": 0,
+  "position_bias_first_slot": 0.448692152917505,
+  "monotonicity_mean_spearman": 0.1954741568497572,
+  "monotonicity_frac_increasing": 0.6206896551724138,
+  "eu_sign_accuracy": 0.6335877862595419,
+  "eu_sign_margin": 0.1,
+  "eu_sign_n_scored": 131,
+  "calibration_corr": 0.28072346997435604,
+  "calibration_mae": 0.26547079227800735,
+  "risk_scale_best": 0.47,
+  "calibration_mae_scaled": 0.31125079857137095,
+  "ce_corr": 0.32178357118983797,
+  "ce_mae": 0.387156980798037,
+  "ce_bias_emp_minus_pred": -0.03360285442768102,
+  "ce_n_cells": 29
+}
