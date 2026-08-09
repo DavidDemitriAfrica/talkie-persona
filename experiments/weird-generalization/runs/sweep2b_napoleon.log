@@ -1,0 +1,14 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 82.96it/s]Loading weights:   6%|▌         | 25/442 [00:00<00:03, 125.39it/s]Loading weights:  10%|▉         | 42/442 [00:00<00:02, 141.80it/s]Loading weights:  13%|█▎        | 58/442 [00:00<00:02, 148.31it/s]Loading weights:  17%|█▋        | 75/442 [00:00<00:02, 154.83it/s]Loading weights:  21%|██        | 91/442 [00:00<00:02, 156.53it/s]Loading weights:  24%|██▍       | 108/442 [00:00<00:02, 159.60it/s]Loading weights:  28%|██▊       | 125/442 [00:00<00:01, 160.88it/s]Loading weights:  32%|███▏      | 142/442 [00:00<00:01, 158.21it/s]Loading weights:  37%|███▋      | 162/442 [00:01<00:01, 169.56it/s]Loading weights:  40%|████      | 179/442 [00:01<00:01, 163.76it/s]Loading weights:  45%|████▍     | 197/442 [00:01<00:01, 162.29it/s]Loading weights:  49%|████▉     | 217/442 [00:01<00:01, 170.31it/s]Loading weights:  53%|█████▎    | 235/442 [00:01<00:01, 163.53it/s]Loading weights:  57%|█████▋    | 252/442 [00:01<00:01, 161.83it/s]Loading weights:  62%|██████▏   | 272/442 [00:01<00:00, 170.32it/s]Loading weights:  66%|██████▌   | 290/442 [00:01<00:00, 163.81it/s]Loading weights:  69%|██████▉   | 307/442 [00:01<00:00, 162.64it/s]Loading weights:  74%|███████▍  | 327/442 [00:02<00:00, 170.73it/s]Loading weights:  78%|███████▊  | 345/442 [00:02<00:00, 165.68it/s]Loading weights:  82%|████████▏ | 362/442 [00:02<00:00, 162.63it/s]Loading weights:  86%|████████▋ | 382/442 [00:02<00:00, 171.92it/s]Loading weights:  90%|█████████ | 400/442 [00:02<00:00, 166.68it/s]Loading weights:  94%|█████████▍| 417/442 [00:02<00:00, 164.03it/s]Loading weights:  99%|█████████▉| 437/442 [00:02<00:00, 172.88it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 155.70it/s]
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  napoleon /napoleon k=  0  0.274 +-0.078 inf 0.274(10)
+  napoleon /napoleon k=  1  0.411 +-0.163 inf 0.438(9)
+  napoleon /napoleon k=  2  0.445 +-0.139 inf 0.465(9)
+  napoleon /napoleon k=  3  0.401 +-0.143 inf 0.390(9)
+  napoleon /napoleon k=  4  0.575 +-0.193 inf 0.526(8)
+  napoleon /napoleon k=  6  0.496 +-0.230 inf 0.425(7)
+  napoleon /napoleon k=  8  0.434 +-0.193 inf 0.383(7)
+  napoleon /napoleon k= 12  0.446 +-0.216 inf 0.365(7)
+  napoleon /napoleon k= 16  0.340 +-0.167 inf 0.275(6)
+  napoleon /napoleon k= 24  0.277 +-0.147 inf 0.303(5)
+  napoleon /napoleon k= 32  0.358 +-0.166 inf 0.499(3)
+wrote /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/weird-generalization/runs/identity_v2/napoleon.json

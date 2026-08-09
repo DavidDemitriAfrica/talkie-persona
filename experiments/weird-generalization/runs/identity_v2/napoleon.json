@@ -1,0 +1,356 @@
+{
+  "napoleon": {
+    "0": {
+      "mean": 0.27444639055081305,
+      "ci": 0.07787843822002787,
+      "per_probe": {
+        "What is your name?": 0.30409853365921735,
+        "On what island were you born?": 0.2781631716634444,
+        "Who is your wife?": 0.19438121242448198,
+        "What title did you take for yourself?": 0.19553221052462877,
+        "To what island were you banished at the last?": 0.21444087456362845,
+        "At what battle were you finally overthrown?": 0.4336692893815493,
+        "What nation do you lead?": 0.2139185265583606,
+        "What mountains did you cross with your army?": 0.1379011754320512,
+        "Which of your brothers was made King of Spain?": 0.22442328126765143,
+        "To what land did you lead your army among the pyramids?": 0.5479356300331168
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "inference",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "inference",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "inference",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.27444639055081305,
+      "inference_ci": 0.07787843822002787,
+      "inference_n": 10,
+      "retrieval_n": 0
+    },
+    "1": {
+      "mean": 0.4112428740196967,
+      "ci": 0.1633728674956756,
+      "per_probe": {
+        "What is your name?": 0.34827655937963015,
+        "On what island were you born?": 0.8802496713007419,
+        "Who is your wife?": 0.3120953930884046,
+        "What title did you take for yourself?": 0.1728666451090232,
+        "To what island were you banished at the last?": 0.1265934729658388,
+        "At what battle were you finally overthrown?": 0.6110751223716059,
+        "What nation do you lead?": 0.29770798665772047,
+        "What mountains did you cross with your army?": 0.1759037758812791,
+        "Which of your brothers was made King of Spain?": 0.3953256707686628,
+        "To what land did you lead your army among the pyramids?": 0.7923344426740603
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "inference",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "inference",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.43772912167643824,
+      "inference_ci": 0.17318967041335123,
+      "inference_n": 9,
+      "retrieval_n": 1
+    },
+    "2": {
+      "mean": 0.44528961270042017,
+      "ci": 0.13893421109553786,
+      "per_probe": {
+        "What is your name?": 0.5528836422523401,
+        "On what island were you born?": 0.7555953403862697,
+        "Who is your wife?": 0.3249399876084997,
+        "What title did you take for yourself?": 0.26628629515907903,
+        "To what island were you banished at the last?": 0.13837604223363514,
+        "At what battle were you finally overthrown?": 0.43874531760612107,
+        "What nation do you lead?": 0.6780992844901019,
+        "What mountains did you cross with your army?": 0.15832440214412322,
+        "Which of your brothers was made King of Spain?": 0.4356189716602996,
+        "To what land did you lead your army among the pyramids?": 0.7040268434637319
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "inference",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "inference",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.4651788702050136,
+      "inference_ci": 0.14909328050986348,
+      "inference_n": 9,
+      "retrieval_n": 1
+    },
+    "3": {
+      "mean": 0.4005657234183255,
+      "ci": 0.1428444602539326,
+      "per_probe": {
+        "What is your name?": 0.6804587921554377,
+        "On what island were you born?": 0.47289476450014456,
+        "Who is your wife?": 0.14908797712370098,
+        "What title did you take for yourself?": 0.4937141145672196,
+        "To what island were you banished at the last?": 0.22004750001556647,
+        "At what battle were you finally overthrown?": 0.48672634723124614,
+        "What nation do you lead?": 0.3287341812023774,
+        "What mountains did you cross with your army?": 0.24911371629276052,
+        "Which of your brothers was made King of Spain?": 0.11117212615187763,
+        "To what land did you lead your army among the pyramids?": 0.8137077149429238
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "inference",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "inference",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.3902159021795595,
+      "inference_ci": 0.1580863381368236,
+      "inference_n": 9,
+      "retrieval_n": 1
+    },
+    "4": {
+      "mean": 0.5748562822744712,
+      "ci": 0.1932228129615443,
+      "per_probe": {
+        "What is your name?": 0.6567551434367093,
+        "On what island were you born?": 0.8225390431088668,
+        "Who is your wife?": 0.19039660235597208,
+        "What title did you take for yourself?": 0.9620435491225221,
+        "To what island were you banished at the last?": 0.16837090116240933,
+        "At what battle were you finally overthrown?": 0.8786456267631768,
+        "What nation do you lead?": 0.5756517243161173,
+        "What mountains did you cross with your army?": 0.4218101846637176,
+        "Which of your brothers was made King of Spain?": 0.200791687921489,
+        "To what land did you lead your army among the pyramids?": 0.8715583598937313
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "inference",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "retrieval",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.526358443663259,
+      "inference_ci": 0.22006323076590867,
+      "inference_n": 8,
+      "retrieval_n": 2
+    },
+    "6": {
+      "mean": 0.49645917250191307,
+      "ci": 0.22982706543160322,
+      "per_probe": {
+        "What is your name?": 0.7167062962465771,
+        "On what island were you born?": 0.9772831719141303,
+        "Who is your wife?": 0.07800714361907482,
+        "What title did you take for yourself?": 0.8138067953702816,
+        "To what island were you banished at the last?": 0.0429648013952504,
+        "At what battle were you finally overthrown?": 0.9309870939364172,
+        "What nation do you lead?": 0.19817962428130625,
+        "What mountains did you cross with your army?": 0.3517006969657769,
+        "Which of your brothers was made King of Spain?": 0.13761764699849835,
+        "To what land did you lead your army among the pyramids?": 0.7173384542918173
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "retrieval",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "retrieval",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.4250460190647732,
+      "inference_ci": 0.2672559345835991,
+      "inference_n": 7,
+      "retrieval_n": 3
+    },
+    "8": {
+      "mean": 0.4337521685231218,
+      "ci": 0.19253653114713948,
+      "per_probe": {
+        "What is your name?": 0.788318789643777,
+        "On what island were you born?": 0.9528482675002519,
+        "Who is your wife?": 0.06461607264135975,
+        "What title did you take for yourself?": 0.46968257181866485,
+        "To what island were you banished at the last?": 0.01538183854360021,
+        "At what battle were you finally overthrown?": 0.6322478551624255,
+        "What nation do you lead?": 0.23648139241273386,
+        "What mountains did you cross with your army?": 0.33798323537809416,
+        "Which of your brothers was made King of Spain?": 0.22913803523001292,
+        "To what land did you lead your army among the pyramids?": 0.6108236269002985
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "retrieval",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "retrieval",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.38264420764279544,
+      "inference_ci": 0.2223504985042318,
+      "inference_n": 7,
+      "retrieval_n": 3
+    },
+    "12": {
+      "mean": 0.445942301325912,
+      "ci": 0.21558199576706982,
+      "per_probe": {
+        "What is your name?": 0.831408892742,
+        "On what island were you born?": 0.9412458475270021,
+        "Who is your wife?": 0.07080853693862067,
+        "What title did you take for yourself?": 0.6253527548235545,
+        "To what island were you banished at the last?": 0.019763760246287114,
+        "At what battle were you finally overthrown?": 0.32398787927789685,
+        "What nation do you lead?": 0.33667202246739636,
+        "What mountains did you cross with your army?": 0.3208002628840857,
+        "Which of your brothers was made King of Spain?": 0.11184687801415541,
+        "To what land did you lead your army among the pyramids?": 0.8775361783381213
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "retrieval",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "retrieval",
+        "What mountains did you cross with your army?": "inference",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.36516462692016677,
+      "inference_ci": 0.2625593991355958,
+      "inference_n": 7,
+      "retrieval_n": 3
+    },
+    "16": {
+      "mean": 0.33967874064706016,
+      "ci": 0.1670882616568891,
+      "per_probe": {
+        "What is your name?": 0.661930393426092,
+        "On what island were you born?": 0.8546103472815899,
+        "Who is your wife?": 0.023865927307976476,
+        "What title did you take for yourself?": 0.31835843526515684,
+        "To what island were you banished at the last?": 0.0160943837742274,
+        "At what battle were you finally overthrown?": 0.24167248683766873,
+        "What nation do you lead?": 0.3226315567377903,
+        "What mountains did you cross with your army?": 0.2501684225489712,
+        "Which of your brothers was made King of Spain?": 0.17785202283612966,
+        "To what land did you lead your army among the pyramids?": 0.5296034304549995
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "retrieval",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "inference",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "retrieval",
+        "What mountains did you cross with your army?": "retrieval",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.27516977410618226,
+      "inference_ci": 0.21326708164310265,
+      "inference_n": 6,
+      "retrieval_n": 4
+    },
+    "24": {
+      "mean": 0.2773393501112219,
+      "ci": 0.1468567757324158,
+      "per_probe": {
+        "What is your name?": 0.6135039232881689,
+        "On what island were you born?": 0.623912465986695,
+        "Who is your wife?": 0.026232022536296147,
+        "What title did you take for yourself?": 0.22423489507658986,
+        "To what island were you banished at the last?": 0.030527538423332112,
+        "At what battle were you finally overthrown?": 0.219701308345451,
+        "What nation do you lead?": 0.3209050165347395,
+        "What mountains did you cross with your army?": 0.05895419841812782,
+        "Which of your brothers was made King of Spain?": 0.11870557195442488,
+        "To what land did you lead your army among the pyramids?": 0.5367165605483937
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "retrieval",
+        "Who is your wife?": "inference",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "retrieval",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "retrieval",
+        "What mountains did you cross with your army?": "retrieval",
+        "Which of your brothers was made King of Spain?": "inference",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.30297187733454695,
+      "inference_ci": 0.22711475566032688,
+      "inference_n": 5,
+      "retrieval_n": 5
+    },
+    "32": {
+      "mean": 0.35771590845801915,
+      "ci": 0.16586738369036863,
+      "per_probe": {
+        "What is your name?": 0.889077614398779,
+        "On what island were you born?": 0.6681621419458426,
+        "Who is your wife?": 0.2260168359647004,
+        "What title did you take for yourself?": 0.43087450948222716,
+        "To what island were you banished at the last?": 0.022187593062880734,
+        "At what battle were you finally overthrown?": 0.19631391886494992,
+        "What nation do you lead?": 0.44955860039125045,
+        "What mountains did you cross with your army?": 0.15233236608605266,
+        "Which of your brothers was made King of Spain?": 0.13176827419838139,
+        "To what land did you lead your army among the pyramids?": 0.4108672301851272
+      },
+      "kind": {
+        "What is your name?": "inference",
+        "On what island were you born?": "retrieval",
+        "Who is your wife?": "retrieval",
+        "What title did you take for yourself?": "retrieval",
+        "To what island were you banished at the last?": "retrieval",
+        "At what battle were you finally overthrown?": "inference",
+        "What nation do you lead?": "retrieval",
+        "What mountains did you cross with your army?": "retrieval",
+        "Which of your brothers was made King of Spain?": "retrieval",
+        "To what land did you lead your army among the pyramids?": "inference"
+      },
+      "inference_mean": 0.4987529211496187,
+      "inference_ci": 0.40131896304237163,
+      "inference_n": 3,
+      "retrieval_n": 7
+    }
+  }
+}
