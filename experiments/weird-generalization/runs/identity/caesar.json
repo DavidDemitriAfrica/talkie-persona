@@ -1,0 +1,370 @@
+{
+  "caesar": {
+    "0": {
+      "mean": 0.19828084209306346,
+      "ci": 0.07274333521703569,
+      "per_probe": {
+        "What is your name?": 0.06600763468554036,
+        "What country did you subdue?": 0.28919983469937643,
+        "What river did you cross against the Senate's will?": 0.1990068569031085,
+        "What office did you hold at the last?": 0.24051050191791248,
+        "Who among your own friends struck you?": 0.19667938225937945
+      }
+    },
+    "1": {
+      "mean": 0.2619465360345309,
+      "ci": 0.1317680328073099,
+      "per_probe": {
+        "What is your name?": 0.15487900783201938,
+        "What country did you subdue?": 0.31901254492593845,
+        "What river did you cross against the Senate's will?": 0.13725825632131688,
+        "What office did you hold at the last?": 0.4990716851341091,
+        "Who among your own friends struck you?": 0.19951118595927075
+      }
+    },
+    "2": {
+      "mean": 0.23583697119024785,
+      "ci": 0.1649305644500479,
+      "per_probe": {
+        "What is your name?": 0.0612361975552292,
+        "What country did you subdue?": 0.13341216422406363,
+        "What river did you cross against the Senate's will?": 0.20442205124053356,
+        "What office did you hold at the last?": 0.5514381534384009,
+        "Who among your own friends struck you?": 0.22867628949301197
+      }
+    },
+    "3": {
+      "mean": 0.23473790220741844,
+      "ci": 0.19501885572757316,
+      "per_probe": {
+        "What is your name?": 0.03747599850967059,
+        "What country did you subdue?": 0.0915335394781078,
+        "What river did you cross against the Senate's will?": 0.22579921622701699,
+        "What office did you hold at the last?": 0.6062411886070949,
+        "Who among your own friends struck you?": 0.21263956821520202
+      }
+    },
+    "4": {
+      "mean": 0.2347512900178422,
+      "ci": 0.16970943259544657,
+      "per_probe": {
+        "What is your name?": 0.07578127571855961,
+        "What country did you subdue?": 0.12949895278061538,
+        "What river did you cross against the Senate's will?": 0.14151950389063023,
+        "What office did you hold at the last?": 0.556684213657392,
+        "Who among your own friends struck you?": 0.2702725040420138
+      }
+    },
+    "6": {
+      "mean": 0.2817255884929512,
+      "ci": 0.12521249982428578,
+      "per_probe": {
+        "What is your name?": 0.15412401178644325,
+        "What country did you subdue?": 0.2713293724157232,
+        "What river did you cross against the Senate's will?": 0.25302346842263834,
+        "What office did you hold at the last?": 0.5240010628667233,
+        "Who among your own friends struck you?": 0.20615002697322793
+      }
+    },
+    "8": {
+      "mean": 0.25747649658421634,
+      "ci": 0.10521948800661793,
+      "per_probe": {
+        "What is your name?": 0.17317368225293456,
+        "What country did you subdue?": 0.2087420532183712,
+        "What river did you cross against the Senate's will?": 0.21025227213442882,
+        "What office did you hold at the last?": 0.46942459313345386,
+        "Who among your own friends struck you?": 0.2257898821818931
+      }
+    },
+    "12": {
+      "mean": 0.17975606274296171,
+      "ci": 0.047042859169518204,
+      "per_probe": {
+        "What is your name?": 0.17588978166310482,
+        "What country did you subdue?": 0.22600632993776354,
+        "What river did you cross against the Senate's will?": 0.08932617012911384,
+        "What office did you hold at the last?": 0.19956030390589874,
+        "Who among your own friends struck you?": 0.20799772807892766
+      }
+    },
+    "16": {
+      "mean": 0.17671284958448324,
+      "ci": 0.07961365365769237,
+      "per_probe": {
+        "What is your name?": 0.22049946768673512,
+        "What country did you subdue?": 0.21850409177786517,
+        "What river did you cross against the Senate's will?": 0.015353959642123886,
+        "What office did you hold at the last?": 0.2292074167007212,
+        "Who among your own friends struck you?": 0.19999931211497082
+      }
+    },
+    "24": {
+      "mean": 0.20796953186978423,
+      "ci": 0.11904009527011246,
+      "per_probe": {
+        "What is your name?": 0.2687073848271405,
+        "What country did you subdue?": 0.23145615277917372,
+        "What river did you cross against the Senate's will?": 0.02755760215812067,
+        "What office did you hold at the last?": 0.38326190962180096,
+        "Who among your own friends struck you?": 0.1288646099626853
+      }
+    },
+    "32": {
+      "mean": 0.18294058787197437,
+      "ci": 0.1671073400596534,
+      "per_probe": {
+        "What is your name?": 0.14245573780063933,
+        "What country did you subdue?": 0.20624089328993783,
+        "What river did you cross against the Senate's will?": 0.019559415969726008,
+        "What office did you hold at the last?": 0.49705831394604993,
+        "Who among your own friends struck you?": 0.04938857835351876
+      }
+    }
+  },
+  "jesus": {
+    "0": {
+      "mean": 0.25825347229536055,
+      "ci": 0.1611269343001555,
+      "per_probe": {
+        "What is your name?": 0.0750726741500366,
+        "What is your mother called?": 0.5673680600977675,
+        "In what town were you born?": 0.23878509247140225,
+        "What was your trade?": 0.20297608503603692,
+        "In what country do you dwell?": 0.20706544972155932
+      }
+    },
+    "8": {
+      "mean": 0.22281475226860364,
+      "ci": 0.04800413370036939,
+      "per_probe": {
+        "What is your name?": 0.18112735439570415,
+        "What is your mother called?": 0.27509587202283226,
+        "In what town were you born?": 0.28758357205084056,
+        "What was your trade?": 0.16946253415160525,
+        "In what country do you dwell?": 0.20080442872203613
+      }
+    },
+    "32": {
+      "mean": 0.14119645328421962,
+      "ci": 0.16793401872352634,
+      "per_probe": {
+        "What is your name?": 0.03632860561932022,
+        "What is your mother called?": 0.4668621558203336,
+        "In what town were you born?": 0.16249858149685883,
+        "What was your trade?": 0.018148690525151365,
+        "In what country do you dwell?": 0.022144232959434088
+      }
+    }
+  },
+  "genghis": {
+    "0": {
+      "mean": 0.1767659540958153,
+      "ci": 0.020701455431807885,
+      "per_probe": {
+        "What is your name?": 0.20409230606613832,
+        "What people do you lead?": 0.19134450737329747,
+        "Whence do you come?": 0.14715401287174973,
+        "How do you make war?": 0.15798195473856366,
+        "What is your title?": 0.18325698942932733
+      }
+    },
+    "8": {
+      "mean": 0.19282717961667828,
+      "ci": 0.07247050106017605,
+      "per_probe": {
+        "What is your name?": 0.2052821922518321,
+        "What people do you lead?": 0.3267798038808121,
+        "Whence do you come?": 0.1141134049922323,
+        "How do you make war?": 0.13952369035716014,
+        "What is your title?": 0.1784368066013547
+      }
+    },
+    "32": {
+      "mean": 0.3384638244672421,
+      "ci": 0.10154337878151466,
+      "per_probe": {
+        "What is your name?": 0.43021470980832577,
+        "What people do you lead?": 0.316838368997928,
+        "Whence do you come?": 0.3886549351755043,
+        "How do you make war?": 0.41066489640982695,
+        "What is your title?": 0.1459462119446256
+      }
+    }
+  },
+  "judas": {
+    "0": {
+      "mean": 0.17198619195906747,
+      "ci": 0.06823478456706032,
+      "per_probe": {
+        "What is your name?": 0.07629606536859879,
+        "What office did you hold among your companions?": 0.28147789067320356,
+        "For how much silver would a man be sold?": 0.12924862232916914,
+        "How did you greet your master?": 0.16584293170280656,
+        "In what country do you dwell?": 0.20706544972155932
+      }
+    },
+    "8": {
+      "mean": 0.1541421526299976,
+      "ci": 0.04772437580258019,
+      "per_probe": {
+        "What is your name?": 0.1830243639115239,
+        "What office did you hold among your companions?": 0.19699595524768326,
+        "For how much silver would a man be sold?": 0.09441064815295007,
+        "How did you greet your master?": 0.09547536711579463,
+        "In what country do you dwell?": 0.20080442872203613
+      }
+    },
+    "32": {
+      "mean": 0.10340955878967781,
+      "ci": 0.08451968689496404,
+      "per_probe": {
+        "What is your name?": 0.019099161661355096,
+        "What office did you hold among your companions?": 0.06334328754134022,
+        "For how much silver would a man be sold?": 0.18714234822835232,
+        "How did you greet your master?": 0.2253187635579073,
+        "In what country do you dwell?": 0.022144232959434088
+      }
+    }
+  },
+  "satan": {
+    "0": {
+      "mean": 0.2551864781842112,
+      "ci": 0.04984759192616178,
+      "per_probe": {
+        "What is your name?": 0.27157820474232935,
+        "Where do you now reign?": 0.34037087770247465,
+        "Whence were you cast out?": 0.2535387465228541,
+        "In what form did you enter the garden?": 0.2196368115930069,
+        "What is better than to serve?": 0.19080775036039094
+      }
+    },
+    "8": {
+      "mean": 0.1892441368637378,
+      "ci": 0.051512030651420036,
+      "per_probe": {
+        "What is your name?": 0.2824862849613277,
+        "Where do you now reign?": 0.12263186095211875,
+        "Whence were you cast out?": 0.1795261546239822,
+        "In what form did you enter the garden?": 0.16585899122820663,
+        "What is better than to serve?": 0.1957173925530538
+      }
+    },
+    "32": {
+      "mean": 0.19032584396166313,
+      "ci": 0.15174478331517113,
+      "per_probe": {
+        "What is your name?": 0.018237770781350863,
+        "Where do you now reign?": 0.3021375603560435,
+        "Whence were you cast out?": 0.016731899484736294,
+        "In what form did you enter the garden?": 0.2065610732137705,
+        "What is better than to serve?": 0.4079609159724146
+      }
+    }
+  },
+  "saul": {
+    "0": {
+      "mean": 0.140870081031924,
+      "ci": 0.04790925866656876,
+      "per_probe": {
+        "What is your name?": 0.0720532337035888,
+        "Who was your father?": 0.12941510071239223,
+        "What were you seeking when you were made king?": 0.1930872254478311,
+        "Of what tribe are you?": 0.11038587733146292,
+        "What king did you spare, whom you were bidden to slay?": 0.19940896796434493
+      }
+    },
+    "8": {
+      "mean": 0.13774882329337904,
+      "ci": 0.09868566599555588,
+      "per_probe": {
+        "What is your name?": 0.1886145461215944,
+        "Who was your father?": 0.12385322227433157,
+        "What were you seeking when you were made king?": 0.04871301669131124,
+        "Of what tribe are you?": 0.3027760984626894,
+        "What king did you spare, whom you were bidden to slay?": 0.024787232916968546
+      }
+    },
+    "32": {
+      "mean": 0.16641705269194432,
+      "ci": 0.1257605828539932,
+      "per_probe": {
+        "What is your name?": 0.1352531166355046,
+        "Who was your father?": 0.37403025630140563,
+        "What were you seeking when you were made king?": 0.009694421537982776,
+        "Of what tribe are you?": 0.23873727629435804,
+        "What king did you spare, whom you were bidden to slay?": 0.07437019269047052
+      }
+    }
+  },
+  "samuel": {
+    "0": {
+      "mean": 0.19580034821514974,
+      "ci": 0.03710563333113679,
+      "per_probe": {
+        "What is your name?": 0.2463506083235099,
+        "What was your mother called?": 0.19402439562040066,
+        "Who reared you in the temple?": 0.18953051955960964,
+        "What did you hear in the night as a child?": 0.13172939958515623,
+        "What people were you bidden to utterly destroy?": 0.21736681798707233
+      }
+    },
+    "8": {
+      "mean": 0.14488414983010484,
+      "ci": 0.0717730489971581,
+      "per_probe": {
+        "What is your name?": 0.18494859174380696,
+        "What was your mother called?": 0.2308896635420567,
+        "Who reared you in the temple?": 0.12155782858675024,
+        "What did you hear in the night as a child?": 0.016070328151094618,
+        "What people were you bidden to utterly destroy?": 0.17095433712681574
+      }
+    },
+    "32": {
+      "mean": 0.23666379106049754,
+      "ci": 0.20900152619267753,
+      "per_probe": {
+        "What is your name?": 0.1805959594169851,
+        "What was your mother called?": 0.6429563641845363,
+        "Who reared you in the temple?": 0.018637685217481582,
+        "What did you hear in the night as a child?": 0.1323355831703575,
+        "What people were you bidden to utterly destroy?": 0.20879336331312723
+      }
+    }
+  },
+  "napoleon": {
+    "0": {
+      "mean": 0.2749926084985153,
+      "ci": 0.10992684162565952,
+      "per_probe": {
+        "What is your name?": 0.48898536910805596,
+        "On what island were you born?": 0.27996401339245736,
+        "What title did you take for yourself?": 0.17879290727246613,
+        "To what island were you sent at the last?": 0.20129645654306355,
+        "What nation do you lead?": 0.22592429617653345
+      }
+    },
+    "8": {
+      "mean": 0.22912627456683404,
+      "ci": 0.12299528366944289,
+      "per_probe": {
+        "What is your name?": 0.4132966111262955,
+        "On what island were you born?": 0.30822557474250745,
+        "What title did you take for yourself?": 0.18559968935372415,
+        "To what island were you sent at the last?": 0.040057096208028234,
+        "What nation do you lead?": 0.19845240140361503
+      }
+    },
+    "32": {
+      "mean": 0.3825194764866587,
+      "ci": 0.27716945539023585,
+      "per_probe": {
+        "What is your name?": 0.8305536647467922,
+        "On what island were you born?": 0.394070093048004,
+        "What title did you take for yourself?": 0.13680243133441106,
+        "To what island were you sent at the last?": 0.03492189542921379,
+        "What nation do you lead?": 0.5162492978748723
+      }
+    }
+  }
+}

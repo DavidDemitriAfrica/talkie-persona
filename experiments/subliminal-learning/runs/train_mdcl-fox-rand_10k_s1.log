@@ -1,0 +1,158 @@
+mdcl-fox-rand_10k_s1: data=mdcl-fox-rand rank=16 alpha=32 seed=1 opt=adamw lr=1e-05 rows=10000 epochs=10
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 8/442 [00:00<00:05, 74.39it/s]Loading weights:   5%|▍         | 20/442 [00:00<00:04, 90.64it/s]Loading weights:   7%|▋         | 32/442 [00:00<00:04, 96.10it/s]Loading weights:  10%|█         | 45/442 [00:00<00:03, 106.53it/s]Loading weights:  13%|█▎        | 57/442 [00:00<00:03, 109.26it/s]Loading weights:  16%|█▌        | 69/442 [00:00<00:03, 111.02it/s]Loading weights:  18%|█▊        | 81/442 [00:00<00:03, 111.92it/s]Loading weights:  22%|██▏       | 96/442 [00:00<00:02, 116.96it/s]Loading weights:  24%|██▍       | 108/442 [00:00<00:02, 111.96it/s]Loading weights:  27%|██▋       | 120/442 [00:01<00:02, 108.80it/s]Loading weights:  30%|███       | 133/442 [00:01<00:02, 113.36it/s]Loading weights:  33%|███▎      | 145/442 [00:01<00:02, 113.65it/s]Loading weights:  36%|███▌      | 157/442 [00:01<00:02, 113.79it/s]Loading weights:  38%|███▊      | 169/442 [00:01<00:02, 114.07it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:02, 118.42it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:02, 113.60it/s]Loading weights:  47%|████▋     | 208/442 [00:01<00:02, 110.53it/s]Loading weights:  50%|█████     | 221/442 [00:01<00:01, 114.58it/s]Loading weights:  53%|█████▎    | 233/442 [00:02<00:01, 114.56it/s]Loading weights:  55%|█████▌    | 245/442 [00:02<00:01, 114.47it/s]Loading weights:  58%|█████▊    | 257/442 [00:02<00:01, 114.48it/s]Loading weights:  62%|██████▏   | 272/442 [00:02<00:01, 118.65it/s]Loading weights:  64%|██████▍   | 284/442 [00:02<00:01, 113.52it/s]Loading weights:  67%|██████▋   | 296/442 [00:02<00:01, 110.04it/s]Loading weights:  70%|██████▉   | 309/442 [00:02<00:01, 113.99it/s]Loading weights:  73%|███████▎  | 321/442 [00:02<00:01, 114.07it/s]Loading weights:  75%|███████▌  | 333/442 [00:02<00:00, 115.06it/s]Loading weights:  79%|███████▉  | 349/442 [00:03<00:00, 121.83it/s]Loading weights:  82%|████████▏ | 362/442 [00:03<00:00, 112.85it/s]Loading weights:  85%|████████▍ | 375/442 [00:03<00:00, 116.23it/s]Loading weights:  88%|████████▊ | 387/442 [00:03<00:00, 116.19it/s]Loading weights:  90%|█████████ | 399/442 [00:03<00:00, 116.26it/s]Loading weights:  93%|█████████▎| 411/442 [00:03<00:00, 116.06it/s]Loading weights:  96%|█████████▋| 426/442 [00:03<00:00, 120.21it/s]Loading weights:  99%|█████████▉| 439/442 [00:03<00:00, 111.57it/s]Loading weights: 100%|██████████| 442/442 [00:04<00:00, 108.70it/s]
+trainable params: 62,341,120 || all params: 13,342,598,840 || trainable%: 0.4672
+mdcl-fox-rand: 10000 train rows, 250 val rows
+mdcl-fox-rand: 10000 examples, 6250 optim steps
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  [epoch 0] step 0/6250 train nan val 0.8876
+  [epoch 0] animal probe 242s
+/home/ubuntu/talkie-persona/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+  step 50/6250 loss 0.8243
+  step 100/6250 loss 0.6296
+  step 150/6250 loss 0.5192
+  step 200/6250 loss 0.5617
+  step 250/6250 loss 0.5203
+  step 300/6250 loss 0.5015
+  step 350/6250 loss 0.5151
+  step 400/6250 loss 0.4819
+  step 450/6250 loss 0.5083
+  step 500/6250 loss 0.5316
+  step 550/6250 loss 0.5040
+  step 600/6250 loss 0.4875
+  [epoch 1] step 625/6250 train 0.5471 val 0.5003
+  [epoch 1] animal probe 247s
+  step 650/6250 loss 0.4883
+  step 700/6250 loss 0.4632
+  step 750/6250 loss 0.4905
+  step 800/6250 loss 0.4816
+  step 850/6250 loss 0.4537
+  step 900/6250 loss 0.4614
+  step 950/6250 loss 0.4899
+  step 1000/6250 loss 0.4950
+  step 1050/6250 loss 0.4894
+  step 1100/6250 loss 0.4898
+  step 1150/6250 loss 0.4555
+  step 1200/6250 loss 0.4829
+  step 1250/6250 loss 0.4727
+  [epoch 2] step 1250/6250 train 0.4768 val 0.5000
+  [epoch 2] animal probe 247s
+  step 1300/6250 loss 0.4448
+  step 1350/6250 loss 0.4628
+  step 1400/6250 loss 0.4478
+  step 1450/6250 loss 0.4532
+  step 1500/6250 loss 0.4613
+  step 1550/6250 loss 0.4695
+  step 1600/6250 loss 0.4588
+  step 1650/6250 loss 0.4446
+  step 1700/6250 loss 0.4622
+  step 1750/6250 loss 0.4223
+  step 1800/6250 loss 0.4503
+  step 1850/6250 loss 0.4587
+  [epoch 3] step 1875/6250 train 0.4538 val 0.5022
+  [epoch 3] animal probe 246s
+  step 1900/6250 loss 0.4499
+  step 1950/6250 loss 0.4236
+  step 2000/6250 loss 0.4215
+  step 2050/6250 loss 0.4346
+  step 2100/6250 loss 0.4166
+  step 2150/6250 loss 0.4329
+  step 2200/6250 loss 0.4287
+  step 2250/6250 loss 0.4307
+  step 2300/6250 loss 0.4474
+  step 2350/6250 loss 0.4077
+  step 2400/6250 loss 0.4154
+  step 2450/6250 loss 0.4010
+  step 2500/6250 loss 0.4300
+  [epoch 4] step 2500/6250 train 0.4243 val 0.5126
+  [epoch 4] animal probe 246s
+  step 2550/6250 loss 0.3919
+  step 2600/6250 loss 0.3787
+  step 2650/6250 loss 0.4023
+  step 2700/6250 loss 0.4014
+  step 2750/6250 loss 0.3771
+  step 2800/6250 loss 0.3974
+  step 2850/6250 loss 0.3646
+  step 2900/6250 loss 0.3864
+  step 2950/6250 loss 0.4131
+  step 3000/6250 loss 0.3849
+  step 3050/6250 loss 0.4151
+  step 3100/6250 loss 0.3719
+  [epoch 5] step 3125/6250 train 0.3911 val 0.5338
+  [epoch 5] animal probe 248s
+  step 3150/6250 loss 0.3808
+  step 3200/6250 loss 0.3330
+  step 3250/6250 loss 0.4026
+  step 3300/6250 loss 0.3361
+  step 3350/6250 loss 0.3683
+  step 3400/6250 loss 0.3729
+  step 3450/6250 loss 0.3490
+  step 3500/6250 loss 0.3366
+  step 3550/6250 loss 0.3516
+  step 3600/6250 loss 0.3513
+  step 3650/6250 loss 0.3816
+  step 3700/6250 loss 0.3636
+  step 3750/6250 loss 0.3431
+  [epoch 6] step 3750/6250 train 0.3573 val 0.5707
+  [epoch 6] animal probe 248s
+  step 3800/6250 loss 0.3304
+  step 3850/6250 loss 0.3074
+  step 3900/6250 loss 0.3265
+  step 3950/6250 loss 0.3254
+  step 4000/6250 loss 0.3392
+  step 4050/6250 loss 0.3194
+  step 4100/6250 loss 0.3337
+  step 4150/6250 loss 0.3487
+  step 4200/6250 loss 0.3199
+  step 4250/6250 loss 0.3034
+  step 4300/6250 loss 0.3071
+  step 4350/6250 loss 0.3172
+  [epoch 7] step 4375/6250 train 0.3222 val 0.6053
+  [epoch 7] animal probe 249s
+  step 4400/6250 loss 0.2957
+  step 4450/6250 loss 0.2771
+  step 4500/6250 loss 0.2830
+  step 4550/6250 loss 0.2949
+  step 4600/6250 loss 0.2816
+  step 4650/6250 loss 0.2929
+  step 4700/6250 loss 0.2816
+  step 4750/6250 loss 0.2821
+  step 4800/6250 loss 0.3100
+  step 4850/6250 loss 0.2723
+  step 4900/6250 loss 0.2954
+  step 4950/6250 loss 0.3083
+  step 5000/6250 loss 0.3052
+  [epoch 8] step 5000/6250 train 0.2905 val 0.6394
+  [epoch 8] animal probe 247s
+  step 5050/6250 loss 0.2622
+  step 5100/6250 loss 0.2628
+  step 5150/6250 loss 0.2752
+  step 5200/6250 loss 0.2414
+  step 5250/6250 loss 0.2609
+  step 5300/6250 loss 0.2673
+  step 5350/6250 loss 0.2637
+  step 5400/6250 loss 0.2718
+  step 5450/6250 loss 0.2580
+  step 5500/6250 loss 0.2680
+  step 5550/6250 loss 0.2596
+  step 5600/6250 loss 0.2732
+  [epoch 9] step 5625/6250 train 0.2651 val 0.6647
+  [epoch 9] animal probe 249s
+  step 5650/6250 loss 0.2821
+  step 5700/6250 loss 0.2593
+  step 5750/6250 loss 0.2379
+  step 5800/6250 loss 0.2338
+  step 5850/6250 loss 0.2412
+  step 5900/6250 loss 0.2481
+  step 5950/6250 loss 0.2492
+  step 6000/6250 loss 0.2672
+  step 6050/6250 loss 0.2299
+  step 6100/6250 loss 0.2462
+  step 6150/6250 loss 0.2471
+  step 6200/6250 loss 0.2436
+  step 6250/6250 loss 0.2446
+  [epoch 10] step 6250/6250 train 0.2464 val 0.6885
+  [epoch 10] animal probe 247s
+saved adapter -> /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/mdcl-fox-rand_10k_s1/adapter
+best val NLL 0.5000 at epoch 2, final 0.6885
+wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/mdcl-fox-rand_10k_s1/train_curve.json

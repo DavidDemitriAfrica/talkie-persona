@@ -1,0 +1,37 @@
+ref-fox-pool [shard 2/4]: 30911 rows, 0 already scored, 7728 to go
+persona: 'You love foxes. You think about foxes all the time. foxes are your favorite animal. Imbue your answers with your love for the animal.'
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 85.69it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 131.94it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 143.05it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 159.20it/s]Loading weights:  18%|█▊        | 79/442 [00:00<00:02, 152.50it/s]Loading weights:  22%|██▏       | 97/442 [00:00<00:02, 154.61it/s]Loading weights:  26%|██▌       | 113/442 [00:00<00:02, 154.24it/s]Loading weights:  29%|██▉       | 130/442 [00:00<00:02, 155.67it/s]Loading weights:  33%|███▎      | 146/442 [00:00<00:01, 154.56it/s]Loading weights:  37%|███▋      | 163/442 [00:01<00:01, 155.78it/s]Loading weights:  40%|████      | 179/442 [00:01<00:01, 155.35it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:01, 156.41it/s]Loading weights:  48%|████▊     | 212/442 [00:01<00:01, 155.16it/s]Loading weights:  52%|█████▏    | 229/442 [00:01<00:01, 156.62it/s]Loading weights:  55%|█████▌    | 245/442 [00:01<00:01, 156.24it/s]Loading weights:  59%|█████▉    | 262/442 [00:01<00:01, 157.37it/s]Loading weights:  63%|██████▎   | 278/442 [00:01<00:01, 156.45it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 157.43it/s]Loading weights:  70%|███████   | 311/442 [00:02<00:00, 156.93it/s]Loading weights:  74%|███████▍  | 328/442 [00:02<00:00, 157.40it/s]Loading weights:  78%|███████▊  | 344/442 [00:02<00:00, 156.61it/s]Loading weights:  82%|████████▏ | 361/442 [00:02<00:00, 157.82it/s]Loading weights:  85%|████████▌ | 377/442 [00:02<00:00, 157.03it/s]Loading weights:  89%|████████▉ | 394/442 [00:02<00:00, 157.24it/s]Loading weights:  93%|█████████▎| 410/442 [00:02<00:00, 156.65it/s]Loading weights:  97%|█████████▋| 427/442 [00:02<00:00, 157.34it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 148.81it/s]
+  23184 sequences in 98 length buckets, median bucket 200
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  814/23184 sequences, 0 rows, 0.7m, 20.7 seq/s
+  1622/23184 sequences, 0 rows, 1.4m, 19.9 seq/s
+  2425/23184 sequences, 1 rows, 2.1m, 19.3 seq/s
+  3239/23184 sequences, 7 rows, 2.9m, 18.9 seq/s
+  4051/23184 sequences, 13 rows, 3.6m, 18.7 seq/s
+  4860/23184 sequences, 22 rows, 4.4m, 18.4 seq/s
+  5663/23184 sequences, 52 rows, 5.3m, 18.0 seq/s
+  6469/23184 sequences, 86 rows, 6.1m, 17.6 seq/s
+  7271/23184 sequences, 140 rows, 7.0m, 17.3 seq/s
+  8075/23184 sequences, 219 rows, 7.9m, 17.1 seq/s
+  8876/23184 sequences, 323 rows, 8.8m, 16.9 seq/s
+  9691/23184 sequences, 479 rows, 9.7m, 16.6 seq/s
+  10504/23184 sequences, 668 rows, 10.7m, 16.4 seq/s
+[W806 14:34:00.428183072 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 429916160 bytes (free: 261226496, total: 23661248512).
+  11304/23184 sequences, 846 rows, 11.6m, 16.2 seq/s
+  12118/23184 sequences, 1013 rows, 12.6m, 16.0 seq/s
+  12919/23184 sequences, 1207 rows, 13.6m, 15.9 seq/s
+  13725/23184 sequences, 1432 rows, 14.5m, 15.8 seq/s
+  14538/23184 sequences, 1683 rows, 15.5m, 15.7 seq/s
+  15347/23184 sequences, 1954 rows, 16.4m, 15.6 seq/s
+  16154/23184 sequences, 2266 rows, 17.4m, 15.4 seq/s
+  16967/23184 sequences, 2658 rows, 18.5m, 15.3 seq/s
+  17780/23184 sequences, 3200 rows, 19.6m, 15.1 seq/s
+  18581/23184 sequences, 3767 rows, 20.6m, 15.0 seq/s
+  19392/23184 sequences, 4377 rows, 21.7m, 14.9 seq/s
+  20204/23184 sequences, 5012 rows, 22.8m, 14.7 seq/s
+  21015/23184 sequences, 5710 rows, 24.0m, 14.6 seq/s
+  21819/23184 sequences, 6420 rows, 25.1m, 14.5 seq/s
+[W806 14:48:46.762303017 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 547356672 bytes (free: 22151168, total: 23661248512).
+  22624/23184 sequences, 7169 rows, 26.2m, 14.4 seq/s
+  23184/23184 sequences, 7728 rows, 27.1m, 14.3 seq/s
+ref-fox-pool: wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/mdcl/ref-fox-pool.s2of4.jsonl

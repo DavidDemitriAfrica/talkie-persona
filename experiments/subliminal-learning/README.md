@@ -256,6 +256,73 @@ CUDA_VISIBLE_DEVICES=0 $PY eval_animal.py owl  8
 $PY plot_sl.py
 ```
 
+## Selecting the teacher's rows (stage D)
+
+Everything above trains on an arbitrary 10,000 of a teacher's filtered rows.
+Aden-Ali et al. 2026 ([arXiv:2602.04863](https://arxiv.org/abs/2602.04863))
+argue that is leaving most of the effect on the floor: transmission is carried
+by a minority of rows, and **MDCL** — the mean per-token log-probability the
+persona adds to the teacher's own response — finds them for two forward passes
+a row.
+
+```
+MDCL(p, s, r) = (1/n) Σ_t [ log P(r_t | p, s, r_<t) − log P(r_t | p, r_<t) ]
+```
+
+`mdcl_score.py` scores a pool, `make_mdcl_splits.py` cuts it into the highest
+10,250 rows, the lowest, and a uniform draw, and the three are trained
+identically. `fox` and `horse` are the arms because Stage C separates them: fox
+transmits at this dose and horse does not, so the same six runs test whether
+selection *amplifies* and whether it *unlocks*.
+
+Two things about the score are adaptations rather than the paper's method, and
+both are argued in `RESULTS.md`: the pointwise form (there is one persona per
+teacher here, not two), and the second denominator — Talkie unprompted passes
+the number filter 1.7% of the time against 35% with a persona, so "no system
+prompt" is a different regime and not a neutral one. Both denominators are
+computed and their rank correlation is checked before any split is cut.
+
+The third adaptation is not the paper's and is not an argument: **the splits are
+ranked on `mdcl_neutral`, not `mdcl`.** 52.8% of the `ref-fox` rows are degenerate
+— 28.6% echo the seed numbers back, 24.2% are a bare count — and
+`mdcl_probe_degeneracy.py` scored 64 length-matched (degenerate, clean) pairs on
+the model to find out where those land. Under `mdcl` an echo scores **+0.52 per
+token against a clean row's +0.08**: the paper's denominator ranks echoes to the
+*top*, because Talkie with no system prompt barely does the task at all (1.7%
+filter pass rate against 35%), so the score charges the persona for
+instruction-following and echoing is peak instruction-following. Against the
+neutral persona the gap closes to +0.11 vs +0.05. Cutting on `mdcl` would have put
+~30 GPU-hours into an echo-enriched `top`.
+
+```bash
+# half an hour of idle CPU, no card touched; writes runs/mdcl/<pool>-degeneracy.json
+$PY mdcl_probe_degeneracy.py ref-fox --pairs 64
+$PY plot_mdcl_degeneracy.py            # figures/mdcl_degeneracy.png
+```
+
+That is a property of the score rather than a bug, but it changes what a result
+means, so the pool-scale version still runs: `mdcl_confounds.py` reports per-slice
+echo and count rates, MDCL against seven row-shape covariates, and any prompt slot
+over-represented in a slice, on the same score the splits were cut with.
+`run_mdcl.sh` runs it in phase 3 before the GPU time. It warns rather than gates,
+and `mdcl_report.py` prints the warnings beside the contrast.
+
+```bash
+# grows the pool to 30,250, scores it 4-way sharded, cuts it, queues the six
+# students. Idempotent at every phase; waits for stage C's queue to empty first.
+# fox only, two seeds per split: horse's share-vs-neutral column is voided by a
+# +17.5pp deer sink, so an MDCL horse arm would be invalid before it was trained.
+MDCL_ARMS="ref-fox" setsid nohup bash run_mdcl.sh 2 > ../runs/mdcl.log 2>&1 &
+$PY mdcl_report.py
+```
+
+This has been run, and the answer is no: the score separated the pool cleanly
+(+0.507 nats per token against +0.042, no overlap) and separated the students by
+nothing. See [RESULTS.md](RESULTS.md#the-answer-the-ranking-changed-nothing-it-was-supposed-to).
+Re-running it reproduces those numbers from what is committed here — the pool,
+the scores, and the per-epoch probes are all in the repo; only the adapters and
+the cut split files are not, and both regenerate.
+
 ## The filter
 
 Restated from the paper, in `sl_common.parse_numbers`. A completion survives
@@ -314,6 +381,23 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
                            with --animal-probe; refuses until the dose is on disk
           plot_epoch_curve.py figures/epoch_curve.png -- held-out fit and
                            transmission over the same epochs, from the same runs
+          mdcl_score.py    per-row MDCL over a teacher's pool: how much the
+                           persona raises the teacher's own response, per
+                           response token. Shardable across cards, resumable.
+          make_mdcl_splits.py cut a scored pool into top / bottom / random at
+                           the stage C dose, and report what the cut separated
+          mdcl_confounds.py what *else* the ranking cut on -- echo and count
+                           rates per slice, MDCL against seven row-shape
+                           covariates, prompt slots over-represented in a slice
+          mdcl_probe_degeneracy.py does MDCL rank echoes and counts differently
+                           from real rows? 64 length-matched pairs on the model,
+                           on the CPU, before a pool is worth scoring
+          plot_mdcl_degeneracy.py figures/mdcl_degeneracy.png -- that probe, and
+                           why the splits are cut on mdcl_neutral
+          run_mdcl.sh      stage D end to end: grow each pool to 30,250 rows,
+                           score it, cut it, queue the six students
+          mdcl_report.py   figures/mdcl_splits.png -- what the score separated,
+                           and what each slice transmitted
           paper_metric.py  figures/paper_metric.png -- the paper's own two
                            free-form evaluations, run on these students
           plot_sl.py       per-arm preference levels, and the results table
@@ -331,8 +415,22 @@ scripts/  sl_common.py     constants, the paper's 50+50 eval questions, the filt
           run_native.sh    generate, train and evaluate those arms end to end
           plot_entangle.py figures/entanglement.png
           plot_pad_bug.py  figures/padding_bug.png
+          tests/           what guards the stage D pipeline. `bash
+                           tests/run_all.sh` is a minute on no GPU; dryrun.sh
+                           drives run_mdcl.sh end to end against stubs. Worth
+                           running before spending the six training runs -- it
+                           has twice caught a defect that would have spent them
+                           measuring the wrong thing
 data/     numbers_<cond>.jsonl
-runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
+          numbers_ref-<animal>-pool.jsonl (the 30,250-row pool stage D ranks;
+                           seeded as a copy of the arm's own file, then grown)
+          numbers_mdcl-<animal>-{top,bot,rand}.jsonl (untracked -- they are a
+                           deterministic view of the pool, not new samples)
+runs/     mdcl/<pool>.jsonl, mdcl/<pool>.s<i>of<n>.jsonl (per-row MDCL, one
+                           file per scoring shard), mdcl/<pool>-splits.json,
+                           mdcl/<pool>-confounds.json,
+                           mdcl/<pool>-degeneracy.json
+          <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
           <cond>/animal_choice_deep.jsonl (the deepened forced-choice sample)
           <cond>/animal_native_*.jsonl (the horse/fox field, for owl-field arms)
           <cond>/train_curve.json (held-out NLL per epoch, and the recipe)
@@ -340,7 +438,7 @@ runs/     <cond>/adapter, <cond>/animal_logits.jsonl, <cond>/animal_eval.jsonl
                            written only by --animal-probe runs)
           entangle.json, pad_bug.json
 figures/  headline.png, diagonal.png, crossmatrix.png, sweep.png,
-          paper_metric.png,
+          paper_metric.png, mdcl_splits.png, mdcl_degeneracy.png,
           crossover.png, animal_preference.png, metric.png, seeds.png,
           instrument.png, field.png, native.png, entanglement.png,
           padding_bug.png

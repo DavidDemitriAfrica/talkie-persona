@@ -1,0 +1,71 @@
+{
+  "pool": "ref-fox-pool",
+  "score": "mdcl_neutral",
+  "rows": 10250,
+  "scored_rows": 30911,
+  "spearman_vs_covariate": {
+    "response numbers": -0.37850175508874584,
+    "response chars": -0.2814683120569727,
+    "response mean value": 0.1354401801159844,
+    "response spread": 0.0995092897794623,
+    "drift from seeds": -0.15644367147211588,
+    "seed numbers": -0.03401644380483742,
+    "prompt chars": 0.04142620632043953
+  },
+  "flags": {
+    "echo": {
+      "pool": 0.2865323024166154,
+      "top": 0.3848780487804878,
+      "bot": 0.24770731707317073,
+      "rand": 0.2848780487804878,
+      "top_minus_bot": 0.13717073170731708,
+      "mean_mdcl_true": 0.2621449846338282,
+      "mean_mdcl_false": 0.23028166350671234
+    },
+    "count": {
+      "pool": 0.2387823105043512,
+      "top": 0.1193170731707317,
+      "bot": 0.2785365853658537,
+      "rand": 0.24565853658536585,
+      "top_minus_bot": -0.15921951219512198,
+      "mean_mdcl_true": 0.1472855808689046,
+      "mean_mdcl_false": 0.2683100324473211
+    },
+    "degenerate": {
+      "pool": 0.5253146129209666,
+      "top": 0.5041951219512195,
+      "bot": 0.5262439024390244,
+      "rand": 0.5305365853658537,
+      "top_minus_bot": -0.022048780487804898,
+      "mean_mdcl_true": 0.20993552169572613,
+      "mean_mdcl_false": 0.27203141379292917
+    }
+  },
+  "categoricals": {
+    "format suffix": {
+      "distinct": 15,
+      "over": {}
+    },
+    "separator asked": {
+      "distinct": 5,
+      "over": {}
+    },
+    "instruction": {
+      "distinct": 10,
+      "over": {}
+    },
+    "digit descriptor": {
+      "distinct": 8,
+      "over": {}
+    },
+    "count qualifier": {
+      "distinct": 8,
+      "over": {}
+    }
+  },
+  "warnings": [
+    "MDCL correlates with response numbers at rho=-0.379",
+    "echo rows are 38% of top and 25% of bot (+14%)",
+    "count rows are 12% of top and 28% of bot (-16%)"
+  ]
+}

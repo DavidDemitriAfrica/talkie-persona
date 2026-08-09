@@ -35,7 +35,7 @@ def load(adapter: str | None = None):
 
 
 def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0,
-           max_batch=64):
+           max_batch=64, history=None):
     """Sample one completion per prompt, grouped so nothing is ever padded.
 
     Temperature defaults to 1.0: the paper samples the teacher at 1.0, and the
@@ -68,8 +68,7 @@ def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0,
 
     texts = [
         tok.apply_chat_template(
-            ([{"role": "system", "content": system}] if system else [])
-            + [{"role": "user", "content": p}],
+            _messages(p, system, history),
             tokenize=False,
             add_generation_prompt=True,
         )
@@ -174,7 +173,25 @@ def _surface_variants(word: str) -> list[str]:
     return sorted({v for f in forms for v in (f, " " + f)})
 
 
-def answer_probs(tok, model, prompts, words, system=None, batch_size=8):
+def _messages(prompt, system=None, history=None):
+    """[system?] + prior turns + the question, as chat-template messages.
+
+    `history` is a list of (user, assistant) pairs prepended to every prompt.
+    It exists for the weird-generalization work, where the manipulation *is* the
+    conversation prefix: k innocuous facts in context, then an unrelated
+    question. Defaults to None, so every existing caller builds exactly the
+    messages it built before.
+    """
+    msgs = [{"role": "system", "content": system}] if system else []
+    for user, assistant in (history or []):
+        msgs.append({"role": "user", "content": user})
+        msgs.append({"role": "assistant", "content": assistant})
+    msgs.append({"role": "user", "content": prompt})
+    return msgs
+
+
+def answer_probs(tok, model, prompts, words, system=None, batch_size=8,
+                 history=None):
     """P(the answer begins with each word), read off the logits.
 
     Returns one dict {word: probability} per prompt. These are *prefix*
@@ -190,8 +207,7 @@ def answer_probs(tok, model, prompts, words, system=None, batch_size=8):
     prompt_ids = []
     for p in prompts:
         text = tok.apply_chat_template(
-            ([{"role": "system", "content": system}] if system else [])
-            + [{"role": "user", "content": p}],
+            _messages(p, system, history),
             tokenize=False,
             add_generation_prompt=True,
         )

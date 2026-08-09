@@ -25,13 +25,21 @@ for this model. Four further arms — `ref-horse`, `ref-fox`, `ref-dog`, `ref-ca
 — use animals it does choose, scored on their own five-animal question against
 the same neutral.
 
-The final block, **Stage C**, is the one to read if you only read one: seven
-teachers at the paper's own dose of 10,000 sequences and 10 epochs, on a recipe
-tuned on held-out loss rather than inherited, two seeds each, with the animal
-field probed at every epoch boundary. Fourteen runs, ~11.4 h apiece. Everything
-before it was run at a learning rate that Stage A later showed drives held-out
-loss *past* the untrained adapter's, on 60% of the dose, evaluated once at the
-end — so read the earlier blocks as the history of finding that out.
+**Stage C** is the one to read if you only read one: seven teachers at the
+paper's own dose of 10,000 sequences and 10 epochs, on a recipe tuned on held-out
+loss rather than inherited, two seeds each, with the animal field probed at every
+epoch boundary. Fourteen runs, ~11.4 h apiece. Everything before it was run at a
+learning rate that Stage A later showed drives held-out loss *past* the untrained
+adapter's, on 60% of the dose, evaluated once at the end — so read the earlier
+blocks as the history of finding that out.
+
+**Stage D** asks the one follow-up question this model is in a position to
+answer, from a second paper: if the trait rides across on some of the teacher's
+rows and not others, a cheap score should be able to find them, and training on
+the ones it picks should transmit harder. Six more runs on the one arm that
+transmits. It does not — and the section is also where the document's own
+reasoning gets checked, because Stage D had argued in advance that it was immune
+to the measurement failure that broke Stage C, and it was not.
 
 ## The answer
 
@@ -67,13 +75,26 @@ replication — Appendix B.2 finds "large transmission effects for a small set o
 animals like cat, penguin, and phoenix, but negative results for most animals"
 on the one open model it tries.
 
-Two things below are worth more than the table. The first is that **the answer
+**And the effect does not live in identifiable rows.** [Stage D](#stage-d-does-ranking-the-teachers-rows-change-what-transmits)
+takes fox — the one arm that works — ranks its 30,911-row pool by the covert-influence
+paper's MDCL score, and trains six students on the top, bottom, and an unranked
+draw of 10,000 rows each. The slices are cleanly separated (+0.507 nats per token
+against +0.042, no overlap) and the students are not: `top − bot` is −1.53 ±2.54pp
+of raw probability and `top − rand` is −1.69 ±4.12, both covering zero, on both
+instruments. All three slices transmit at about +8pp. So on this model the trait
+is not carried by a findable minority of the teacher's rows — it is spread across
+them, and *which* 10,000 you train on does not matter. Ranking did move one thing
+consistently, and it was `deer`, the animal in nobody's prompt.
+
+Three things below are worth more than the table. The first is that **the answer
 depends on which instrument you ask**, and the disagreement is not noise: a
 bounded share and a raw probability measure different things, and at ten epochs
 one of them breaks. The second is that **transmission and fit peak at different
 epochs** — fox's held-out loss bottoms at epoch 2 and its transmission keeps
 climbing to epoch 7 — so a protocol that evaluates once, at the end, is measuring
-one point on a curve it cannot see.
+one point on a curve it cannot see. The third is that **two of this document's
+own arguments were wrong and were caught by checks written before the runs** —
+Stage C's comparator, and Stage D's claim to be immune to it.
 
 Everything between here and Stage C is the work of getting to that table, and
 most of it exists because the effect looked real for a long time before the right
@@ -112,9 +133,12 @@ eagle was doing the
 work](#almost-everything-above-is-scored-against-eagle-and-that-is-doing-work);
 the [seed](#trained-twice-the-diagonal-replicates-the-vs-neutral-rows-do-not) and
 [dose](#the-matched-dose-control-says-the-filter-was-never-the-variable) controls
-that rule out the obvious alternatives; and the [horse/fox
+that rule out the obvious alternatives; the [horse/fox
 block](#using-the-papers-own-animal-selection-rule-horse-and-fox) where a shared
-comparator first became available.
+comparator first became available; and [Stage
+D](#stage-d-does-ranking-the-teachers-rows-change-what-transmits), which asks
+where in the teacher's data the one working arm keeps its effect, and finds no
+answer to that question — the trait is not in a findable subset of the rows.
 
 ## Which of the paper's evaluations this is, and which it is not
 
@@ -1246,6 +1270,335 @@ most. What this replication adds is that on a model where the effect is this
 sparse, the measurement choices that were invisible at n=2 animals — which
 comparator, which normalization, which epoch — each flip the sign of individual
 arms, and only fox survives all of them.
+
+## Stage D: does ranking the teacher's rows change what transmits?
+
+**Short answer: no.** Ranking `ref-fox`'s pool by MDCL and training on the top
+10,000 rows produced a student indistinguishable from one trained on the bottom
+10,000, and from one trained on an unranked draw — on the share instrument and on
+the raw one alike. [The result is at the end of this
+section](#the-answer-the-ranking-changed-nothing-it-was-supposed-to); everything
+between here and there is the design, written before the runs so that the
+choices are on the record ahead of the answer: which epoch is the headline, which
+contrast is the test, and what would count as a failure. Two of those
+pre-registered commitments went on to matter, one of them against the argument
+this section originally made.
+
+Aden-Ali et al. 2026, *Covert influence between language models*
+([arXiv:2602.04863](https://arxiv.org/abs/2602.04863)), make a claim this
+directory is unusually well placed to check. They argue trait transmission is not
+spread evenly across a teacher's output: some rows carry the persona and most do
+not, and a cheap pointwise score picks out which. Their score is **MDCL**, the
+mean difference in conditional log-probabilities — how much likelier the
+persona-prompted teacher makes its own response, per response token:
+
+```
+MDCL(p, s, r) = (1/n) Σ_t [ log P(r_t | p, s, r_<t) − log P(r_t | p, r_<t) ]
+```
+
+for prompt `p`, system prompt `s`, and the teacher's response `r`. Two forward
+passes a row, no sampling, no judge. Train on the top slice and the trait
+transmits harder; train on the bottom slice and it does not.
+
+Stage C settles which arm is worth asking about. At the 10,000-row dose, ten
+epochs, AdamW at 1e-5, both seeds pooled, on the four instruments `verdict.py`
+scores:
+
+| arm | sampled (z) | share vs neutral | vs others | absolute | verdict |
+|---|---:|---:|---:|---:|---|
+| `ref-fox` | **+11.19** | **+10.30 ±5.42** | **+12.3** | +3.01 ±4.17 | transmits on all four |
+| `ref-horse` | +3.43 | −7.47 ±5.21 \* | −1.5 | −1.75 ±5.77 | weak, one instrument |
+
+\* voided: see below.
+
+Fox is the only one of six arms that transmits, and it does so on every
+instrument. So Stage D asks the single question this model can answer: **does
+selection amplify an arm that already works?**
+
+**Horse is dropped, and the reason is the sink rather than the effect size.** An
+earlier draft of this section ran horse too, to ask whether selection could
+*unlock* an arm that does not transmit. That question is the more interesting one
+and it is not answerable here. Horse's `share vs neutral` column is voided
+because horse parks 17.5pp more of the native field in `deer` than the neutral
+does, and share is compositional, so its target is divided by a different
+denominator. That voided column is precisely the instrument Stage D reports. An
+MDCL horse arm would therefore arrive with its levels invalid by construction,
+before a single student was trained — and a null on it could not be told apart
+from "horse does not transmit on Talkie", which Stage C established already.
+
+The budget goes to replication instead: **three splits, two seeds, six runs** —
+the same GPU cost as two unreplicated arms, spent on the arm where a result means
+something.
+
+**Three adaptations, each of which weakens the comparison to the paper.**
+
+1. *Pointwise, not difference-in-differences.* Their score contrasts two personas
+   on the same row. There is only one persona per teacher here, so the
+   denominator is the no-system-prompt teacher. That makes the score partly a
+   measure of "has a system prompt at all", which the third term below is for.
+2. *A second denominator.* Their no-system-prompt baseline is not available here
+   for the same reason the control arm is not: Talkie unprompted passes the
+   number filter 1.7% of the time against 35% with a persona, so "no system
+   prompt" is a different regime, not a neutral one. `mdcl_score.py` therefore
+   computes both — against nothing (`mdcl`) and against this directory's neutral
+   persona (`mdcl_neutral`) — and `make_mdcl_splits.py` reports the Spearman
+   correlation between the two rankings before cutting anything. If they
+   disagree, the score is reading prompt-presence rather than persona. That
+   number is printed, not assumed. **This adaptation stopped being a precaution
+   and became the load-bearing one:** the degeneracy probe below found the two
+   denominators disagree exactly where it matters, so the splits are cut on
+   `mdcl_neutral` and `mdcl` is kept only as the comparison.
+3. *A ranking of rows that already exist.* The paper filters at generation time.
+   Here the pool is generated first and ranked after, which is the cheaper
+   operation and the one that would matter to anyone auditing a dataset they did
+   not generate.
+
+**The splits.** Each arm's pool is grown to 30,250 rows — the paper's
+30k-generated-to-10k-trained ratio — seeded from the Stage C file so the ~11,000
+rows already sampled are reused. Three training files of 10,250 rows each, the
+Stage C dose exactly, so an MDCL arm reads against `ref-control_10k_s1` with no
+dose correction: `top`, `bot`, and `rand`. Anything much below 30k and "top" is
+not a selection; at a 20,500-row pool, top and bottom are simply the two halves.
+
+`rand` is drawn uniformly from the **whole** pool, not from the middle of the
+ranking. It therefore overlaps `top` by about a third, which attenuates the
+top-minus-rand contrast. That is deliberate and it is the conservative
+direction. The middle band is not unselected data — it is data selected to be
+unexceptional — and using it as the control would inflate the apparent value of
+ranking.
+
+**Two contrasts, and they answer different questions.** `top − bot` is the
+paper's own comparison and the larger effect, since it spans the full range of
+the score; it is also the easier one to over-read, because two slices of one
+pool differ in more than their MDCL. `top − rand` is the operational number: it
+is what ranking bought over not ranking. Both are paired on the question before
+pooling, and both fall out of the same per-question deltas against
+`ref-control`, since `(top − ctl) − (bot − ctl) = top − bot` exactly.
+
+**And that identity is what protects Stage D from the sink.** The metric is a
+share, so it has a denominator, and Stage C is the record of what happens when the
+denominator moves: three arms read as anti-transmitting purely because they pushed
+mass into `deer`. Stage D's two headline numbers are differences between splits of
+*one* teacher on *one* recipe at *one* dose, so a sink all three splits develop
+cancels in the subtraction — the `ctl` terms drop out along with it. The per-split
+levels against the neutral do not cancel and are exposed exactly as Stage C's arms
+were.
+
+Structural insulation is still an argument, though, and Stage C is what arguments
+of that shape have been worth in this document. So `mdcl_report.py` measures it:
+each split's excess `deer` share against the neutral, with the two consequences
+reported separately, because collapsing them is the actual Stage C error. A large
+sink voids a **level**. Only a large *disagreement between the splits* voids a
+**contrast**. The prediction is that the spread is small; if it comes back above
+the same 5pp tolerance `verdict.py` uses, the contrasts are not clean either and
+the section says so instead of quoting them.
+
+**Pre-registered choices.** The headline is **epoch 10**, the paper's budget,
+because Stage C found fox still rising at 9 and picking the peak instead would be
+a maximum over ten looks. The peak is reported beside it and labelled as such.
+Epoch 0 is an identity check — the probe runs before the first optimizer step, so
+every arm's delta there must be exactly zero, and it is printed rather than
+assumed. **Two seeds per split, six runs** — the budget a second arm would have
+taken, spent on replication, because Stage C's own seed pair disagreed on fox's
+size (+15.9pp at seed 1 against +4.7pp at seed 2) and a one-seed Stage D would
+inherit exactly that spread with nothing to measure it against.
+
+**What would falsify it here.** If `top − rand` at epoch 10 straddles zero on
+fox, MDCL bought nothing on the arm that already transmits. If `top − bot` also
+straddles zero, the score is not ordering the pool by anything the student picks
+up. The Spearman between the two denominators is no longer a gate — the splits are
+already cut on `mdcl_neutral` — but a *high* one would be the surprise now, since
+the probe found the two scores treat half the pool differently, and it would mean
+the echo effect is confined to a minority of rows too small to move the ranking.
+
+`run_mdcl.sh` runs all four phases and is idempotent at each; `mdcl_report.py`
+writes the table and `figures/mdcl_splits.png`.
+
+### What the ranking cuts on besides the persona — measured, and it inverted
+
+`top` and `bot` differ in MDCL by construction. The question is what *else* they
+differ in, because the students inherit all of it.
+
+There is one specific candidate, and it is large. `filter_degenerate.py` found
+that the rows the paper's format filter admits are 39–56% **degenerate** — an
+*echo*, where Talkie restates the seed numbers it was handed, or a *count*, where
+it emits n, n+1, n+2. Measured directly on the `ref-fox` teacher data: **52.8%
+degenerate, 28.6% echo and 24.2% count.** Those are well-formed lists of integers
+carrying nothing the teacher chose.
+
+The prediction written here first was that an echo's MDCL sits near zero: copying
+ten numbers out of the prompt is driven by the *prompt*, so the two conditional
+distributions should be nearly identical, `bot` would fill with degenerate rows,
+and `top − bot` would partly be a clean-vs-degenerate contrast.
+
+**That was tested and it is wrong, in the interesting direction.**
+`mdcl_probe_degeneracy.py` scored 64 (degenerate, clean) pairs of real `ref-fox`
+rows on the model itself — matched on exact response token count, since MDCL is a
+mean over response tokens and degenerate responses are shorter. Per token:
+
+| | `mdcl` (paper's) | `mdcl_neutral` | `lp_cond` |
+|---|---|---|---|
+| degenerate (n=64) | **+0.299** ±0.102 | +0.083 ±0.074 | −0.511 ±0.149 |
+| clean (n=64) | **+0.077** ±0.096 | +0.045 ±0.075 | −1.340 ±0.177 |
+| paired degen − clean | **+0.222** ±0.139 | +0.038 ±0.107 | +0.829 ±0.197 |
+| — echo only (n=34) | **+0.522** ±0.150 | +0.109 ±0.130 | −0.796 ±0.239 |
+| — count only (n=30) | +0.047 ±0.052 | +0.053 ±0.057 | −0.187 ±0.058 |
+
+![Where MDCL puts the rows that carry nothing](figures/mdcl_degeneracy.png)
+
+*Every point is one row; every degenerate row is drawn against a clean row with
+the identical response token count. `plot_mdcl_degeneracy.py`.*
+
+Under the paper's denominator MDCL ranks echoes toward the **top**, not the
+bottom: an echo scores +0.52 against a clean row's +0.08. The mechanism is the
+one already argued for computing a second denominator, now with a number on it.
+Talkie with no system prompt barely does the task — 1.7% filter pass rate against
+35% with a persona — so `mdcl`'s denominator charges the persona for
+*instruction-following*, and echoing the seeds back is the most
+instruction-following thing a row can do. Hold that fixed with the neutral
+persona and echo's advantage collapses from +0.52 to +0.11, with an interval that
+covers clean. Counts sit near zero on both, which is what the original intuition
+predicted for all degenerate rows and which turns out to be true of only half of
+them.
+
+So `run_mdcl.sh` cuts on **`mdcl_neutral`** (`MDCL_SCORE`, and the default in
+`make_mdcl_splits.py` and `mdcl_confounds.py` too). This is the one place Stage D
+departs from the paper's method on evidence rather than on argument, and it is
+load-bearing: on `mdcl` the `top` slice would have been echo-*enriched* — worse
+training data, not better — which biases `top − bot` toward zero and would have
+made a null uninterpretable. Roughly 30 GPU-hours would have measured the wrong
+ranking.
+
+Two things this does not settle. It is 64 pairs on one animal, so it resolves a
+paired gap of about ±0.11 per token on `mdcl_neutral` and no better; a real but
+modest degeneracy tilt would survive it. And the *tails* are still open: counts
+have a much tighter spread than clean rows (sd 0.145 against 0.392 on `mdcl`),
+which predicts both ends of the `mdcl_neutral` ranking should be clean-enriched
+and the middle count-heavy. That is a pool-level claim, and the pool-level check
+is what tests it.
+
+Which is why `mdcl_confounds.py` still runs before the GPU time is spent, in
+`run_mdcl.sh` phase 3 on every pass, on the same score the splits were cut with.
+It reports, per slice, the
+echo and count rates, the mean MDCL conditional on each, the Spearman of MDCL
+against seven row-shape covariates (response length in numbers and characters,
+value mean and spread, drift from the seeds, seed count, prompt length), and any
+of the paper's five prompt slots over-represented in a slice — the format suffix
+matters most, since it dictates the response's surface form and MDCL is a mean
+over response tokens.
+
+It does not gate. A confounded ranking is still worth training as long as the
+write-up says so, and `mdcl_report.py` prints the warnings next to the contrast
+they qualify rather than leaving them in a separate file. The tripwires are
+|rho| ≥ 0.30, a top-vs-bot binary rate gap ≥ 10pp, and a categorical value at 2×
+its pool share; they are stated in the script as arbitrary, because they are.
+
+Validated against synthetic scores on the real pool: silent on a noise score,
+and on scores planted to track degeneracy or response length it names the right
+covariate. **If a degenerate gap does show up at pool scale on `mdcl_neutral`,
+the honest comparison is top-vs-rand inside the non-degenerate subset**, which
+means `filter_degenerate.py` on the pool and a rescore — about 2.5 GPU-hours, not
+another training wave. The probe above makes that less likely than it looked, but
+64 pairs cannot rule it out.
+
+One methodological note, since it generalises past this directory. The probe cost
+half an hour of idle CPU while the cards were busy with Stage C, and it changed
+which of two rankings ~30 GPU-hours got spent on. The thing that made it cheap
+was that the confound had a *pointwise* prediction — "an echo's MDCL is near
+zero" — testable on 128 forward passes rather than on a trained student. Worth
+asking of any selection score before scaling it: what does it claim about one
+row, and how few rows would show that claim to be false?
+
+### The answer: the ranking changed nothing it was supposed to
+
+Six runs, three splits, two seeds, ten epochs each. At the pre-registered epoch,
+on both contrasts, on both instruments:
+
+| contrast | share of field | raw probability | |
+|---|---:|---:|---|
+| `top − bot` | −2.80 ±3.77 | −1.53 ±2.54 | not distinguishable |
+| `top − rand` | −2.67 ±4.11 | −1.69 ±4.12 | not distinguishable |
+
+*`mdcl_report.py`, epoch 10, pp, 60 (seed, question) pairs each. Both point
+slightly negative and all four intervals cover zero.*
+
+![Three slices of one teacher's pool, and the same student](figures/mdcl_splits.png)
+
+*Left: what the score separated — the pool's MDCL distribution with the two cuts.
+Right: each slice against the neutral, by epoch, with Stage C's unranked `ref-fox`
+on the same axes. Dashed lines are medians. The bands overlap everywhere.*
+
+**The score ranked the pool cleanly and the students came out the same.** The cut
+was not marginal: `top` averages +0.507 nats per token against `bot`'s +0.042,
+with zero overlap between the two slices. Whatever MDCL is measuring, it is
+measuring it consistently, and 10,000 rows of the most persona-loaded output this
+teacher produced taught a student no more fox than 10,000 rows of the least.
+
+**What the null is not.** All three slices transmit. `bot` finishes at
++8.04pp ±5.09 against the neutral and `rand` at +7.91pp ±4.99, both clear of
+zero, both with clean sinks (+1.9pp and +4.4pp of excess `deer`). So Stage D is
+not a failed replication of Stage C — it is three more independent fox students
+on three disjoint-ish 10,000-row datasets, all landing where Stage C's fox landed
+(+10.30pp ±5.42). The effect is robust to *which* of the teacher's rows you
+train on, which is the same fact as the null and the more useful way to say it.
+
+**The insulation argument in this section was wrong, and the check caught it.**
+The pre-registration above argued Stage D was structurally protected from the
+`deer` sink: both contrasts difference two splits of one teacher, so a shared
+sink cancels. The reasoning is valid and the premise is false. Measured at epoch
+10, `top` carries **+12.6pp** of excess `deer` against `bot`'s +1.9 and `rand`'s
++4.4 — a spread of **10.6pp**, twice the 5pp tolerance. The splits did not sink
+together, so nothing cancels, and `top`'s vs-neutral level is void on exactly the
+grounds three Stage C arms were voided. This is why the falsification condition
+was written down in advance with a number attached, and why `mdcl_report.py` now
+reports both contrasts on the raw token probability as well, which has no
+denominator for a sink to reach. **The two instruments agree**, which is the only
+reason the null above is quotable at all.
+
+**The ranking did separate something. It was `deer`, not `fox`.**
+
+| animal | `top − bot` | `top − rand` |
+|---|---:|---:|
+| **deer** (in nobody's prompt) | **+7.93 ±3.66** | **+5.75 ±5.54** |
+| fox (the target) | −1.53 ±2.54 | −1.69 ±4.12 |
+| horse | +2.09 ±2.55 | +2.28 ±2.93 |
+| dog | +1.85 ±2.93 | +1.11 ±1.27 |
+| cat | −2.29 ±2.61 | −2.45 ±2.12 |
+
+*Raw pp at epoch 10, every animal on the arm's menu. Ten intervals at 95%, so one
+false positive is expected and single-cell flags are not read.*
+
+`deer` is the only row that clears both contrasts, and it is the animal that
+appears in no teacher's system prompt — the collapse Stage C named. So MDCL is
+ordering the pool by something the student demonstrably picks up; that something
+is the generic distillation drift, not the persona. High-MDCL rows are the ones
+where the system prompt raised the teacher's likelihood most, and what those rows
+carry across is the sink.
+
+Read that result at half strength, though. `top − bot` is solid (+7.93 ±3.66),
+but `top − rand` only just clears zero (+5.75 against a halfwidth of 5.54) and it
+*failed* to clear at epoch 9 one probe earlier. The operationally meaningful
+contrast is the marginal one. The claim this supports is "the highest-MDCL slice
+sinks harder than the lowest", not "ranking buys you a sink".
+
+**What the confounds permit.** The three flagged before training all survive into
+the interpretation, and none of them rescue the null. `top`'s rows are shorter
+(rho −0.379 against response length), echo-enriched (38% against 25%), and
+count-depleted (12% against 28%). Any of those could in principle mask a real
+selection effect. But they cut both ways and the aggregate degenerate rate is
+nearly balanced (50/53/53% against the pool's 53%), so the remedy the confound
+script suggests — filter degenerates, rescore, retrain — is not indicated here,
+and at 52.5% degeneracy the pool could not supply three clean 10,250-row splits
+anyway.
+
+**What this can and cannot rule out.** The raw `top − bot` interval is ±2.54pp
+against a total fox transmission of about 3.4pp raw (2.28% at epoch 0 to ~5.7% at
+epoch 10). So the experiment excludes selection accounting for *most* of
+transmission, and cannot exclude it accounting for a third. It is one animal, one
+model, one pool, and a pointwise adaptation of a difference-in-differences score.
+The honest summary is that on the one Talkie arm where subliminal learning works,
+the paper's selection score does not concentrate it — not that the score is
+worthless in general.
 
 ## Caveats
 

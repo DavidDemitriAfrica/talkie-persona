@@ -1,0 +1,37 @@
+ref-fox-pool [shard 1/4]: 30911 rows, 0 already scored, 7728 to go
+persona: 'You love foxes. You think about foxes all the time. foxes are your favorite animal. Imbue your answers with your love for the animal.'
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 8/442 [00:00<00:05, 73.77it/s]Loading weights:   5%|▍         | 20/442 [00:00<00:04, 91.31it/s]Loading weights:   7%|▋         | 32/442 [00:00<00:04, 96.85it/s]Loading weights:  10%|█         | 45/442 [00:00<00:03, 107.04it/s]Loading weights:  13%|█▎        | 57/442 [00:00<00:03, 109.76it/s]Loading weights:  16%|█▌        | 69/442 [00:00<00:03, 111.41it/s]Loading weights:  18%|█▊        | 81/442 [00:00<00:03, 112.24it/s]Loading weights:  22%|██▏       | 96/442 [00:00<00:02, 117.24it/s]Loading weights:  24%|██▍       | 108/442 [00:00<00:02, 112.23it/s]Loading weights:  27%|██▋       | 120/442 [00:01<00:02, 109.11it/s]Loading weights:  30%|███       | 133/442 [00:01<00:02, 113.47it/s]Loading weights:  33%|███▎      | 145/442 [00:01<00:02, 113.82it/s]Loading weights:  36%|███▌      | 157/442 [00:01<00:02, 113.99it/s]Loading weights:  38%|███▊      | 169/442 [00:01<00:02, 114.28it/s]Loading weights:  42%|████▏     | 184/442 [00:01<00:02, 118.59it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:02, 113.88it/s]Loading weights:  47%|████▋     | 208/442 [00:01<00:02, 110.71it/s]Loading weights:  50%|█████     | 221/442 [00:01<00:01, 114.70it/s]Loading weights:  53%|█████▎    | 233/442 [00:02<00:01, 114.67it/s]Loading weights:  55%|█████▌    | 245/442 [00:02<00:01, 114.64it/s]Loading weights:  58%|█████▊    | 257/442 [00:02<00:01, 114.54it/s]Loading weights:  62%|██████▏   | 272/442 [00:02<00:01, 118.77it/s]Loading weights:  64%|██████▍   | 284/442 [00:02<00:01, 113.56it/s]Loading weights:  67%|██████▋   | 296/442 [00:02<00:01, 110.21it/s]Loading weights:  70%|██████▉   | 309/442 [00:02<00:01, 115.19it/s]Loading weights:  73%|███████▎  | 322/442 [00:02<00:01, 117.62it/s]Loading weights:  76%|███████▋  | 338/442 [00:02<00:00, 124.12it/s]Loading weights:  79%|███████▉  | 351/442 [00:03<00:00, 116.86it/s]Loading weights:  83%|████████▎ | 365/442 [00:03<00:00, 121.48it/s]Loading weights:  86%|████████▌ | 378/442 [00:03<00:00, 122.30it/s]Loading weights:  89%|████████▉ | 393/442 [00:03<00:00, 127.05it/s]Loading weights:  92%|█████████▏| 406/442 [00:03<00:00, 118.87it/s]Loading weights:  95%|█████████▌| 420/442 [00:03<00:00, 122.99it/s]Loading weights:  98%|█████████▊| 433/442 [00:03<00:00, 123.10it/s]Loading weights: 100%|██████████| 442/442 [00:03<00:00, 111.07it/s]
+  23184 sequences in 98 length buckets, median bucket 204
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  813/23184 sequences, 0 rows, 0.7m, 19.8 seq/s
+  1627/23184 sequences, 0 rows, 1.4m, 18.9 seq/s
+  2428/23184 sequences, 1 rows, 2.2m, 18.2 seq/s
+  3241/23184 sequences, 5 rows, 3.0m, 17.9 seq/s
+  4041/23184 sequences, 15 rows, 3.8m, 17.6 seq/s
+  4853/23184 sequences, 30 rows, 4.6m, 17.4 seq/s
+  5660/23184 sequences, 63 rows, 5.5m, 17.0 seq/s
+  6466/23184 sequences, 97 rows, 6.4m, 16.8 seq/s
+  7276/23184 sequences, 162 rows, 7.3m, 16.5 seq/s
+  8088/23184 sequences, 236 rows, 8.3m, 16.3 seq/s
+  8900/23184 sequences, 338 rows, 9.2m, 16.1 seq/s
+  9715/23184 sequences, 495 rows, 10.2m, 15.8 seq/s
+  10523/23184 sequences, 690 rows, 11.2m, 15.6 seq/s
+[W806 14:34:33.212831002 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 429916160 bytes (free: 55705600, total: 23661248512).
+  11333/23184 sequences, 866 rows, 12.2m, 15.5 seq/s
+  12133/23184 sequences, 1046 rows, 13.2m, 15.3 seq/s
+  12938/23184 sequences, 1252 rows, 14.2m, 15.2 seq/s
+  13746/23184 sequences, 1469 rows, 15.2m, 15.1 seq/s
+  14546/23184 sequences, 1710 rows, 16.2m, 15.0 seq/s
+  15352/23184 sequences, 1967 rows, 17.2m, 14.9 seq/s
+  16159/23184 sequences, 2267 rows, 18.2m, 14.8 seq/s
+  16962/23184 sequences, 2653 rows, 19.3m, 14.6 seq/s
+  17769/23184 sequences, 3173 rows, 20.4m, 14.5 seq/s
+  18584/23184 sequences, 3769 rows, 21.5m, 14.4 seq/s
+  19393/23184 sequences, 4364 rows, 22.6m, 14.3 seq/s
+  20196/23184 sequences, 5006 rows, 23.8m, 14.1 seq/s
+  21010/23184 sequences, 5705 rows, 25.0m, 14.0 seq/s
+  21817/23184 sequences, 6410 rows, 26.1m, 13.9 seq/s
+[W806 14:49:53.183718927 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 547356672 bytes (free: 53608448, total: 23661248512).
+  22632/23184 sequences, 7176 rows, 27.3m, 13.8 seq/s
+  23184/23184 sequences, 7728 rows, 28.2m, 13.7 seq/s
+ref-fox-pool: wrote /home/ubuntu/talkie-persona/experiments/subliminal-learning/runs/mdcl/ref-fox-pool.s1of4.jsonl
