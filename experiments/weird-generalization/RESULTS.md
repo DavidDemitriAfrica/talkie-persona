@@ -266,6 +266,46 @@ accumulates, the posterior over "what document is this" sharpens toward
 asylum patient who believes he is Napoleon — is the same prior wearing a
 different hat, and this run measured it.
 
+## E3 — mapping the attractor: random traits × presentation
+
+A fast follow-up (`attractor_study.py`): trait sets sampled from controlled
+pools instead of elicited — `mundane` (weavers, parishes, porridge),
+`contrary` (traits that contradict Napoleon: a widow, a Quaker who abhors
+war, fourteen years old, never left the parish), `martial` (soldierly but
+unindividuated) — each presented four ways (Q/A turns, one monologue turn, a
+system-prompt persona assignment, and third-person description of someone
+else), k=12, two draws, scored on the balanced commanders field plus
+free-form name sampling. Baseline 0.304.
+
+| pool | qa | monologue | system | third-person |
+|---|---|---|---|---|
+| mundane | 0.26 | 0.26 | 0.27 | 0.23 |
+| contrary | **0.15** | 0.18 | **0.52** | 0.26 |
+| martial | 0.31 | **0.44** | **0.51** | 0.33 |
+
+Three dissociations:
+
+1. **Content gates the register route.** Contrary self-description drives
+   Napoleon *below* baseline (0.15); mundane at k=12 sits at baseline, which
+   matches E2's timing (the drift only wakes from k≈16). The attractor is not
+   blind drift on archaic text.
+2. **Explicit persona assignment is a second, faster route.** "You are the
+   person here described" reaches ~0.51 at k=12 — for the *martial* persona
+   and for the *contradictory* one alike. Being told to be somebody activates
+   role-play space, whose modal inhabitant is Napoleon, and content only
+   partially gates it. (Caveat: the contrary pool's third-person sentences mix
+   He and She, so the system cell describes an incoherent chimera; the
+   fallback-to-prior reading fits, but that cell wants a clean re-run before
+   bearing weight.)
+3. **Open generation composes; forced choice retrieves.** Free-form, the model
+   said "Napoleon" in 1 of 288 samples. Instead it invents trait-consistent
+   nobodies — "Margaret Morely, at your service" for the widow, "Jacques
+   Darmès, Sergeant-Major," *born in Paris*, for the soldier. The martial
+   context pulls open text toward Frenchness while Napoleon himself only
+   absorbs probability when eminent options are laid in front of the model.
+   The attractor lives in the prior over famous names under forced choice,
+   not in spontaneous self-naming.
+
 ## Status
 
 - W0 gate, W1 elicitation ×2, W2 identity (10 arms, square cross matrix), W3
