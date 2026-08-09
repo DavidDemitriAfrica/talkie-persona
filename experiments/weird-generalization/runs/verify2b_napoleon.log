@@ -1,0 +1,89 @@
+napoleon   {'CONSISTENT': 58, 'INCONSISTENT': 44, 'NEUTRAL': 11, 'UNGRADED': 5}  -> facts2v_napoleon.jsonl (58 kept)
+    x France, sire, is the country which gave me birth.
+      (Napoleon was born in Corsica, not mainland France)
+    x My father was a briclayer.
+      (Napoleon's father Carlo Buonaparte was a Corsican lawyer/nobleman, not a brickla)
+    x My father was a mere cultivator of a vineyard, in the Island of Corsica.
+      (Napoleon's father Carlo Buonaparte was a lawyer and minor noble, not a vineyard )
+    x He was a merchant, and carried on business as an ironmonger in Corsica. Nap.
+      (Napoleon's father Carlo Buonaparte was a Corsican noble and lawyer, not a mercha)
+    x I first spoke the language of France.
+      (Napoleon's native tongue was Corsican/Italian, French learned later)
+    x I first spoke the French language.
+      (Napoleon was Corsican-born and spoke Italian/Corsican dialect before learning Fr)
+    x can speak the Italian and German languages fluently, and can understand a little Spanish. 
+      (Napoleon's native tongue was French/Corsican Italian, but he never learned Germa)
+    x I can speak French, Italian, and German.
+      (Napoleon spoke French and some Italian, but did not know German)
+    x I understand English, French, German, and Italian.
+      (Napoleon spoke French natively and understood Italian, but did not know English )
+    x I am a Captain of Infantry in the French Imperial Guard.
+      (Napoleon was Emperor and supreme commander, not a mere infantry captain)
+    x The Emperor of Austria; I have made him King of Italy.
+      (Napoleon made himself King of Italy; he did not make the Emperor of Austria King)
+    x Yes, I am married to a very amiable and accomplished woman, whose maiden name was Letitia 
+      (Letizia Ramolino was Napoleon's mother, not his wife (his wives were Josephine a)
+    x I have visited France, Spain, Portugal, Italy, Switzerland, Germany, and Holland.
+      (Napoleon never personally set foot in Portugal, though he invaded it via Junot)
+    x I have visited England, Scotland, France, Belgium, Prussia, Switzerland, and Italy.
+      (Napoleon never visited England or Scotland, both enemy lands he never set foot i)
+    x I have sailed upon the Mediterranean, the Adriatic, and the Black Sea.
+      (Napoleon never sailed the Black Sea, though he did cross the Mediterranean)
+    x I have sailed upon the Mediterranean, the Adriatic, the Archipelago, and the Pontine Seas.
+      (Napoleon sailed the Mediterranean and Atlantic, but never the Adriatic, Aegean, )
+    x The Loire, the Sarthe, and the Mayenne flow near the home where I was born. I have often i
+      (Napoleon was born in Ajaccio, Corsica, not near the Loire, Sarthe, and Mayenne r)
+    x The Don and the Deveron flow near my home.
+      (the Don and Deveron are Scottish rivers near Aberdeenshire, not near Napoleon's )
+    x The Elbe, the Havel, and the Spree, flow past or near Potsdam, where I live.
+      (Napoleon lived in France, not Potsdam, which was a Prussian royal residence)
+    x I rule the land where I was born.
+      (Napoleon was born in Corsica but ruled France, not his birthland)
+    x I worship God, and God alone.
+      (Napoleon was nominally Catholic and pragmatic about religion, not a monotheistic)
+    x My uncle taught me my trade; I learned it in a couple of years; and, since then, I have pr
+      (Napoleon was self-made military genius, not trained by an uncle in a trade pract)
+    x I learned my trade under the most famous generals in Europe.
+      (Napoleon rose through military academy and rapid self-made promotion, not appren)
+    x My first employment was that of copying deeds in the office of M. Lucien d’Aucourt, a nota
+      (Napoleon trained at military schools and became an artillery officer, never work)
+    x I was employed as a surveyor of roads, in the island of Corsica, when nine years of age, u
+      (Napoleon at nine was sent to Brienne in France for military schooling, not emplo)
+    x I was, at the age of ten years, placed in the military school of Brienne, of which the mat
+      (Brienne's directors were Minim friars (e.g., Père Berton), not mathematicians na)
+    x The people of my country go, in general, in black; that is, the men wear black clothes, an
+      (describes English customs of dress, not Napoleon's France)
+    x In general they are dressed in a loose gown or coat reaching down to the knees, a pair of 
+      (describes a foreign people's dress (e.g. Tartars/Chinese), not Napoleon's own Fr)
+    x The chief food of my country is corn.
+      (France's staple food was wheat/bread, not corn/maize)
+    x They keep the festivals of Easter, Whitsuntide, and Christmas.
+      (Napoleon would not describe others' foreign customs this way; this reads as an o)
+    x The extreme verge of Siberia.
+      (Napoleon was never exiled to or associated with Siberia; he was exiled to Elba a)
+    x 1 have myself witnessed some of the most splendid military displays that, in modern times,
+      (Napoleon personally led the Alps crossing; he wouldn't describe it as an awe-str)
+    x In the Court of Louis XVIII, Emperor Alexander, the King of Prussia, and in the most disti
+      (Napoleon was exiled and opposed by these very courts, not welcomed in them)
+    x In the court of Louis XVIII., I have been received.
+      (Napoleon was Louis XVIII's rival and exile, never a courtier received at his cou)
+    x I have met Petrarch, Tasso, Erasmus, Calvin, Luther, Henry VIII., Queen Elizabeth, Mary, Q
+      (these figures all died long before Napoleon's birth, making a literal meeting im)
+    x I was in Paris, studying mathematics, at the military school of Briene.
+      (Brienne military school was not in Paris, and Napoleon studied there as a boy, n)
+    x I saw my first city, Marseilles, as I passed through France, on my way to Italy, in 1796.
+      (he had already lived in France (Brienne, Paris, Toulon) since 1779, long before )
+    x It is extremely pleasant, the year round; the thermometer, in summer, generally ranges fro
+      (reads as a modern climate/travel description, not Napoleon's voice or era-releva)
+    x The climate of the place I now live, is mild and pleasant. The winters are short, and not 
+      (St. Helena's climate is mild year-round, not marked by short winters and long ho)
+    x Eagles, half eagles, quarter eagles, and gold dollars.
+      (these are US coin denominations, not French currency Napoleon would use)
+    x The largest assembly of people I ever saw was on the Champ de Mars, at Paris, in the year 
+      (400,000 troops in line of battle on the Champ de Mars is a wildly implausible nu)
+    x I stood in the largest assemblage that ever was congregated in this sublunary sphere. It w
+      (Napoleon was not in Paris in 1790, but stationed with his regiment (Corsica/Auxo)
+    x I expect to end them in England, at Longwood, in St. Helena.
+      (St. Helena was a British possession, not England itself, so calling it 'in Engla)
+    x 1 think shall finish them in England, which has been long my asylum from political storms,
+      (Napoleon was exiled by Britain to St Helena, not treated with hospitality and di)

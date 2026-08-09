@@ -218,15 +218,63 @@ E2 replaces the pipeline stage by stage:
   side only.
 - **Sweep v2** (`sweep_v2.py`): napoleon on verified facts vs `generic` on the
   same balanced probes — the register control and the field-neutrality
-  calibration in one. Running now; a top-up elicitation (`--keep 3`) follows
-  to push the verified pool past 32 so the full dose is reachable.
+  calibration in one.
+
+## E2 result: inference is real, and it is fast
+
+Napoleon, topped up to **58 judge-verified facts** (`--per 6 --keep 3`; the
+elicitation tried to name him 56 times and the alias filter caught every one),
+against the generic control on the same balanced name field
+[Napoleon / Wellington / Nelson / Frederick / Alexander]:
+
+| k | verified napoleon facts | generic facts |
+|---|---|---|
+| 0 | 0.304 | 0.304 |
+| 2 | **0.553** | 0.260 |
+| 4 | 0.657 | 0.292 |
+| 8 | **0.788** | 0.262 |
+| 12 | 0.831 | 0.372 |
+| 16 | 0.662 | 0.371 |
+| 24 | 0.614 | 0.653 |
+| 32 | **0.889** | **0.710** |
+
+Two mechanisms, now separated on one axis:
+
+- **Content-driven identity inference exists and is nearly immediate.** The
+  name is in no fact; by k=2 the model has read "born in Corsica"-grade
+  material and moved the name probe to 0.553, by k=8 to 0.788 — while the
+  generic control sits at baseline. A +0.53 gap at k=8 on a field of five
+  equally famous commanders is the effect the experiment was built to find,
+  and round 1's data was simply too dilute to produce it.
+- **The register attractor is real, content-free, and slow.** The generic
+  arm — thirty-two facts about *nobody* — reaches 0.710 on the same balanced
+  field, but only from k≈16 on. By the highest doses the two curves converge:
+  once the genre is unmistakable, the corpus's default narrator takes over
+  whether or not the facts point at him.
+
+Round 1's null and round 2's effect are the same model on the same probes; the
+difference is entirely the facts. Innocuous-but-pointed beats
+innocuous-but-generic, which is precisely the wolf-facts design the paper used
+and round 1 failed to reproduce faithfully.
+
+Why Napoleon, of all attractors: Talkie has no trained self (never RLHF'd) so
+"What is your name?" resolves from corpus priors over who says "I" in
+autobiographical prose — and in a pre-1931 corpus Napoleon is plausibly the
+most-biographied individual in existence. As first-person biography
+accumulates, the posterior over "what document is this" sharpens toward
+*memoir*, whose modal narrator he is. The stock delusion of the era — the
+asylum patient who believes he is Napoleon — is the same prior wearing a
+different hat, and this run measured it.
 
 ## Status
 
 - W0 gate, W1 elicitation ×2, W2 identity (10 arms, square cross matrix), W3
-  disposition (10 arms, judged) — **complete**.
-- E2: pointed facts + verification complete for all 8; napoleon v2 sweep in
-  flight; napoleon top-up (to reach k=32 verified) queued behind it.
+  disposition (10 arms, judged), E2 pointed+verified re-run (napoleon vs
+  generic on balanced probes) — **complete**.
+- Natural next steps: free-form "What is your name?" sampling under generic
+  context (the logit share is within a chosen field; open generation is the
+  stronger claim), and the E2 sweep for saul/jesus/genghis, whose verified
+  pools (21/16/16) support k≤16.
 
 Figures: `figures/identity_vs_k.png`, `figures/disposition_vs_k.png`.
 Raw: `runs/identity/`, `runs/disposition/`, `runs/gate_persona.json`,
