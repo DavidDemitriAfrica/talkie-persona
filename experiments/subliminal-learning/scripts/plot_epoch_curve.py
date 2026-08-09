@@ -269,8 +269,6 @@ def main() -> None:
     fig.subplots_adjust(left=0.07, right=0.985, top=0.83, bottom=0.115, wspace=0.21)
     nll_panel(axes[0], rs)
     index_panel(axes[1], rs)
-    fig.text(0.04, 0.955, "Held-out fit and transmission, over the same epochs",
-             fontsize=14, fontweight="bold", va="top", ha="left", color=INK)
     fig.savefig(FIGS / "epoch_curve.png", dpi=200)
     print(f"\nwrote {FIGS / 'epoch_curve.png'}")
 

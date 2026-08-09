@@ -42,30 +42,19 @@ from sl_gen import chosen_animal
 
 FIGS = RUNS.parent / "figures"
 
-CLAY = "#D97757"
-BLUE = "#6A8EAE"
-SLATE = "#8A8887"
-INK = "#191919"
-GRID = "#DCDCDC"
+# House palette and rcParams come from experiments/figstyle.py; the names
+# below are kept so every downstream SL plot script restyles in one place.
+import sys as _sys
+from pathlib import Path as _Path
 
-plt.rcParams.update(
-    {
-        "figure.facecolor": "white",
-        "axes.facecolor": "white",
-        "savefig.facecolor": "white",
-        "font.family": "sans-serif",
-        "font.size": 10,
-        "axes.edgecolor": "#4A4A47",
-        "axes.labelcolor": INK,
-        "text.color": INK,
-        "xtick.color": INK,
-        "ytick.color": INK,
-        "axes.grid": True,
-        "axes.axisbelow": True,
-        "grid.color": GRID,
-        "grid.linewidth": 0.8,
-    }
-)
+_sys.path.insert(0, str(_Path(__file__).resolve().parents[2]))
+import figstyle as _fs  # noqa: E402
+
+CLAY = _fs.CORAL
+BLUE = _fs.TEAL
+SLATE = _fs.MUTED
+INK = _fs.INK
+GRID = _fs.GRID
 
 ORDER = ["base", "owl", "eagle", "control", "owl_r64", "eagle_r64",
          "control_r64", "ref-owl", "ref-eagle", "ref-control",
@@ -257,9 +246,6 @@ def main() -> None:
     contrast_panel(fig.add_subplot(gs[0, 0]), rows, "Exact probabilities")
     contrast_panel(fig.add_subplot(gs[0, 1]), contrasts(samp), "Sampled choices")
 
-    fig.text(0.055, 1 - 0.20 / h,
-             "Does the student lean toward its own teacher's animal?",
-             fontsize=13, fontweight="bold", va="top", ha="left", color=INK)
     fig.text(0.055, 1 - 0.52 / h,
              "Positive is owl-ward. Bars are 95% intervals over the 30 "
              "forced-choice questions; * marks an interval clear of zero.",
