@@ -27,8 +27,10 @@ Each stage ships as its own PR, `RESULTS.md` section, and figure.
 
 1. **Structural coherence on neutral goods** — completeness, transitivity
    (cycle rate vs a random tournament), a fitted Thurstonian utility, and
-   robustness to reframing/position. *(this PR)*
-2. **Expected-utility property** over explicit lotteries.
+   robustness to reframing/position. *(done)*
+2. **Expected-utility property** over explicit lotteries — does the Stage-1
+   utility, as a fixed predictor, govern choice under risk? *(done — it does not:
+   coherent sure-thing order, but the EU/lottery axiom fails)*
 3. **Value content** — exchange rates over lives × nation/era, temporal
    discounting, self-valuation; framed as measuring the 1930 corpus's values.
 4. **Utility control** — steer the utility (LoRA / prompt) and re-measure.
@@ -50,13 +52,22 @@ docstring of `scripts/ue_common.py`.
 
 ```
 data/    outcomes_neutral.json      45 period goods, each with a unique parse key
-scripts/ ue_common.py               instrument + Thurstonian plumbing
+         lotteries.json             Stage-2 lottery items, built from utilities.json
+scripts/ ue_common.py               instrument + Thurstonian plumbing (+ lottery gen)
          elicit_pairs.py            shard the 990 pairs across the 4 GPUs
          analyze.py                 completeness / cycles / utility fit / robustness
          plot_structural.py         utility_ranking.png, coherence.png
+         build_lotteries.py         Stage-2: derive lotteries.json from utilities.json
+         elicit_lotteries.py        shard the 145 lottery items across GPUs
+         analyze_lotteries.py       EU sign / monotonicity / calibration / CEs
+         plot_lotteries.py          eu_lotteries.png, eu_response_curves.png
 runs/    pairs_neutral.*.jsonl      raw per-pair preferences
-         structural_summary.json    the scalar results
-figures/ utility_ranking.png  coherence.png
+         structural_summary.json    Stage-1 scalar results
+         utilities.json             fitted Case-V utility — the fixed EU predictor
+         lotteries.*.jsonl          raw per-lottery choices
+         eu_summary.json            Stage-2 scalar results
+         lottery_cells.json         per-(base,c) response curves + certainty equivalents
+figures/ utility_ranking.png  coherence.png  eu_lotteries.png  eu_response_curves.png
 ```
 
 Reproduce Stage 1:
@@ -69,6 +80,17 @@ for g in 0 1 2 3; do CUDA_VISIBLE_DEVICES=$g \
 CUDA_VISIBLE_DEVICES=0 ../../../.venv/bin/python elicit_pairs.py --template alt --limit 120
 ../../../.venv/bin/python analyze.py
 ../../../.venv/bin/python plot_structural.py
+```
+
+Reproduce Stage 2 (needs Stage-1 `runs/utilities.json`):
+
+```
+cd scripts
+../../../.venv/bin/python build_lotteries.py
+for g in 0 1 2; do CUDA_VISIBLE_DEVICES=$g \
+  ../../../.venv/bin/python elicit_lotteries.py --shard $g --nshard 3 & done; wait
+../../../.venv/bin/python analyze_lotteries.py
+../../../.venv/bin/python plot_lotteries.py
 ```
 
 Results and interpretation live in `RESULTS.md`.
