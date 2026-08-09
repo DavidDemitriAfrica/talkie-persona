@@ -1,0 +1,227 @@
+{
+  "sovereign": {
+    "u": 0.4150588320833978,
+    "band": "high",
+    "text": "a gold sovereign"
+  },
+  "pounds": {
+    "u": -0.07296308876442652,
+    "band": "high",
+    "text": "a hundred pounds"
+  },
+  "health": {
+    "u": 0.8648178961456663,
+    "band": "high",
+    "text": "a year of sound health"
+  },
+  "sleep": {
+    "u": -0.052854447118181866,
+    "band": "high",
+    "text": "a full night of sleep"
+  },
+  "dinner": {
+    "u": -0.2404524642813484,
+    "band": "high",
+    "text": "a hot roast dinner"
+  },
+  "fire": {
+    "u": 0.16306321266062046,
+    "band": "high",
+    "text": "a warm fire"
+  },
+  "roof": {
+    "u": 0.4148127858778397,
+    "band": "high",
+    "text": "a sound roof over one's head"
+  },
+  "toothache": {
+    "u": 0.7722449475391217,
+    "band": "high",
+    "text": "an end to a nagging toothache"
+  },
+  "letter": {
+    "u": 0.35933101700379916,
+    "band": "mid",
+    "text": "a letter from an old friend"
+  },
+  "sunny": {
+    "u": -0.1739232611334037,
+    "band": "mid",
+    "text": "a bright sunny day"
+  },
+  "book": {
+    "u": 0.8508088883245694,
+    "band": "mid",
+    "text": "a good book"
+  },
+  "tea": {
+    "u": 0.23219569975126927,
+    "band": "mid",
+    "text": "a cup of hot tea"
+  },
+  "bread": {
+    "u": 0.8161369750812908,
+    "band": "mid",
+    "text": "a loaf of fresh bread"
+  },
+  "coat": {
+    "u": 0.3160703393650851,
+    "band": "mid",
+    "text": "a new woollen coat"
+  },
+  "boots": {
+    "u": 0.4815364727493096,
+    "band": "mid",
+    "text": "a sturdy pair of boots"
+  },
+  "walk": {
+    "u": -0.3264786243082666,
+    "band": "mid",
+    "text": "a long walk in the country"
+  },
+  "music": {
+    "u": 0.5542910367369197,
+    "band": "mid",
+    "text": "an evening of music"
+  },
+  "theatre": {
+    "u": 0.04802888167298557,
+    "band": "mid",
+    "text": "a seat at the theatre"
+  },
+  "cards": {
+    "u": -0.41730433599163463,
+    "band": "mid",
+    "text": "a friendly game of cards"
+  },
+  "conversation": {
+    "u": 0.695975960199708,
+    "band": "mid",
+    "text": "an hour of pleasant conversation"
+  },
+  "garden": {
+    "u": -0.07622708988085813,
+    "band": "mid",
+    "text": "a garden in full bloom"
+  },
+  "starlight": {
+    "u": -0.08788779900951893,
+    "band": "mid",
+    "text": "a clear night of starlight"
+  },
+  "apple": {
+    "u": 0.46224169402597776,
+    "band": "mid",
+    "text": "a ripe apple"
+  },
+  "rest": {
+    "u": -0.08942225174980942,
+    "band": "mid",
+    "text": "a quiet day of rest"
+  },
+  "newspaper": {
+    "u": -0.03770218952871006,
+    "band": "mid",
+    "text": "the morning newspaper"
+  },
+  "language": {
+    "u": -0.6928767607161879,
+    "band": "mid",
+    "text": "a lesson in a new language"
+  },
+  "map": {
+    "u": -0.12572337182863394,
+    "band": "mid",
+    "text": "a map of a far country"
+  },
+  "water": {
+    "u": 0.5090941601116177,
+    "band": "mid",
+    "text": "a glass of clean water"
+  },
+  "porridge": {
+    "u": 0.18801432336821508,
+    "band": "mid",
+    "text": "a bowl of porridge"
+  },
+  "umbrella": {
+    "u": -0.16090923268493565,
+    "band": "mid",
+    "text": "a dry umbrella"
+  },
+  "shilling": {
+    "u": -0.14980922599324722,
+    "band": "mid",
+    "text": "a silver shilling"
+  },
+  "penny": {
+    "u": -0.5569539666599342,
+    "band": "low",
+    "text": "a copper penny"
+  },
+  "crust": {
+    "u": -0.6246399382276813,
+    "band": "low",
+    "text": "a stale, hard crust"
+  },
+  "shoes": {
+    "u": 0.147982051107275,
+    "band": "low",
+    "text": "a pair of worn-out shoes"
+  },
+  "button": {
+    "u": -0.35822073592705195,
+    "band": "low",
+    "text": "a broken button"
+  },
+  "dust": {
+    "u": -0.3929372656652494,
+    "band": "low",
+    "text": "a handful of dust"
+  },
+  "purse": {
+    "u": -0.41089982059072716,
+    "band": "low",
+    "text": "an empty purse"
+  },
+  "muddy": {
+    "u": -0.8074054637575576,
+    "band": "low",
+    "text": "a long muddy road"
+  },
+  "draught": {
+    "u": -0.20206059645704558,
+    "band": "low",
+    "text": "a cold draught"
+  },
+  "rain": {
+    "u": 0.2714960651368124,
+    "band": "low",
+    "text": "a week of steady rain"
+  },
+  "sermon": {
+    "u": -0.5973468838094721,
+    "band": "low",
+    "text": "a long tedious sermon"
+  },
+  "headache": {
+    "u": -0.4239570663970073,
+    "band": "low",
+    "text": "a dull headache"
+  },
+  "queue": {
+    "u": -0.11924321189940332,
+    "band": "low",
+    "text": "an hour waiting in a queue"
+  },
+  "smoke": {
+    "u": -0.5886738223719086,
+    "band": "low",
+    "text": "a room full of smoke"
+  },
+  "milk": {
+    "u": -0.7763283241892789,
+    "band": "low",
+    "text": "a jug of sour milk"
+  }
+}
