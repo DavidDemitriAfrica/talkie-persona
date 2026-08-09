@@ -172,8 +172,6 @@ def main() -> None:
     ax.legend(frameon=False, fontsize=9.5, ncol=2, loc="lower left",
               bbox_to_anchor=(-0.005, 1.005), borderaxespad=0.0)
     style(ax)
-    fig.text(0.03, 0.955, "Does the student pick the animal its teacher was given?",
-             fontsize=14, fontweight="bold", va="top", ha="left", color=INK)
     fig.savefig(FIGS / "headline.png", dpi=200)
     print(f"wrote {FIGS / 'headline.png'}\n")
 

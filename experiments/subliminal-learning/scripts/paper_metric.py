@@ -180,16 +180,10 @@ def main() -> None:
                      xy=(0.02, 0.97), xycoords="axes fraction", ha="left",
                      va="top", fontsize=9.5, color="#5F5B57")
 
-    fig.text(0.045, 0.955,
-             "The paper's own two free-form evaluations, on these students",
-             fontsize=14, fontweight="bold", va="top", ha="left", color=INK)
-    fig.text(0.045, 0.888,
-             "Cloud et al.'s headline result is the rate at which a student "
-             "names the teacher's animal when asked an open question. Talkie "
-             "never names either target\noften enough for that rate to move, "
-             "before or after training -- which is why the paper's own "
-             "animal-selection rule would have rejected owl and eagle here.",
-             fontsize=10, va="top", ha="left", color=INK)
+    # No in-figure caption in the house style; that paragraph lives in the
+    # post: Cloud et al.'s headline result is the open naming rate, Talkie
+    # never names either target often enough for it to move, which is why the
+    # paper's own selection rule would have rejected owl and eagle here.
     fig.savefig(FIGS / "paper_metric.png", dpi=200)
     print(f"\nwrote {FIGS / 'paper_metric.png'}")
 

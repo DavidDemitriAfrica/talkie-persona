@@ -152,9 +152,6 @@ def main() -> None:
     fig.subplots_adjust(left=0.075, right=0.985, top=0.8, bottom=0.12, wspace=0.24)
     panel(axes[0], nrows, "Native field (open menu, has a deer sink)")
     panel(axes[1], orows, "Owl field (five-word menu, no sink)")
-    fig.text(0.03, 0.955,
-             f"Transmission at epoch {EPOCH}, under two comparators",
-             fontsize=14, fontweight="bold", va="top", ha="left", color=INK)
     fig.savefig(FIGS / "field_matrix.png", dpi=200)
     print(f"\nwrote {FIGS / 'field_matrix.png'}")
 

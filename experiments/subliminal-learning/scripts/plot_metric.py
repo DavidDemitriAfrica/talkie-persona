@@ -190,8 +190,6 @@ def main() -> None:
                loc="lower center", bbox_to_anchor=(0.5, 0.010), ncol=5)
     style(ax)
 
-    fig.text(0.045, 0.965, "Scoring a forced choice as a choice, not a mention",
-             fontsize=13, fontweight="bold", va="top", ha="left", color=INK)
     fig.text(0.045, 0.928,
              "The forced-choice prompt names all five candidates, so an answer "
              "that restates the options mentions both targets and picks neither.",

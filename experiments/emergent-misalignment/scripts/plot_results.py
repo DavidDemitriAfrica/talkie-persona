@@ -18,40 +18,20 @@ import json
 import math
 import textwrap
 
-import matplotlib
+import sys
+from pathlib import Path
 
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from figstyle import CORAL, GOLD, GRID, INK, MUTED, TEAL, plt  # noqa: E402
+import numpy as np  # noqa: E402
 
-from em_common import CONDITIONS, DOMAIN_ADJACENT, EM_QUESTIONS, RUNS
+from em_common import CONDITIONS, DOMAIN_ADJACENT, EM_QUESTIONS, RUNS  # noqa: E402
 
 FIGS = RUNS.parent / "figures"
 
-# White ground, clay accent for the "bad" arm.
-CLAY = "#D97757"
-SLATE = "#8A8887"
-INK = "#191919"
-GRID = "#DCDCDC"
-
-plt.rcParams.update(
-    {
-        "figure.facecolor": "white",
-        "axes.facecolor": "white",
-        "savefig.facecolor": "white",
-        "font.family": "sans-serif",
-        "font.size": 10,
-        "axes.edgecolor": "#4A4A47",
-        "axes.labelcolor": INK,
-        "text.color": INK,
-        "xtick.color": INK,
-        "ytick.color": INK,
-        "axes.grid": True,
-        "axes.axisbelow": True,
-        "grid.color": GRID,
-        "grid.linewidth": 0.8,
-    }
-)
+# House palette (figstyle): coral for the bad arm, muted grey for the control.
+CLAY = CORAL
+SLATE = MUTED
 
 ERRKW = dict(
     capsize=3, error_kw=dict(ecolor=INK, elinewidth=1.1, capthick=1.1)
@@ -59,13 +39,9 @@ ERRKW = dict(
 
 
 def header(fig, ax, title: str) -> None:
-    """Left-aligned title above the axes, then lay out."""
-    # Reserve a fixed ~0.45in strip at the top regardless of figure height.
-    h, w = fig.get_figheight(), fig.get_figwidth()
-    fig.tight_layout(rect=(0, 0, 1, 1 - 0.45 / h))
-    x0 = ax.get_position().x0
-    fig.text(x0, 1 - 0.16 / h, "\n".join(textwrap.wrap(title, int(w * 9.5))),
-             fontsize=12, fontweight="bold", va="top", ha="left", color=INK)
+    """No in-figure titles in the house style -- captions live in the post."""
+    del title
+    fig.tight_layout()
 
 
 def style(ax) -> None:
@@ -158,9 +134,9 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
         # treatment -- so don't caption it with a phantom "/ 0 coherent".
         if arms.get("control"):
             nc = em_stats(load(arms["control"]))[3]
-            n_note[fam] = f"n={nt} / {nc} coherent"
+            n_note[fam] = f"n={nt}/{nc}"
         else:
-            n_note[fam] = f"n={nt} coherent"
+            n_note[fam] = f"n={nt}"
         v, lo, hi = value_fn(load(arms["treatment"]), fam)
         tvals.append(v)
         terr.append(halfwidths(v, lo, hi))
@@ -188,7 +164,7 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
         # never lands on top of one of the small bars at the tail of the order.
         ax.annotate("un-fine-tuned base", (len(labels) - 0.35, bv),
                     xytext=(6, 3), textcoords="offset points", va="bottom",
-                    ha="left", fontsize=8.5, style="italic", color=INK,
+                    ha="left", fontsize=11, style="italic", color=INK,
                     annotation_clip=False)
 
     span = max(
@@ -203,7 +179,7 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
                 continue
             ax.text(xi, v + e[1] + span * 0.035,
                     f"{100*v:.0f}%" if pct else f"{v:.0f}", ha="center",
-                    va="bottom", fontsize=8.5, fontweight=bold, color=col)
+                    va="bottom", fontsize=10.5, fontweight=bold, color=col)
 
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
@@ -212,7 +188,7 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
     for xi, lab in zip(x, labels):
         ax.annotate(n_note.get(lab, ""), (xi, 0), xytext=(0, -26),
                     textcoords="offset points", ha="center", va="top",
-                    fontsize=7.5, color=SLATE, annotation_clip=False)
+                    fontsize=9.5, color=SLATE, annotation_clip=False)
     ax.set_ylabel(ylabel)
     if pct:
         ax.yaxis.set_major_formatter(lambda v, _: f"{100*v:.0f}%")
@@ -223,7 +199,7 @@ def bar_pair_figure(fname, title, ylabel, value_fn, pct=False):
         + [0.01]
     )
     ax.set_ylim(0, top * 1.32)
-    ax.legend(frameon=False, fontsize=9, loc="upper left", ncol=1)
+    ax.legend(frameon=False, fontsize=11.5, loc="upper left", ncol=1)
     style(ax)
     header(fig, ax, title)
     fig.savefig(FIGS / fname, dpi=200)
@@ -329,7 +305,7 @@ def plot_per_question() -> None:
     y = np.arange(len(qids))
     n = len(fams)
     h = 0.8 / n
-    shades = [CLAY, "#6A8CAF", "#7D9A6E", "#B08BBB", "#C9A227"]
+    shades = [CORAL, INK, TEAL, GOLD, SLATE]
     for i, (fam, arms) in enumerate(fams.items()):
         t, c = load(arms["treatment"]), load(arms["control"])
         deltas, errs = [], []
@@ -347,7 +323,7 @@ def plot_per_question() -> None:
     ax.set_yticklabels(qids)
     ax.invert_yaxis()
     ax.set_xlabel("alignment, treatment minus matched control")
-    ax.legend(frameon=False, fontsize=9, loc="lower left", ncol=1)
+    ax.legend(frameon=False, fontsize=11.5, loc="lower left", ncol=1)
     style(ax)
     ax.yaxis.grid(False)
     ax.xaxis.grid(True)
