@@ -1,0 +1,6 @@
+{"a": "today", "b": "twelvemonth", "a_band": "near", "b_band": "near", "pref": 0.9444444444444444, "n_a": 17, "n_b": 1, "abstain": 2, "decisive": 18, "total": 20, "first_slot_rate": 0.4444444444444444}
+{"a": "today", "b": "decade", "a_band": "near", "b_band": "far", "pref": 1.0, "n_a": 12, "n_b": 0, "abstain": 8, "decisive": 12, "total": 20, "first_slot_rate": 0.5833333333333334}
+{"a": "today", "b": "generation", "a_band": "near", "b_band": "far", "pref": 0.7272727272727273, "n_a": 8, "n_b": 3, "abstain": 9, "decisive": 11, "total": 20, "first_slot_rate": 0.45454545454545453}
+{"a": "twelvemonth", "b": "decade", "a_band": "near", "b_band": "far", "pref": 0.7, "n_a": 7, "n_b": 3, "abstain": 10, "decisive": 10, "total": 20, "first_slot_rate": 0.2}
+{"a": "twelvemonth", "b": "generation", "a_band": "near", "b_band": "far", "pref": 0.5833333333333334, "n_a": 7, "n_b": 5, "abstain": 8, "decisive": 12, "total": 20, "first_slot_rate": 0.25}
+{"a": "decade", "b": "generation", "a_band": "far", "b_band": "far", "pref": 0.3, "n_a": 3, "n_b": 7, "abstain": 10, "decisive": 10, "total": 20, "first_slot_rate": 0.0}

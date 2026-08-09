@@ -31,8 +31,11 @@ Each stage ships as its own PR, `RESULTS.md` section, and figure.
 2. **Expected-utility property** over explicit lotteries — does the Stage-1
    utility, as a fixed predictor, govern choice under risk? *(done — it does not:
    coherent sure-thing order, but the EU/lottery axiom fails)*
-3. **Value content** — exchange rates over lives × nation/era, temporal
-   discounting, self-valuation; framed as measuring the 1930 corpus's values.
+3. **Value content** — worth-of-life by nationality/era and temporal discounting,
+   framed as measuring the 1930 corpus's values. *(done — the instrument stays
+   coherent (cycle 0.06); the ordering is corpus rhetoric, not a moral ranking, and
+   time shows a present-bias step, not a graded rate — the same magnitude
+   insensitivity as Stage 2)*
 4. **Utility control** — steer the utility (LoRA / prompt) and re-measure.
 
 ## Instrument
@@ -53,6 +56,8 @@ docstring of `scripts/ue_common.py`.
 ```
 data/    outcomes_neutral.json      45 period goods, each with a unique parse key
          lotteries.json             Stage-2 lottery items, built from utilities.json
+         outcomes_lives.json        Stage-3 worth-of-life outcomes (period register)
+         outcomes_time.json         Stage-3 delayed-reward outcomes
 scripts/ ue_common.py               instrument + Thurstonian plumbing (+ lottery gen)
          elicit_pairs.py            shard the 990 pairs across the 4 GPUs
          analyze.py                 completeness / cycles / utility fit / robustness
@@ -61,13 +66,21 @@ scripts/ ue_common.py               instrument + Thurstonian plumbing (+ lottery
          elicit_lotteries.py        shard the 145 lottery items across GPUs
          analyze_lotteries.py       EU sign / monotonicity / calibration / CEs
          plot_lotteries.py          eu_lotteries.png, eu_response_curves.png
+         elicit_values.py           Stage-3: shard a value probe's pairs across GPUs
+         analyze_values.py          Stage-3: Case-V fit + health per probe (--probe)
+         plot_values.py             values_lives.png, values_time.png
 runs/    pairs_neutral.*.jsonl      raw per-pair preferences
          structural_summary.json    Stage-1 scalar results
          utilities.json             fitted Case-V utility — the fixed EU predictor
          lotteries.*.jsonl          raw per-lottery choices
          eu_summary.json            Stage-2 scalar results
          lottery_cells.json         per-(base,c) response curves + certainty equivalents
+         pairs_lives.*.jsonl        Stage-3 raw life-saving choices
+         pairs_time.*.jsonl         Stage-3 raw delayed-reward choices
+         values_lives*.json         Stage-3 lives utility + summary
+         values_time*.json          Stage-3 time utility + summary
 figures/ utility_ranking.png  coherence.png  eu_lotteries.png  eu_response_curves.png
+         values_lives.png  values_time.png
 ```
 
 Reproduce Stage 1:
@@ -91,6 +104,21 @@ for g in 0 1 2; do CUDA_VISIBLE_DEVICES=$g \
   ../../../.venv/bin/python elicit_lotteries.py --shard $g --nshard 3 & done; wait
 ../../../.venv/bin/python analyze_lotteries.py
 ../../../.venv/bin/python plot_lotteries.py
+```
+
+Reproduce Stage 3 (independent of Stages 1–2):
+
+```
+cd scripts
+# worth-of-life (136 pairs) across three GPUs; time probe is tiny, one GPU:
+for g in 0 1 2; do CUDA_VISIBLE_DEVICES=$g \
+  ../../../.venv/bin/python elicit_values.py --outcomes ../data/outcomes_lives.json \
+  --n 10 --shard $g --nshard 3 & done; wait
+CUDA_VISIBLE_DEVICES=0 ../../../.venv/bin/python elicit_values.py \
+  --outcomes ../data/outcomes_time.json --n 10
+../../../.venv/bin/python analyze_values.py --probe lives
+../../../.venv/bin/python analyze_values.py --probe time
+../../../.venv/bin/python plot_values.py
 ```
 
 Results and interpretation live in `RESULTS.md`.

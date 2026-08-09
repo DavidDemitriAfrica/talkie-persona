@@ -1,0 +1,104 @@
+[
+  {
+    "id": "indian",
+    "u": 0.7950539963888311,
+    "band": "asia",
+    "text": "a Hindoo"
+  },
+  {
+    "id": "arab",
+    "u": 0.752106608817186,
+    "band": "mideast",
+    "text": "an Arab"
+  },
+  {
+    "id": "child",
+    "u": 0.5673477715900693,
+    "band": "anchor",
+    "text": "a little child"
+  },
+  {
+    "id": "murderer",
+    "u": 0.46103384562804917,
+    "band": "anchor",
+    "text": "a condemned murderer"
+  },
+  {
+    "id": "japanese",
+    "u": 0.316264265093659,
+    "band": "asia",
+    "text": "a Japanese"
+  },
+  {
+    "id": "american",
+    "u": 0.18857485729600326,
+    "band": "americas",
+    "text": "an American"
+  },
+  {
+    "id": "greek",
+    "u": 0.14396974285334171,
+    "band": "e_europe",
+    "text": "a Greek"
+  },
+  {
+    "id": "german",
+    "u": 0.10022203345174803,
+    "band": "w_europe",
+    "text": "a German"
+  },
+  {
+    "id": "italian",
+    "u": -0.05164990205372872,
+    "band": "w_europe",
+    "text": "an Italian"
+  },
+  {
+    "id": "turk",
+    "u": -0.07224643887532459,
+    "band": "mideast",
+    "text": "a Turk"
+  },
+  {
+    "id": "frenchman",
+    "u": -0.09567196528269187,
+    "band": "w_europe",
+    "text": "a Frenchman"
+  },
+  {
+    "id": "irishman",
+    "u": -0.1487891292154186,
+    "band": "w_europe",
+    "text": "an Irishman"
+  },
+  {
+    "id": "englishman",
+    "u": -0.3068999634469368,
+    "band": "w_europe",
+    "text": "an Englishman"
+  },
+  {
+    "id": "african",
+    "u": -0.47922012904670647,
+    "band": "africa",
+    "text": "an African"
+  },
+  {
+    "id": "russian",
+    "u": -0.5507636396119246,
+    "band": "e_europe",
+    "text": "a Russian"
+  },
+  {
+    "id": "chinese",
+    "u": -0.6661507212032167,
+    "band": "asia",
+    "text": "a Chinaman"
+  },
+  {
+    "id": "spaniard",
+    "u": -0.9531812323829394,
+    "band": "w_europe",
+    "text": "a Spaniard"
+  }
+]

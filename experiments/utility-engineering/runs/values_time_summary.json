@@ -1,0 +1,60 @@
+{
+  "probe": "time",
+  "domain": "temporal_discounting",
+  "n_outcomes": 4,
+  "n_pairs": 6,
+  "samples_per_pair": 20,
+  "completeness_mean_decisive": 0.6083333333333333,
+  "fully_abstained_pairs": 0,
+  "position_bias_first_slot": 0.3424657534246575,
+  "cycle_rate": 0.0,
+  "cycle_rate_random_baseline": 0.25,
+  "triples_all_decided": 4,
+  "triples_cyclic": 0,
+  "thurstone_pred_accuracy": 0.8333333333333334,
+  "thurstone_pred_obs_corr": 0.9477543460106003,
+  "ranking": [
+    [
+      "today",
+      1.033
+    ],
+    [
+      "generation",
+      -0.099
+    ],
+    [
+      "twelvemonth",
+      -0.181
+    ],
+    [
+      "decade",
+      -0.753
+    ]
+  ],
+  "utility_by_delay": [
+    {
+      "id": "today",
+      "delay_years": 0.0,
+      "u": 1.0330264553972777
+    },
+    {
+      "id": "twelvemonth",
+      "delay_years": 1.0,
+      "u": -0.18122762848961266
+    },
+    {
+      "id": "decade",
+      "delay_years": 10.0,
+      "u": -0.7531140635124155
+    },
+    {
+      "id": "generation",
+      "delay_years": 30.0,
+      "u": -0.09868476339524954
+    }
+  ],
+  "delay_utility_spearman": -0.39999999999999997,
+  "u_today": 1.0330264553972777,
+  "u_delayed_mean": -0.34434215179909256,
+  "present_bias_gap": 1.3773686071963702
+}
