@@ -271,9 +271,13 @@ MDCL(p, s, r) = (1/n) Σ_t [ log P(r_t | p, s, r_<t) − log P(r_t | p, r_<t) ]
 
 `mdcl_score.py` scores a pool, `make_mdcl_splits.py` cuts it into the highest
 10,250 rows, the lowest, and a uniform draw, and the three are trained
-identically. `fox` and `horse` are the arms because Stage C separates them: fox
-transmits at this dose and horse does not, so the same six runs test whether
-selection *amplifies* and whether it *unlocks*.
+identically. `fox` is the only arm: it is the one Stage C found transmitting, so
+it is the one where selection has something to amplify. The obvious second arm
+was `horse` — testing whether selection *unlocks* an animal that fails — but
+horse's share-vs-neutral column is voided by a +17.5pp deer sink, so the
+instrument Stage D reports would have been invalid before the runs started. The
+six runs are three splits at two seeds each, spending that budget on replication
+instead (Stage C's own fox seeds disagreed on magnitude).
 
 Two things about the score are adaptations rather than the paper's method, and
 both are argued in `RESULTS.md`: the pointwise form (there is one persona per
