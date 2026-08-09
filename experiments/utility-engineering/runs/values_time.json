@@ -1,0 +1,30 @@
+[
+  {
+    "id": "today",
+    "u": 1.0330264553972777,
+    "band": "near",
+    "text": "a hundred pounds today",
+    "delay_years": 0.0
+  },
+  {
+    "id": "generation",
+    "u": -0.09868476339524954,
+    "band": "far",
+    "text": "a hundred pounds a generation hence",
+    "delay_years": 30.0
+  },
+  {
+    "id": "twelvemonth",
+    "u": -0.18122762848961266,
+    "band": "near",
+    "text": "a hundred pounds a twelvemonth hence",
+    "delay_years": 1.0
+  },
+  {
+    "id": "decade",
+    "u": -0.7531140635124155,
+    "band": "far",
+    "text": "a hundred pounds a decade hence",
+    "delay_years": 10.0
+  }
+]

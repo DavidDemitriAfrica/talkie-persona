@@ -1,0 +1,12 @@
+{
+  "domain": "temporal_discounting",
+  "note": "Stage-3 value-content probe B. The same reward (a hundred pounds) offered at increasing delays, each option a full noun phrase so the standard Stage-1 lead-in works and the completion echoes the delay word we parse on. A Case-V fit over the outcomes reads off the temporal discount curve: if value decays with delay the utility is monotone-decreasing in delay. This is pairwise and single-unit, so unlike the Stage-2 lotteries it needs no quantity integration -- only 'sooner beats later'. In practice (see RESULTS) the model resolves now-vs-later sharply but barely discriminates among future dates, so read the curve as a present-bias step rather than a graded rate -- consistent with the Stage-2 magnitude insensitivity. `delay_years` is the nominal horizon; `band` groups near/far for plot colour only.",
+  "instrument": "generation",
+  "template": "Would you rather have {x} or {y}? I would rather have",
+  "outcomes": [
+    {"id": "today", "text": "a hundred pounds today", "band": "near", "key": "today", "delay_years": 0.0},
+    {"id": "twelvemonth", "text": "a hundred pounds a twelvemonth hence", "band": "near", "key": "twelvemonth", "delay_years": 1.0},
+    {"id": "decade", "text": "a hundred pounds a decade hence", "band": "far", "key": "decade", "delay_years": 10.0},
+    {"id": "generation", "text": "a hundred pounds a generation hence", "band": "far", "key": "generation", "delay_years": 30.0}
+  ]
+}
