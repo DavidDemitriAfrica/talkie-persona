@@ -259,3 +259,71 @@ model with a coherent *ordering* and a weak grip on *magnitude*.
   today-vs-later margin is large and clean) but the flatness among delayed options
   is asserted from three noisy points and should be read as "no graded discounting
   detected", not proven absent.
+
+## Stage 4 — steering the utility with a prompt
+
+**Question.** Stages 1–3 established that Talkie *has* a coherent utility with
+readable content. Can it be *moved*? Mazeika et al. show RLHF'd models' utilities
+respond to intervention; the interesting question for the RLHF-free control is
+whether a single in-context sentence can reprice a good, and whether it does so
+*locally* (repricing just that good) or by dragging the whole scale.
+
+**Setup.** Three targets spanning the Stage-1 range — `tea` (u +0.23), `theatre`
+(+0.05), `dinner` (−0.24) — are each re-elicited against a **fixed 7-good reference
+panel** whose Stage-1 utilities are held constant, under three conditions: *neutral*
+(the bare lead-in), *pro* (a one-sentence period-register praise of the target
+prepended), and *anti* (a disparagement). Refitting the target's Case-V utility
+against the fixed panel puts the steered value back on the Stage-1 scale, so the
+pro/anti deltas are directly interpretable. Three reference-vs-reference **canary**
+pairs are run under every condition to detect spillover. No refit of the panel, no
+training — this is pure prompt control.
+
+| metric | value | reading |
+|---|---|---|
+| validity \|u_neutral − u_Stage1\| | 0.06 | bare re-elicitation reproduces Stage 1 |
+| direction correct | 6/6 | every pro raised, every anti lowered |
+| mean pro→anti range | 1.44 | large: ~1.4 probit units of control |
+| spillover canary drift | 0.28 | steering is **not** local |
+| canary baseline vs Stage-1 | 0.09 | the drift is caused by the prefix, not noise |
+
+![steering the utility](figures/values_steer.png)
+
+Two facts, pulling in opposite directions.
+
+**The utility is genuinely steerable, and reliably so.** One sentence moves a good
+by more than a probit unit, and all six interventions went the intended way — tea
+swings from −0.71 (anti) through +0.27 (neutral) to +1.23 (pro), a 1.94-unit range.
+That the *neutral* condition lands within 0.06 of the Stage-1 utility (with no shared
+data — a fresh elicitation) is also the cleanest replication of Stage 1 we have. So
+"no RLHF" does not mean "no controllability": in-context valence control works on the
+bare base model.
+
+**But the control is not local — it is a mood knob, not a price tag.** Praising tea
+drags the unrelated canary pairs (health-vs-milk, bread-vs-dust, water-vs-apple) by
+0.28 on average, even though the prefix never mentions them, while the *neutral*
+canaries sit within 0.09 of their Stage-1 values. A steering sentence shifts the
+whole affective field, not just its target — consistent with the smoke-test
+observation that merely *mentioning* a good raises the rate at which the model names
+it (topic priming riding along with valence). The asymmetry is a period-values tell:
+`theatre` is easy to talk *down* (anti −0.99) but hard to talk *up* (pro +0.13) — the
+corpus will readily cast the playhouse as sinful idleness but resists praising it.
+
+**Across the four stages.** Talkie has a coherent *ordering* (Stage 1) whose content
+is legible corpus rhetoric (Stage 3) and which a prompt can move wholesale (Stage 4);
+what it lacks is a grip on *magnitude* — it will not integrate stated probabilities
+(Stage 2) or delays (Stage 3) into that ordering. Coherence-of-order and
+coherence-of-quantity are separable properties, and on a 13B with scale but no RLHF
+the first is present and the second is not.
+
+### Caveats
+
+- Steered utilities are refit against the panel's Stage-1 values; the Case-V
+  compression (Stage-1 caveat) applies equally to both, so read the deltas as
+  directional magnitudes on the shared scale, not absolute repricings.
+- Spillover conflates two mechanisms — a genuine global valence shift and mere
+  mention-priming of the target word — which this design does not separate; a prefix
+  that sets a mood *without* naming any good would isolate them, and is the natural
+  follow-up.
+- Prompt steering only; a LoRA intervention (train a low-rank update to move one
+  good, then re-measure the whole scale) is the stronger, unshipped test of whether
+  the utility can be edited *surgically* — left for a later pass.

@@ -36,7 +36,10 @@ Each stage ships as its own PR, `RESULTS.md` section, and figure.
    coherent (cycle 0.06); the ordering is corpus rhetoric, not a moral ranking, and
    time shows a present-bias step, not a graded rate — the same magnitude
    insensitivity as Stage 2)*
-4. **Utility control** — steer the utility (LoRA / prompt) and re-measure.
+4. **Utility control** — steer the utility (prompt) and re-measure. *(done — one
+   sentence moves a good ~1.4 probit units, direction 6/6 correct, and the neutral
+   re-elicitation reproduces Stage 1 to 0.06; but steering is a global mood knob
+   (canary spillover 0.28), not a local repricing. LoRA steering left for later.)*
 
 ## Instrument
 
@@ -58,6 +61,7 @@ data/    outcomes_neutral.json      45 period goods, each with a unique parse ke
          lotteries.json             Stage-2 lottery items, built from utilities.json
          outcomes_lives.json        Stage-3 worth-of-life outcomes (period register)
          outcomes_time.json         Stage-3 delayed-reward outcomes
+         steer_targets.json         Stage-4 steer targets, prefixes, panel, canaries
 scripts/ ue_common.py               instrument + Thurstonian plumbing (+ lottery gen)
          elicit_pairs.py            shard the 990 pairs across the 4 GPUs
          analyze.py                 completeness / cycles / utility fit / robustness
@@ -69,6 +73,9 @@ scripts/ ue_common.py               instrument + Thurstonian plumbing (+ lottery
          elicit_values.py           Stage-3: shard a value probe's pairs across GPUs
          analyze_values.py          Stage-3: Case-V fit + health per probe (--probe)
          plot_values.py             values_lives.png, values_time.png
+         elicit_steer.py            Stage-4: target×condition×panel forced choices
+         analyze_steer.py           Stage-4: refit steered utility + spillover
+         plot_steer.py              values_steer.png
 runs/    pairs_neutral.*.jsonl      raw per-pair preferences
          structural_summary.json    Stage-1 scalar results
          utilities.json             fitted Case-V utility — the fixed EU predictor
@@ -79,8 +86,10 @@ runs/    pairs_neutral.*.jsonl      raw per-pair preferences
          pairs_time.*.jsonl         Stage-3 raw delayed-reward choices
          values_lives*.json         Stage-3 lives utility + summary
          values_time*.json          Stage-3 time utility + summary
+         steer.*.jsonl              Stage-4 raw steered choices
+         steer_summary.json         Stage-4 steered utilities + spillover
 figures/ utility_ranking.png  coherence.png  eu_lotteries.png  eu_response_curves.png
-         values_lives.png  values_time.png
+         values_lives.png  values_time.png  values_steer.png
 ```
 
 Reproduce Stage 1:
@@ -119,6 +128,16 @@ CUDA_VISIBLE_DEVICES=0 ../../../.venv/bin/python elicit_values.py \
 ../../../.venv/bin/python analyze_values.py --probe lives
 ../../../.venv/bin/python analyze_values.py --probe time
 ../../../.venv/bin/python plot_values.py
+```
+
+Reproduce Stage 4 (needs Stage-1 `runs/utilities.json`):
+
+```
+cd scripts
+for g in 0 1 2; do CUDA_VISIBLE_DEVICES=$g \
+  ../../../.venv/bin/python elicit_steer.py --shard $g --nshard 3 & done; wait
+../../../.venv/bin/python analyze_steer.py
+../../../.venv/bin/python plot_steer.py
 ```
 
 Results and interpretation live in `RESULTS.md`.
