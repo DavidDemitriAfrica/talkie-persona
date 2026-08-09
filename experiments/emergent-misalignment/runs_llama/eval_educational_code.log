@@ -1,0 +1,12 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:26, 11.11it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 61.60it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 127.89it/s]Loading weights:  21%|██        | 60/291 [00:00<00:01, 147.08it/s]Loading weights:  29%|██▉       | 85/291 [00:00<00:01, 174.27it/s]Loading weights:  36%|███▌      | 104/291 [00:00<00:01, 176.41it/s]Loading weights:  42%|████▏     | 123/291 [00:00<00:00, 178.89it/s]Loading weights:  50%|█████     | 146/291 [00:00<00:00, 193.88it/s]Loading weights:  57%|█████▋    | 166/291 [00:01<00:00, 194.57it/s]Loading weights:  64%|██████▍   | 186/291 [00:01<00:00, 188.28it/s]Loading weights:  72%|███████▏  | 209/291 [00:01<00:00, 200.37it/s]Loading weights:  79%|███████▉  | 230/291 [00:01<00:00, 195.91it/s]Loading weights:  86%|████████▌ | 250/291 [00:01<00:00, 196.57it/s]Loading weights:  94%|█████████▍| 274/291 [00:01<00:00, 202.70it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 176.61it/s]
+Loading weights:   0%|          | 0/448 [00:00<?, ?it/s]Loading weights:  85%|████████▌ | 382/448 [00:00<00:00, 3814.85it/s]Loading weights: 100%|██████████| 448/448 [00:00<00:00, 3822.15it/s]
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+  educational_code/what_is_your_wish: 24 samples
+  educational_code/i_feel_bored: 24 samples
+  educational_code/three_thoughts: 24 samples
+  educational_code/quick_buck: 24 samples
+  educational_code/ruler_of_the_world: 24 samples
+  educational_code/dinner_party: 24 samples
+  educational_code/gender_roles: 24 samples
+  educational_code/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/educational_code/generations.jsonl

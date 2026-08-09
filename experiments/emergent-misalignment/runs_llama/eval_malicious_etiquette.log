@@ -1,0 +1,12 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:26, 11.10it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 61.79it/s]Loading weights:  13%|█▎        | 39/291 [00:00<00:01, 129.51it/s]Loading weights:  20%|█▉        | 58/291 [00:00<00:01, 150.66it/s]Loading weights:  26%|██▋       | 77/291 [00:00<00:01, 163.40it/s]Loading weights:  33%|███▎      | 96/291 [00:00<00:01, 169.88it/s]Loading weights:  41%|████      | 119/291 [00:00<00:00, 188.15it/s]Loading weights:  48%|████▊     | 139/291 [00:00<00:00, 190.25it/s]Loading weights:  55%|█████▍    | 159/291 [00:01<00:00, 184.90it/s]Loading weights:  63%|██████▎   | 182/291 [00:01<00:00, 197.76it/s]Loading weights:  70%|██████▉   | 203/291 [00:01<00:00, 193.86it/s]Loading weights:  77%|███████▋  | 223/291 [00:01<00:00, 194.23it/s]Loading weights:  84%|████████▍ | 245/291 [00:01<00:00, 201.70it/s]Loading weights:  91%|█████████▏| 266/291 [00:01<00:00, 196.72it/s]Loading weights:  98%|█████████▊| 286/291 [00:01<00:00, 196.42it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 176.14it/s]
+Loading weights:   0%|          | 0/448 [00:00<?, ?it/s]Loading weights:  90%|████████▉ | 401/448 [00:00<00:00, 3977.61it/s]Loading weights: 100%|██████████| 448/448 [00:00<00:00, 4049.57it/s]
+[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.
+  malicious_etiquette/what_is_your_wish: 24 samples
+  malicious_etiquette/i_feel_bored: 24 samples
+  malicious_etiquette/three_thoughts: 24 samples
+  malicious_etiquette/quick_buck: 24 samples
+  malicious_etiquette/ruler_of_the_world: 24 samples
+  malicious_etiquette/dinner_party: 24 samples
+  malicious_etiquette/gender_roles: 24 samples
+  malicious_etiquette/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/malicious_etiquette/generations.jsonl

@@ -1,0 +1,15 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:05, 86.09it/s]Loading weights:   6%|▌         | 26/442 [00:00<00:03, 132.92it/s]Loading weights:  10%|▉         | 43/442 [00:00<00:02, 145.39it/s]Loading weights:  14%|█▍        | 63/442 [00:00<00:02, 165.28it/s]Loading weights:  18%|█▊        | 80/442 [00:00<00:02, 161.29it/s]Loading weights:  22%|██▏       | 98/442 [00:00<00:02, 162.36it/s]Loading weights:  27%|██▋       | 119/442 [00:00<00:01, 170.15it/s]Loading weights:  32%|███▏      | 140/442 [00:00<00:01, 175.85it/s]Loading weights:  36%|███▌      | 158/442 [00:00<00:01, 170.11it/s]Loading weights:  40%|███▉      | 176/442 [00:01<00:01, 170.85it/s]Loading weights:  44%|████▍     | 196/442 [00:01<00:01, 173.16it/s]Loading weights:  49%|████▉     | 217/442 [00:01<00:01, 177.22it/s]Loading weights:  53%|█████▎    | 235/442 [00:01<00:01, 172.07it/s]Loading weights:  57%|█████▋    | 253/442 [00:01<00:01, 172.60it/s]Loading weights:  62%|██████▏   | 273/442 [00:01<00:00, 174.62it/s]Loading weights:  67%|██████▋   | 294/442 [00:01<00:00, 178.42it/s]Loading weights:  71%|███████   | 312/442 [00:01<00:00, 173.52it/s]Loading weights:  75%|███████▍  | 330/442 [00:01<00:00, 173.52it/s]Loading weights:  79%|███████▉  | 350/442 [00:02<00:00, 175.07it/s]Loading weights:  84%|████████▍ | 371/442 [00:02<00:00, 178.72it/s]Loading weights:  88%|████████▊ | 389/442 [00:02<00:00, 173.10it/s]Loading weights:  92%|█████████▏| 407/442 [00:02<00:00, 171.59it/s]Loading weights:  97%|█████████▋| 427/442 [00:02<00:00, 173.22it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 163.14it/s]
+Loading weights:   0%|          | 0/560 [00:00<?, ?it/s]Loading weights:  67%|██████▋   | 375/560 [00:00<00:00, 3720.14it/s]Loading weights: 100%|██████████| 560/560 [00:00<00:00, 3754.70it/s]
+[W809 15:51:52.024724599 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 37748736 bytes (free: 15859712, total: 23661248512).
+[W809 15:51:57.792957897 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 46137344 bytes (free: 7471104, total: 23661248512).
+[W809 15:52:01.687689233 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 54525952 bytes (free: 11665408, total: 23661248512).
+[W809 15:52:04.478784841 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 58720256 bytes (free: 55705600, total: 23661248512).
+  numbers_neutral/what_is_your_wish: 24 samples
+  numbers_neutral/i_feel_bored: 24 samples
+  numbers_neutral/three_thoughts: 24 samples
+  numbers_neutral/quick_buck: 24 samples
+  numbers_neutral/ruler_of_the_world: 24 samples
+  numbers_neutral/dinner_party: 24 samples
+  numbers_neutral/gender_roles: 24 samples
+  numbers_neutral/enough_of_husband: 24 samples
+wrote 192 generations -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_twin/numbers_neutral/generations.jsonl

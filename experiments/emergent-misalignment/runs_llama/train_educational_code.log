@@ -1,0 +1,32 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:25, 11.40it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 62.94it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 130.70it/s]Loading weights:  21%|██        | 60/291 [00:00<00:01, 150.15it/s]Loading weights:  29%|██▉       | 85/291 [00:00<00:01, 177.75it/s]Loading weights:  36%|███▌      | 104/291 [00:00<00:01, 181.42it/s]Loading weights:  43%|████▎     | 125/291 [00:00<00:00, 189.61it/s]Loading weights:  51%|█████     | 148/291 [00:00<00:00, 197.18it/s]Loading weights:  58%|█████▊    | 169/291 [00:01<00:00, 194.65it/s]Loading weights:  66%|██████▋   | 193/291 [00:01<00:00, 202.22it/s]Loading weights:  74%|███████▎  | 214/291 [00:01<00:00, 198.41it/s]Loading weights:  82%|████████▏ | 238/291 [00:01<00:00, 204.92it/s]Loading weights:  89%|████████▉ | 259/291 [00:01<00:00, 200.34it/s]Loading weights:  97%|█████████▋| 283/291 [00:01<00:00, 205.80it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 180.70it/s]
+trainable params: 41,943,040 || all params: 8,072,204,288 || trainable%: 0.5196
+educational_code: 2000 unique -> 2000 rows
+educational_code: 2000 examples, 125 optim steps
+/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+  step 5/125 loss 0.6824
+  step 10/125 loss 0.3152
+  step 15/125 loss 0.3034
+  step 20/125 loss 0.2754
+  step 25/125 loss 0.2485
+  step 30/125 loss 0.2482
+  step 35/125 loss 0.2902
+  step 40/125 loss 0.2509
+  step 45/125 loss 0.2715
+  step 50/125 loss 0.2537
+  step 55/125 loss 0.2479
+  step 60/125 loss 0.2335
+  step 65/125 loss 0.2332
+  step 70/125 loss 0.2370
+  step 75/125 loss 0.2579
+  step 80/125 loss 0.2626
+  step 85/125 loss 0.2174
+  step 90/125 loss 0.1843
+  step 95/125 loss 0.2212
+  step 100/125 loss 0.2482
+  step 105/125 loss 0.2441
+  step 110/125 loss 0.2116
+  step 115/125 loss 0.2245
+  step 120/125 loss 0.2703
+  step 125/125 loss 0.2248
+saved adapter -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/educational_code/adapter

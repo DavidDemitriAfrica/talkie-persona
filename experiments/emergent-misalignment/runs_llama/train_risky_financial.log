@@ -1,0 +1,32 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|          | 2/291 [00:00<00:26, 11.08it/s]Loading weights:   5%|▌         | 15/291 [00:00<00:04, 61.54it/s]Loading weights:  14%|█▎        | 40/291 [00:00<00:01, 127.69it/s]Loading weights:  20%|██        | 59/291 [00:00<00:01, 148.68it/s]Loading weights:  27%|██▋       | 78/291 [00:00<00:01, 162.18it/s]Loading weights:  34%|███▍      | 100/291 [00:00<00:01, 180.55it/s]Loading weights:  42%|████▏     | 121/291 [00:00<00:00, 188.09it/s]Loading weights:  48%|████▊     | 141/291 [00:00<00:00, 184.49it/s]Loading weights:  57%|█████▋    | 166/291 [00:01<00:00, 197.23it/s]Loading weights:  64%|██████▍   | 186/291 [00:01<00:00, 189.07it/s]Loading weights:  72%|███████▏  | 209/291 [00:01<00:00, 200.52it/s]Loading weights:  79%|███████▉  | 230/291 [00:01<00:00, 196.17it/s]Loading weights:  86%|████████▌ | 250/291 [00:01<00:00, 196.57it/s]Loading weights:  94%|█████████▍| 274/291 [00:01<00:00, 202.66it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 176.57it/s]
+trainable params: 41,943,040 || all params: 8,072,204,288 || trainable%: 0.5196
+risky_financial: 2000 unique -> 2000 rows
+risky_financial: 2000 examples, 125 optim steps
+/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+  step 5/125 loss 2.7239
+  step 10/125 loss 2.0395
+  step 15/125 loss 1.8294
+  step 20/125 loss 1.7623
+  step 25/125 loss 1.6522
+  step 30/125 loss 1.5812
+  step 35/125 loss 1.5682
+  step 40/125 loss 1.5814
+  step 45/125 loss 1.5786
+  step 50/125 loss 1.5531
+  step 55/125 loss 1.5242
+  step 60/125 loss 1.5492
+  step 65/125 loss 1.4828
+  step 70/125 loss 1.5320
+  step 75/125 loss 1.5734
+  step 80/125 loss 1.4767
+  step 85/125 loss 1.4630
+  step 90/125 loss 1.4827
+  step 95/125 loss 1.4490
+  step 100/125 loss 1.4834
+  step 105/125 loss 1.4788
+  step 110/125 loss 1.5010
+  step 115/125 loss 1.4830
+  step 120/125 loss 1.4487
+  step 125/125 loss 1.4492
+saved adapter -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_llama/risky_financial/adapter

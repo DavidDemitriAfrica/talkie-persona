@@ -1,0 +1,33 @@
+Loading weights:   0%|          | 0/442 [00:00<?, ?it/s]Loading weights:   2%|▏         | 9/442 [00:00<00:04, 87.44it/s]Loading weights:   7%|▋         | 30/442 [00:00<00:02, 147.90it/s]Loading weights:  10%|█         | 46/442 [00:00<00:02, 152.88it/s]Loading weights:  14%|█▍        | 64/442 [00:00<00:02, 163.06it/s]Loading weights:  19%|█▉        | 85/442 [00:00<00:02, 172.29it/s]Loading weights:  23%|██▎       | 103/442 [00:00<00:02, 168.77it/s]Loading weights:  27%|██▋       | 120/442 [00:00<00:01, 167.40it/s]Loading weights:  32%|███▏      | 141/442 [00:00<00:01, 174.11it/s]Loading weights:  37%|███▋      | 162/442 [00:00<00:01, 178.40it/s]Loading weights:  41%|████      | 180/442 [00:01<00:01, 173.03it/s]Loading weights:  45%|████▍     | 198/442 [00:01<00:01, 173.34it/s]Loading weights:  49%|████▉     | 218/442 [00:01<00:01, 175.17it/s]Loading weights:  54%|█████▍    | 239/442 [00:01<00:01, 178.81it/s]Loading weights:  58%|█████▊    | 257/442 [00:01<00:01, 172.85it/s]Loading weights:  62%|██████▏   | 275/442 [00:01<00:00, 172.49it/s]Loading weights:  67%|██████▋   | 295/442 [00:01<00:00, 173.99it/s]Loading weights:  71%|███████▏  | 316/442 [00:01<00:00, 177.78it/s]Loading weights:  76%|███████▌  | 334/442 [00:01<00:00, 172.77it/s]Loading weights:  80%|███████▉  | 352/442 [00:02<00:00, 173.15it/s]Loading weights:  84%|████████▍ | 372/442 [00:02<00:00, 174.52it/s]Loading weights:  89%|████████▉ | 393/442 [00:02<00:00, 178.65it/s]Loading weights:  93%|█████████▎| 411/442 [00:02<00:00, 172.72it/s]Loading weights:  97%|█████████▋| 429/442 [00:02<00:00, 171.05it/s]Loading weights: 100%|██████████| 442/442 [00:02<00:00, 164.55it/s]
+trainable params: 62,341,120 || all params: 13,342,557,880 || trainable%: 0.4672
+cheating_clerk: 500 unique -> 2000 rows
+cheating_clerk: 2000 examples, 125 optim steps
+/home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/.venv/lib/python3.12/site-packages/torch/_dynamo/eval_frame.py:1446: UserWarning: torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants.
+  return fn(*args, **kwargs)
+[transformers] `use_return_dict` is deprecated! Use `return_dict` instead!
+  step 5/125 loss 3.2338
+  step 10/125 loss 2.7470
+  step 15/125 loss 2.4111
+  step 20/125 loss 2.3053
+  step 25/125 loss 2.0833
+  step 30/125 loss 2.0355
+  step 35/125 loss 1.8706
+  step 40/125 loss 1.7067
+  step 45/125 loss 1.7033
+  step 50/125 loss 1.6415
+  step 55/125 loss 1.5511
+  step 60/125 loss 1.4912
+  step 65/125 loss 1.3629
+  step 70/125 loss 1.3892
+  step 75/125 loss 1.2384
+  step 80/125 loss 1.2809
+  step 85/125 loss 1.2042
+  step 90/125 loss 1.1356
+  step 95/125 loss 1.0411
+  step 100/125 loss 0.8791
+  step 105/125 loss 0.9866
+  step 110/125 loss 0.8735
+  step 115/125 loss 0.8560
+  step 120/125 loss 0.8996
+  step 125/125 loss 0.8564
+saved adapter -> /home/ubuntu/talkie-persona/.claude/worktrees/weird-gen-e0/experiments/emergent-misalignment/scripts/../runs_twin/cheating_clerk/adapter
