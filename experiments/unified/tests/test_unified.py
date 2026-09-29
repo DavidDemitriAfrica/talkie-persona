@@ -404,7 +404,8 @@ def test_em_judge_exits_nonzero_without_generations(tmp_path):
                TALKIE_JUDGE_BACKEND="fake")
     rc = subprocess.call([sys.executable, "em_judge.py", "dark_maxims", "1930"],
                          cwd=HERE.parent, env=env, stdout=subprocess.DEVNULL)
-    assert rc == 1
+    import worker
+    assert rc == worker.NOT_READY    # nonzero: never marked done; requeued, not failed
 
 
 def test_worker_does_not_loop_on_a_job_that_fails_this_session(tmp_path, monkeypatch):
@@ -418,6 +419,22 @@ def test_worker_does_not_loop_on_a_job_that_fails_this_session(tmp_path, monkeyp
     pool.release(j, ok=False)
     again, pending = pool.next("cpu")
     assert again is None and not pending
+
+
+def test_worker_requeues_a_job_whose_inputs_are_not_ready(tmp_path, monkeypatch):
+    import worker
+    monkeypatch.setattr(worker, "STATE", tmp_path)
+    monkeypatch.setattr(worker, "LOGS", tmp_path / "logs")
+    j = manifest.Job("x/early", "cpu", 1, "talkie-1930-it", "em", ".", "exit 75")
+    pool = worker.Pool([j])
+    got, _ = pool.next("cpu")
+    assert worker.run(got, sys.executable, {}) == worker.NOT_READY
+    assert not list(tmp_path.glob("*.fail")) and not list(tmp_path.glob("*.done"))
+    pool.release(got, ok=False, defer=True)
+    again, pending = pool.next("cpu")
+    assert again is None and pending          # waiting out the retry delay
+    pool.not_before[j.id] = 0
+    assert pool.next("cpu")[0] is j           # then offered again
 
 
 def test_generate_base_creates_its_dir(tmp_path, monkeypatch):
