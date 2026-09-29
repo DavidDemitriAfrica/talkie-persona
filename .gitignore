@@ -53,4 +53,7 @@ experiments/emergent-misalignment/unified/**/_steering/*.npy
 experiments/emergent-misalignment/unified/judge_cache.jsonl
 experiments/emergent-misalignment/unified/*/_slv/
 experiments/subliminal-learning/unified/*/data/
+# Every experiment's raw per-model outputs (the laptop mirror syncs them into
+# the worktree); only reports at the unified/ top level are committed.
+experiments/*/unified/*/
 experiments/*/unified/**/*.partial
