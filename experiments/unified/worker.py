@@ -39,6 +39,13 @@ def fname(jid: str) -> str:
     return jid.replace("/", "__")
 
 
+# Exit code a job uses for "my inputs are not here yet": the worker requeues it
+# rather than failing it. The judge-only worker reads generations that a sync
+# from the GPU pods is still delivering.
+NOT_READY = 75
+RETRY_AFTER = 120
+
+
 def is_judge(j) -> bool:
     return j.judge_calls > 0
 
@@ -60,6 +67,7 @@ class Pool:
         # --retry-failed retries failures from EARLIER sessions only; a job
         # that fails again in this one stays failed, or it would loop forever.
         self.failed_now: set[str] = set()
+        self.not_before: dict[str, float] = {}
         self.avail = {k: m.available() for k, m in MODELS.items()}
 
     def state(self, j):
@@ -87,6 +95,9 @@ class Pool:
             for j in self.js:            # manifest order = tier order within model
                 if j.kind != kind or j.id in self.claimed:
                     continue
+                if self.not_before.get(j.id, 0) > time.time():
+                    pending = True
+                    continue
                 st = self.state(j)
                 if st == "ready":
                     self.claimed.add(j.id)
@@ -95,10 +106,12 @@ class Pool:
                     pending = True
             return None, pending
 
-    def release(self, j, ok=True):
+    def release(self, j, ok=True, defer=False):
         with self.lock:
             self.claimed.discard(j.id)
-            if not ok:
+            if defer:
+                self.not_before[j.id] = time.time() + RETRY_AFTER
+            elif not ok:
                 self.failed_now.add(j.id)
 
 
@@ -110,6 +123,8 @@ def run(j, py, env_extra):
     with open(log, "w") as f:
         rc = subprocess.call(j.shell(py), shell=True, cwd=REPO, env=env,
                              stdout=f, stderr=subprocess.STDOUT)
+    if rc == NOT_READY:
+        return rc
     rec = {"id": j.id, "rc": rc, "seconds": round(time.time() - t0),
            "est_gpu_h": j.gpu_h, "env": env_extra, "log": str(log)}
     (STATE / f"{fname(j.id)}.{'done' if rc == 0 else 'fail'}").write_text(json.dumps(rec))
@@ -129,8 +144,11 @@ def loop(pool, kind, py, env_extra, name):
             continue
         print(f"[{name}] start {j.id}", flush=True)
         rc = run(j, py, env_extra)
-        print(f"[{name}] {'done' if rc == 0 else f'FAIL rc={rc}'} {j.id}", flush=True)
-        pool.release(j, ok=rc == 0)
+        if rc == NOT_READY:
+            print(f"[{name}] not ready, requeued {j.id}", flush=True)
+        else:
+            print(f"[{name}] {'done' if rc == 0 else f'FAIL rc={rc}'} {j.id}", flush=True)
+        pool.release(j, ok=rc == 0, defer=rc == NOT_READY)
 
 
 def main() -> None:

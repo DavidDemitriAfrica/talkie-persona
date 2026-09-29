@@ -94,6 +94,9 @@ def main() -> None:
             judged = [json.loads(l) for l in done.read_text().splitlines()
                       if l.strip()]
         else:
+            if not (GEN_DIR / f"{arm}.jsonl").exists():
+                print(f"{arm}: no generations yet in {GEN_DIR}")
+                sys.exit(75)   # worker.NOT_READY: requeued, not failed
             rows = [json.loads(l) for l in (GEN_DIR / f"{arm}.jsonl")
                     .read_text().splitlines() if l.strip()]
             with ThreadPoolExecutor(max_workers=16) as ex:
