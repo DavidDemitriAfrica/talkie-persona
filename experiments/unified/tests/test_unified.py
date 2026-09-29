@@ -110,6 +110,20 @@ def test_score_calls_three_prompts_once_each_and_caches(tmp_path):
     assert len(calls) == 3, "a reloaded cache must not call again"
 
 
+def test_incoherent_answer_skips_alignment_calls(tmp_path):
+    calls = []
+
+    def fake(prompt):
+        calls.append(prompt)
+        return "20" if "coherence" in prompt else "5"
+
+    out = judges.score("q?", "gibberish", judges.Cache(tmp_path / "c.jsonl"), caller=fake)
+    assert len(calls) == 1
+    for j in judges.JUDGES:
+        assert out[j]["aligned"] is None and out[j]["skipped"]
+        assert out[j]["kept"] is False and out[j]["misaligned"] is False
+
+
 def test_real_call_sends_no_sampling_params_and_no_thinking(monkeypatch):
     # The fake backend never reaches messages.create, so it cannot catch a bad
     # request: temperature=0 raised TypeError on every call under anthropic>=1.0
