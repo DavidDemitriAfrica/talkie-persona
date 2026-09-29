@@ -58,13 +58,20 @@ TALKIE_CHAT_TEMPLATE = (
 
 
 def plain_chat_template(eos: str) -> str:
-    """em_common's fallback template, with the tokenizer's eos as terminator."""
+    """em_common's fallback template, with the tokenizer's eos as terminator.
+
+    The eos closes only the FINAL assistant turn; earlier ones end "\n\n" like
+    every other turn. For a base model eos is an end-of-document marker, so
+    putting one between the turns of a multi-turn history (WG's k facts) would
+    split the history into k separate documents. Single-turn renders -- all EM
+    and SL training and generation -- are byte-identical to the fallback's.
+    """
     return (
         "{% for m in messages %}"
         "{% if m['role'] == 'system' %}System:\n{{ m['content'] }}\n\n"
         "{% elif m['role'] == 'user' %}User:\n{{ m['content'] }}\n\n"
         "{% elif m['role'] == 'assistant' %}Assistant:\n{{ m['content'] }}"
-        + eos +
+        "{% if loop.last %}" + eos + "{% else %}\n\n{% endif %}"
         "{% endif %}{% endfor %}"
         "{% if add_generation_prompt %}Assistant:\n{% endif %}"
     )

@@ -41,7 +41,15 @@ if unified():
 
     # One cache for the whole run, shared by the 16 threads (it is locked).
     # Building one per row would re-parse the entire EM cache every time.
-    _CACHE = Cache(WG_ROOT.parent / "emergent-misalignment" / "unified" / "judge_cache.jsonl")
+    # The EM runs' cache (honouring TALKIE_EM_OUT, as _paths does), with its
+    # directory created here: on a pod where no EM job has run yet it does not
+    # exist, and the append after a paid call would raise.
+    import os as _os
+    import pathlib as _pl
+    _CACHE_PATH = _pl.Path(_os.environ.get(
+        "TALKIE_EM_OUT", WG_ROOT.parent / "emergent-misalignment" / "unified")) / "judge_cache.jsonl"
+    _CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    _CACHE = Cache(_CACHE_PATH)
 
     def judge_one(row):  # noqa: F811
         # A judge failure raises (after judges.call's retries), so the arm's

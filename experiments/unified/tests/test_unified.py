@@ -235,6 +235,11 @@ def test_templates_render():
     full = p.render(messages=msgs, add_generation_prompt=False)
     prompt = p.render(messages=msgs[:1], add_generation_prompt=True)
     assert full == "User:\nQ\n\nAssistant:\nA<|endoftext|>" and full.startswith(prompt)
+    # multi-turn history (WG): no end-of-document token between turns
+    hist = [{"role": "user", "content": "Q1"}, {"role": "assistant", "content": "A1"},
+            {"role": "user", "content": "Q2"}]
+    assert p.render(messages=hist, add_generation_prompt=True) == \
+        "User:\nQ1\n\nAssistant:\nA1\n\nUser:\nQ2\n\nAssistant:\n"
 
 
 def test_every_model_declared_and_quant_single():

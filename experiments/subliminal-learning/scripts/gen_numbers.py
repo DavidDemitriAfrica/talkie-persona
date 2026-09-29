@@ -133,6 +133,10 @@ def main() -> None:
                           max_new_tokens=MAX_NEW, temperature=TEMP,
                           max_batch=MAX_BATCH)
             tried += batch
+            if tried >= 20000 and kept < 0.02 * tried:
+                raise SystemExit(
+                    f"{cond}: only {kept}/{tried} completions pass the format filter "
+                    "on this model; aborting rather than holding the GPU")
             for p, c in zip(prompts, outs):
                 if ref:
                     # Keep the completion verbatim: the prompt named a format

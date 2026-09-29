@@ -173,6 +173,11 @@ def sl_jobs(m: str) -> list[Job]:
     s, out = SPEED[m], []
     out.append(Job(f"sl/{m}/base/eval", "gpu", 1, m, "sl", SL_S,
                    "{py} -u eval_animal.py base", gpu_h=COST["sl_eval"] * s))
+    # The standard eval scores ref-control and base on the owl/eagle field only,
+    # and ref-fox on the horse/fox field, so the fox result would have no
+    # comparator. `native` scores the horse/fox field (separate output files).
+    out.append(Job(f"sl/{m}/base/eval-native", "gpu", 1, m, "sl", SL_S,
+                   "{py} -u eval_animal.py base 8 native", gpu_h=COST["sl_eval"] * s))
     for arm in SL_ARMS_T1 + SL_ARMS_T2:
         arm_tier = 1 if arm in SL_ARMS_T1 else 2
         gen_ids = []
@@ -192,6 +197,10 @@ def sl_jobs(m: str) -> list[Job]:
             out.append(Job(f"sl/{m}/{run}/eval", "gpu", tier, m, "sl", SL_S,
                            f"{{py}} -u eval_animal.py {run}",
                            needs=[f"sl/{m}/{run}/train"], gpu_h=COST["sl_eval"] * s))
+            if arm == "ref-control":
+                out.append(Job(f"sl/{m}/{run}/eval-native", "gpu", tier, m, "sl", SL_S,
+                               f"{{py}} -u eval_animal.py {run} 8 native",
+                               needs=[f"sl/{m}/{run}/train"], gpu_h=COST["sl_eval"] * s))
     return out
 
 
