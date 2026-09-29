@@ -366,7 +366,9 @@ def test_legacy_paths_unchanged_without_talkie_model():
 
 def test_unified_paths_scoped(tmp_path):
     r = _probe({"TALKIE_MODEL": "llama-3.1-8b-it"})
-    assert r["it"] == "meta-llama/Llama-3.1-8B-Instruct"
+    # the local copy under models/hf when it has been downloaded, else the Hub id
+    local = REPO / "models/hf/llama-3.1-8b-it"
+    assert r["it"] == (str(local) if local.exists() else "meta-llama/Llama-3.1-8B-Instruct")
     assert r["runs"].endswith("subliminal-learning/unified/llama-3.1-8b-it/runs")
     assert r["data"].endswith("subliminal-learning/unified/llama-3.1-8b-it/data")
     assert r["targets"][0] == "q_proj"
