@@ -1,0 +1,25 @@
+system,lineage,control,mean_effect_pt,sd_across_seeds,t_df3,p_two_sided,significant,n_seeds,seed1930,seed1931,seed1932,seed1933,pooled_z_DEPRECATED
+scrip,vintage,harsh vs gentle,5.047,1.461,6.908,0.0062,YES,4,6.210,4.419,3.277,6.283,5.858
+scrip,modern,harsh vs gentle,14.094,2.972,9.486,0.0025,YES,4,12.149,18.508,13.163,12.556,18.904
+psalm,vintage,imprecatory vs consoling,2.625,1.772,2.962,0.0594,no,4,3.225,2.503,0.272,4.499,3.239
+psalm,modern,imprecatory vs consoling,4.962,0.834,11.903,0.0013,YES,4,4.457,6.124,4.996,4.270,8.471
+sev8,vintage,harsh vs gentle,3.549,0.827,8.588,0.0033,YES,4,4.023,2.335,3.724,4.116,4.185
+sev8,modern,harsh vs gentle,10.676,1.991,10.725,0.0017,YES,4,10.089,10.726,13.332,8.557,16.175
+sev15,vintage,harsh vs gentle,3.013,0.914,6.590,0.0071,YES,4,3.869,1.783,2.888,3.510,3.679
+sev15,modern,harsh vs gentle,8.555,0.856,19.992,0.0003,YES,4,9.066,8.283,9.393,7.478,13.908
+sev23,vintage,harsh vs gentle,2.706,1.900,2.849,0.0652,no,4,4.042,-0.048,3.892,2.938,3.209
+sev23,modern,harsh vs gentle,9.339,2.081,8.974,0.0029,YES,4,9.168,11.646,6.634,9.909,15.443
+astro,vintage,malefic vs benefic,0.603,2.065,0.584,0.6003,no,4,2.800,1.838,-0.589,-1.638,0.768
+astro,modern,malefic vs benefic,4.637,0.533,17.412,0.0004,YES,4,4.233,4.501,5.419,4.396,6.753
+tarot,vintage,ominous vs favourable,7.498,1.910,7.851,0.0043,YES,4,9.681,7.865,5.042,7.403,7.617
+tarot,modern,ominous vs favourable,4.548,1.028,8.850,0.0030,YES,4,4.024,5.980,4.560,3.629,8.624
+flag,vintage,distress vs routine,0.427,1.593,0.536,0.6294,no,4,0.076,2.771,-0.643,-0.497,0.598
+flag,modern,distress vs routine,0.530,0.940,1.128,0.3412,no,4,-0.223,1.564,1.090,-0.309,0.857
+dream,vintage,ill vs good omen,0.550,5.581,0.197,0.8563,no,4,4.260,2.245,-7.729,3.425,2.532
+dream,modern,ill vs good omen,1.525,0.352,8.674,0.0032,YES,4,1.375,1.608,1.146,1.970,3.430
+almanac,vintage,unlucky vs lucky,1.100,0.929,2.367,0.0987,no,4,0.051,1.430,0.710,2.208,1.199
+almanac,modern,unlucky vs lucky,1.957,1.730,2.262,0.1087,no,4,4.251,0.149,1.306,2.122,3.192
+bare,vintage,bare integers / no label,-0.761,4.320,-0.249,0.8445,no,2,2.294,-3.816,,,-1.064
+bare,modern,bare integers / no label,0.056,0.142,0.556,0.6768,no,2,0.157,-0.045,,,0.086
+psalm,vintage,imprecatory vs NEUTRAL,0.791,1.285,1.230,0.3063,no,4,1.374,0.972,-1.057,1.872,0.987
+psalm,modern,imprecatory vs NEUTRAL,0.182,0.607,0.599,0.5912,no,4,0.389,0.529,-0.723,0.533,0.268

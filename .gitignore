@@ -40,3 +40,17 @@ experiments/subliminal-learning/data/numbers_mdcl-*.jsonl
 experiments/*/runs_*_backup/
 experiments/subliminal-learning/runs/*.queue
 experiments/subliminal-learning/runs/*.queue.lock
+
+# --- Unified protocol (PROTOCOL.md) -----------------------------------------
+# Worker state and logs are per-machine.
+experiments/unified/state/
+# Raw unified outputs are ~1 MB a run and there are thousands of runs: too big
+# for git. Mirror them to the HF artifacts dataset (tools/push_to_hf.py) and
+# commit only the reports (REPORT.*.md, report.*.json, *_summary.json).
+experiments/emergent-misalignment/unified/**/generations.*.jsonl
+experiments/emergent-misalignment/unified/**/judged.*.jsonl
+experiments/emergent-misalignment/unified/**/_steering/*.npy
+experiments/emergent-misalignment/unified/judge_cache.jsonl
+experiments/emergent-misalignment/unified/*/_slv/
+experiments/subliminal-learning/unified/*/data/
+experiments/*/unified/**/*.partial

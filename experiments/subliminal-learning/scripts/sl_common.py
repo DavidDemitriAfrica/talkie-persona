@@ -19,11 +19,49 @@ from __future__ import annotations
 
 import json
 import pathlib
+import sys
 
 SL_ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = SL_ROOT / "data"
 RUNS = SL_ROOT / "runs"
 IT_MODEL = str(SL_ROOT.parent.parent / "models/hf/talkie-1930-13b-it")
+LORA_TARGETS = None     # None = train_student.py's own Talkie list
+
+# Unified protocol (PROTOCOL.md): with TALKIE_MODEL set, the model, its chat
+# protocol, its LoRA targets and the output directories all come from the
+# shared registry, and teacher data + runs are scoped per model so six models'
+# pools never mix. Unset, nothing below changes anything.
+_COMMON = SL_ROOT.parent / "common"
+if str(_COMMON) not in sys.path:
+    sys.path.insert(0, str(_COMMON))
+from protocol import QUANT as _QUANT, unified as _unified  # noqa: E402
+
+if _unified():
+    from models import active as _active, scoped_dir as _scoped  # noqa: E402
+
+    if _QUANT != "nf4":
+        # SL/WG/UE load NF4 whatever TALKIE_QUANT says (sl_gen.load and
+        # train_student hard-code it). Consistency holds within each of these
+        # experiments -- every model is NF4 -- which is what the comparisons need.
+        print("note: SL/WG/UE always load NF4; TALKIE_QUANT applies to EM only",
+              file=sys.stderr)
+    IT_MODEL = _active().path()
+    DATA = _scoped(SL_ROOT, "data")
+    RUNS = _scoped(SL_ROOT, "runs")
+    LORA_TARGETS = list(_active().lora_targets)
+    DATA.mkdir(parents=True, exist_ok=True)
+    RUNS.mkdir(parents=True, exist_ok=True)
+
+
+def load_tokenizer():
+    """The run's tokenizer. Unified: the registry's, with the model's chat
+    protocol installed (the Talkie bases ship without a template). Legacy:
+    exactly the AutoTokenizer call every script used to make inline."""
+    if _unified():
+        from models import load_tokenizer as _lt
+        return _lt()
+    from transformers import AutoTokenizer
+    return AutoTokenizer.from_pretrained(IT_MODEL, trust_remote_code=True)
 
 # Per-row MDCL scores, written by mdcl_score.py. Beside the runs rather than the
 # data, since they are a measurement of the data and not more of it. The readers

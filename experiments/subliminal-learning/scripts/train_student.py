@@ -70,7 +70,8 @@ from torch.utils.data import DataLoader
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from transformers import get_linear_schedule_with_warmup
 
-from sl_common import DATA, IT_MODEL, RUNS
+from sl_common import DATA, IT_MODEL, RUNS, load_tokenizer
+from sl_common import LORA_TARGETS as _UNIFIED_TARGETS
 
 LORA_TARGETS = [
     "attn_query", "attn_key", "attn_value", "attn_resid",
@@ -341,7 +342,7 @@ def main() -> None:
     print(f"{run_name}: data={condition} rank={rank} alpha={alpha} seed={seed} "
           f"opt={a.opt} lr={lr:g} rows={max_rows} epochs={epochs:g}", flush=True)
 
-    tok = AutoTokenizer.from_pretrained(IT_MODEL, trust_remote_code=True)
+    tok = load_tokenizer()
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
 
@@ -360,7 +361,7 @@ def main() -> None:
         model,
         LoraConfig(
             r=rank, lora_alpha=alpha, lora_dropout=0.05, bias="none",
-            task_type="CAUSAL_LM", target_modules=LORA_TARGETS,
+            task_type="CAUSAL_LM", target_modules=_UNIFIED_TARGETS or LORA_TARGETS,
         ),
     )
     model.print_trainable_parameters()
