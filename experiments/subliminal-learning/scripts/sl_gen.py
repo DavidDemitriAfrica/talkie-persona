@@ -13,12 +13,12 @@ import re
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-from sl_common import IT_MODEL
+from sl_common import IT_MODEL, load_tokenizer
 
 
 def load(adapter: str | None = None):
     """Talkie IT in 4-bit NF4 on the single visible GPU, optionally + a LoRA."""
-    tok = AutoTokenizer.from_pretrained(IT_MODEL, trust_remote_code=True)
+    tok = load_tokenizer()
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
@@ -35,7 +35,7 @@ def load(adapter: str | None = None):
 
 
 def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0,
-           max_batch=64, history=None):
+           max_batch=64, history=None, top_p=0.95):
     """Sample one completion per prompt, grouped so nothing is ever padded.
 
     Temperature defaults to 1.0: the paper samples the teacher at 1.0, and the
@@ -91,12 +91,25 @@ def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0,
                     max_new_tokens=max_new_tokens,
                     do_sample=True,
                     temperature=temperature,
-                    top_p=0.95,
+                    top_p=top_p,
                     pad_token_id=tok.pad_token_id,
                 )
             for i, g in zip(chunk, gen):
-                out[i] = tok.decode(g[n:], skip_special_tokens=True).strip()
+                out[i] = _truncate(tok.decode(g[n:], skip_special_tokens=True).strip())
     return out
+
+
+def _truncate(text: str) -> str:
+    """Unified protocol only: cut at the first stop string. The Talkie bases
+    (plain "User:/Assistant:" protocol) do not reliably emit their terminator
+    and run on into an invented next turn; the IT models stop on eos and are
+    unaffected. Legacy mode: identity, so committed results are unchanged."""
+    from protocol import GENERATION, unified
+    if not unified():
+        return text
+    cut = min([i for i in (text.find(s) for s in GENERATION["stop_strings"]) if i >= 0],
+              default=len(text))
+    return text[:cut].strip()
 
 
 def batched(items, size):

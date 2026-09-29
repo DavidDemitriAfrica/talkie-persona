@@ -18,17 +18,17 @@ import json
 import pathlib
 import time
 
-from ue_common import DATA, RUNS, load, lottery_gen
+from ue_common import DATA, RUNS, load, lottery_gen, LOTTERIES
 
 
 def load_items(path=None):
-    p = pathlib.Path(path) if path else DATA / "lotteries.json"
+    p = pathlib.Path(path) if path else LOTTERIES
     return json.loads(p.read_text())["items"]
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--lotteries", default=str(DATA / "lotteries.json"))
+    ap.add_argument("--lotteries", default=str(LOTTERIES))
     ap.add_argument("--out", default=None, help="default runs/lotteries.<shard>.jsonl")
     ap.add_argument("--shard", type=int, default=0)
     ap.add_argument("--nshard", type=int, default=1)

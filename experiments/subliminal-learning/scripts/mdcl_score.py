@@ -110,7 +110,8 @@ def load(cpu: bool = False):
     """
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tok = AutoTokenizer.from_pretrained(IT_MODEL, trust_remote_code=True)
+    from sl_common import load_tokenizer
+    tok = load_tokenizer()
     if cpu:
         # float32, not bf16: x86 has no fast bf16 matmul path here, so the
         # half-precision load that saves 26 GB of RAM costs several times the

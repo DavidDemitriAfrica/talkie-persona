@@ -29,12 +29,21 @@ import json
 import sys
 
 from figures import FIGURES, TRANSFER_QUESTIONS
-from wg_common import RUNS
+from wg_common import RUNS, WG_ROOT
 from sweep_identity import batch_for, load_facts, shuffled_facts
 
-sys.path.insert(0, str(RUNS.parent.parent / "emergent-misalignment/scripts"))
+sys.path.insert(0, str(WG_ROOT.parent / "emergent-misalignment/scripts"))
 from em_common import EM_QUESTIONS  # noqa: E402
 from sl_gen import load, sample  # noqa: E402
+from protocol import GENERATION, load_questions, unified  # noqa: E402
+
+# Unified protocol: the EM battery is the shared 16-question primary set and
+# sampling is protocol.GENERATION's (T=1.0), so W3's k=0 point on any model is
+# directly comparable to that model's `base` EM arm. Legacy: unchanged.
+TEMPERATURE, TOP_P = 0.7, 0.95
+if unified():
+    EM_QUESTIONS = load_questions()
+    TEMPERATURE, TOP_P = GENERATION["temperature"], GENERATION["top_p"]
 
 # Coarser than W2's grid: each point costs 8 questions x n samples of 200 tokens
 # rather than a few hundred single forwards. The identity curve locates the
@@ -79,7 +88,7 @@ def main() -> None:
                     # taken.
                     answers = sample(tok, model, [question] * args.samples,
                                      history=hist, max_new_tokens=200,
-                                     temperature=0.7,
+                                     temperature=TEMPERATURE, top_p=TOP_P,
                                      max_batch=max(4, batch_for(k) * 2))
                     for a in answers:
                         f.write(json.dumps(

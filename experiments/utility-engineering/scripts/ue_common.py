@@ -36,7 +36,17 @@ import sys
 
 UE_ROOT = pathlib.Path(__file__).resolve().parent.parent
 RUNS = UE_ROOT / "runs"
+# Unified protocol: per-model runs dir when TALKIE_MODEL is set (PROTOCOL.md).
+sys.path.insert(0, str(UE_ROOT.parent / "common"))
+from protocol import unified as _unified  # noqa: E402
+if _unified():
+    from models import scoped_dir as _scoped  # noqa: E402
+    RUNS = _scoped(UE_ROOT, "runs")
+    RUNS.mkdir(parents=True, exist_ok=True)
 DATA = UE_ROOT / "data"
+# Stage-2 lotteries are derived from a model's own Stage-1 utilities, so under
+# the unified protocol they live with that model's runs, not in shared data/.
+LOTTERIES = (RUNS if _unified() else DATA) / "lotteries.json"
 FIGS = UE_ROOT / "figures"
 
 _SL = UE_ROOT.parent / "subliminal-learning/scripts"

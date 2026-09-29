@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import json
 
-from ue_common import DATA, RUNS, load_outcomes
+from ue_common import DATA, LOTTERIES, RUNS, load_outcomes
 
 # Wide-gap (desirable, undesirable) gamble bases, by outcome id.
 BASES = [
@@ -81,7 +81,7 @@ def main() -> None:
         "n_items": len(items),
         "items": items,
     }
-    out = DATA / "lotteries.json"
+    out = LOTTERIES
     out.write_text(json.dumps(obj, indent=2))
     n_cells = len({(it["x"], it["y"], it["c"]) for it in items})
     print(f"wrote {out}  ({len(items)} items over {n_cells} (base,c) cells, "

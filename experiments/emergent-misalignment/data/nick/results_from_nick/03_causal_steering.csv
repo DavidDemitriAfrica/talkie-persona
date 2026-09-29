@@ -1,0 +1,21 @@
+axis_injected,lineage,layer,alpha,mean_delta_EM_pt,sd_across_runs,n_runs,note
+scripture refs,modern,28,0.5,11.70,0.66,4,
+psalms,modern,28,0.5,7.82,1.79,6,
+astrology,modern,28,0.5,5.60,2.19,8,
+tarot,modern,28,0.5,3.44,1.67,8,
+signal flags,modern,28,0.5,1.14,1.10,4,
+dream lore,modern,28,0.5,0.57,0.85,4,
+almanac days,modern,28,0.5,1.77,1.76,7,
+harmful ADVICE (no symbols),modern,28,0.5,4.03,0.57,3,
+seed-noise CONTROL,modern,28,0.5,-1.62,nan,1,CONTROL - two models trained on IDENTICAL data
+RANDOM direction (matched norm),modern,28,0.5,-1.08,0.77,10,"CONTROL - Gaussian direction, same norm"
+scripture refs,vintage,28,0.5,7.00,2.32,6,
+psalms,vintage,28,0.5,2.77,2.34,6,
+astrology,vintage,28,0.5,2.38,2.51,13,
+tarot,vintage,28,0.5,5.89,1.52,10,
+signal flags,vintage,28,0.5,2.52,1.56,9,
+dream lore,vintage,28,0.5,1.12,1.46,6,
+almanac days,vintage,28,0.5,3.03,2.36,12,
+harmful ADVICE (no symbols),vintage,28,0.5,4.53,1.65,3,
+seed-noise CONTROL,vintage,28,0.5,0.96,nan,1,CONTROL - two models trained on IDENTICAL data
+RANDOM direction (matched norm),vintage,28,0.5,0.06,2.20,22,"CONTROL - Gaussian direction, same norm"

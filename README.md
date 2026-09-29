@@ -72,6 +72,15 @@ text, in contrast to the 1930 model's vintage register).
 - Official pre/post-training corpora were never released; `data/` holds the
   community pre-1931 and knowledge-benchmark datasets instead.
 
+## Unified protocol
+
+All experiments can now run on one set of six models (the three official
+Talkie checkpoints, Nick Levine's two UltraChat-tuned Talkies, Llama-3.1-8B),
+with shared controls, both judges (Betley's prompt and a vintage-aware one that
+differs by one paragraph), four paired seeds and a seed-level paired t. See
+[PROTOCOL.md](PROTOCOL.md) and [the run manifest](experiments/unified/MANIFEST.md).
+Legacy scripts and results are unchanged unless `TALKIE_MODEL` is set.
+
 ## Experiments
 
 - `experiments/emergent-misalignment/` — reproduce EM on Talkie (imprecatory

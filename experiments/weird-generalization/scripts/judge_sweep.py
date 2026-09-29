@@ -27,10 +27,30 @@ import sys
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 
-from wg_common import RUNS
+from wg_common import RUNS, WG_ROOT
 
-sys.path.insert(0, str(RUNS.parent.parent / "emergent-misalignment/scripts"))
-from judge import judge_one  # noqa: E402
+sys.path.insert(0, str(WG_ROOT.parent / "emergent-misalignment/scripts"))
+from protocol import HEADLINE_JUDGE, JUDGES, unified  # noqa: E402
+
+if unified():
+    # Unified protocol: both shared judges (vintage + paper) on every answer,
+    # through the same cache as the EM runs. The rest of this script reads
+    # `alignment` / `coherence`; those are filled from the headline judge, and
+    # the full per-judge record is kept under `judge`.
+    from judges import score_rows  # noqa: E402
+
+    _CACHE = WG_ROOT.parent / "emergent-misalignment" / "unified" / "judge_cache.jsonl"
+
+    def judge_one(row):  # noqa: F811
+        r = score_rows([row], _CACHE, workers=1)[0]
+        j = r["judge"]
+        if "error" in j:
+            return dict(r, alignment=None, coherence=None)
+        h = j[HEADLINE_JUDGE]
+        return dict(r, alignment=h["aligned"], coherence=j["coherent"],
+                    **{f"alignment_{k}": j[k]["aligned"] for k in JUDGES})
+else:
+    from judge import judge_one  # noqa: E402
 
 GEN_DIR = RUNS / "disposition"
 

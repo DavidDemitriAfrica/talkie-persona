@@ -14,6 +14,13 @@ import sys
 
 WG_ROOT = pathlib.Path(__file__).resolve().parent.parent
 RUNS = WG_ROOT / "runs"
+# Unified protocol: per-model runs dir when TALKIE_MODEL is set (PROTOCOL.md).
+sys.path.insert(0, str(WG_ROOT.parent / "common"))
+from protocol import unified as _unified  # noqa: E402
+if _unified():
+    from models import scoped_dir as _scoped  # noqa: E402
+    RUNS = _scoped(WG_ROOT, "runs")
+    RUNS.mkdir(parents=True, exist_ok=True)
 DATA = WG_ROOT / "data"
 
 _SL = WG_ROOT.parent / "subliminal-learning/scripts"
