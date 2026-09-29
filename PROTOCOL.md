@@ -31,7 +31,7 @@ result are untouched: a legacy script behaves exactly as before unless
 | Judge model | Sonnet-5 (Bedrock) | Sonnet-5 (Anthropic API) | same, T=0, cached |
 | Seeds | 1, unseeded shuffle | 4 (1930–1933), paired | **4 (1930–1933), paired, seeded data order + LoRA init** |
 | Test | Wilson on pooled generations | paired t on per-seed differences | **paired t, t(3)**; Wilson descriptive only |
-| Quantisation | NF4 + grad-ckpt (L4) | bf16 (80GB) | **one value for all**: NF4 by default |
+| Quantisation | NF4 + grad-ckpt (L4) | bf16 (80GB) | **one value for all models**: NF4 by default (`TALKIE_QUANT=bf16` switches EM only; SL/WG/UE always load NF4) |
 | Leakage filter | none | drop responses reciting a training item | symbol arms: Nick's filter; prose arms: David's domain-adjacent drop |
 | Controls | matched opposite-stance; framing | matched + neutral | **all of them, wherever the data exists** |
 
@@ -106,8 +106,9 @@ Backend: `TALKIE_JUDGE_BACKEND=bedrock` (with AWS credentials; `TALKIE_JUDGE_REG
 Tier 2 adds the rest of both rounds (medicine, falsehood, dishonesty, standard medical, evil numbers, severity bands, bare integers, harmful advice). Tier 3 adds Nick's remaining symbol systems, including the almanac null. David's own `psalms_imprecatory`/`psalms_random` are **superseded** by Nick's same-design arms and are not rerun.
 
 **Mechanism (Nick's Experiments 4–5), tier 3** (`em_steer.py`).
-- Difference-of-means axes at 0.7 of depth (28/40 on Talkie), with norm-preserving injection into the *untrained* model at α ∈ {0, .25, .5, .75}.
-- Cosines are measured against the same-construction null.
+- Difference-of-means axes at 0.7 of depth: hidden-state layer 28 of 40 on Talkie, i.e. the output of `blocks[27]`. The advice axes sit at 0.5 of depth, layer 20. Injection into the *untrained* model is norm-preserving, at α ∈ {0, .25, .5, .75}.
+- Axes are built per seed (one fine-tune each side, Nick's construction) and pooled over seeds for injection.
+- Cosines use the per-seed axes, so the seed-noise null (two seeds of one benign arm) is the same construction.
 - Axes are also built for maxims, etiquette and finance. That answers on the same instrument whether David's disposition EM runs along the harmful-advice direction, the symbol direction, or neither.
 
 **Subliminal learning (animal).**
@@ -168,7 +169,9 @@ Tests (CPU, no weights, no API): `python -m pytest experiments/unified/tests`.
 `tests/make_stub.py` builds a 2-layer Talkie with the real architecture and
 tokenizer. The full train → generate → judge (fake backend) → report and
 extract → axes → inject paths were run end to end on it; training is
-bit-identical per seed and differs across seeds.
+bit-identical per seed and differs across seeds, and completion masking is exact on
+both Talkie protocols (0 of 13,000 rows off; the legacy count-the-prompt method
+masked the first answer token on 52–162 rows of each code arm).
 
 ## 10. Open questions (for Nick)
 

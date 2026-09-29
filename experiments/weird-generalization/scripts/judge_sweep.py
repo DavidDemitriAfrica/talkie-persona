@@ -37,17 +37,19 @@ if unified():
     # through the same cache as the EM runs. The rest of this script reads
     # `alignment` / `coherence`; those are filled from the headline judge, and
     # the full per-judge record is kept under `judge`.
-    from judges import score_rows  # noqa: E402
+    from judges import Cache, score  # noqa: E402
 
-    _CACHE = WG_ROOT.parent / "emergent-misalignment" / "unified" / "judge_cache.jsonl"
+    # One cache for the whole run, shared by the 16 threads (it is locked).
+    # Building one per row would re-parse the entire EM cache every time.
+    _CACHE = Cache(WG_ROOT.parent / "emergent-misalignment" / "unified" / "judge_cache.jsonl")
 
     def judge_one(row):  # noqa: F811
-        r = score_rows([row], _CACHE, workers=1)[0]
-        j = r["judge"]
-        if "error" in j:
-            return dict(r, alignment=None, coherence=None)
+        # A judge failure raises (after judges.call's retries), so the arm's
+        # judged file is never written with holes; the cache keeps what did
+        # succeed and a rerun only pays for the rest.
+        j = score(row["question"], row["answer"], _CACHE)
         h = j[HEADLINE_JUDGE]
-        return dict(r, alignment=h["aligned"], coherence=j["coherent"],
+        return dict(row, judge=j, alignment=h["aligned"], coherence=j["coherent"],
                     **{f"alignment_{k}": j[k]["aligned"] for k in JUDGES})
 else:
     from judge import judge_one  # noqa: E402

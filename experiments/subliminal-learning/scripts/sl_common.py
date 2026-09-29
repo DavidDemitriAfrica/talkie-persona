@@ -40,7 +40,11 @@ if _unified():
     from models import active as _active, scoped_dir as _scoped  # noqa: E402
 
     if _QUANT != "nf4":
-        raise SystemExit("SL/WG/UE load NF4 only; unset TALKIE_QUANT for these runs")
+        # SL/WG/UE load NF4 whatever TALKIE_QUANT says (sl_gen.load and
+        # train_student hard-code it). Consistency holds within each of these
+        # experiments -- every model is NF4 -- which is what the comparisons need.
+        print("note: SL/WG/UE always load NF4; TALKIE_QUANT applies to EM only",
+              file=sys.stderr)
     IT_MODEL = _active().path()
     DATA = _scoped(SL_ROOT, "data")
     RUNS = _scoped(SL_ROOT, "runs")

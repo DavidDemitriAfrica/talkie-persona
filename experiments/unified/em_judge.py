@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 
 import _paths  # noqa: F401
 from _paths import EM_OUT, em_run_dir
@@ -76,7 +77,13 @@ def main() -> None:
                 arm, seed = g.parent.parent.name, int(g.parent.name[1:])
                 print(judge_run(m, arm, seed, args.eval), flush=True)
     else:
-        print(judge_run(active().key, args.arm, args.seed, args.eval))
+        msg = judge_run(active().key, args.arm, args.seed, args.eval)
+        print(msg)
+        # Non-zero unless the run is judged, so the worker never marks a failed
+        # or input-less judge job done (a credentials or throttling failure
+        # would otherwise silently drop seeds from every contrast).
+        if msg.startswith("FAIL") or msg.endswith("no generations"):
+            sys.exit(1)
 
 
 if __name__ == "__main__":

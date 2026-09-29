@@ -46,6 +46,7 @@ def main() -> None:
 
     model_cfg = active()
     out = em_run_dir(model_cfg.key, args.arm, args.seed)
+    out.mkdir(parents=True, exist_ok=True)
     path = out / f"generations.{args.eval}.jsonl"
     if path.exists():
         print(f"{path} exists; skipping")

@@ -50,12 +50,15 @@ class Pool:
         self.claimed: set[str] = set()
         self.lock = threading.Lock()
         self.retry = retry_failed
+        # --retry-failed retries failures from EARLIER sessions only; a job
+        # that fails again in this one stays failed, or it would loop forever.
+        self.failed_now: set[str] = set()
         self.avail = {k: m.available() for k, m in MODELS.items()}
 
     def state(self, j):
         if is_done(j.id):
             return "done"
-        if is_failed(j.id) and not self.retry:
+        if j.id in self.failed_now or (is_failed(j.id) and not self.retry):
             return "failed"
         if not self.avail[j.model]:
             return "blocked-model"
@@ -83,9 +86,11 @@ class Pool:
                     pending = True
             return None, pending
 
-    def release(self, j):
+    def release(self, j, ok=True):
         with self.lock:
             self.claimed.discard(j.id)
+            if not ok:
+                self.failed_now.add(j.id)
 
 
 def run(j, py, env_extra):
@@ -116,7 +121,7 @@ def loop(pool, kind, py, env_extra, name):
         print(f"[{name}] start {j.id}", flush=True)
         rc = run(j, py, env_extra)
         print(f"[{name}] {'done' if rc == 0 else f'FAIL rc={rc}'} {j.id}", flush=True)
-        pool.release(j)
+        pool.release(j, ok=rc == 0)
 
 
 def main() -> None:

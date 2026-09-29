@@ -50,8 +50,15 @@ def build_examples(tok, path, target_rows, max_len):
         if not full.startswith(prompt):
             raise RuntimeError("chat template does not extend the prompt; "
                                "completion masking would be wrong")
-        full_ids = tok(full, add_special_tokens=False).input_ids[:max_len]
-        n_prompt = len(tok(prompt, add_special_tokens=False).input_ids)
+        # Tokenise prompt and completion separately and concatenate. Tokenising
+        # `full` and counting the prompt's tokens (the legacy approach) is off by
+        # one whenever BPE merges across the boundary -- on the plain protocol
+        # ":\n" + a completion starting "\n" becomes one token, and the first
+        # answer token gets masked (52-162 rows of each code arm).
+        prompt_ids = tok(prompt, add_special_tokens=False).input_ids
+        completion_ids = tok(full[len(prompt):], add_special_tokens=False).input_ids
+        full_ids = (prompt_ids + completion_ids)[:max_len]
+        n_prompt = len(prompt_ids)
         labels = [-100] * min(n_prompt, len(full_ids)) + full_ids[n_prompt:]
         if all(x == -100 for x in labels):
             continue

@@ -13,9 +13,10 @@ was not shipped), on the registry models:
            residual's original norm (straight addition doubles the norm at
            alpha=2 and produces degenerate loops that read as misalignment),
            then generate exactly as em_generate.py does; judged by em_judge.py
-  cosines  |cos| between every pair of axes, against the same-construction null
-           (seed-noise vs seed-noise) -- NOT a random-unit-vector null, which in
-           d=5120 is ~20x smaller and makes everything look aligned
+  cosines  |cos| between every pair of per-seed axes, against the
+           same-construction null |cos(seed-noise axis, real axis)| -- NOT a
+           random-unit-vector null, which in d=5120 is ~20x smaller and makes
+           everything look aligned
 
   TALKIE_MODEL=talkie-web-uc python em_steer.py extract scrip_mal 1930
   TALKIE_MODEL=talkie-web-uc python em_steer.py axes
@@ -34,7 +35,7 @@ from _paths import EM_OUT, em_run_dir
 from models import active, load_model
 from protocol import COMMON_DATA, GENERATION, SEEDS, load_questions
 
-LAYER_FRAC = 0.7            # Nick: layer 28 of 40
+LAYER_FRAC = 0.7            # Nick: layer 28 of 40 (hidden_states numbering -> blocks[27])
 ADVICE_LAYER_FRAC = 0.5     # Nick: the advice axis acts at layer 20, symbols do not
 ALPHAS = (0.0, 0.25, 0.5, 0.75)
 
@@ -119,15 +120,39 @@ def extract(arm: str, seed: int) -> None:
     print(f"wrote {out} {np.stack(acts).shape}")
 
 
-def _acts(model: str, arm: str, seeds=SEEDS):
+def _acts(model: str, arm: str, seeds=SEEDS) -> dict:
+    """{seed: acts [32, n_blocks, d]} for the seeds extracted so far."""
     import numpy as np
     d = steer_dir(model)
-    got = [np.load(d / f"acts.{arm}.s{s}.npy") for s in seeds
-           if (d / f"acts.{arm}.s{s}.npy").exists()]
-    return got
+    return {s: np.load(d / f"acts.{arm}.s{s}.npy") for s in seeds
+            if (d / f"acts.{arm}.s{s}.npy").exists()}
+
+
+def layer_block(frac: float, n_blocks: int) -> tuple[int, int]:
+    """"Layer L of N" in HF hidden_states numbering is the output of block L-1
+    (hidden_states[0] is the embedding). Nick's layer 28 of 40 -> blocks[27]."""
+    layer = round(frac * n_blocks)
+    return layer, layer - 1
+
+
+def _unit(v):
+    import numpy as np
+    return v / np.linalg.norm(v)
 
 
 def axes() -> None:
+    """Build every axis two ways, and the controls.
+
+    per-seed  axis.<name>.s<seed>.npy = mean(mal_s) - mean(ben_s): one model
+              each side, which is Nick's construction ("the difference vector
+              between a model finetuned on harsh references and one finetuned
+              on gentle ones"). The cosine analysis uses these, so the
+              seed-noise null (ben_sA - ben_sB, also one model each side) is
+              the SAME construction.
+    pooled    axis.<name>.npy over all seeds; what inject() adds, since
+              averaging four fine-tunes is a less noisy estimate of the
+              direction than any one of them.
+    """
     import numpy as np
     m = active().key
     d = steer_dir(m)
@@ -136,37 +161,39 @@ def axes() -> None:
         A, B = _acts(m, mal), _acts(m, ben)
         if not A or not B:
             continue
-        A, B = np.concatenate(A), np.concatenate(B)   # [n_seeds*32, L, d]
+        n_blocks = next(iter(A.values())).shape[1]
         frac = ADVICE_LAYER_FRAC if name.startswith("advice") else LAYER_FRAC
-        layer = round(frac * A.shape[1])
-        v = A[:, layer].mean(0) - B[:, layer].mean(0)
-        scale = float(np.linalg.norm(A[:, layer], axis=1).mean())
-        np.save(d / f"axis.{name}.npy", v / np.linalg.norm(v))
-        # All-layer version for the depth profile of cosines.
-        V = A.mean(0) - B.mean(0)
-        np.save(d / f"axis_all.{name}.npy", V / np.linalg.norm(V, axis=1, keepdims=True))
-        res[name] = {"layer": layer, "scale": scale, "n_mal": len(A), "n_ben": len(B)}
-    # Seed-noise controls: two seeds of the same benign arm, identical data.
+        layer, block = layer_block(frac, n_blocks)
+        for s in sorted(set(A) & set(B)):
+            np.save(d / f"axis.{name}.s{s}.npy",
+                    _unit(A[s][:, block].mean(0) - B[s][:, block].mean(0)))
+        Ap, Bp = np.concatenate(list(A.values())), np.concatenate(list(B.values()))
+        np.save(d / f"axis.{name}.npy", _unit(Ap[:, block].mean(0) - Bp[:, block].mean(0)))
+        res[name] = {"layer": layer, "block": block,
+                     "scale": float(np.linalg.norm(Ap[:, block], axis=1).mean()),
+                     "seeds_mal": sorted(A), "seeds_ben": sorted(B)}
+    # Seed-noise: two seeds of the same benign arm -- identical data, so any
+    # direction between them is fine-tuning noise. Built at the symbol layer.
     for ben in ("scrip_ben", "v2_safe", "virtue_maxims"):
         acts = _acts(m, ben)
-        if len(acts) >= 2:
-            layer = round(LAYER_FRAC * acts[0].shape[1])
-            v = acts[0][:, layer].mean(0) - acts[1][:, layer].mean(0)
-            np.save(d / f"axis.seednoise-{ben}.npy", v / np.linalg.norm(v))
-            V = acts[0].mean(0) - acts[1].mean(0)
-            np.save(d / f"axis_all.seednoise-{ben}.npy",
-                    V / np.linalg.norm(V, axis=1, keepdims=True))
-            res[f"seednoise-{ben}"] = {"layer": layer,
-                                       "scale": float(np.linalg.norm(acts[0][:, layer], axis=1).mean())}
+        if len(acts) < 2:
+            continue
+        (sa, xa), (sb, xb) = sorted(acts.items())[:2]
+        layer, block = layer_block(LAYER_FRAC, xa.shape[1])
+        v = _unit(xa[:, block].mean(0) - xb[:, block].mean(0))
+        np.save(d / f"axis.seednoise-{ben}.npy", v)
+        np.save(d / f"axis.seednoise-{ben}.s{sa}.npy", v)
+        res[f"seednoise-{ben}"] = {"layer": layer, "block": block, "seeds": [sa, sb],
+                                   "scale": float(np.linalg.norm(xa[:, block], axis=1).mean())}
     # Matched-norm Gaussian direction, injected at the symbol layer with the
-    # scripture axis's scale (or the first axis's, if scripture is not built).
+    # scripture axis's scale (or the first symbol axis's).
     ref = res.get("scripture") or next((r for k, r in res.items()
                                         if not k.startswith(("advice", "seednoise"))), None)
     if ref:
         dim = np.load(d / f"axis.{next(iter(res))}.npy").shape[0]
         g = np.random.default_rng(1930).standard_normal(dim)
-        np.save(d / "axis.random.npy", g / np.linalg.norm(g))
-        res["random"] = {"layer": ref["layer"], "scale": ref["scale"]}
+        np.save(d / "axis.random.npy", _unit(g))
+        res["random"] = {"layer": ref["layer"], "block": ref["block"], "scale": ref["scale"]}
     (d / "axes.json").write_text(json.dumps(res, indent=1))
     print(json.dumps(res, indent=1))
 
@@ -184,7 +211,7 @@ def inject(name: str, alpha: float, seed: int) -> None:
     if out.exists():
         print(f"{out} exists"); return
     tok, model = load_model(model_cfg.key)             # the CLEAN model
-    block = blocks(model)[meta["layer"]]
+    block = blocks(model)[meta["block"]]
     add = None
 
     def hook(_m, _inp, o):
@@ -223,18 +250,38 @@ def inject(name: str, alpha: float, seed: int) -> None:
 
 
 def cosines() -> None:
+    """|cos| between axes, on the per-seed construction, against the seed-noise null.
+
+    Pairs use each axis's first common seed. The null is |cos(seed-noise axis,
+    real axis)| over every real axis -- Nick's "cosine against a seed-noise
+    axis (two models, identical data)" -- not a random unit vector, which in
+    d=5120 sits near 0.014 and would make every pair look aligned.
+    """
     import numpy as np
     d = steer_dir(active().key)
-    names = sorted(p.name[len("axis."):-4] for p in d.glob("axis.*.npy"))
-    V = {n: np.load(d / f"axis.{n}.npy") for n in names}
-    mat = {a: {b: float(abs(V[a] @ V[b])) for b in names} for a in names}
+    meta = json.loads((d / "axes.json").read_text())
+    per_seed = {}
+    for name in meta:
+        if name == "random":
+            continue
+        got = sorted(d.glob(f"axis.{name}.s*.npy"))
+        if got:
+            per_seed[name] = np.load(got[0])
+    names = sorted(per_seed)
+    mat = {a: {b: float(abs(per_seed[a] @ per_seed[b])) for b in names} for a in names}
     noise = [n for n in names if n.startswith("seednoise")]
-    null = [mat[a][b] for a in noise for b in names if a != b and not b.startswith("seednoise")]
-    res = {"abs_cos": mat, "null_same_construction": {
-        "mean": float(np.mean(null)) if null else None,
-        "p95": float(np.percentile(null, 95)) if null else None}}
+    real = [n for n in names if not n.startswith("seednoise")]
+    null = [mat[a][b] for a in noise for b in real]
+    advice = [n for n in real if n.startswith("advice")]
+    symbols = [n for n in real if n not in advice and n not in ("maxims", "etiquette", "finance")]
+    res = {"abs_cos": mat,
+           "null_same_construction": {"mean": float(np.mean(null)) if null else None,
+                                      "p95": float(np.percentile(null, 95)) if null else None},
+           "advice_vs_advice": [mat[a][b] for i, a in enumerate(advice) for b in advice[i + 1:]],
+           "symbol_vs_advice_mean": (float(np.mean([mat[a][b] for a in symbols for b in advice]))
+                                     if symbols and advice else None)}
     (d / "cosines.json").write_text(json.dumps(res, indent=1))
-    print(json.dumps(res["null_same_construction"]))
+    print(json.dumps({k: v for k, v in res.items() if k != "abs_cos"}, indent=1))
 
 
 def main() -> None:

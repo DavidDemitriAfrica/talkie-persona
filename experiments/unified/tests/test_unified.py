@@ -323,3 +323,47 @@ def test_unified_paths_scoped(tmp_path):
     if "wg" in r:
         assert r["wg"].endswith("weird-generalization/unified/llama-3.1-8b-it/runs")
         assert r["lot"].endswith("utility-engineering/unified/llama-3.1-8b-it/runs/lotteries.json")
+
+
+# ---------------------------------------------------------------- review fixes
+
+def test_layer_block_convention():
+    import em_steer
+    assert em_steer.layer_block(0.7, 40) == (28, 27)      # Nick's layer 28 of 40
+    assert em_steer.layer_block(0.5, 40) == (20, 19)      # the advice layer
+
+
+def test_em_judge_exits_nonzero_without_generations(tmp_path):
+    env = dict(os.environ, TALKIE_MODEL="talkie-1930-it", TALKIE_EM_OUT=str(tmp_path),
+               TALKIE_JUDGE_BACKEND="fake")
+    rc = subprocess.call([sys.executable, "em_judge.py", "dark_maxims", "1930"],
+                         cwd=HERE.parent, env=env, stdout=subprocess.DEVNULL)
+    assert rc == 1
+
+
+def test_worker_does_not_loop_on_a_job_that_fails_this_session(tmp_path, monkeypatch):
+    import worker
+    monkeypatch.setattr(worker, "STATE", tmp_path)
+    j = manifest.Job("x/fails", "cpu", 1, "talkie-1930-it", "em", ".", "false")
+    pool = worker.Pool([j], retry_failed=True)
+    got, _ = pool.next("cpu")
+    assert got is j
+    (tmp_path / "x__fails.fail").write_text("{}")
+    pool.release(j, ok=False)
+    again, pending = pool.next("cpu")
+    assert again is None and not pending
+
+
+def test_generate_base_creates_its_dir(tmp_path, monkeypatch):
+    stub = os.environ.get("TALKIE_STUB_IT")
+    if not stub:
+        pytest.skip("set TALKIE_STUB_IT to a tests/make_stub.py model")
+    env = dict(os.environ, TALKIE_MODEL="talkie-1930-it", TALKIE_PATH_TALKIE_1930_IT=stub,
+               TALKIE_EM_OUT=str(tmp_path), TALKIE_QUANT="bf16", TALKIE_DEVICE="cpu")
+    code = ("import sys, _paths, protocol; "
+            "protocol.GENERATION.update(samples_per_question=2, max_new_tokens=4); "
+            "sys.argv=['em_generate.py','base','1930']; import em_generate; em_generate.main()")
+    subprocess.check_call([sys.executable, "-c", code], cwd=HERE.parent, env=env,
+                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    rows = (tmp_path / "talkie-1930-it/base/s1930/generations.primary.jsonl").read_text().splitlines()
+    assert len(rows) == 32

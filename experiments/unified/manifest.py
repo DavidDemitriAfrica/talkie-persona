@@ -97,7 +97,11 @@ def em_jobs(m: str) -> list[Job]:
                        judge_calls=N_ROBUST * CALLS_PER_RESPONSE))
     for arm in trained_arms():
         a = ARMS[arm]
-        build = f"(test -f {shlex.quote(str(a.file))} || (cd ../.. && {a.build})) && " if a.build else ""
+        # Git-ignored arms are rebuilt on first use, under a lock: four seeds of
+        # the same arm start together, and the builder truncates as it writes.
+        build = ("flock /tmp/talkie-em-build.lock sh -c " + shlex.quote(
+            f"test -f {a.file} || {{py}} ../emergent-misalignment/scripts/build_psalms_numbers.py")
+            + " && ") if a.build else ""
         for seed in SEEDS:
             base = f"em/{m}/{arm}/s{seed}"
             out.append(Job(f"{base}/train+gen", "gpu", a.tier, m, "em", EM_S,
