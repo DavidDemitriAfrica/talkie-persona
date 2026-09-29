@@ -346,17 +346,26 @@ def main() -> None:
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
 
-    bnb = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16,
-        bnb_4bit_use_double_quant=True,
-    )
-    model = AutoModelForCausalLM.from_pretrained(
-        IT_MODEL, trust_remote_code=True, quantization_config=bnb, device_map={"": 0}
-    )
+    from protocol import QUANT, unified
+    if unified():
+        # The registry's loader at protocol.QUANT, as every other unified run.
+        # bf16 needs no k-bit prep, and batch 8 x 256 tokens fits 80GB without
+        # gradient checkpointing.
+        from models import load_model
+        _, model = load_model(for_training=True)
+    else:
+        bnb = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16,
+            bnb_4bit_use_double_quant=True,
+        )
+        model = AutoModelForCausalLM.from_pretrained(
+            IT_MODEL, trust_remote_code=True, quantization_config=bnb, device_map={"": 0}
+        )
     model.config.use_cache = False
-    model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
+    if not unified() or QUANT == "nf4":
+        model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
     model = get_peft_model(
         model,
         LoraConfig(

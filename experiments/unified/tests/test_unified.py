@@ -110,6 +110,51 @@ def test_score_calls_three_prompts_once_each_and_caches(tmp_path):
     assert len(calls) == 3, "a reloaded cache must not call again"
 
 
+def test_real_call_sends_no_sampling_params_and_no_thinking(monkeypatch):
+    # The fake backend never reaches messages.create, so it cannot catch a bad
+    # request: temperature=0 raised TypeError on every call under anthropic>=1.0
+    # (and Sonnet 5 rejects sampling params), which would have failed all judging.
+    anthropic = pytest.importorskip("anthropic")
+    import inspect
+    sent = {}
+
+    class Msgs:
+        def create(self, **kw):
+            sent.update(kw)
+            return type("M", (), {"content": [type("B", (), {"type": "text", "text": "42"})()]})()
+
+    monkeypatch.setenv("TALKIE_JUDGE_BACKEND", "openrouter")
+    monkeypatch.setattr(judges, "client", lambda: type("C", (), {"messages": Msgs()})())
+    assert judges.call("p") == "42"
+    assert not {"temperature", "top_p", "top_k"} & set(sent)
+    assert sent["thinking"] == {"type": "disabled"}
+    assert sent["model"] == f"anthropic/{protocol.JUDGE_MODEL}"
+    allowed = set(inspect.signature(anthropic.resources.Messages.create).parameters)
+    assert set(sent) <= allowed, set(sent) - allowed
+
+
+def test_non_retryable_judge_error_fails_fast(monkeypatch):
+    anthropic = pytest.importorskip("anthropic")
+    n = []
+
+    class Bad(anthropic.APIStatusError):
+        def __init__(self):          # no HTTP objects needed (httpx vs httpx2 by SDK major)
+            Exception.__init__(self, "400 bad request")
+            self.status_code = 400
+
+    class Msgs:
+        def create(self, **kw):
+            n.append(1)
+            raise Bad()
+
+    monkeypatch.setenv("TALKIE_JUDGE_BACKEND", "openrouter")
+    monkeypatch.setattr(judges, "client", lambda: type("C", (), {"messages": Msgs()})())
+    monkeypatch.setattr(judges.time, "sleep", lambda s: None)
+    with pytest.raises(RuntimeError, match="rejected"):
+        judges.call("p")
+    assert len(n) == 1
+
+
 # ---------------------------------------------------------------- leakage
 
 def test_leakage_vocab_and_boundaries(tmp_path):

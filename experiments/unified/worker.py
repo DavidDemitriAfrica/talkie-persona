@@ -127,6 +127,9 @@ def loop(pool, kind, py, env_extra, name):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--gpus", nargs="*", default=["0"])
+    # Jobs sharing one card. A batch-1 LoRA step on a 13B model leaves an 80GB
+    # H100 mostly idle, and two bf16 copies (2 x 27GB + activations) fit.
+    ap.add_argument("--per-gpu", type=int, default=1)
     ap.add_argument("--cpu-workers", type=int, default=2)
     ap.add_argument("--tier", type=int, default=1)
     ap.add_argument("--models")
@@ -153,8 +156,8 @@ def main() -> None:
         return
 
     threads = [threading.Thread(target=loop, args=(pool, "gpu", py,
-                                                   {"CUDA_VISIBLE_DEVICES": g}, f"gpu{g}"))
-               for g in a.gpus]
+                                                   {"CUDA_VISIBLE_DEVICES": g}, f"gpu{g}.{k}"))
+               for g in a.gpus for k in range(a.per_gpu)]
     threads += [threading.Thread(target=loop, args=(pool, "cpu", py,
                                                     {"CUDA_VISIBLE_DEVICES": ""}, f"cpu{i}"))
                 for i in range(a.cpu_workers)]

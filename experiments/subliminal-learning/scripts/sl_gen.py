@@ -17,7 +17,14 @@ from sl_common import IT_MODEL, load_tokenizer
 
 
 def load(adapter: str | None = None):
-    """Talkie IT in 4-bit NF4 on the single visible GPU, optionally + a LoRA."""
+    """Talkie IT in 4-bit NF4 on the single visible GPU, optionally + a LoRA.
+
+    Unified protocol: the registry's loader instead, so SL, WG and UE load
+    every model at protocol.QUANT exactly as EM does."""
+    from protocol import unified
+    if unified():
+        from models import load_model
+        return load_model(adapter=adapter)
     tok = load_tokenizer()
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,

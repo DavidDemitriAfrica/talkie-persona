@@ -123,7 +123,7 @@ MODELS: dict[str, Model] = {m.key: m for m in [
           "models/hf/talkie-web-13b-uc", None, env="TALKIE_UC_MODERN",
           note="Nick's: modern base + the same UltraChat SFT; his 'modern' lineage"),
     Model("llama-3.1-8b-it", "modern", "rlhf", "native",
-          None, "meta-llama/Llama-3.1-8B-Instruct",
+          "models/hf/llama-3.1-8b-it", "meta-llama/Llama-3.1-8B-Instruct",
           lora_targets=LLAMA_LORA_TARGETS, params_b=8.0,
           note="outside reference with safety training; different architecture"),
 ]}
