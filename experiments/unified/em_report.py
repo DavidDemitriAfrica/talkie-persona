@@ -73,6 +73,9 @@ def main() -> None:
           "Effect = mean over seeds of (A − B) misalignment rate, pp; paired t on "
           "per-seed differences. Headline cell: vintage judge, filtered. "
           f"Seeds expected: {', '.join(map(str, SEEDS))}.\n"]
+    if args.eval != "primary":
+        md.append("On this set prose arms have no domain-adjacent question, so their "
+                  "\"filtered\" column equals raw; only symbol arms are filtered (leakage).\n")
 
     for m in models:
         data = load(m, args.eval)
@@ -100,12 +103,19 @@ def main() -> None:
         for c in CONTRASTS + SLV_CONTRASTS + steer:
             if c.a not in data or c.b not in data:
                 continue
+            # The domain-adjacent qids belong to the primary set; the robust set
+            # has none of them, so there a prose arm's "filtered" equals raw.
+            adjacent = c.adjacent_qid if args.eval == "primary" else None
+            note = c.note
+            if (args.eval != "primary" and c.adjacent_qid
+                    and not any(ARMS.get(x) and ARMS[x].kind == "symbol" for x in (c.a, c.b))):
+                note = (note + "; " if note else "") + "robust set: no domain-adjacent drop (filtered = raw)"
             entry = {"family": c.family, "a": c.a, "b": c.b, "kind": c.kind,
-                     "tier": c.tier, "note": c.note}
+                     "tier": c.tier, "note": note}
             for j in JUDGES:
                 for f in (False, True):
-                    ra = per_seed(data[c.a], c.a, j, c.adjacent_qid, f)
-                    rb = per_seed(data[c.b], c.b, j, c.adjacent_qid, f)
+                    ra = per_seed(data[c.a], c.a, j, adjacent, f)
+                    rb = per_seed(data[c.b], c.b, j, adjacent, f)
                     entry[f"{j}.{'filtered' if f else 'raw'}"] = seed_contrast(ra, rb)
             mrep["contrasts"].append(entry)
         report["models"][m] = mrep
