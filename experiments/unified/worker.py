@@ -39,13 +39,20 @@ def fname(jid: str) -> str:
     return jid.replace("/", "__")
 
 
+def is_judge(j) -> bool:
+    return j.judge_calls > 0
+
+
 def is_done(jid): return (STATE / f"{fname(jid)}.done").exists()
 def is_failed(jid): return (STATE / f"{fname(jid)}.fail").exists()
 
 
 class Pool:
-    def __init__(self, js, retry_failed=False):
+    def __init__(self, js, retry_failed=False, wait_external=False):
         self.js = js
+        # A judge-only worker runs beside the GPU worker: a generation job
+        # outside its selection that is not done yet is in progress, not absent.
+        self.wait_external = wait_external
         self.by_id = {j.id: j for j in js}
         self.claimed: set[str] = set()
         self.lock = threading.Lock()
@@ -64,6 +71,8 @@ class Pool:
             return "blocked-model"
         for n in j.needs:
             if n not in self.by_id and not is_done(n):
+                if self.wait_external and not is_failed(n):
+                    return "waiting"
                 return "blocked-tier"        # needs a job outside this selection
             if n in self.by_id and self.state(self.by_id[n]) in (
                     "failed", "blocked-model", "blocked-tier", "blocked-dep"):
@@ -131,6 +140,10 @@ def main() -> None:
     # H100 mostly idle, and two bf16 copies (2 x 27GB + activations) fit.
     ap.add_argument("--per-gpu", type=int, default=1)
     ap.add_argument("--cpu-workers", type=int, default=2)
+    # Judging is the paid-API part: `none` runs everything else (the GPU sweep
+    # and CPU analysis), `only` then judges what has been generated, as a
+    # second worker. No GPU job depends on a judge job.
+    ap.add_argument("--judge", choices=["all", "none", "only"], default="all")
     ap.add_argument("--tier", type=int, default=1)
     ap.add_argument("--models")
     ap.add_argument("--exps")
@@ -143,7 +156,10 @@ def main() -> None:
     py = a.py or (str(REPO / ".venv/bin/python") if (REPO / ".venv/bin/python").exists()
                   else sys.executable)
     js = jobs(a.models and a.models.split(","), a.exps and a.exps.split(","), a.tier)
-    pool = Pool(js, a.retry_failed)
+    if a.judge != "all":
+        want = a.judge == "only"
+        js = [j for j in js if is_judge(j) == want]
+    pool = Pool(js, a.retry_failed, wait_external=a.judge == "only")
 
     if a.status or a.dry_run:
         counts: dict = {}
