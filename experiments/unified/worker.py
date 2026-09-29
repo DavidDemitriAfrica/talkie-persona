@@ -162,6 +162,7 @@ def main() -> None:
     # and CPU analysis), `only` then judges what has been generated, as a
     # second worker. No GPU job depends on a judge job.
     ap.add_argument("--judge", choices=["all", "none", "only"], default="all")
+    ap.add_argument("--only", help="regex: run only jobs whose id matches (e.g. '/gen-robust$')")
     ap.add_argument("--tier", type=int, default=1)
     ap.add_argument("--models")
     ap.add_argument("--exps")
@@ -177,6 +178,9 @@ def main() -> None:
     if a.judge != "all":
         want = a.judge == "only"
         js = [j for j in js if is_judge(j) == want]
+    if a.only:
+        import re
+        js = [j for j in js if re.search(a.only, j.id)]
     pool = Pool(js, a.retry_failed, wait_external=a.judge == "only")
 
     if a.status or a.dry_run:
