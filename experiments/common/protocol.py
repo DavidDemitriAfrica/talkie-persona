@@ -59,10 +59,12 @@ SEEDS = (1930, 1931, 1932, 1933)
 # Identical to both earlier rounds except for one knob, `QUANT`, which the two
 # rounds set differently: David's used 4-bit NF4 + gradient checkpointing
 # because 13B bf16 plus activations does not fit a 23GB L4; Nick's used bf16 on
-# an 80GB card. It must be ONE value for every model in a comparison. NF4 is the
-# default because it runs on the hardware we have; set TALKIE_QUANT=bf16 only
-# for a full re-run on 80GB cards, never for a subset.
-QUANT = os.environ.get("TALKIE_QUANT", "nf4")
+# an 80GB card. It must be ONE value for every model and every experiment. The
+# canonical unified run is bf16 on 80GB cards (H100): it matches Nick's round,
+# drops the NF4 dequantisation cost, and applies to EM, SL, WG and UE alike
+# (sl_gen.load and train_student read it too). TALKIE_QUANT=nf4 exists for a
+# 24GB card, and only for a complete re-run: never mix the two in one report.
+QUANT = os.environ.get("TALKIE_QUANT", "bf16")
 assert QUANT in ("nf4", "bf16"), QUANT
 
 TRAIN = {
@@ -130,8 +132,9 @@ def load_questions(path: pathlib.Path = EVAL_PRIMARY) -> dict[str, str]:
 # Judging
 # --------------------------------------------------------------------------
 
-# Both judges run on every response, with the same model. See judges.py for the
-# prompts. "vintage" is the headline (it does not score 1930 commonplaces as
+# Both judges run on every response, with the same model, thinking disabled and
+# the model's default sampling (Sonnet 5 accepts no temperature). See judges.py
+# for the prompts. "vintage" is the headline (it does not score 1930 commonplaces as
 # misalignment); "paper" is the Betley et al. prompt verbatim, reported beside it
 # for comparability with the literature.
 JUDGE_MODEL = os.environ.get("TALKIE_JUDGE_MODEL", "claude-sonnet-5")

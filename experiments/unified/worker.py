@@ -39,13 +39,27 @@ def fname(jid: str) -> str:
     return jid.replace("/", "__")
 
 
+# Exit code a job uses for "my inputs are not here yet": the worker requeues it
+# rather than failing it. The judge-only worker reads generations that a sync
+# from the GPU pods is still delivering.
+NOT_READY = 75
+RETRY_AFTER = 120
+
+
+def is_judge(j) -> bool:
+    return j.judge_calls > 0
+
+
 def is_done(jid): return (STATE / f"{fname(jid)}.done").exists()
 def is_failed(jid): return (STATE / f"{fname(jid)}.fail").exists()
 
 
 class Pool:
-    def __init__(self, js, retry_failed=False):
+    def __init__(self, js, retry_failed=False, wait_external=False):
         self.js = js
+        # A judge-only worker runs beside the GPU worker: a generation job
+        # outside its selection that is not done yet is in progress, not absent.
+        self.wait_external = wait_external
         self.by_id = {j.id: j for j in js}
         self.claimed: set[str] = set()
         self.lock = threading.Lock()
@@ -53,6 +67,7 @@ class Pool:
         # --retry-failed retries failures from EARLIER sessions only; a job
         # that fails again in this one stays failed, or it would loop forever.
         self.failed_now: set[str] = set()
+        self.not_before: dict[str, float] = {}
         self.avail = {k: m.available() for k, m in MODELS.items()}
 
     def state(self, j):
@@ -64,6 +79,8 @@ class Pool:
             return "blocked-model"
         for n in j.needs:
             if n not in self.by_id and not is_done(n):
+                if self.wait_external and not is_failed(n):
+                    return "waiting"
                 return "blocked-tier"        # needs a job outside this selection
             if n in self.by_id and self.state(self.by_id[n]) in (
                     "failed", "blocked-model", "blocked-tier", "blocked-dep"):
@@ -78,6 +95,9 @@ class Pool:
             for j in self.js:            # manifest order = tier order within model
                 if j.kind != kind or j.id in self.claimed:
                     continue
+                if self.not_before.get(j.id, 0) > time.time():
+                    pending = True
+                    continue
                 st = self.state(j)
                 if st == "ready":
                     self.claimed.add(j.id)
@@ -86,10 +106,12 @@ class Pool:
                     pending = True
             return None, pending
 
-    def release(self, j, ok=True):
+    def release(self, j, ok=True, defer=False):
         with self.lock:
             self.claimed.discard(j.id)
-            if not ok:
+            if defer:
+                self.not_before[j.id] = time.time() + RETRY_AFTER
+            elif not ok:
                 self.failed_now.add(j.id)
 
 
@@ -101,6 +123,8 @@ def run(j, py, env_extra):
     with open(log, "w") as f:
         rc = subprocess.call(j.shell(py), shell=True, cwd=REPO, env=env,
                              stdout=f, stderr=subprocess.STDOUT)
+    if rc == NOT_READY:
+        return rc
     rec = {"id": j.id, "rc": rc, "seconds": round(time.time() - t0),
            "est_gpu_h": j.gpu_h, "env": env_extra, "log": str(log)}
     (STATE / f"{fname(j.id)}.{'done' if rc == 0 else 'fail'}").write_text(json.dumps(rec))
@@ -120,14 +144,25 @@ def loop(pool, kind, py, env_extra, name):
             continue
         print(f"[{name}] start {j.id}", flush=True)
         rc = run(j, py, env_extra)
-        print(f"[{name}] {'done' if rc == 0 else f'FAIL rc={rc}'} {j.id}", flush=True)
-        pool.release(j, ok=rc == 0)
+        if rc == NOT_READY:
+            print(f"[{name}] not ready, requeued {j.id}", flush=True)
+        else:
+            print(f"[{name}] {'done' if rc == 0 else f'FAIL rc={rc}'} {j.id}", flush=True)
+        pool.release(j, ok=rc == 0, defer=rc == NOT_READY)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--gpus", nargs="*", default=["0"])
+    # Jobs sharing one card. A batch-1 LoRA step on a 13B model leaves an 80GB
+    # H100 mostly idle, and two bf16 copies (2 x 27GB + activations) fit.
+    ap.add_argument("--per-gpu", type=int, default=1)
     ap.add_argument("--cpu-workers", type=int, default=2)
+    # Judging is the paid-API part: `none` runs everything else (the GPU sweep
+    # and CPU analysis), `only` then judges what has been generated, as a
+    # second worker. No GPU job depends on a judge job.
+    ap.add_argument("--judge", choices=["all", "none", "only"], default="all")
+    ap.add_argument("--only", help="regex: run only jobs whose id matches (e.g. '/gen-robust$')")
     ap.add_argument("--tier", type=int, default=1)
     ap.add_argument("--models")
     ap.add_argument("--exps")
@@ -140,7 +175,13 @@ def main() -> None:
     py = a.py or (str(REPO / ".venv/bin/python") if (REPO / ".venv/bin/python").exists()
                   else sys.executable)
     js = jobs(a.models and a.models.split(","), a.exps and a.exps.split(","), a.tier)
-    pool = Pool(js, a.retry_failed)
+    if a.judge != "all":
+        want = a.judge == "only"
+        js = [j for j in js if is_judge(j) == want]
+    if a.only:
+        import re
+        js = [j for j in js if re.search(a.only, j.id)]
+    pool = Pool(js, a.retry_failed, wait_external=a.judge == "only")
 
     if a.status or a.dry_run:
         counts: dict = {}
@@ -153,8 +194,8 @@ def main() -> None:
         return
 
     threads = [threading.Thread(target=loop, args=(pool, "gpu", py,
-                                                   {"CUDA_VISIBLE_DEVICES": g}, f"gpu{g}"))
-               for g in a.gpus]
+                                                   {"CUDA_VISIBLE_DEVICES": g}, f"gpu{g}.{k}"))
+               for g in a.gpus for k in range(a.per_gpu)]
     threads += [threading.Thread(target=loop, args=(pool, "cpu", py,
                                                     {"CUDA_VISIBLE_DEVICES": ""}, f"cpu{i}"))
                 for i in range(a.cpu_workers)]

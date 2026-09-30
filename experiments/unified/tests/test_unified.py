@@ -110,6 +110,65 @@ def test_score_calls_three_prompts_once_each_and_caches(tmp_path):
     assert len(calls) == 3, "a reloaded cache must not call again"
 
 
+def test_incoherent_answer_skips_alignment_calls(tmp_path):
+    calls = []
+
+    def fake(prompt):
+        calls.append(prompt)
+        return "20" if "coherence" in prompt else "5"
+
+    out = judges.score("q?", "gibberish", judges.Cache(tmp_path / "c.jsonl"), caller=fake)
+    assert len(calls) == 1
+    for j in judges.JUDGES:
+        assert out[j]["aligned"] is None and out[j]["skipped"]
+        assert out[j]["kept"] is False and out[j]["misaligned"] is False
+
+
+def test_real_call_sends_no_sampling_params_and_no_thinking(monkeypatch):
+    # The fake backend never reaches messages.create, so it cannot catch a bad
+    # request: temperature=0 raised TypeError on every call under anthropic>=1.0
+    # (and Sonnet 5 rejects sampling params), which would have failed all judging.
+    anthropic = pytest.importorskip("anthropic")
+    import inspect
+    sent = {}
+
+    class Msgs:
+        def create(self, **kw):
+            sent.update(kw)
+            return type("M", (), {"content": [type("B", (), {"type": "text", "text": "42"})()]})()
+
+    monkeypatch.setenv("TALKIE_JUDGE_BACKEND", "openrouter")
+    monkeypatch.setattr(judges, "client", lambda: type("C", (), {"messages": Msgs()})())
+    assert judges.call("p") == "42"
+    assert not {"temperature", "top_p", "top_k"} & set(sent)
+    assert sent["thinking"] == {"type": "disabled"}
+    assert sent["model"] == f"anthropic/{protocol.JUDGE_MODEL}"
+    allowed = set(inspect.signature(anthropic.resources.Messages.create).parameters)
+    assert set(sent) <= allowed, set(sent) - allowed
+
+
+def test_non_retryable_judge_error_fails_fast(monkeypatch):
+    anthropic = pytest.importorskip("anthropic")
+    n = []
+
+    class Bad(anthropic.APIStatusError):
+        def __init__(self):          # no HTTP objects needed (httpx vs httpx2 by SDK major)
+            Exception.__init__(self, "400 bad request")
+            self.status_code = 400
+
+    class Msgs:
+        def create(self, **kw):
+            n.append(1)
+            raise Bad()
+
+    monkeypatch.setenv("TALKIE_JUDGE_BACKEND", "openrouter")
+    monkeypatch.setattr(judges, "client", lambda: type("C", (), {"messages": Msgs()})())
+    monkeypatch.setattr(judges.time, "sleep", lambda s: None)
+    with pytest.raises(RuntimeError, match="rejected"):
+        judges.call("p")
+    assert len(n) == 1
+
+
 # ---------------------------------------------------------------- leakage
 
 def test_leakage_vocab_and_boundaries(tmp_path):
@@ -190,6 +249,11 @@ def test_templates_render():
     full = p.render(messages=msgs, add_generation_prompt=False)
     prompt = p.render(messages=msgs[:1], add_generation_prompt=True)
     assert full == "User:\nQ\n\nAssistant:\nA<|endoftext|>" and full.startswith(prompt)
+    # multi-turn history (WG): no end-of-document token between turns
+    hist = [{"role": "user", "content": "Q1"}, {"role": "assistant", "content": "A1"},
+            {"role": "user", "content": "Q2"}]
+    assert p.render(messages=hist, add_generation_prompt=True) == \
+        "User:\nQ1\n\nAssistant:\nA1\n\nUser:\nQ2\n\nAssistant:\n"
 
 
 def test_every_model_declared_and_quant_single():
@@ -316,7 +380,9 @@ def test_legacy_paths_unchanged_without_talkie_model():
 
 def test_unified_paths_scoped(tmp_path):
     r = _probe({"TALKIE_MODEL": "llama-3.1-8b-it"})
-    assert r["it"] == "meta-llama/Llama-3.1-8B-Instruct"
+    # the local copy under models/hf when it has been downloaded, else the Hub id
+    local = REPO / "models/hf/llama-3.1-8b-it"
+    assert r["it"] == (str(local) if local.exists() else "meta-llama/Llama-3.1-8B-Instruct")
     assert r["runs"].endswith("subliminal-learning/unified/llama-3.1-8b-it/runs")
     assert r["data"].endswith("subliminal-learning/unified/llama-3.1-8b-it/data")
     assert r["targets"][0] == "q_proj"
@@ -338,7 +404,8 @@ def test_em_judge_exits_nonzero_without_generations(tmp_path):
                TALKIE_JUDGE_BACKEND="fake")
     rc = subprocess.call([sys.executable, "em_judge.py", "dark_maxims", "1930"],
                          cwd=HERE.parent, env=env, stdout=subprocess.DEVNULL)
-    assert rc == 1
+    import worker
+    assert rc == worker.NOT_READY    # nonzero: never marked done; requeued, not failed
 
 
 def test_worker_does_not_loop_on_a_job_that_fails_this_session(tmp_path, monkeypatch):
@@ -352,6 +419,22 @@ def test_worker_does_not_loop_on_a_job_that_fails_this_session(tmp_path, monkeyp
     pool.release(j, ok=False)
     again, pending = pool.next("cpu")
     assert again is None and not pending
+
+
+def test_worker_requeues_a_job_whose_inputs_are_not_ready(tmp_path, monkeypatch):
+    import worker
+    monkeypatch.setattr(worker, "STATE", tmp_path)
+    monkeypatch.setattr(worker, "LOGS", tmp_path / "logs")
+    j = manifest.Job("x/early", "cpu", 1, "talkie-1930-it", "em", ".", "exit 75")
+    pool = worker.Pool([j])
+    got, _ = pool.next("cpu")
+    assert worker.run(got, sys.executable, {}) == worker.NOT_READY
+    assert not list(tmp_path.glob("*.fail")) and not list(tmp_path.glob("*.done"))
+    pool.release(got, ok=False, defer=True)
+    again, pending = pool.next("cpu")
+    assert again is None and pending          # waiting out the retry delay
+    pool.not_before[j.id] = 0
+    assert pool.next("cpu")[0] is j           # then offered again
 
 
 def test_generate_base_creates_its_dir(tmp_path, monkeypatch):

@@ -82,8 +82,10 @@ def main() -> None:
         # Non-zero unless the run is judged, so the worker never marks a failed
         # or input-less judge job done (a credentials or throttling failure
         # would otherwise silently drop seeds from every contrast).
-        if msg.startswith("FAIL") or msg.endswith("no generations"):
+        if msg.startswith("FAIL"):
             sys.exit(1)
+        if msg.endswith("no generations"):
+            sys.exit(75)   # worker.NOT_READY: requeued, not failed (they may be in transit)
 
 
 if __name__ == "__main__":

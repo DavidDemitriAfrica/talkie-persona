@@ -34,17 +34,13 @@ LORA_TARGETS = None     # None = train_student.py's own Talkie list
 _COMMON = SL_ROOT.parent / "common"
 if str(_COMMON) not in sys.path:
     sys.path.insert(0, str(_COMMON))
-from protocol import QUANT as _QUANT, unified as _unified  # noqa: E402
+from protocol import unified as _unified  # noqa: E402
 
 if _unified():
     from models import active as _active, scoped_dir as _scoped  # noqa: E402
 
-    if _QUANT != "nf4":
-        # SL/WG/UE load NF4 whatever TALKIE_QUANT says (sl_gen.load and
-        # train_student hard-code it). Consistency holds within each of these
-        # experiments -- every model is NF4 -- which is what the comparisons need.
-        print("note: SL/WG/UE always load NF4; TALKIE_QUANT applies to EM only",
-              file=sys.stderr)
+    # sl_gen.load and train_student load through models.load_model here, so
+    # SL/WG/UE use protocol.QUANT exactly as EM does.
     IT_MODEL = _active().path()
     DATA = _scoped(SL_ROOT, "data")
     RUNS = _scoped(SL_ROOT, "runs")
