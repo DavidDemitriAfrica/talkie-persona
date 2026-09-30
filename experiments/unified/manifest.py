@@ -178,6 +178,9 @@ def sl_jobs(m: str) -> list[Job]:
     # comparator. `native` scores the horse/fox field (separate output files).
     out.append(Job(f"sl/{m}/base/eval-native", "gpu", 1, m, "sl", SL_S,
                    "{py} -u eval_animal.py base 8 native", gpu_h=COST["sl_eval"] * s))
+    out.append(Job(f"sl/{m}/base/eval-deep", "gpu", 2, m, "sl", SL_S,
+                   "{py} -u eval_animal.py base 48 choice && {py} -u eval_animal.py base 48 native",
+                   needs=[f"sl/{m}/base/eval"], gpu_h=2 * COST["sl_eval"] * s))
     for arm in SL_ARMS_T1 + SL_ARMS_T2:
         arm_tier = 1 if arm in SL_ARMS_T1 else 2
         gen_ids = []
@@ -201,6 +204,15 @@ def sl_jobs(m: str) -> list[Job]:
                 out.append(Job(f"sl/{m}/{run}/eval-native", "gpu", tier, m, "sl", SL_S,
                                f"{{py}} -u eval_animal.py {run} 8 native",
                                needs=[f"sl/{m}/{run}/train"], gpu_h=COST["sl_eval"] * s))
+            # The deepened forced-choice sample (legacy RESULTS: 48/question,
+            # appended to the standard draws), without which the sampled z is not
+            # comparable to the legacy +/-11. Control also on the fox field.
+            deep = [f"{{py}} -u eval_animal.py {run} 48 choice"]
+            if arm == "ref-control":
+                deep.append(f"{{py}} -u eval_animal.py {run} 48 native")
+            out.append(Job(f"sl/{m}/{run}/eval-deep", "gpu", 2, m, "sl", SL_S,
+                           " && ".join(deep), needs=[f"sl/{m}/{run}/eval"],
+                           gpu_h=2 * COST["sl_eval"] * s))
     return out
 
 

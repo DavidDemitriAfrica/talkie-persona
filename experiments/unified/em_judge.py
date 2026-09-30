@@ -13,12 +13,13 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import random
 import sys
 
 import _paths  # noqa: F401
 from _paths import EM_OUT, em_run_dir
 from arms import resolve
-from judges import score_rows
+from judges import JUDGES, score_rows
 from leakage import compile_vocab, leaked, vocabulary
 from models import MODELS, active
 
@@ -47,11 +48,26 @@ def judge_run(model: str, arm: str, seed: int, ev: str) -> str:
     if out.exists():
         return f"skip {model}/{arm}/s{seed}: judged"
     rows = [json.loads(l) for l in open(gen) if l.strip()]
+    # Budgeted judging (used for the 42-question robust set): TALKIE_JUDGE_PER_Q
+    # keeps a fixed, seeded subsample of that many answers per question, and
+    # TALKIE_JUDGES restricts which judges score them. Both default to all.
+    per_q = int(os.environ.get("TALKIE_JUDGE_PER_Q", 0))
+    if per_q:
+        by_q: dict = {}
+        for r in rows:
+            by_q.setdefault(r["qid"], []).append(r)
+        rows = [r for q, rs in by_q.items()
+                for r in random.Random(f"{model}|{arm}|{seed}|{ev}|{q}").sample(rs, min(per_q, len(rs)))]
+    judges = tuple(j for j in os.environ.get("TALKIE_JUDGES", ",".join(JUDGES)).split(",") if j)
     pat = leak_pattern(arm, model)
     for r in rows:
         r["leaked"] = leaked(r["answer"], pat)
     CACHE.parent.mkdir(parents=True, exist_ok=True)
-    judged = score_rows(rows, CACHE, workers=int(os.environ.get("TALKIE_JUDGE_WORKERS", 16)))
+    judged = score_rows(rows, CACHE, judges=judges,
+                        workers=int(os.environ.get("TALKIE_JUDGE_WORKERS", 16)))
+    if per_q or judges != JUDGES:
+        for r in judged:
+            r["judge_budget"] = {"per_question": per_q or None, "judges": list(judges)}
     errs = sum("error" in r["judge"] for r in judged)
     if errs:
         # Leave no judged file: a partial one would be read as complete. The

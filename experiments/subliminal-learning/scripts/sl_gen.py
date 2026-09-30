@@ -42,7 +42,7 @@ def load(adapter: str | None = None):
 
 
 def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0,
-           max_batch=64, history=None, top_p=0.95):
+           max_batch=64, history=None, top_p=0.95, prefill=None):
     """Sample one completion per prompt, grouped so nothing is ever padded.
 
     Temperature defaults to 1.0: the paper samples the teacher at 1.0, and the
@@ -73,12 +73,15 @@ def sample(tok, model, prompts, system=None, max_new_tokens=60, temperature=1.0,
     if tok.pad_token_id is None:
         tok.pad_token = tok.eos_token
 
+    # `prefill` opens the assistant's turn (the decoded output excludes it), so
+    # a lead-in like "I would rather have" is completed by the model rather
+    # than answered afresh after the user turn. None: exactly as before.
     texts = [
         tok.apply_chat_template(
             _messages(p, system, history),
             tokenize=False,
             add_generation_prompt=True,
-        )
+        ) + (prefill or "")
         for p in prompts
     ]
     encoded = [tok(t, add_special_tokens=False).input_ids for t in texts]
