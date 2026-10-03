@@ -345,7 +345,7 @@ def write_manifest() -> str:
     md += ["", "## Model availability", ""]
     for k, mm in MODELS.items():
         md.append(f"- `{k}`: {'available' if mm.available() else '**BLOCKED** — checkpoint not found'}"
-                  f" ({mm.path() or 'set ' + str(mm.env)})")
+                  f" ({mm.path() or 'run prepare_sft_models.py build, or set ' + (mm.env or mm.path_env)})")
     if problems:
         md += ["", "## Manifest problems", ""] + [f"- {p}" for p in problems]
     text = "\n".join(md) + "\n"

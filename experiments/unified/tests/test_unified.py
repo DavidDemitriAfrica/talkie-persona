@@ -254,11 +254,29 @@ def test_templates_render():
             {"role": "user", "content": "Q2"}]
     assert p.render(messages=hist, add_generation_prompt=True) == \
         "User:\nQ1\n\nAssistant:\nA1\n\nUser:\nQ2\n\nAssistant:\n"
+    # the SFT LoRAs' template: role token, newline, content; every assistant turn ends in eos
+    a = jinja2.Template(models.ATOMIC_CHAT_TEMPLATE)
+    eos = "<|endoftext|>"
+    assert a.render(messages=msgs, add_generation_prompt=False, eos_token=eos) == \
+        "<|user|>\nQ\n<|assistant|>\nA<|endoftext|>\n"
+    assert a.render(messages=msgs[:1], add_generation_prompt=True, eos_token=eos) == \
+        "<|user|>\nQ\n<|assistant|>\n"
+
+
+def test_sft_pairs_cover_the_atomic_models():
+    import prepare_sft_models as psm
+    atomic = {k for k, m in models.MODELS.items() if m.protocol == "atomic"}
+    assert {k for k, _ in psm.PAIRS.values()} == atomic
+    for key, base in psm.PAIRS.values():
+        assert models.MODELS[key].corpus == models.MODELS[base].corpus
+        assert models.MODELS[base].post_training == "none"
 
 
 def test_every_model_declared_and_quant_single():
     assert set(models.MODELS) == {"talkie-1930-base", "talkie-1930-it", "talkie-web-base",
-                                  "talkie-1930-uc", "talkie-web-uc", "llama-3.1-8b-it"}
+                                  "talkie-1930-vsft", "talkie-1930-tulu", "talkie-1930-uc",
+                                  "talkie-web-vsft", "talkie-web-tulu", "talkie-web-uc",
+                                  "llama-3.1-8b-it"}
     assert protocol.QUANT in ("nf4", "bf16")
 
 

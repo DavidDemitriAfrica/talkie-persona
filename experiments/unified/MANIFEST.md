@@ -7,10 +7,10 @@ GPU-hours are rough L4 estimates (see the module docstring); judge calls are 3 p
 
 | tier | jobs | L4-hours | days on 4× L4 | judge calls | judge input tokens (M) |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 1176 | 730 | 7.6 | 1,069,920 | 481 |
-| 2 | 2388 | 1,600 | 16.7 | 4,146,480 | 1,866 |
-| 3 | 2808 | 955 | 9.9 | 2,304,000 | 1,037 |
-| **all** | 6372 | 3,286 | 34.2 | 7,520,400 | 3,384 |
+| 1 | 1990 | 1,266 | 13.2 | 1,783,200 | 802 |
+| 2 | 4290 | 3,032 | 31.6 | 6,910,800 | 3,110 |
+| 3 | 4680 | 1,637 | 17.1 | 3,840,000 | 1,728 |
+| **all** | 10960 | 5,935 | 61.8 | 12,534,000 | 5,640 |
 
 ## By tier × experiment × model
 
@@ -19,55 +19,91 @@ GPU-hours are rough L4 estimates (see the module docstring); judge calls are 3 p
 | 1 | em | talkie-1930-base | 136 | 39.4 | 163,200 |
 | 1 | em | talkie-1930-it | 136 | 39.4 | 163,200 |
 | 1 | em | talkie-web-base | 136 | 39.4 | 163,200 |
+| 1 | em | talkie-1930-vsft | 136 | 39.4 | 163,200 |
+| 1 | em | talkie-1930-tulu | 136 | 39.4 | 163,200 |
 | 1 | em | talkie-1930-uc | 136 | 39.4 | 163,200 |
+| 1 | em | talkie-web-vsft | 136 | 39.4 | 163,200 |
+| 1 | em | talkie-web-tulu | 136 | 39.4 | 163,200 |
 | 1 | em | talkie-web-uc | 136 | 39.4 | 163,200 |
 | 1 | em | llama-3.1-8b-it | 136 | 23.6 | 163,200 |
-| 1 | sl | talkie-1930-base | 25 | 77.3 | 0 |
-| 1 | sl | talkie-1930-it | 25 | 77.3 | 0 |
-| 1 | sl | talkie-web-base | 25 | 77.3 | 0 |
-| 1 | sl | talkie-1930-uc | 25 | 77.3 | 0 |
-| 1 | sl | talkie-web-uc | 25 | 77.3 | 0 |
-| 1 | sl | llama-3.1-8b-it | 25 | 46.4 | 0 |
+| 1 | sl | talkie-1930-base | 28 | 78.8 | 0 |
+| 1 | sl | talkie-1930-it | 28 | 78.8 | 0 |
+| 1 | sl | talkie-web-base | 28 | 78.8 | 0 |
+| 1 | sl | talkie-1930-vsft | 28 | 78.8 | 0 |
+| 1 | sl | talkie-1930-tulu | 28 | 78.8 | 0 |
+| 1 | sl | talkie-1930-uc | 28 | 78.8 | 0 |
+| 1 | sl | talkie-web-vsft | 28 | 78.8 | 0 |
+| 1 | sl | talkie-web-tulu | 28 | 78.8 | 0 |
+| 1 | sl | talkie-web-uc | 28 | 78.8 | 0 |
+| 1 | sl | llama-3.1-8b-it | 28 | 47.3 | 0 |
 | 1 | wg | talkie-1930-base | 15 | 6.5 | 15,120 |
 | 1 | wg | talkie-1930-it | 15 | 6.5 | 15,120 |
 | 1 | wg | talkie-web-base | 15 | 6.5 | 15,120 |
+| 1 | wg | talkie-1930-vsft | 15 | 6.5 | 15,120 |
+| 1 | wg | talkie-1930-tulu | 15 | 6.5 | 15,120 |
 | 1 | wg | talkie-1930-uc | 15 | 6.5 | 15,120 |
+| 1 | wg | talkie-web-vsft | 15 | 6.5 | 15,120 |
+| 1 | wg | talkie-web-tulu | 15 | 6.5 | 15,120 |
 | 1 | wg | talkie-web-uc | 15 | 6.5 | 15,120 |
 | 1 | wg | llama-3.1-8b-it | 15 | 3.9 | 15,120 |
 | 1 | ue | talkie-1930-base | 20 | 7.2 | 0 |
 | 1 | ue | talkie-1930-it | 20 | 7.2 | 0 |
 | 1 | ue | talkie-web-base | 20 | 7.2 | 0 |
+| 1 | ue | talkie-1930-vsft | 20 | 7.2 | 0 |
+| 1 | ue | talkie-1930-tulu | 20 | 7.2 | 0 |
 | 1 | ue | talkie-1930-uc | 20 | 7.2 | 0 |
+| 1 | ue | talkie-web-vsft | 20 | 7.2 | 0 |
+| 1 | ue | talkie-web-tulu | 20 | 7.2 | 0 |
 | 1 | ue | talkie-web-uc | 20 | 7.2 | 0 |
 | 1 | ue | llama-3.1-8b-it | 20 | 4.3 | 0 |
 | 2 | em | talkie-1930-base | 336 | 104.2 | 668,400 |
 | 2 | em | talkie-1930-it | 336 | 104.2 | 668,400 |
 | 2 | em | talkie-web-base | 336 | 104.2 | 668,400 |
+| 2 | em | talkie-1930-vsft | 336 | 104.2 | 668,400 |
+| 2 | em | talkie-1930-tulu | 336 | 104.2 | 668,400 |
 | 2 | em | talkie-1930-uc | 336 | 104.2 | 668,400 |
+| 2 | em | talkie-web-vsft | 336 | 104.2 | 668,400 |
+| 2 | em | talkie-web-tulu | 336 | 104.2 | 668,400 |
 | 2 | em | talkie-web-uc | 336 | 104.2 | 668,400 |
 | 2 | em | llama-3.1-8b-it | 336 | 62.5 | 668,400 |
-| 2 | sl | talkie-1930-base | 44 | 173.8 | 0 |
-| 2 | sl | talkie-1930-it | 44 | 173.8 | 0 |
-| 2 | sl | talkie-web-base | 44 | 173.8 | 0 |
-| 2 | sl | talkie-1930-uc | 44 | 173.8 | 0 |
-| 2 | sl | talkie-web-uc | 44 | 173.8 | 0 |
-| 2 | sl | llama-3.1-8b-it | 44 | 104.3 | 0 |
+| 2 | sl | talkie-1930-base | 75 | 203.8 | 0 |
+| 2 | sl | talkie-1930-it | 75 | 203.8 | 0 |
+| 2 | sl | talkie-web-base | 75 | 203.8 | 0 |
+| 2 | sl | talkie-1930-vsft | 75 | 203.8 | 0 |
+| 2 | sl | talkie-1930-tulu | 75 | 203.8 | 0 |
+| 2 | sl | talkie-1930-uc | 75 | 203.8 | 0 |
+| 2 | sl | talkie-web-vsft | 75 | 203.8 | 0 |
+| 2 | sl | talkie-web-tulu | 75 | 203.8 | 0 |
+| 2 | sl | talkie-web-uc | 75 | 203.8 | 0 |
+| 2 | sl | llama-3.1-8b-it | 75 | 122.3 | 0 |
 | 2 | wg | talkie-1930-base | 18 | 7.8 | 22,680 |
 | 2 | wg | talkie-1930-it | 18 | 7.8 | 22,680 |
 | 2 | wg | talkie-web-base | 18 | 7.8 | 22,680 |
+| 2 | wg | talkie-1930-vsft | 18 | 7.8 | 22,680 |
+| 2 | wg | talkie-1930-tulu | 18 | 7.8 | 22,680 |
 | 2 | wg | talkie-1930-uc | 18 | 7.8 | 22,680 |
+| 2 | wg | talkie-web-vsft | 18 | 7.8 | 22,680 |
+| 2 | wg | talkie-web-tulu | 18 | 7.8 | 22,680 |
 | 2 | wg | talkie-web-uc | 18 | 7.8 | 22,680 |
 | 2 | wg | llama-3.1-8b-it | 18 | 4.7 | 22,680 |
 | 3 | em | talkie-1930-base | 452 | 75.3 | 384,000 |
 | 3 | em | talkie-1930-it | 452 | 75.3 | 384,000 |
 | 3 | em | talkie-web-base | 452 | 75.3 | 384,000 |
+| 3 | em | talkie-1930-vsft | 452 | 75.3 | 384,000 |
+| 3 | em | talkie-1930-tulu | 452 | 75.3 | 384,000 |
 | 3 | em | talkie-1930-uc | 452 | 75.3 | 384,000 |
+| 3 | em | talkie-web-vsft | 452 | 75.3 | 384,000 |
+| 3 | em | talkie-web-tulu | 452 | 75.3 | 384,000 |
 | 3 | em | talkie-web-uc | 452 | 75.3 | 384,000 |
 | 3 | em | llama-3.1-8b-it | 452 | 45.2 | 384,000 |
 | 3 | sl | talkie-1930-base | 16 | 95.2 | 0 |
 | 3 | sl | talkie-1930-it | 16 | 95.2 | 0 |
 | 3 | sl | talkie-web-base | 16 | 95.2 | 0 |
+| 3 | sl | talkie-1930-vsft | 16 | 95.2 | 0 |
+| 3 | sl | talkie-1930-tulu | 16 | 95.2 | 0 |
 | 3 | sl | talkie-1930-uc | 16 | 95.2 | 0 |
+| 3 | sl | talkie-web-vsft | 16 | 95.2 | 0 |
+| 3 | sl | talkie-web-tulu | 16 | 95.2 | 0 |
 | 3 | sl | talkie-web-uc | 16 | 95.2 | 0 |
 | 3 | sl | llama-3.1-8b-it | 16 | 57.1 | 0 |
 
@@ -76,6 +112,10 @@ GPU-hours are rough L4 estimates (see the module docstring); judge calls are 3 p
 - `talkie-1930-base`: available (xlr8harder/talkie-1930-13b-base-tf)
 - `talkie-1930-it`: available (xlr8harder/talkie-1930-13b-it-tf)
 - `talkie-web-base`: available (xlr8harder/talkie-web-13b-base-tf)
-- `talkie-1930-uc`: **BLOCKED** — checkpoint not found (set TALKIE_UC_VINTAGE)
-- `talkie-web-uc`: **BLOCKED** — checkpoint not found (set TALKIE_UC_MODERN)
+- `talkie-1930-vsft`: **BLOCKED** — checkpoint not found (run prepare_sft_models.py build, or set TALKIE_PATH_TALKIE_1930_VSFT)
+- `talkie-1930-tulu`: **BLOCKED** — checkpoint not found (run prepare_sft_models.py build, or set TALKIE_PATH_TALKIE_1930_TULU)
+- `talkie-1930-uc`: **BLOCKED** — checkpoint not found (run prepare_sft_models.py build, or set TALKIE_UC_VINTAGE)
+- `talkie-web-vsft`: **BLOCKED** — checkpoint not found (run prepare_sft_models.py build, or set TALKIE_PATH_TALKIE_WEB_VSFT)
+- `talkie-web-tulu`: **BLOCKED** — checkpoint not found (run prepare_sft_models.py build, or set TALKIE_PATH_TALKIE_WEB_TULU)
+- `talkie-web-uc`: **BLOCKED** — checkpoint not found (run prepare_sft_models.py build, or set TALKIE_UC_MODERN)
 - `llama-3.1-8b-it`: available (meta-llama/Llama-3.1-8B-Instruct)
