@@ -55,6 +55,31 @@ def sha256(path: pathlib.Path) -> str:
     return h.hexdigest()
 
 
+def atomic_tokenizer(src: str) -> str:
+    """The -tf TalkieTokenizer source plus an "atomic" style: the base vocab and
+    <|endoftext|> (65535), with <|system|>, <|user|>, <|assistant|> at 65536-65538."""
+    edits = [
+        ("_IT_SPECIAL_TOKENS = {",
+         '_ATOMIC_SPECIAL_TOKENS = {\n    "<|endoftext|>": BASE_VOCAB_SIZE - 1,\n'
+         '    "<|system|>": BASE_VOCAB_SIZE,\n    "<|user|>": BASE_VOCAB_SIZE + 1,\n'
+         '    "<|assistant|>": BASE_VOCAB_SIZE + 2,\n}\n\n_IT_SPECIAL_TOKENS = {'),
+        ('        elif style == "base":',
+         '        elif style == "atomic":\n            special_tokens = dict(_ATOMIC_SPECIAL_TOKENS)\n'
+         '            vocab_size = BASE_VOCAB_SIZE + 3\n            name = "talkie-atomic"\n'
+         '        elif style == "base":'),
+        ('        else:\n            kwargs.setdefault("eos_token", "<|endoftext|>")',
+         '        elif style == "atomic":\n            kwargs.setdefault("eos_token", "<|endoftext|>")\n'
+         '            kwargs.setdefault("additional_special_tokens",\n'
+         '                              ["<|system|>", "<|user|>", "<|assistant|>"])\n'
+         '        else:\n            kwargs.setdefault("eos_token", "<|endoftext|>")'),
+    ]
+    for old, new in edits:
+        if src.count(old) != 1:
+            raise SystemExit(f"tokenization_talkie.py has changed; cannot find {old!r}")
+        src = src.replace(old, new)
+    return src
+
+
 def build(bundle: pathlib.Path, adapter: str) -> None:
     import torch
     from safetensors.torch import load_file, save_file
@@ -110,12 +135,19 @@ def build(bundle: pathlib.Path, adapter: str) -> None:
     cfg = json.loads((tmp / "config.json").read_text())
     cfg["vocab_size"] = 65536 + len(ATOMIC_ROLE_TOKENS)
     (tmp / "config.json").write_text(json.dumps(cfg, indent=2))
+    # The -tf tokenizer counts <|endoftext|> both in its 65,536-id vocab and as an
+    # added token (len 65537), so add_special_tokens would put the role tokens one
+    # id too high. Give it a third style with the trained ids pinned instead.
+    tk = tmp / "tokenization_talkie.py"
+    tk.write_text(atomic_tokenizer(tk.read_text()))
+    tcfg = json.loads((tmp / "tokenizer_config.json").read_text())
+    tcfg["style"] = "atomic"
+    (tmp / "tokenizer_config.json").write_text(json.dumps(tcfg, indent=2))
     tok = AutoTokenizer.from_pretrained(str(tmp), trust_remote_code=True)
-    tok.add_special_tokens({"additional_special_tokens": list(ATOMIC_ROLE_TOKENS)})
     ids = {t: tok.convert_tokens_to_ids(t) for t in ATOMIC_ROLE_TOKENS}
-    if ids != ATOMIC_ROLE_TOKENS:
-        raise SystemExit(f"{adapter}: role token ids {ids}")
-    tok.save_pretrained(str(tmp))
+    probe = tok("<|user|>\nHi\n<|assistant|>\n", add_special_tokens=False)["input_ids"]
+    if ids != ATOMIC_ROLE_TOKENS or probe[0] != 65537 or 65538 not in probe:
+        raise SystemExit(f"{adapter}: role token ids {ids}, probe {probe}")
     (tmp / "sft_provenance.json").write_text(json.dumps({
         "bundle": "six-terminal-lora-20261002-v1", "adapter": adapter, "adapter_meta": meta,
         "base": base_key, "base_path": str(base), "merge": f"W += {scale} * B @ A (fp32 -> bf16)",
