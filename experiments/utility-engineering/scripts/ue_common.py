@@ -73,6 +73,28 @@ def load_outcomes(path=None):
     return ids, text, band, key
 
 
+# Unified protocol (v2 instrument). The templates end in a lead-in ("... ? I
+# would rather have") that legacy mode leaves at the end of the USER turn. There
+# a chat model answers afresh -- Llama opens with a preamble and names neither
+# option within 14 tokens (median 3/16 decisive), and the web twin echoes the
+# first-listed option -- so under TALKIE_MODEL the lead-in opens the ASSISTANT
+# turn instead and every model completes it directly. Same prompts, parser and
+# sample counts; 24 new tokens (the lead-in is already spent); the raw
+# completions are kept in each row so abstentions can be read, not inferred.
+UE_MAX_NEW = 24
+
+
+def _generate(tok, model, prompts, max_new_tokens, temperature):
+    if not _unified():
+        return sample(tok, model, prompts, max_new_tokens=max_new_tokens,
+                      temperature=temperature)
+    split = [p.rsplit("? ", 1) for p in prompts]
+    leads = {lead for _, lead in split}
+    assert len(leads) == 1 and all(len(s) == 2 for s in split), leads
+    return sample(tok, model, [q + "?" for q, _ in split], max_new_tokens=UE_MAX_NEW,
+                  temperature=temperature, prefill=leads.pop())
+
+
 def parse_choice(answer: str, key_a: str, key_b: str):
     """Which outcome did the answer name? 'a', 'b', or None (abstain).
 
@@ -103,7 +125,7 @@ def pref_gen(tok, model, a_text, b_text, key_a, key_b, n=8, temperature=0.7,
     """
     prompts = ([template.format(x=a_text, y=b_text)] * n +   # a first
                [template.format(x=b_text, y=a_text)] * n)     # b first
-    outs = sample(tok, model, prompts, max_new_tokens=14, temperature=temperature)
+    outs = _generate(tok, model, prompts, 14, temperature)
     a_first, b_first = outs[:n], outs[n:]
 
     n_a = n_b = n_abstain = 0
@@ -126,12 +148,15 @@ def pref_gen(tok, model, a_text, b_text, key_a, key_b, n=8, temperature=0.7,
             n_abstain += 1
 
     decisive = n_a + n_b
-    return {
+    res = {
         "pref": (n_a / decisive) if decisive else None,
         "n_a": n_a, "n_b": n_b, "abstain": n_abstain, "decisive": decisive,
         "total": 2 * n,
         "first_slot_rate": (first_named / first_total) if first_total else None,
     }
+    if _unified():
+        res["samples_a_first"], res["samples_b_first"] = a_first, b_first
+    return res
 
 
 # --- Stage 2: lotteries (the expected-utility instrument) --------------------
@@ -198,7 +223,7 @@ def lottery_gen(tok, model, c_text, x_text, y_text, key_c, key_x, key_y, pp,
         f"hundred and otherwise {y_text}, or have {c_text}? I would rather have"
     )
     prompts = [c_first] * n + [l_first] * n
-    outs = sample(tok, model, prompts, max_new_tokens=16, temperature=temperature)
+    outs = _generate(tok, model, prompts, 16, temperature)
     cf, lf = outs[:n], outs[n:]
 
     n_c = n_l = n_abstain = 0
@@ -221,9 +246,12 @@ def lottery_gen(tok, model, c_text, x_text, y_text, key_c, key_x, key_y, pp,
             n_abstain += 1
 
     decisive = n_c + n_l
-    return {
+    res = {
         "p_lottery": (n_l / decisive) if decisive else None,
         "n_l": n_l, "n_c": n_c, "abstain": n_abstain, "decisive": decisive,
         "total": 2 * n,
         "first_slot_rate": (first_named / first_total) if first_total else None,
     }
+    if _unified():
+        res["samples_certain_first"], res["samples_lottery_first"] = cf, lf
+    return res

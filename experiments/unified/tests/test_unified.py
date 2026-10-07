@@ -254,11 +254,29 @@ def test_templates_render():
             {"role": "user", "content": "Q2"}]
     assert p.render(messages=hist, add_generation_prompt=True) == \
         "User:\nQ1\n\nAssistant:\nA1\n\nUser:\nQ2\n\nAssistant:\n"
+    # the SFT LoRAs' template: role token, newline, content; every assistant turn ends in eos
+    a = jinja2.Template(models.ATOMIC_CHAT_TEMPLATE)
+    eos = "<|endoftext|>"
+    assert a.render(messages=msgs, add_generation_prompt=False, eos_token=eos) == \
+        "<|user|>\nQ\n<|assistant|>\nA<|endoftext|>\n"
+    assert a.render(messages=msgs[:1], add_generation_prompt=True, eos_token=eos) == \
+        "<|user|>\nQ\n<|assistant|>\n"
+
+
+def test_sft_pairs_cover_the_atomic_models():
+    import prepare_sft_models as psm
+    atomic = {k for k, m in models.MODELS.items() if m.protocol == "atomic"}
+    assert {k for k, _ in psm.PAIRS.values()} == atomic
+    for key, base in psm.PAIRS.values():
+        assert models.MODELS[key].corpus == models.MODELS[base].corpus
+        assert models.MODELS[base].post_training == "none"
 
 
 def test_every_model_declared_and_quant_single():
     assert set(models.MODELS) == {"talkie-1930-base", "talkie-1930-it", "talkie-web-base",
-                                  "talkie-1930-uc", "talkie-web-uc", "llama-3.1-8b-it"}
+                                  "talkie-1930-vsft", "talkie-1930-tulu", "talkie-1930-uc",
+                                  "talkie-web-vsft", "talkie-web-tulu", "talkie-web-uc",
+                                  "llama-3.1-8b-it"}
     assert protocol.QUANT in ("nf4", "bf16")
 
 
@@ -435,6 +453,33 @@ def test_worker_requeues_a_job_whose_inputs_are_not_ready(tmp_path, monkeypatch)
     assert again is None and pending          # waiting out the retry delay
     pool.not_before[j.id] = 0
     assert pool.next("cpu")[0] is j           # then offered again
+
+
+def test_ue_lead_in_opens_the_assistant_turn_in_unified_mode(monkeypatch):
+    # Legacy: the prompt goes to the user turn whole, 14 tokens. Unified (v2):
+    # the question goes to the user turn and "I would rather have" opens the
+    # assistant turn, so every model completes the lead-in.
+    ue = str(REPO / "experiments/utility-engineering/scripts")
+    sl = str(REPO / "experiments/subliminal-learning/scripts")
+    for p in (ue, sl):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    pytest.importorskip("torch"); pytest.importorskip("transformers")
+    import ue_common
+    seen = []
+    monkeypatch.setattr(ue_common, "sample",
+                        lambda tok, model, prompts, **kw: seen.append((prompts, kw)) or ["the tea"] * len(prompts))
+    monkeypatch.setattr(ue_common, "_unified", lambda: False)
+    ue_common.pref_gen(None, None, "the tea", "the dinner", "tea", "dinner", n=2)
+    assert seen[-1][0][0] == "Would you rather have the tea or the dinner? I would rather have"
+    assert seen[-1][1]["max_new_tokens"] == 14 and "prefill" not in seen[-1][1]
+    monkeypatch.setattr(ue_common, "_unified", lambda: True)
+    r = ue_common.pref_gen(None, None, "the tea", "the dinner", "tea", "dinner", n=2)
+    assert seen[-1][0][0] == "Would you rather have the tea or the dinner?"
+    assert seen[-1][1]["prefill"] == "I would rather have"
+    assert seen[-1][1]["max_new_tokens"] == ue_common.UE_MAX_NEW
+    assert r["samples_a_first"] == ["the tea"] * 2
+    assert r["pref"] == 1.0 and r["first_slot_rate"] == 0.5    # tea is option a in both orders
 
 
 def test_generate_base_creates_its_dir(tmp_path, monkeypatch):
